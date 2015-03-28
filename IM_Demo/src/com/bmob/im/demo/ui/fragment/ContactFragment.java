@@ -44,6 +44,7 @@ import com.bmob.im.demo.ui.NearPeopleActivity;
 import com.bmob.im.demo.ui.NearPeopleMapActivity;
 import com.bmob.im.demo.ui.NewFriendActivity;
 import com.bmob.im.demo.ui.SetMyInfoActivity;
+import com.bmob.im.demo.ui.ShakeActivity;
 import com.bmob.im.demo.util.CharacterParser;
 import com.bmob.im.demo.util.CollectionUtils;
 import com.bmob.im.demo.util.PinyinComparator;
@@ -247,7 +248,7 @@ public class ContactFragment extends FragmentBase implements OnItemClickListener
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				Intent intent = new Intent(getActivity(), NearPeopleMapActivity.class);
+				Intent intent = new Intent(getActivity(), ShakeActivity.class);
 				startAnimActivity(intent);
 			}
 		});

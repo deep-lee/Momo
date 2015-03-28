@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="150px"
-    android:layout_height="60px"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/nearsnickbg5"
     android:id="@+id/layout_nears_map_marker">
     
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#FFFF00" />
-     <TextView 
-         android:id="@+id/marker_text"
-         android:layout_width="match_parent"
-         android:layout_height="match_parent"
-         android:gravity="center"
-         android:text="33333"/>
+    <TextView 
+        android:id="@+id/marker_text"
+        android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+        android:text="3333333"
+        android:textColor="#ffffff"
+        android:layout_gravity="center"/>
+
 
 </FrameLayout>

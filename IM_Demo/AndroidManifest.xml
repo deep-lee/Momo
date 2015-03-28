@@ -177,8 +177,16 @@
         </service>
 
         <activity
-            android:name="com.bmob.im.demo.ui.NearPeopleMapActivity"
+            android:name=".ui.NearPeopleMapActivity"
             android:label="@string/title_activity_near_people_map" >
+        </activity>
+        <activity
+            android:name=".ui.ShakeActivity"
+            android:label="@string/title_activity_shake" >
+        </activity>
+        <activity
+            android:name="com.bmob.im.demo.ui.GameFruitActivity"
+            android:label="@string/title_activity_game_fruit" >
         </activity>
     </application>
 

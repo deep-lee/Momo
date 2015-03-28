@@ -105,6 +105,37 @@ public class NearPeopleMapActivity extends BaseActivity implements OnGetGeoCoder
 		initTopBarForLeft("附近的人");
 		initBaiduMap();
 		
+		mBaiduMap.setOnMarkerClickListener(new OnMarkerClickListener() {
+			
+			@Override
+			public boolean onMarkerClick(Marker arg0) {
+				// TODO Auto-generated method stub
+				
+				Bundle data = arg0.getExtraInfo();
+				String objectId = data.getString("ObjectId");
+				
+				userManager.queryUserById(objectId, new FindListener<BmobChatUser>() {
+
+					@Override
+					public void onError(int arg0, String arg1) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void onSuccess(List<BmobChatUser> arg0) {
+						// TODO Auto-generated method stub
+						// 查询成功
+						Intent intent = new Intent();
+						intent.setClass(NearPeopleMapActivity.this, GameFruitActivity.class);
+						startActivity(intent);
+					}
+				});
+				
+				return false;
+			}
+		});
+		
 		
 	}
 
@@ -125,31 +156,6 @@ public class NearPeopleMapActivity extends BaseActivity implements OnGetGeoCoder
 		iFilter.addAction(SDKInitializer.SDK_BROADCAST_ACTION_STRING_NETWORK_ERROR);
 		mReceiver = new BaiduReceiver();
 		registerReceiver(mReceiver, iFilter);
-
-//		Intent intent = getIntent();
-//		String type = intent.getStringExtra("type");
-//		if (type.equals("select")) {// 选择发送位置
-//			initTopBarForBoth("位置", R.drawable.btn_login_selector, "发送",
-//					new onRightImageButtonClickListener() {
-//
-//						@Override
-//						public void onClick() {
-//							// TODO Auto-generated method stub
-//							gotoChatPage();
-//						}
-//					});
-//			mHeaderLayout.getRightImageButton().setEnabled(false);
-//			initLocClient();
-//		} else {// 查看当前位置
-//			initTopBarForLeft("位置");
-//			Bundle b = intent.getExtras();
-//			LatLng latlng = new LatLng(b.getDouble("latitude"), b.getDouble("longtitude"));//维度在前，经度在后
-//			mBaiduMap.setMapStatus(MapStatusUpdateFactory.newLatLng(latlng));
-//			
-//			//在地图上加图标，显示当前位置图标
-//			OverlayOptions ooA = new MarkerOptions().position(latlng).icon(bdgeo).zIndex(9);
-//			mBaiduMap.addOverlay(ooA);
-//		}
 		
 		initNearByList(false);
 		
@@ -164,18 +170,6 @@ public class NearPeopleMapActivity extends BaseActivity implements OnGetGeoCoder
 		
 
 	}
-
-//	LatLng llText = new LatLng(39.86923, 116.397428);  
-//	//构建文字Option对象，用于在地图上添加文字  
-//	OverlayOptions textOption = new TextOptions()  
-//	    .bgColor(0xAAFFFF00)  
-//	    .fontSize(24)  
-//	    .fontColor(0xFFFF00FF)  
-//	    .text("百度地图SDK")  
-//	    .rotate(-30)  
-//	    .position(llText);  
-//	//在地图上添加该文字对象并显示  
-//	mBaiduMap.addOverlay(textOption);
 	
 	LatLng point;
 	OverlayOptions textOption;
@@ -186,6 +180,9 @@ public class NearPeopleMapActivity extends BaseActivity implements OnGetGeoCoder
 	// 在地图上显示附近的人的信息
 	private void initNearsOnMap() {
 		ShowToast(nears.size() + "");
+		
+		Marker marker;
+		
 		// 通过循环将附近的人的昵称显示在地图上
 		for (User nearUser : nears) {
 			
@@ -219,56 +216,17 @@ public class NearPeopleMapActivity extends BaseActivity implements OnGetGeoCoder
 			    .position(point)  
 			    .icon(bitmap);  
 			
-			markerData.putString("ObjectId", nearUser.getObjectId());
-			((MarkerOptions)option).extraInfo(markerData);
-			
-			
-			
 			//在地图上添加Marker，并显示  
-			mBaiduMap.addOverlay(option);
+			marker = (Marker)mBaiduMap.addOverlay(option);
+			
+			markerData.putString("ObjectId", nearUser.getObjectId());
+			marker.setExtraInfo(markerData);
 			
 			ShowToast(nearUser.getNick());
 		}
 	}
 	
-	// marker覆盖物的单击事件
-	OnMarkerClickListener listener = new OnMarkerClickListener() {
-		
-		@Override
-		public boolean onMarkerClick(Marker arg0) {
-			// TODO Auto-generated method stub
-			
-			Bundle data = arg0.getExtraInfo();
-			String objectId = data.getString("ObjectId");
-			
-			userManager.queryUserById(objectId, new FindListener<BmobChatUser>() {
 
-				@Override
-				public void onError(int arg0, String arg1) {
-					// TODO Auto-generated method stub
-					
-				}
-
-				@Override
-				public void onSuccess(List<BmobChatUser> arg0) {
-					// TODO Auto-generated method stub
-					// 查询成功
-					ShowToast(arg0.get(0).getNick());
-				}
-			});
-			return false;
-		}
-	};
-	
-	
-	
-//	 public Bitmap createViewBitmap(View v) {
-////	        Bitmap bitmap = Bitmap.createBitmap(v.getWidth(), v.getHeight(),
-////	                Bitmap.Config.ARGB_8888);
-////	        Canvas canvas = new Canvas(bitmap);
-////	        v.draw(canvas);
-//	        // return bitmap;
-//	    }
 	
 	ProgressDialog progress ;
 	private void initNearByList(final boolean isUpdate){

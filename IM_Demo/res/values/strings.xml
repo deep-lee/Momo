@@ -66,5 +66,13 @@
     <string name="voice_short_tips">录音时间太短</string>
     <string name="show_notice">\t\t\t\t\t自V1.0.6版本开始，应用源码中将不再公开ApplicationId,开发者请自行到官网申请。\n\t\t\t\t\t申请成功之后在应用程序启动页(SplashActivity)进行初始化操作!</string>
     <string name="title_activity_near_people_map">NearPeopleMapActivity</string>
+    <string name="title_activity_shake">ShakeActivity</string>
+    <string name="title_activity_game_fruit">GameFruitActivity</string>
+    
+    <string name="time">所用时间为：$秒</string>
+    <string name="quit">退出</string>
+    <string name="sure_quit">确定退出游戏？</string>
+    <string name="alert_dialog_ok">确定</string>
+    <string name="alert_dialog_cancel">取消</string>
 
 </resources>
