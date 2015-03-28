@@ -23,8 +23,11 @@ import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.MyMessageReceiver;
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.ui.fragment.ContactFragment;
+import com.bmob.im.demo.ui.fragment.LeftFragment;
 import com.bmob.im.demo.ui.fragment.RecentFragment;
 import com.bmob.im.demo.ui.fragment.SettingsFragment;
+
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 /**
  * 登陆
@@ -68,8 +71,39 @@ public class MainActivity extends ActivityBase implements EventListener{
 		iv_contact_tips = (ImageView)findViewById(R.id.iv_contact_tips);
 		//把第一个tab设为选中状态
 		mTabs[0].setSelected(true);
+		
+		initLeftView();
 	}
-	
+		
+		
+	private void initLeftView() {
+		
+		// configure the SlidingMenu  
+        SlidingMenu menu = new SlidingMenu(this);  
+        menu.setMode(SlidingMenu.LEFT);  
+        // 设置触摸屏幕的模式  
+        menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);  
+        menu.setShadowWidthRes(R.dimen.shadow_width);  
+        menu.setShadowDrawable(R.drawable.shadow);  
+  
+        // 设置滑动菜单视图的宽度  
+        menu.setBehindOffsetRes(R.dimen.slidingmenu_offset);  
+        // 设置渐入渐出效果的值  
+        menu.setFadeDegree(0.35f);  
+        /** 
+         * SLIDING_WINDOW will include the Title/ActionBar in the content 
+         * section of the SlidingMenu, while SLIDING_CONTENT does not. 
+         */  
+        menu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);  
+        //为侧滑菜单设置布局  
+        menu.setMenu(R.layout.left_fragment); 
+        
+        android.app.Fragment leftMenuFragment = new LeftFragment();  
+       // setBehindContentView(R.layout.left_menu_frame);  
+        getFragmentManager().beginTransaction()  
+                .replace(R.id.left_fragment, leftMenuFragment).commit();  
+        
+	}
 	private void initTab(){
 		contactFragment = new ContactFragment();
 		recentFragment = new RecentFragment();

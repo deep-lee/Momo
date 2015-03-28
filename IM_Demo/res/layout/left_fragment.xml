@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/left_fragment" >
+<RelativeLayout 
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ImageView 
+        android:id="@+id/image1"
+        android:src="@drawable/ic_launcher"
+        android:layout_width="70dp"
+    	android:layout_height="70dp"
+    	android:layout_marginLeft="30dp"
+    	android:layout_marginTop="15dp"
+        />
+    
+    <ListView
+        android:id="@+id/listView1"
+        android:layout_below="@id/image1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+    </ListView>
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/image1"
+        android:layout_marginBottom="23dp"
+        android:layout_marginLeft="15dp"
+        android:layout_toRightOf="@+id/image1"
+        android:text="昵称" />
+    
+</RelativeLayout>
+    
+
+</FrameLayout>
