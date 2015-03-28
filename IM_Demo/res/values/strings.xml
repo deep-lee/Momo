@@ -68,11 +68,11 @@
     <string name="title_activity_near_people_map">NearPeopleMapActivity</string>
     <string name="title_activity_shake">ShakeActivity</string>
     <string name="title_activity_game_fruit">GameFruitActivity</string>
-    
     <string name="time">所用时间为：$秒</string>
     <string name="quit">退出</string>
     <string name="sure_quit">确定退出游戏？</string>
     <string name="alert_dialog_ok">确定</string>
     <string name="alert_dialog_cancel">取消</string>
+    <string name="title_activity_guess_number">GuessNumberActivity</string>
 
 </resources>

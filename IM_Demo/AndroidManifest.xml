@@ -185,8 +185,12 @@
             android:label="@string/title_activity_shake" >
         </activity>
         <activity
-            android:name="com.bmob.im.demo.ui.GameFruitActivity"
+            android:name=".ui.GameFruitActivity"
             android:label="@string/title_activity_game_fruit" >
+        </activity>
+        <activity
+            android:name="com.bmob.im.demo.ui.GuessNumberActivity"
+            android:label="@string/title_activity_guess_number" >
         </activity>
     </application>
 

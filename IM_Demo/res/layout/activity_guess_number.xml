@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/game_guess_number_bg">
+    
+    <LinearLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:visibility="gone"
+        android:id="@+id/game_icon"
+        android:orientation="vertical">
+        
+     <ImageView
+        android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:layout_gravity="center"
+    	android:layout_marginTop="100dp"
+    	android:visibility="visible"
+    	android:src="@drawable/game_guess_number_icon"/>
+
+    <ImageButton
+        android:id="@+id/game_guess_number_play_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#00000000"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:visibility="visible"
+        android:src="@drawable/game_guess_number_play" />
+        
+    </LinearLayout>
+    
+    <LinearLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/game_main_view"
+        android:orientation="vertical">
+    
+        <EditText 
+            android:layout_gravity="center"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="30dp"
+            android:cursorVisible="false"
+            android:editable="false"
+            android:id="@+id/game_guess_number_input"/>
+        
+       <LinearLayout 
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_gravity="center"
+           android:layout_marginTop="30dp"
+           android:orientation="horizontal">
+           
+           <Button 
+               android:id="@+id/game_guess_zore"
+               android:layout_width="80dp"
+               android:layout_weight="1"
+               android:background="#9bcd9b"
+               android:text="0"
+               android:layout_height="40dp"/>
+        
+           <Button 
+               android:id="@+id/game_guess_one"
+               android:layout_width="80dp"
+               android:layout_weight="1"
+               android:text="1"
+               android:background="#9bcd9b"
+               android:layout_height="40dp"/>
+           
+           <Button 
+               android:id="@+id/game_guess_two"
+               android:layout_width="80dp"
+               android:layout_weight="1"
+               android:text="2"
+               android:background="#9bcd9b"
+               android:layout_height="40dp"/>
+           
+       </LinearLayout>
+       
+       <LinearLayout 
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_gravity="center"
+           android:layout_marginTop="30dp"
+           android:orientation="horizontal">
+           
+           <Button 
+               android:id="@+id/game_guess_three"
+               android:layout_width="80dp"
+               android:layout_weight="1"
+               android:background="#9bcd9b"
+               android:text="3"
+               android:layout_height="40dp"/>
+        
+           <Button 
+               android:id="@+id/game_guess_four"
+               android:layout_width="80dp"
+               android:layout_weight="1"
+               android:text="4"
+               android:background="#9bcd9b"
+               android:layout_height="40dp"/>
+           
+           <Button 
+               android:id="@+id/game_guess_five"
+               android:layout_width="80dp"
+               android:layout_weight="1"
+               android:background="#9bcd9b"
+               android:text="5"
+               android:layout_height="40dp"/>
+           
+       </LinearLayout>
+       
+       <LinearLayout 
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_gravity="center"
+           android:layout_marginTop="30dp"
+           android:orientation="horizontal">
+           
+           <Button 
+               android:id="@+id/game_guess_six"
+               android:layout_width="80dp"
+               android:layout_weight="1"
+               android:text="6"
+               android:background="#9bcd9b"
+               android:layout_height="40dp"/>
+        
+           <Button 
+               android:id="@+id/game_guess_theven"
+               android:layout_width="80dp"
+               android:layout_weight="1"
+               android:background="#9bcd9b"
+               android:text="7"
+               android:layout_height="40dp"/>
+           
+           <Button 
+               android:id="@+id/game_guess_eight"
+               android:layout_width="80dp"
+               android:layout_weight="1"
+               android:text="8"
+               android:background="#9bcd9b"
+               android:layout_height="40dp"/>
+           
+       </LinearLayout>
+       
+       <LinearLayout 
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_gravity="center"
+           android:layout_marginTop="30dp"
+           android:orientation="horizontal">
+           
+           <Button 
+               android:id="@+id/game_guess_nine"
+               android:layout_width="80dp"
+               android:layout_weight="1"
+               android:background="#9bcd9b"
+               android:text="9"
+               android:layout_height="40dp"/>
+        
+           <Button 
+               android:id="@+id/game_guess_clear"
+               android:layout_width="80dp"
+               android:layout_weight="1"
+               android:background="#9bcd9b"
+               android:text="清空"
+               android:layout_height="40dp"/>
+           
+           <Button 
+               android:id="@+id/game_guess_sure"
+               android:layout_width="80dp"
+               android:layout_weight="1"
+               android:text="确认"
+               android:background="#9bcd9b"
+               android:layout_height="40dp"/>
+           
+       </LinearLayout>
+        
+    </LinearLayout>
+    
+</FrameLayout>
