@@ -127,7 +127,7 @@ public class NearPeopleMapActivity extends BaseActivity implements OnGetGeoCoder
 						// TODO Auto-generated method stub
 						// ≤È—Ø≥…π¶
 						Intent intent = new Intent();
-						intent.setClass(NearPeopleMapActivity.this, GuessNumberActivity.class);
+						intent.setClass(NearPeopleMapActivity.this, MixedColorMenuActivity.class);
 						startActivity(intent);
 					}
 				});

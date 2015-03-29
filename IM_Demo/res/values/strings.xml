@@ -74,5 +74,16 @@
     <string name="alert_dialog_ok">确定</string>
     <string name="alert_dialog_cancel">取消</string>
     <string name="title_activity_guess_number">GuessNumberActivity</string>
+    <string name="color_black">黑色</string>
+    <string name="color_white">白色</string>
+    <string name="color_yellow">黄色</string>
+    <string name="color_red">红色</string>
+    <string name="color_green">绿色</string>
+    <string name="color_blue">蓝色</string>
+    <string name="color_orange">棕色</string>
+    <string name="color_purple">紫色</string>
+    <string name="color_gray">灰色</string>
+    <string name="title_activity_mixed_color">MixedColorActivity</string>
+    <string name="title_activity_mixed_color_menu">MixedColorMenuActivity</string>
 
 </resources>
