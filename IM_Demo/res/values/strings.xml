@@ -47,6 +47,7 @@
     <string name="toast_error_nick_null">昵称不能为空</string>
     <string name="toast_error_comfirm_password">输入的两次密码不一致</string>
     <string name="toast_error_change_avator">不能使用默认头像，请上传头像</string>
+    <string name="toast_error_birth_null">生日不能为空</string>
     <string name="blacklist">黑名单</string>
     <string name="chat">发起会话</string>
     <string name="add_friend">添加好友</string>
@@ -85,5 +86,7 @@
     <string name="color_gray">灰色</string>
     <string name="title_activity_mixed_color">MixedColorActivity</string>
     <string name="title_activity_mixed_color_menu">MixedColorMenuActivity</string>
+    <string name="title_activity_register_activity2">RegisterActivity2</string>
+    <string name="title_activity_register_activity3">RegisterActivity3</string>
 
 </resources>

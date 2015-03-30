@@ -34,6 +34,22 @@ public class User extends BmobChatUser {
 	
 	private Blog blog;
 	
+	private String birthday;
+	private int gameType;
+	
+	public String getBirthday() {
+		return birthday;
+	}
+	public void setBirthday(String birthday) {
+		this.birthday = birthday;
+	}
+	public int getGameType() {
+		return gameType;
+	}
+	public void setGameType(int gameType) {
+		this.gameType = gameType;
+	}
+	
 	/**
 	 * µØÀí×ø±ê
 	 */

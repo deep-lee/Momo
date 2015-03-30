@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="games">
+        <item>水果连连看</item>
+        <item>猜数字</item>
+        <item>mixed color</item>
+    </string-array>
+</resources>

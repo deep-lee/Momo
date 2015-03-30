@@ -197,8 +197,16 @@
             android:label="@string/title_activity_mixed_color" >
         </activity>
         <activity
-            android:name="com.bmob.im.demo.ui.MixedColorMenuActivity"
+            android:name=".ui.MixedColorMenuActivity"
             android:label="@string/title_activity_mixed_color_menu" >
+        </activity>
+        <activity
+            android:name=".ui.RegisterActivity2"
+            android:label="@string/title_activity_register_activity2" >
+        </activity>
+        <activity
+            android:name="com.bmob.im.demo.ui.RegisterActivity3"
+            android:label="@string/title_activity_register_activity3" >
         </activity>
     </application>
 

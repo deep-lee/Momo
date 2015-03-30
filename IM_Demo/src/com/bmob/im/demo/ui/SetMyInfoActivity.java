@@ -166,6 +166,7 @@ public class SetMyInfoActivity extends ActivityBase implements OnClickListener {
 	private void initMeData() {
 		User user = userManager.getCurrentUser(User.class);
 		BmobLog.i("hight = "+user.getHight()+",sex= "+user.getSex());
+		
 		initOtherData(user.getUsername());
 	}
 
