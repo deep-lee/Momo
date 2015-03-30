@@ -17,16 +17,25 @@ import java.util.List;
 
 
 
+
+
+
+
 import cn.bmob.im.BmobUserManager;
 import cn.bmob.v3.listener.FindCallback;
 
+import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.bean.User;
+import com.bmob.im.demo.ui.LoginActivity;
+import com.bmob.im.demo.ui.MainActivity;
+import com.bmob.im.demo.ui.SlideSetMyInfoActivity;
 import com.bmob.im.demo.util.ImageLoadOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,7 +61,7 @@ public class LeftFragment extends Fragment {
     TextView slideNick;
     
     private List<String> mDatas = Arrays  
-            .asList("我的游戏","设置","帮助");  
+            .asList("我的游戏","设置","关于", "退出登陆");  
     private ListAdapter mAdapter;  
     
     
@@ -104,13 +113,22 @@ public class LeftFragment extends Fragment {
 					//添加方法
 					break;
 				case 1:
-					Toast.makeText(getActivity(), position+"选中", Toast.LENGTH_LONG).show();
+					Intent intent = new Intent();
+					intent.setClass(context, SlideSetMyInfoActivity.class);
+					startActivity(intent);
+					// Toast.makeText(getActivity(), position+"选中", Toast.LENGTH_LONG).show();
 					//添加方法
 					break;
 				case 2:
 					Toast.makeText(getActivity(), position+"选中", Toast.LENGTH_LONG).show();
 					//添加方法
-					break;			
+					break;		
+				case 3:
+					CustomApplcation.getInstance().logout();
+					((MainActivity)context).finish();
+					startActivity(new Intent(context, LoginActivity.class));
+					//添加方法
+					break;
 				}
 			}
         	
@@ -129,6 +147,7 @@ public class LeftFragment extends Fragment {
 		if (avatar != null && !avatar.equals("")) {
 			ImageLoader.getInstance().displayImage(avatar, slideAvator,
 					ImageLoadOptions.getOptions());
+		
 		} else {
 			
 			// 否则显示默认的头像

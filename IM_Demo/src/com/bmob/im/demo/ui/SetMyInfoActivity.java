@@ -1,7 +1,10 @@
 package com.bmob.im.demo.ui;
 
 import java.io.File;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -51,7 +54,10 @@ import com.bmob.im.demo.bean.User;
 import com.bmob.im.demo.config.BmobConstants;
 import com.bmob.im.demo.util.CollectionUtils;
 import com.bmob.im.demo.util.ImageLoadOptions;
+import com.bmob.im.demo.util.JudgeDate;
 import com.bmob.im.demo.util.PhotoUtil;
+import com.bmob.im.demo.util.ScreenInfo;
+import com.bmob.im.demo.util.WheelMain;
 import com.bmob.im.demo.view.dialog.DialogTips;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -68,17 +74,20 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 public class SetMyInfoActivity extends ActivityBase implements OnClickListener {
 
 	// iv_arraw表示头像箭头，iv_nickarraw表示昵称箭头
-	TextView tv_set_name, tv_set_nick, tv_set_gender;
-	ImageView iv_set_avator, iv_arraw, iv_nickarraw;
+	TextView tv_set_name, tv_set_nick, tv_set_gender, tv_set_birthday, tv_set_game;
+	ImageView iv_set_avator, iv_arraw, iv_nickarraw, iv_sexarrow, iv_birthdayarrow, iv_gamearrow;
 	LinearLayout layout_all;
 
 	Button btn_chat, btn_back, btn_add_friend;
-	RelativeLayout layout_head, layout_nick, layout_gender, layout_black_tips;
+	RelativeLayout layout_head, layout_nick, layout_gender, layout_black_tips, layout_birthday, layout_game;
 
 	String from = "";
 	String username = "";
 	User user;
 
+	WheelMain wheelMain;
+	
+	DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -107,9 +116,23 @@ public class SetMyInfoActivity extends ActivityBase implements OnClickListener {
 		iv_nickarraw = (ImageView) findViewById(R.id.iv_nickarraw);   // 昵称的箭头
 		tv_set_name = (TextView) findViewById(R.id.tv_set_name);      // 名字
 		tv_set_nick = (TextView) findViewById(R.id.tv_set_nick);      // 昵称
+		tv_set_birthday = (TextView) findViewById(R.id.tv_set_birthday); // 生日
+		tv_set_game = (TextView) findViewById(R.id.tv_set_game);
 		layout_head = (RelativeLayout) findViewById(R.id.layout_head); // 头像布局
 		layout_nick = (RelativeLayout) findViewById(R.id.layout_nick); // 昵称布局
 		layout_gender = (RelativeLayout) findViewById(R.id.layout_gender); // 性别布局
+		
+		iv_sexarrow = (ImageView) findViewById(R.id.iv_sexarraw);
+		iv_birthdayarrow = (ImageView) findViewById(R.id.iv_birthdayarraw);
+		iv_gamearrow = (ImageView) findViewById(R.id.iv_sexarraw);
+		
+		iv_sexarrow.setVisibility(View.INVISIBLE);
+		iv_birthdayarrow.setVisibility(View.INVISIBLE);
+		iv_gamearrow.setVisibility(View.INVISIBLE);
+		
+		layout_birthday = (RelativeLayout) findViewById(R.id.layout_birthday);
+		layout_game = (RelativeLayout) findViewById(R.id.layout_game);
+		
 		// 黑名单提示语
 		layout_black_tips = (RelativeLayout) findViewById(R.id.layout_black_tips);
 		tv_set_gender = (TextView) findViewById(R.id.tv_set_gender);  // 性别
@@ -126,8 +149,13 @@ public class SetMyInfoActivity extends ActivityBase implements OnClickListener {
 			layout_head.setOnClickListener(this);
 			layout_nick.setOnClickListener(this);
 			layout_gender.setOnClickListener(this);
+			layout_birthday.setOnClickListener(this);
+			layout_game.setOnClickListener(this);
 			iv_nickarraw.setVisibility(View.VISIBLE);
 			iv_arraw.setVisibility(View.VISIBLE);
+			iv_sexarrow.setVisibility(View.VISIBLE);
+			iv_birthdayarrow.setVisibility(View.VISIBLE);
+			iv_gamearrow.setVisibility(View.VISIBLE);
 			btn_back.setVisibility(View.GONE);
 			btn_chat.setVisibility(View.GONE);
 			btn_add_friend.setVisibility(View.GONE);
@@ -201,8 +229,20 @@ public class SetMyInfoActivity extends ActivityBase implements OnClickListener {
 		refreshAvatar(user.getAvatar());
 		tv_set_name.setText(user.getUsername());
 		tv_set_nick.setText(user.getNick());
-		
 		tv_set_gender.setText(user.getSex() == true ? "男" : "女");
+		tv_set_birthday.setText(user.getBirthday());
+		
+		switch (user.getGameType()) {
+		case 0:
+			tv_set_game.setText("水果连连看");
+			break;
+		case 1:
+			tv_set_game.setText("猜数字");
+			break;
+		case 2:
+			tv_set_game.setText("mixed color");
+			break;
+		}
 		
 		// 检测是不是从好友列表中过来的
 		if (from.equals("other")) {
@@ -272,7 +312,130 @@ public class SetMyInfoActivity extends ActivityBase implements OnClickListener {
 		case R.id.btn_add_friend://添加好友
 			addFriend();
 			break;
+		case R.id.layout_birthday: // 生日
+			showBirthdayChooseDialog();
+			break;
+		case R.id.layout_game:
+			showGameChooseDialog();
+			break;
 		}
+	}
+	String[] games = new String[]{ "水果连连看", "猜数字", "mixed color" };
+	private void showGameChooseDialog() {
+		new AlertDialog.Builder(this)
+		.setTitle("单选框")
+		.setIcon(android.R.drawable.ic_dialog_info)
+		.setSingleChoiceItems(games, 0,
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog,
+							int which) {
+						BmobLog.i("点击的是"+games[which]);
+						updateGame(which);
+						dialog.dismiss();
+					}
+				})
+		.setNegativeButton("取消", null)
+		.show();
+	}
+	
+	private void updateGame(final int which) {
+		
+		final User u = new User();
+		
+		if(which == 0){
+			u.setGameType(0);
+		}else if(which == 1){
+			u.setGameType(1);
+		}
+		else if(which == 2){
+			u.setGameType(2);
+		}
+		
+		updateUserData(u,new UpdateListener() {
+
+			@Override
+			public void onSuccess() {
+				// TODO Auto-generated method stub
+				switch (which) {
+				case 0:
+					tv_set_game.setText("水果连连看");
+					break;
+
+				case 1:
+					tv_set_game.setText("猜数字");
+					break;
+					
+				case 2:
+					tv_set_game.setText("mixed color");
+					break;
+				}
+				
+				ShowToast("修改成功");
+			}
+
+			@Override
+			public void onFailure(int arg0, String arg1) {
+				// TODO Auto-generated method stub
+				ShowToast("onFailure:" + arg1);
+			}
+		});
+	}
+	
+	private void showBirthdayChooseDialog() {
+		
+		LayoutInflater inflater=LayoutInflater.from(SetMyInfoActivity.this);
+		final View timepickerview=inflater.inflate(R.layout.timepicker, null);
+		ScreenInfo screenInfo = new ScreenInfo(SetMyInfoActivity.this);
+		wheelMain = new WheelMain(timepickerview);
+		wheelMain.screenheight = screenInfo.getHeight();
+		String time = tv_set_birthday.getText().toString();
+		Calendar calendar = Calendar.getInstance();
+		if(JudgeDate.isDate(time, "yyyy-MM-dd")){
+			try {
+				calendar.setTime(dateFormat.parse(time));
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		int year = calendar.get(Calendar.YEAR);
+		int month = calendar.get(Calendar.MONTH);
+		int day = calendar.get(Calendar.DAY_OF_MONTH);
+		wheelMain.initDateTimePicker(year,month,day);
+		new AlertDialog.Builder(SetMyInfoActivity.this)
+		.setTitle("选择日期")
+		.setView(timepickerview)
+		.setPositiveButton("设置", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				
+				final User u = new User();
+				u.setBirthday(wheelMain.getTime());
+				updateUserData(u,new UpdateListener() {
+
+					@Override
+					public void onSuccess() {
+						// TODO Auto-generated method stub
+						ShowToast("修改成功");
+						tv_set_birthday.setText(wheelMain.getTime());
+					}
+
+					@Override
+					public void onFailure(int arg0, String arg1) {
+						// TODO Auto-generated method stub
+						ShowToast("onFailure:" + arg1);
+					}
+				});
+			}
+		})
+		.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+
+			}
+		})
+		.show();
+		
 	}
 	
 	String[] sexs = new String[]{ "男", "女" };

@@ -106,19 +106,10 @@ public class MainActivity extends ActivityBase implements EventListener{
         
         slideView = getLayoutInflater().inflate(R.layout.slide_fragment, null);
         
-        // slideAvator = (ImageView) slideView.findViewById(R.id.slide_avator);
-        
-        // User user = userManager.getCurrentUser(User.class);
-        
-       // refreshAvatar(user.getAvatar());
-        
         android.app.Fragment leftMenuFragment = new LeftFragment(MainActivity.this);  
        // setBehindContentView(R.layout.left_menu_frame);  
         getFragmentManager().beginTransaction()  
-                .replace(R.id.left_fragment, leftMenuFragment).commit();  
-        
-        
-        
+                .replace(R.id.left_fragment, leftMenuFragment).commit();   
 	}
 
 	
