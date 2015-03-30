@@ -49,6 +49,8 @@ public class BaseActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		
+		
 		userManager = BmobUserManager.getInstance(this);
 		manager = BmobChatManager.getInstance(this);
 		mApplication = CustomApplcation.getInstance();

@@ -22,12 +22,14 @@ import cn.bmob.im.inteface.EventListener;
 import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.MyMessageReceiver;
 import com.bmob.im.demo.R;
+import com.bmob.im.demo.bean.User;
 import com.bmob.im.demo.ui.fragment.ContactFragment;
 import com.bmob.im.demo.ui.fragment.LeftFragment;
 import com.bmob.im.demo.ui.fragment.RecentFragment;
 import com.bmob.im.demo.ui.fragment.SettingsFragment;
-
+import com.bmob.im.demo.util.ImageLoadOptions;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
  * 登陆
@@ -47,6 +49,9 @@ public class MainActivity extends ActivityBase implements EventListener{
 	private int currentTabIndex;
 	
 	ImageView iv_recent_tips,iv_contact_tips;//消息提示
+	ImageView slideAvator;
+	
+	View slideView;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -95,15 +100,28 @@ public class MainActivity extends ActivityBase implements EventListener{
          * section of the SlidingMenu, while SLIDING_CONTENT does not. 
          */  
         menu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);  
-        //为侧滑菜单设置布局  
-        menu.setMenu(R.layout.left_fragment); 
         
-        android.app.Fragment leftMenuFragment = new LeftFragment();  
+        //为侧滑菜单设置布局  
+        menu.setMenu(R.layout.slide_fragment); 
+        
+        slideView = getLayoutInflater().inflate(R.layout.slide_fragment, null);
+        
+        // slideAvator = (ImageView) slideView.findViewById(R.id.slide_avator);
+        
+        // User user = userManager.getCurrentUser(User.class);
+        
+       // refreshAvatar(user.getAvatar());
+        
+        android.app.Fragment leftMenuFragment = new LeftFragment(MainActivity.this);  
        // setBehindContentView(R.layout.left_menu_frame);  
         getFragmentManager().beginTransaction()  
                 .replace(R.id.left_fragment, leftMenuFragment).commit();  
         
+        
+        
 	}
+
+	
 	private void initTab(){
 		contactFragment = new ContactFragment();
 		recentFragment = new RecentFragment();

@@ -21,8 +21,9 @@
                 android:id="@+id/register_game_select_spinner"
            		android:layout_width="fill_parent"
            		android:layout_marginRight="20dp"
-           		android:gravity="center_vertical"
-           		android:layout_height="wrap_content"/>
+           		android:background="@drawable/spinner_bg"
+           		android:layout_gravity="center"
+           		android:layout_height="35dp"/>
            
        </LinearLayout>
        

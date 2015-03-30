@@ -1,11 +1,16 @@
 package com.bmob.im.demo.ui;
 
 import java.io.File;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -51,8 +56,12 @@ import com.bmob.im.demo.config.BmobConstants;
 import com.bmob.im.demo.util.CommonUtils;
 import com.bmob.im.demo.util.DatePickDialogUtil;
 import com.bmob.im.demo.util.ImageLoadOptions;
+import com.bmob.im.demo.util.JudgeDate;
 import com.bmob.im.demo.util.PhotoUtil;
+import com.bmob.im.demo.util.ScreenInfo;
+import com.bmob.im.demo.util.WheelMain;
 import com.nostra13.universalimageloader.core.ImageLoader;
+
 public class RegisterActivity2 extends BaseActivity implements OnClickListener{
 
 	Button back, next;
@@ -68,7 +77,9 @@ public class RegisterActivity2 extends BaseActivity implements OnClickListener{
 	
 	TextView showBirth;
 	String birthday = "";
-	String initBirth = "2014年8月23日";
+	String initBirth = "";
+	DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	WheelMain wheelMain;
 	
 	
 	int gameType = 0;
@@ -95,6 +106,10 @@ public class RegisterActivity2 extends BaseActivity implements OnClickListener{
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_register_activity2);
+		
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日");       
+		Date curDate = new Date(System.currentTimeMillis());//获取当前时间       
+		initBirth = formatter.format(curDate);   
 
 		// 只有左边有按钮以及标题
 		initTopBarForLeft("注册");
@@ -624,9 +639,11 @@ public class RegisterActivity2 extends BaseActivity implements OnClickListener{
 			break;
 			
 		case R.id.register_second_birthday_choose:
-			DatePickDialogUtil dateTimePicKDialog = new DatePickDialogUtil(  
-                    RegisterActivity2.this, initBirth);  
-            dateTimePicKDialog.dateTimePicKDialog(showBirth);  
+//			DatePickDialogUtil dateTimePicKDialog = new DatePickDialogUtil(  
+//                    RegisterActivity2.this, initBirth);  
+//            dateTimePicKDialog.dateTimePicKDialog(showBirth);  
+			
+			seleteBirth();
             
 			break;
 		default:
@@ -701,6 +718,51 @@ public class RegisterActivity2 extends BaseActivity implements OnClickListener{
 		else if (currentPage == 2) {
 			register();
 		}
+	}
+	
+	private void seleteBirth() {
+		
+		
+		LayoutInflater inflater=LayoutInflater.from(RegisterActivity2.this);
+		final View timepickerview=inflater.inflate(R.layout.timepicker, null);
+		ScreenInfo screenInfo = new ScreenInfo(RegisterActivity2.this);
+		wheelMain = new WheelMain(timepickerview);
+		wheelMain.screenheight = screenInfo.getHeight();
+		String time = showBirth.getText().toString();
+		Calendar calendar = Calendar.getInstance();
+		if(JudgeDate.isDate(time, "yyyy-MM-dd")){
+			try {
+				calendar.setTime(dateFormat.parse(time));
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		int year = calendar.get(Calendar.YEAR);
+		int month = calendar.get(Calendar.MONTH);
+		int day = calendar.get(Calendar.DAY_OF_MONTH);
+		wheelMain.initDateTimePicker(year,month,day);
+		new AlertDialog.Builder(RegisterActivity2.this)
+		.setTitle("选择日期")
+		.setView(timepickerview)
+		.setPositiveButton("设置", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				showBirth.setText(wheelMain.getTime());
+				hasChoseBirth = true;
+			}
+		})
+		.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				
+				showBirth.setText("点击选择生日");
+				hasChoseBirth = false;
+				
+			}
+		})
+		.show();
+		
 	}
 
 }

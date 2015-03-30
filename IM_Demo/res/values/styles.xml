@@ -204,6 +204,12 @@
 	<item name="android:windowBackground">@android:color/transparent</item>
 	<item name="android:backgroundDimEnabled">false</item>
 	</style>
+	
+    
+    <style name="Pop" parent="@android:style/Theme.Dialog">  
+        <item name="android:windowBackground">@drawable/sipnner_window_bg</item>  
+        <item name="android:windowNoTitle">true</item>           
+	</style> 
 
 </resources>
 
