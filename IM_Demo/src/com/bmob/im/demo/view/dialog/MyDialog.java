@@ -20,7 +20,7 @@ public class MyDialog extends Dialog implements OnClickListener{
 	private Context context;
 	
 
-	public MyDialog(Context context, GameView gameview, String msg, int time, Boolean isWin) {
+	public MyDialog(Context context, GameView gameview, String msg, int time, Boolean isWin, String from) {
 		super(context,R.style.dialog);
 		this.gameview = gameview;
 		this.context = context;
@@ -37,13 +37,22 @@ public class MyDialog extends Dialog implements OnClickListener{
 		btn_next.setOnClickListener(this);
 		btn_replay.setOnClickListener(this);
 		this.setCancelable(false);
+		this.setCanceledOnTouchOutside(false);
 		
-		if (isWin) {
-			btn_replay.setVisibility(View.INVISIBLE);
+		if (from.equals("me")) {
+			btn_next.setVisibility(View.INVISIBLE);
+			btn_replay.setVisibility(View.VISIBLE);
 		}
 		else {
-			btn_next.setVisibility(View.INVISIBLE);
+			if (isWin) {
+				btn_replay.setVisibility(View.INVISIBLE);
+			}
+			else {
+				btn_next.setVisibility(View.INVISIBLE);
+			}
 		}
+		
+		
 	}
 
 	@Override

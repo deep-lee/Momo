@@ -52,6 +52,7 @@ public class MixedColorMenuActivity extends Activity implements OnClickListener 
 		switch (v.getId()) {
 		case R.id.game_mixed_color_play:
 			i = new Intent(this, MixedColorActivity.class);
+			i.putExtras(getIntent().getExtras());
 			break;
 		}
 		if (i != null) {

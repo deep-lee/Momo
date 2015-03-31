@@ -57,7 +57,7 @@
                android:id="@+id/game_guess_zore"
                android:layout_width="80dp"
                android:layout_weight="1"
-               android:background="#9bcd9b"
+               android:background="@drawable/guess_button_press"
                android:text="0"
                android:layout_height="40dp"/>
         
@@ -66,7 +66,7 @@
                android:layout_width="80dp"
                android:layout_weight="1"
                android:text="1"
-               android:background="#9bcd9b"
+               android:background="@drawable/guess_button_press"
                android:layout_height="40dp"/>
            
            <Button 
@@ -74,7 +74,7 @@
                android:layout_width="80dp"
                android:layout_weight="1"
                android:text="2"
-               android:background="#9bcd9b"
+               android:background="@drawable/guess_button_press"
                android:layout_height="40dp"/>
            
        </LinearLayout>
@@ -90,8 +90,8 @@
                android:id="@+id/game_guess_three"
                android:layout_width="80dp"
                android:layout_weight="1"
-               android:background="#9bcd9b"
                android:text="3"
+               android:background="@drawable/guess_button_press"
                android:layout_height="40dp"/>
         
            <Button 
@@ -99,15 +99,15 @@
                android:layout_width="80dp"
                android:layout_weight="1"
                android:text="4"
-               android:background="#9bcd9b"
+               android:background="@drawable/guess_button_press"
                android:layout_height="40dp"/>
            
            <Button 
                android:id="@+id/game_guess_five"
                android:layout_width="80dp"
                android:layout_weight="1"
-               android:background="#9bcd9b"
                android:text="5"
+               android:background="@drawable/guess_button_press"
                android:layout_height="40dp"/>
            
        </LinearLayout>
@@ -124,15 +124,15 @@
                android:layout_width="80dp"
                android:layout_weight="1"
                android:text="6"
-               android:background="#9bcd9b"
+               android:background="@drawable/guess_button_press"
                android:layout_height="40dp"/>
         
            <Button 
                android:id="@+id/game_guess_theven"
                android:layout_width="80dp"
                android:layout_weight="1"
-               android:background="#9bcd9b"
                android:text="7"
+               android:background="@drawable/guess_button_press"
                android:layout_height="40dp"/>
            
            <Button 
@@ -140,7 +140,7 @@
                android:layout_width="80dp"
                android:layout_weight="1"
                android:text="8"
-               android:background="#9bcd9b"
+               android:background="@drawable/guess_button_press"
                android:layout_height="40dp"/>
            
        </LinearLayout>
@@ -156,16 +156,16 @@
                android:id="@+id/game_guess_nine"
                android:layout_width="80dp"
                android:layout_weight="1"
-               android:background="#9bcd9b"
                android:text="9"
+               android:background="@drawable/guess_button_press"
                android:layout_height="40dp"/>
         
            <Button 
                android:id="@+id/game_guess_clear"
                android:layout_width="80dp"
                android:layout_weight="1"
-               android:background="#9bcd9b"
                android:text="清空"
+               android:background="@drawable/guess_button_press"
                android:layout_height="40dp"/>
            
            <Button 
@@ -173,7 +173,7 @@
                android:layout_width="80dp"
                android:layout_weight="1"
                android:text="确认"
-               android:background="#9bcd9b"
+               android:background="@drawable/guess_button_press"
                android:layout_height="40dp"/>
            
        </LinearLayout>

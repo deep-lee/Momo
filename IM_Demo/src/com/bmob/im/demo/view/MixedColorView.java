@@ -8,10 +8,12 @@ import java.util.List;
 import java.util.Map;
 
 import com.bmob.im.demo.R;
+import com.bmob.im.demo.bean.User;
 import com.bmob.im.demo.util.ColorData;
 import com.bmob.im.demo.util.MixedConstant;
 import com.bmob.im.demo.util.RectArea;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.Context;
@@ -40,6 +42,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.Toast;
+
 import com.bmob.im.demo.ui.*;
 
 
@@ -83,6 +86,9 @@ public class MixedColorView extends SurfaceView implements
 
 	private Typeface mDataTypeface;
 	
+	String from;
+	String username;
+	
 	private Handler mHandler =new Handler(){  
         @Override  
         public void handleMessage(Message msg){  
@@ -105,13 +111,25 @@ public class MixedColorView extends SurfaceView implements
 				// 成功解锁
 				if (correct >=7) {
 					dialog.setMessage("恭喜你，游戏过关！");
-					dialog.setNegativeButton("查看资料", new DialogInterface.OnClickListener() {
-						
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							// TODO Auto-generated method stub
-						}
-					});
+					if (from.equals("me")) {
+						dialog.setNegativeButton("再来一次", new DialogInterface.OnClickListener() {
+							
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								// TODO Auto-generated method stub
+								correct = 0;
+								restartGame();
+							}
+						});
+					}else if (from.equals("other")) {
+						dialog.setNegativeButton("查看资料", new DialogInterface.OnClickListener() {
+							
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								// TODO Auto-generated method stub
+							}
+						});
+					}
 				}
 				else {
 					dialog.setMessage("很抱歉，游戏失败！");
@@ -145,6 +163,14 @@ public class MixedColorView extends SurfaceView implements
 		initRes();
 		mUIThread = new MixedThread(holder, context, mHandler);
 		setFocusable(true);
+		
+		Bundle data = ((MixedColorActivity) mContext).getIntent().getExtras();
+		
+		from = data.getString("from");
+		
+		if (from.equals("other")) {
+			username = data.getString("username");
+		}
 	}
 	
 	

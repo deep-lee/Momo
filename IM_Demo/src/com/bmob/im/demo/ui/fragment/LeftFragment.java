@@ -21,6 +21,7 @@ import java.util.List;
 
 
 
+
 import cn.bmob.im.BmobUserManager;
 import cn.bmob.v3.listener.FindCallback;
 
@@ -29,6 +30,7 @@ import com.bmob.im.demo.R;
 import com.bmob.im.demo.bean.User;
 import com.bmob.im.demo.ui.LoginActivity;
 import com.bmob.im.demo.ui.MainActivity;
+import com.bmob.im.demo.ui.MyGameActivity;
 import com.bmob.im.demo.ui.SlideSetMyInfoActivity;
 import com.bmob.im.demo.util.ImageLoadOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -109,8 +111,13 @@ public class LeftFragment extends Fragment {
 					long id) {
 				switch (position) {
 				case 0:
-					Toast.makeText(getActivity(), position+"选中", Toast.LENGTH_LONG).show();
-					//添加方法
+					// Toast.makeText(getActivity(), position+"选中", Toast.LENGTH_LONG).show();
+					// 添加方法
+					
+					Intent gameIntent = new Intent();
+					gameIntent.setClass(context, MyGameActivity.class);
+					startActivity(gameIntent);
+					
 					break;
 				case 1:
 					Intent intent = new Intent();

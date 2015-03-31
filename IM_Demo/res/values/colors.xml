@@ -34,4 +34,6 @@
     <color name="common_bg">#fcfcfc</color>
     <color name="gray">#ff7f7f7f</color>
     <color name="white">#ffffffff</color>
+    <color name="guess_narmal">#9bcd9b</color>
+    <color name="guess_pressed">#fff68f</color>
 </resources>

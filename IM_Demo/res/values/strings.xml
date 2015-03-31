@@ -91,5 +91,6 @@
     <string name="title_activity_register_activity2">RegisterActivity2</string>
     <string name="title_activity_register_activity3">RegisterActivity3</string>
     <string name="title_activity_slide_set_my_info">SlideSetMyInfoActivity</string>
+    <string name="title_activity_my_game">MyGameActivity</string>
 
 </resources>

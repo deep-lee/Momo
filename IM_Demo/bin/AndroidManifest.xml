@@ -209,8 +209,12 @@
             android:label="@string/title_activity_register_activity3" >
         </activity>
         <activity
-            android:name="com.bmob.im.demo.ui.SlideSetMyInfoActivity"
+            android:name=".ui.SlideSetMyInfoActivity"
             android:label="@string/title_activity_slide_set_my_info" >
+        </activity>
+        <activity
+            android:name="com.bmob.im.demo.ui.MyGameActivity"
+            android:label="@string/title_activity_my_game" >
         </activity>
     </application>
 

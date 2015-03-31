@@ -90,7 +90,7 @@ public class GameView extends BoardView {
 	        soundPlay.loadSfx(context, R.raw.choose, ID_SOUND_CHOOSE);
 	        soundPlay.loadSfx(context, R.raw.disappear1, ID_SOUND_DISAPEAR);
 	        soundPlay.loadSfx(context, R.raw.win, ID_SOUND_WIN);
-	        soundPlay.loadSfx(context, R.raw.lose, ID_SOUND_LOSE);
+	        soundPlay.loadSfx(context, R.raw.time_over, ID_SOUND_LOSE);
 	        soundPlay.loadSfx(context, R.raw.item1, ID_SOUND_REFRESH);
 	        soundPlay.loadSfx(context, R.raw.item2, ID_SOUND_TIP);
 	        soundPlay.loadSfx(context, R.raw.alarm, ID_SOUND_ERROR);

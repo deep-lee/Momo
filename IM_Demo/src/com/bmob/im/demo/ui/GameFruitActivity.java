@@ -2,6 +2,7 @@ package com.bmob.im.demo.ui;
 
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.R.layout;
+import com.bmob.im.demo.bean.User;
 import com.bmob.im.demo.view.BoardView;
 import com.bmob.im.demo.view.GameView;
 import com.bmob.im.demo.view.OnStateListener;
@@ -11,6 +12,7 @@ import com.bmob.im.demo.view.dialog.MyDialog;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -45,6 +47,10 @@ public class GameFruitActivity extends Activity implements OnClickListener, OnTi
 	
 	private MediaPlayer player;
 	
+	String username;
+	
+	String from;
+	
 	
 	private Handler handler = new Handler(){
 		@Override
@@ -52,12 +58,12 @@ public class GameFruitActivity extends Activity implements OnClickListener, OnTi
 			switch(msg.what){
 			case 0:
 				// 赢了就可以进入个人信息页面
-				dialog = new MyDialog(GameFruitActivity.this,gameView,"你赢了",gameView.getTotalTime() - progress.getProgress(),true);
+				dialog = new MyDialog(GameFruitActivity.this,gameView,"你赢了",gameView.getTotalTime() - progress.getProgress(),true, from);
 				dialog.show();
 				break;
 			case 1:
 				// 输了再次返回地图界面
-				dialog = new MyDialog(GameFruitActivity.this,gameView,"你输了",gameView.getTotalTime() - progress.getProgress(),false);
+				dialog = new MyDialog(GameFruitActivity.this,gameView,"你输了",gameView.getTotalTime() - progress.getProgress(),false, from);
 				dialog.show();
 			}
 		}
@@ -81,6 +87,13 @@ public class GameFruitActivity extends Activity implements OnClickListener, OnTi
 		
 		setContentView(R.layout.activity_game_fruit);
 		
+		Bundle data = getIntent().getExtras();
+		
+		from = data.getString("from");
+		
+		if (from.equals("other")) {
+			username = data.getString("username");
+		}
 		
 		 btnPlay = (ImageButton) findViewById(R.id.play_btn);
 	     btnRefresh = (ImageButton) findViewById(R.id.refresh_btn);

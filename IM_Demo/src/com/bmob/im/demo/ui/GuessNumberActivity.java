@@ -2,6 +2,8 @@ package com.bmob.im.demo.ui;
 
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.R.layout;
+import com.bmob.im.demo.bean.User;
+import com.bmob.im.demo.util.SoundPlay;
 import com.bmob.im.demo.view.dialog.MyDialog;
 
 import A.thing;
@@ -10,7 +12,9 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -44,7 +48,13 @@ public class GuessNumberActivity extends Activity implements OnClickListener{
 	int numHasInput = 0;
 	int requireNum = 2;
 	
+	String from;
+	String username;
+	
 	TextView lefTextView, trueOrFalseView;
+	
+	public MediaPlayer player;
+	public static SoundPlay soundPlay;
 	
 	private int[] numBtuId = {
 		R.id.game_guess_zore, R.id.game_guess_one, R.id.game_guess_two, 
@@ -52,6 +62,11 @@ public class GuessNumberActivity extends Activity implements OnClickListener{
 		R.id.game_guess_six, R.id.game_guess_theven, R.id.game_guess_eight,
 		R.id.game_guess_nine
 	};
+	
+	public static final int ID_SOUND_AO = 0;
+	public static final int ID_SOUND_LOSE = 1;
+	public static final int ID_SOUND_WIN = 2;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -83,9 +98,21 @@ public class GuessNumberActivity extends Activity implements OnClickListener{
 		mainView.setVisibility(View.INVISIBLE);
 		showIcon.setVisibility(View.VISIBLE);
 		
+		Bundle data = getIntent().getExtras();
+		
+		from = data.getString("from");
+		
+		if (from.equals("other")) {
+			username = data.getString("username");
+		}
+		
 		play.setOnClickListener(this);
 		clear.setOnClickListener(this);
 		sure.setOnClickListener(this);
+		
+		player = MediaPlayer.create(this, R.raw.back2new); 
+		
+		initSound(this);
 		
 		
 		Animation scale = AnimationUtils.loadAnimation(this,R.anim.scale_anim);
@@ -178,19 +205,31 @@ public class GuessNumberActivity extends Activity implements OnClickListener{
         	break;
         	
 		case R.id.game_guess_sure:
-			guessTime++;
-			if(guessTime <= 5)
-			{
-				guessNum = Integer.parseInt(input.getText().toString());
-				caculate();
-			}
 			
+			if (numHasInput == 0) {
+				return;
+			}else {
+				guessTime++;
+				if(guessTime <= 5)
+				{
+					guessNum = Integer.parseInt(input.getText().toString());
+					caculate();
+				}
+			}
 			break;
 
 
 		default:
 			break;
 		}
+	}
+	
+	public static void initSound(Context context){
+		 soundPlay = new SoundPlay();
+	        soundPlay.initSounds(context);
+	        soundPlay.loadSfx(context, R.raw.audio_ao, ID_SOUND_AO);
+	        soundPlay.loadSfx(context, R.raw.audio_boos, ID_SOUND_LOSE);
+	        soundPlay.loadSfx(context, R.raw.audio_congratulations, ID_SOUND_WIN);
 	}
 	
 	
@@ -266,11 +305,13 @@ public class GuessNumberActivity extends Activity implements OnClickListener{
 			lefTextView.setText("你还有" + leftTime + "机会");
 			if (isBigger == 1) {
 				trueOrFalseView.setText("你猜大了");
+				soundPlay.play(ID_SOUND_AO, 0);
 				dialog.setNegativeButton("继续猜测", new AlertDialog.OnClickListener(){
 
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						// TODO Auto-generated method stub
+						
 						input.setText("");
 						numHasInput = 0;
 					}
@@ -279,11 +320,13 @@ public class GuessNumberActivity extends Activity implements OnClickListener{
 			}
 			else if (isBigger == -1) {
 				trueOrFalseView.setText("你猜小了");
+				soundPlay.play(ID_SOUND_AO, 0);
 				dialog.setNegativeButton("继续猜测", new AlertDialog.OnClickListener(){
 
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						// TODO Auto-generated method stub
+						
 						input.setText("");
 						numHasInput = 0;
 					}
@@ -293,16 +336,34 @@ public class GuessNumberActivity extends Activity implements OnClickListener{
 			else if(isBigger == 0){
 				lefTextView.setVisibility(View.INVISIBLE);
 				trueOrFalseView.setText("你猜对了！");
+				soundPlay.play(ID_SOUND_WIN, 0);
 				
-				dialog.setNegativeButton("查看资料", new AlertDialog.OnClickListener(){
+				if (from.equals("me")) {
+					dialog.setNegativeButton("再来一局", new AlertDialog.OnClickListener(){
 
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						// TODO Auto-generated method stub
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							// TODO Auto-generated method stub
+							input.setText("");
+							numHasInput = 0;
+							createRandomNum();
+							guessTime = 0;
+						}
 						
-					}
+					});
 					
-				});
+				}
+				else if(from.equals("other")){
+					dialog.setNegativeButton("查看资料", new AlertDialog.OnClickListener(){
+
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							// TODO Auto-generated method stub
+							
+						}
+						
+					});
+				}
 			}
 		}
 		else {
@@ -319,34 +380,71 @@ public class GuessNumberActivity extends Activity implements OnClickListener{
 			if(isBigger == 0){
 				lefTextView.setVisibility(View.INVISIBLE);
 				trueOrFalseView.setText("你猜对了！");
+				soundPlay.play(ID_SOUND_WIN, 0);
 				
-				dialog.setNegativeButton("查看资料", new AlertDialog.OnClickListener(){
+				if (from.equals("me")) {
+					dialog.setNegativeButton("再来一局", new AlertDialog.OnClickListener(){
 
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						// TODO Auto-generated method stub
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							// TODO Auto-generated method stub
+							input.setText("");
+							numHasInput = 0;
+							createRandomNum();
+							guessTime = 0;
+						}
 						
-					}
+					});
 					
-				});
+				}
+				else if(from.equals("other")){
+					dialog.setNegativeButton("查看资料", new AlertDialog.OnClickListener(){
+
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							// TODO Auto-generated method stub
+							
+						}
+						
+					});
+				}
 			}
 			else {
 				lefTextView.setVisibility(View.INVISIBLE);
 				trueOrFalseView.setText("你输了！");
 				
-				dialog.setNegativeButton("重新开始", new AlertDialog.OnClickListener(){
+				soundPlay.play(ID_SOUND_LOSE, 0);
+				
+				if (from.equals("me")) {
+					dialog.setNegativeButton("再来一次", new AlertDialog.OnClickListener(){
 
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						// TODO Auto-generated method stub
-						input.setText("");
-						numHasInput = 0;
-						createRandomNum();
-						guessTime = 0;
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							// TODO Auto-generated method stub
+							input.setText("");
+							numHasInput = 0;
+							createRandomNum();
+							guessTime = 0;
+							
+						}
 						
-					}
+					});
 					
-				});
+				}else if (from.equals("other")) {
+					dialog.setNegativeButton("重新开始", new AlertDialog.OnClickListener(){
+
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							// TODO Auto-generated method stub
+							input.setText("");
+							numHasInput = 0;
+							createRandomNum();
+							guessTime = 0;
+							
+						}
+						
+					});
+				}
 			}
 		}
 		

@@ -37,7 +37,7 @@ public class UIModel {
 
 	public static final int GAME_ATTRIBUTE_TOTAL_STAGE = 10;
 
-	public static final long GAME_ATTRIBUTE_MAX_TIME_PER_STAGE = 8000;
+	public static final long GAME_ATTRIBUTE_MAX_TIME_PER_STAGE = 3000;
 
 	public static final int GAME_ATTRIBUTE_MATRIX_EDGE_GRID_AMOUNT = 3;
 

@@ -42,6 +42,7 @@ import com.bmob.im.demo.ui.LocationActivity.MyLocationListenner;
 import com.bmob.im.demo.util.CollectionUtils;
 import com.bmob.im.demo.view.HeaderLayout.onRightImageButtonClickListener;
 
+import android.R.integer;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -112,9 +113,10 @@ public class NearPeopleMapActivity extends BaseActivity implements OnGetGeoCoder
 				// TODO Auto-generated method stub
 				
 				Bundle data = arg0.getExtraInfo();
-				String objectId = data.getString("ObjectId");
+				final String objectId = data.getString("ObjectId");
+				final String username = data.getString("username");
 				
-				userManager.queryUserById(objectId, new FindListener<BmobChatUser>() {
+				userManager.queryUser(username, new FindListener<User>() {
 
 					@Override
 					public void onError(int arg0, String arg1) {
@@ -123,16 +125,89 @@ public class NearPeopleMapActivity extends BaseActivity implements OnGetGeoCoder
 					}
 
 					@Override
-					public void onSuccess(List<BmobChatUser> arg0) {
+					public void onSuccess(List<User> arg0) {
 						// TODO Auto-generated method stub
-						// 查询成功
+//						ShowToast(arg0.get(0).getBirthday());
+						User user = arg0.get(0);
 						Intent intent = new Intent();
-						intent.setClass(NearPeopleMapActivity.this, MixedColorMenuActivity.class);
+						
+						int gameType = user.getGameType();
+						switch (gameType) {
+							case 0:
+								intent.setClass(NearPeopleMapActivity.this, GameFruitActivity.class);
+								break;
+							case 1:
+								intent.setClass(NearPeopleMapActivity.this, GuessNumberActivity.class);
+								break;
+							case 2:
+								intent.setClass(NearPeopleMapActivity.this, MixedColorMenuActivity.class);
+								break;
+						}
+						
+						Bundle data = new Bundle();
+						data.putString("from", "other");
+						data.putString("username", user.getUsername());
+						
+						intent.putExtras(data);
+						
+						ShowToast(user.getGameType() + "");
 						startActivity(intent);
+						
 					}
 				});
 				
+				
+//				
+//				userManager.queryUserById(objectId, new FindListener<BmobChatUser>() {
+//
+//					@Override
+//					public void onError(int arg0, String arg1) {
+//						// TODO Auto-generated method stub
+//						
+//					}
+//
+//					@Override
+//					public void onSuccess(List<BmobChatUser> arg0) {
+//						// TODO Auto-generated method stub
+//						// 查询成功
+//						
+//						ShowToast(arg0.size() + "");
+//						
+//						
+//						
+//						BmobChatUser user = arg0.get(0);
+//						
+//						
+////						Intent intent = new Intent();
+////						
+////						int gameType = user.getGameType();
+////						switch (gameType) {
+////							case 0:
+////								intent.setClass(NearPeopleMapActivity.this, GameFruitActivity.class);
+////								break;
+////							case 1:
+////								intent.setClass(NearPeopleMapActivity.this, GuessNumberActivity.class);
+////								break;
+////							case 2:
+////								intent.setClass(NearPeopleMapActivity.this, MixedColorMenuActivity.class);
+////								break;
+////						}
+////						
+////						Bundle data = new Bundle();
+////						data.putString("from", "other");
+////						data.putString("objectId", objectId);
+////						
+////						intent.putExtras(data);
+////						
+////						ShowToast(user.getGameType());
+////						// startActivity(intent);
+//					}
+//				});
+//				
 				return false;
+				
+				
+				
 			}
 		});
 		
@@ -220,9 +295,11 @@ public class NearPeopleMapActivity extends BaseActivity implements OnGetGeoCoder
 			marker = (Marker)mBaiduMap.addOverlay(option);
 			
 			markerData.putString("ObjectId", nearUser.getObjectId());
+			markerData.putString("username", nearUser.getUsername());
 			marker.setExtraInfo(markerData);
 			
-			ShowToast(nearUser.getNick());
+			// ShowToast(nearUser.getNick());
+			// ShowToast(nearUser.getGameType() + "");
 		}
 	}
 	
