@@ -47,7 +47,7 @@ public class GameFruitActivity extends Activity implements OnClickListener, OnTi
 	
 	private MediaPlayer player;
 	
-	String username;
+	String username = "";
 	
 	String from;
 	
@@ -58,12 +58,12 @@ public class GameFruitActivity extends Activity implements OnClickListener, OnTi
 			switch(msg.what){
 			case 0:
 				// 赢了就可以进入个人信息页面
-				dialog = new MyDialog(GameFruitActivity.this,gameView,"你赢了",gameView.getTotalTime() - progress.getProgress(),true, from);
+				dialog = new MyDialog(GameFruitActivity.this,gameView,"你赢了",gameView.getTotalTime() - progress.getProgress(),true, from, username);
 				dialog.show();
 				break;
 			case 1:
 				// 输了再次返回地图界面
-				dialog = new MyDialog(GameFruitActivity.this,gameView,"你输了",gameView.getTotalTime() - progress.getProgress(),false, from);
+				dialog = new MyDialog(GameFruitActivity.this,gameView,"你输了",gameView.getTotalTime() - progress.getProgress(),false, from, username);
 				dialog.show();
 			}
 		}
@@ -225,4 +225,5 @@ public class GameFruitActivity extends Activity implements OnClickListener, OnTi
 		Log.i("onTimer", leftTime+"");
 		progress.setProgress(leftTime);
 	}
+
 }

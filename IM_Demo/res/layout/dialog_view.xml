@@ -34,31 +34,16 @@
   				android:layout_marginRight="15dip"
   				android:layout_height="wrap_content"
   				android:layout_width="wrap_content"
-  				/>
-  			
-  			<FrameLayout 
-  			    android:layout_width="wrap_content"
-  			    android:layout_height="wrap_content">
-  			    
+  				/> 
   			    
   			<ImageButton
-  			    android:id="@+id/replay_imgbtn"
+  			    android:id="@+id/replay_or_next_imgbtn"
   			    android:layout_width="wrap_content"
   			    android:layout_height="wrap_content"
   			    android:background="@drawable/buttons_bg20"
   			    android:src="@drawable/buttons_replay" 
   			    android:layout_marginLeft="15dip"/>
 
-		  	<ImageButton 
-		  		android:id="@+id/next_imgbtn"
-		  		android:src="@drawable/buttons_next"
-		  		android:background="@drawable/buttons_bg20"
-		  		android:layout_height="wrap_content"
-		  		android:layout_width="wrap_content"
-		  		android:visibility="gone"
-		  		android:layout_marginLeft="15dip"/>
-  			    
-  			</FrameLayout>
 
   			
   	</LinearLayout>

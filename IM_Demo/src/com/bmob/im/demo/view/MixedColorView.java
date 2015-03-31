@@ -18,6 +18,7 @@ import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -127,6 +128,17 @@ public class MixedColorView extends SurfaceView implements
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
 								// TODO Auto-generated method stub
+								
+								Intent intent = new Intent();
+								intent.setClass(mContext, SetMyInfoActivity.class);
+								
+								intent.putExtra("from", "add");
+								intent.putExtra("username", username);
+								
+								mContext.startActivity(intent);
+								
+								((MixedColorActivity)mContext).quit();
+								
 							}
 						});
 					}

@@ -14,6 +14,7 @@ import android.app.AlertDialog.Builder;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.Menu;
@@ -359,7 +360,14 @@ public class GuessNumberActivity extends Activity implements OnClickListener{
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
 							// TODO Auto-generated method stub
+							Intent intent = new Intent();
+							intent.setClass(GuessNumberActivity.this, SetMyInfoActivity.class);
+							intent.putExtra("from", "add");
+							intent.putExtra("username", username);
 							
+							startActivity(intent);
+							
+							finish();
 						}
 						
 					});
@@ -404,6 +412,14 @@ public class GuessNumberActivity extends Activity implements OnClickListener{
 						public void onClick(DialogInterface dialog, int which) {
 							// TODO Auto-generated method stub
 							
+							Intent intent = new Intent();
+							intent.setClass(GuessNumberActivity.this, SetMyInfoActivity.class);
+							intent.putExtra("from", "add");
+							intent.putExtra("username", username);
+							
+							startActivity(intent);
+							
+							finish();
 						}
 						
 					});

@@ -124,7 +124,7 @@ public class SetMyInfoActivity extends ActivityBase implements OnClickListener {
 		
 		iv_sexarrow = (ImageView) findViewById(R.id.iv_sexarraw);
 		iv_birthdayarrow = (ImageView) findViewById(R.id.iv_birthdayarraw);
-		iv_gamearrow = (ImageView) findViewById(R.id.iv_sexarraw);
+		iv_gamearrow = (ImageView) findViewById(R.id.iv_gamearraw);
 		
 		iv_sexarrow.setVisibility(View.INVISIBLE);
 		iv_birthdayarrow.setVisibility(View.INVISIBLE);
