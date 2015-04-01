@@ -17,6 +17,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -282,7 +283,7 @@ public class GuessNumberActivity extends Activity implements OnClickListener{
 		}
 	}
 	
-	private void showDialog(int leftTime, int isBigger, Boolean isOver) {
+	private void showDialog(int leftTime, final int isBigger, final Boolean isOver) {
 		LinearLayout showResult = (LinearLayout) getLayoutInflater().inflate(R.layout.guess_dialog, null);
 		lefTextView = (TextView) showResult.findViewById(R.id.guess_dialog_left_time);
 		trueOrFalseView = (TextView) showResult.findViewById(R.id.guess_dialog_true_or_false);
@@ -299,7 +300,8 @@ public class GuessNumberActivity extends Activity implements OnClickListener{
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					// TODO Auto-generated method stub
-					quit();
+					showQuitDialog(isOver,isBigger);
+					dialog.dismiss();
 				}
 			});
 			
@@ -381,7 +383,8 @@ public class GuessNumberActivity extends Activity implements OnClickListener{
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					// TODO Auto-generated method stub
-					quit();
+					showQuitDialog(isOver,isBigger);
+					dialog.dismiss();
 				}
 			});
 			
@@ -470,4 +473,74 @@ public class GuessNumberActivity extends Activity implements OnClickListener{
 		result.show();
 		
 	}
+	
+	@Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+        	final Dialog dialog = new AlertDialog.Builder(this)
+            .setIcon(R.drawable.buttons_bg20)
+            .setTitle(R.string.quit)
+            .setMessage(R.string.sure_quit)
+            .setPositiveButton(R.string.alert_dialog_ok, new DialogInterface.OnClickListener() {
+
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// TODO Auto-generated method stub
+					quit();
+				}
+
+            })
+            .setNegativeButton(R.string.alert_dialog_cancel, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface arg0, int whichButton) {
+                	
+                }
+            })
+            .create();
+			dialog.show();
+            return true;
+        } else {
+            return super.onKeyDown(keyCode, event);
+        }
+    }
+	
+	private void showQuitDialog(final Boolean isOver, final int isBigger) {
+		
+		final Dialog dialog1 = new AlertDialog.Builder(this).setIcon(R.drawable.buttons_bg20)
+	            .setTitle(R.string.quit)
+	            .setMessage(R.string.sure_quit)
+	            .setPositiveButton(R.string.alert_dialog_ok, new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+						quit();
+					}
+
+	            })
+	            .setNegativeButton(R.string.alert_dialog_cancel, new DialogInterface.OnClickListener() {
+	                public void onClick(DialogInterface arg0, int whichButton) {
+	                	if (!isOver) {
+							if (isBigger == 0) {
+								input.setText("");
+								numHasInput = 0;
+								createRandomNum();
+								guessTime = 0;
+							}
+							else {
+								input.setText("");
+								numHasInput = 0;
+							}
+						}
+	                	else {
+	                		input.setText("");
+							numHasInput = 0;
+							createRandomNum();
+							guessTime = 0;
+						}
+	                }
+	            })
+	            .create();
+				dialog1.show();
+	}
+	
 }

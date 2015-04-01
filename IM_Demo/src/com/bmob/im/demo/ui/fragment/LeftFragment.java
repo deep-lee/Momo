@@ -63,7 +63,7 @@ public class LeftFragment extends Fragment {
     TextView slideNick;
     
     private List<String> mDatas = Arrays  
-            .asList("我的游戏","设置","关于", "退出登陆");  
+            .asList("我的游戏","设置", "地点漫游","关于", "退出登陆");  
     private ListAdapter mAdapter;  
     
     
@@ -126,11 +126,19 @@ public class LeftFragment extends Fragment {
 					// Toast.makeText(getActivity(), position+"选中", Toast.LENGTH_LONG).show();
 					//添加方法
 					break;
+					
+					// 地点漫游
 				case 2:
-					Toast.makeText(getActivity(), position+"选中", Toast.LENGTH_LONG).show();
+					// Toast.makeText(getActivity(), position+"选中", Toast.LENGTH_LONG).show();
 					//添加方法
-					break;		
+					break;	
+					
+					// 关于
 				case 3:
+					
+					break;
+					// 退出登录
+				case 4:
 					CustomApplcation.getInstance().logout();
 					((MainActivity)context).finish();
 					startActivity(new Intent(context, LoginActivity.class));

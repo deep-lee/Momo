@@ -39,6 +39,7 @@ import com.bmob.im.demo.R;
 import com.bmob.im.demo.adapter.UserFriendAdapter;
 import com.bmob.im.demo.bean.User;
 import com.bmob.im.demo.ui.AddFriendActivity;
+import com.bmob.im.demo.ui.BlackListActivity;
 import com.bmob.im.demo.ui.FragmentBase;
 import com.bmob.im.demo.ui.NearPeopleActivity;
 import com.bmob.im.demo.ui.NearPeopleMapActivity;
@@ -220,6 +221,7 @@ public class ContactFragment extends FragmentBase implements OnItemClickListener
 	TextView tv_new_name;
 	LinearLayout layout_new;//新朋友
 	LinearLayout layout_near;//附近的人
+	LinearLayout layout_black;// 黑名单
 	
 	private void initListView() {
 		list_friends= (ListView)findViewById(R.id.list_friends);
@@ -233,6 +235,9 @@ public class ContactFragment extends FragmentBase implements OnItemClickListener
 		
 		// 附近的人
 		layout_near =(LinearLayout)headView.findViewById(R.id.layout_near);
+		
+		layout_black = (LinearLayout) headView.findViewById(R.id.layout_black_new);
+		
 		layout_new.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -249,6 +254,16 @@ public class ContactFragment extends FragmentBase implements OnItemClickListener
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(getActivity(), ShakeActivity.class);
+				startAnimActivity(intent);
+			}
+		});
+		
+		layout_black.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(getActivity(), BlackListActivity.class);
 				startAnimActivity(intent);
 			}
 		});

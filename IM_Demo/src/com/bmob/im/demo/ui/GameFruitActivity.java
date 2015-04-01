@@ -11,7 +11,10 @@ import com.bmob.im.demo.view.OnToolsChangeListener;
 import com.bmob.im.demo.view.dialog.MyDialog;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -19,6 +22,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -225,5 +229,34 @@ public class GameFruitActivity extends Activity implements OnClickListener, OnTi
 		Log.i("onTimer", leftTime+"");
 		progress.setProgress(leftTime);
 	}
+	
+	@Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+        	final Dialog dialog = new AlertDialog.Builder(this)
+            .setIcon(R.drawable.buttons_bg20)
+            .setTitle(R.string.quit)
+            .setMessage(R.string.sure_quit)
+            .setPositiveButton(R.string.alert_dialog_ok, new DialogInterface.OnClickListener() {
+
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// TODO Auto-generated method stub
+					quit();
+				}
+
+            })
+            .setNegativeButton(R.string.alert_dialog_cancel, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface arg0, int whichButton) {
+                	
+                }
+            })
+            .create();
+			dialog.show();
+            return true;
+        } else {
+            return super.onKeyDown(keyCode, event);
+        }
+    }
 
 }

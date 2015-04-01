@@ -25,6 +25,7 @@ import com.bmob.im.demo.R;
 import com.bmob.im.demo.bean.User;
 import com.bmob.im.demo.ui.fragment.ContactFragment;
 import com.bmob.im.demo.ui.fragment.LeftFragment;
+import com.bmob.im.demo.ui.fragment.NearByFragment;
 import com.bmob.im.demo.ui.fragment.RecentFragment;
 import com.bmob.im.demo.ui.fragment.SettingsFragment;
 import com.bmob.im.demo.util.ImageLoadOptions;
@@ -44,6 +45,7 @@ public class MainActivity extends ActivityBase implements EventListener{
 	private ContactFragment contactFragment;
 	private RecentFragment recentFragment;
 	private SettingsFragment settingFragment;
+	private NearByFragment nearByFragment;
 	private Fragment[] fragments;
 	private int index;
 	private int currentTabIndex;
@@ -117,7 +119,9 @@ public class MainActivity extends ActivityBase implements EventListener{
 		contactFragment = new ContactFragment();
 		recentFragment = new RecentFragment();
 		settingFragment = new SettingsFragment();
-		fragments = new Fragment[] {recentFragment, contactFragment, settingFragment };
+		nearByFragment = new NearByFragment(MainActivity.this);
+		
+		fragments = new Fragment[] {recentFragment, contactFragment, nearByFragment };
 		// 添加显示第一个fragment
 		getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, recentFragment).
 			add(R.id.fragment_container, contactFragment).hide(contactFragment).show(recentFragment).commit();

@@ -15,6 +15,7 @@ import com.bmob.im.demo.util.RectArea;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -39,16 +40,15 @@ import android.os.Vibrator;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.Toast;
-
 import com.bmob.im.demo.ui.*;
 
-
 public class MixedColorView extends SurfaceView implements
-		SurfaceHolder.Callback {
+		SurfaceHolder.Callback{
 
 	private static final String HANDLE_MESSAGE_FINAL_RECORD = "1";
 
@@ -524,5 +524,7 @@ public class MixedColorView extends SurfaceView implements
 			mRun = run;
 		}
 	}// Thread
+	
+
 
 }

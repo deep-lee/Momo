@@ -213,8 +213,12 @@
             android:label="@string/title_activity_slide_set_my_info" >
         </activity>
         <activity
-            android:name="com.bmob.im.demo.ui.MyGameActivity"
+            android:name=".ui.MyGameActivity"
             android:label="@string/title_activity_my_game" >
+        </activity>
+        <activity
+            android:name=".PositionRoamActivity"
+            android:label="@string/title_activity_position_roam" >
         </activity>
     </application>
 

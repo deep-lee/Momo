@@ -74,12 +74,12 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 public class SetMyInfoActivity extends ActivityBase implements OnClickListener {
 
 	// iv_arraw表示头像箭头，iv_nickarraw表示昵称箭头
-	TextView tv_set_name, tv_set_nick, tv_set_gender, tv_set_birthday, tv_set_game;
+	TextView tv_set_name, tv_set_nick, tv_set_gender, tv_set_birthday, tv_set_game, tv_set_game_difficulty;
 	ImageView iv_set_avator, iv_arraw, iv_nickarraw, iv_sexarrow, iv_birthdayarrow, iv_gamearrow;
 	LinearLayout layout_all;
 
 	Button btn_chat, btn_back, btn_add_friend;
-	RelativeLayout layout_head, layout_nick, layout_gender, layout_black_tips, layout_birthday, layout_game;
+	RelativeLayout layout_head, layout_nick, layout_gender, layout_black_tips, layout_birthday, layout_game, layout_game_difficulty;
 
 	String from = "";
 	String username = "";
@@ -118,9 +118,11 @@ public class SetMyInfoActivity extends ActivityBase implements OnClickListener {
 		tv_set_nick = (TextView) findViewById(R.id.tv_set_nick);      // 昵称
 		tv_set_birthday = (TextView) findViewById(R.id.tv_set_birthday); // 生日
 		tv_set_game = (TextView) findViewById(R.id.tv_set_game);
+		tv_set_game_difficulty = (TextView) findViewById(R.id.tv_set_game_difficulty);
 		layout_head = (RelativeLayout) findViewById(R.id.layout_head); // 头像布局
 		layout_nick = (RelativeLayout) findViewById(R.id.layout_nick); // 昵称布局
 		layout_gender = (RelativeLayout) findViewById(R.id.layout_gender); // 性别布局
+		layout_game_difficulty = (RelativeLayout) findViewById(R.id.layout_game_difficulty); // 游戏难度布局
 		
 		iv_sexarrow = (ImageView) findViewById(R.id.iv_sexarraw);
 		iv_birthdayarrow = (ImageView) findViewById(R.id.iv_birthdayarraw);
@@ -129,6 +131,7 @@ public class SetMyInfoActivity extends ActivityBase implements OnClickListener {
 		iv_sexarrow.setVisibility(View.INVISIBLE);
 		iv_birthdayarrow.setVisibility(View.INVISIBLE);
 		iv_gamearrow.setVisibility(View.INVISIBLE);
+		layout_game_difficulty.setVisibility(View.INVISIBLE);
 		
 		layout_birthday = (RelativeLayout) findViewById(R.id.layout_birthday);
 		layout_game = (RelativeLayout) findViewById(R.id.layout_game);
@@ -159,6 +162,7 @@ public class SetMyInfoActivity extends ActivityBase implements OnClickListener {
 			btn_back.setVisibility(View.GONE);
 			btn_chat.setVisibility(View.GONE);
 			btn_add_friend.setVisibility(View.GONE);
+			layout_game_difficulty.setVisibility(View.VISIBLE);
 		} else {
 			initTopBarForLeft("详细资料");
 			iv_nickarraw.setVisibility(View.INVISIBLE);

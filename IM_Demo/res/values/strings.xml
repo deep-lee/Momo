@@ -92,5 +92,8 @@
     <string name="title_activity_register_activity3">RegisterActivity3</string>
     <string name="title_activity_slide_set_my_info">SlideSetMyInfoActivity</string>
     <string name="title_activity_my_game">MyGameActivity</string>
+    <string name="black_list">黑名单</string>
+    <string name="title_activity_position_roam">PositionRoamActivity</string>
+    <string name="game_difficulty">游戏难度</string>
 
 </resources>
