@@ -7,9 +7,11 @@ import java.util.Random;
 
 
 
+
 import com.bmob.im.demo.util.ColorData;
 import com.bmob.im.demo.util.RectArea;
 
+import android.R.integer;
 import android.graphics.RectF;
 
 public class UIModel {
@@ -37,7 +39,7 @@ public class UIModel {
 
 	public static final int GAME_ATTRIBUTE_TOTAL_STAGE = 10;
 
-	public static final long GAME_ATTRIBUTE_MAX_TIME_PER_STAGE = 3000;
+	public static long GAME_ATTRIBUTE_MAX_TIME_PER_STAGE = 3000;
 
 	public static final int GAME_ATTRIBUTE_MATRIX_EDGE_GRID_AMOUNT = 3;
 
@@ -85,7 +87,7 @@ public class UIModel {
 	private long mStageTime;
 
 	private long mTotalTime;
-
+	
 	public synchronized void updateUIModel() {
 		long curTimeMillis = System.currentTimeMillis();
 		mStageTime += curTimeMillis - mTimeLogger;

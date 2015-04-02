@@ -89,6 +89,7 @@ public class MixedColorView extends SurfaceView implements
 	
 	String from;
 	String username;
+	int gamedifficulty = 1;
 	
 	private Handler mHandler =new Handler(){  
         @Override  
@@ -182,6 +183,19 @@ public class MixedColorView extends SurfaceView implements
 		
 		if (from.equals("other")) {
 			username = data.getString("username");
+			gamedifficulty = data.getInt("gamedifficulty");
+			
+			switch (gamedifficulty) {
+			case 0:
+				UIModel.GAME_ATTRIBUTE_MAX_TIME_PER_STAGE = 5;
+				break;
+			case 1:
+				UIModel.GAME_ATTRIBUTE_MAX_TIME_PER_STAGE = 4;
+				break;
+			case 2:
+				UIModel.GAME_ATTRIBUTE_MAX_TIME_PER_STAGE = 3;
+				break;
+			}
 		}
 	}
 	

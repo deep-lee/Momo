@@ -37,6 +37,15 @@ public class User extends BmobChatUser {
 	private String birthday;
 	private int gameType;
 	
+	private int gameDifficulty = 1;
+	
+	
+	public int getGameDifficulty() {
+		return gameDifficulty;
+	}
+	public void setGameDifficulty(int gameDifficulty) {
+		this.gameDifficulty = gameDifficulty;
+	}
 	public String getBirthday() {
 		return birthday;
 	}

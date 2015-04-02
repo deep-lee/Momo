@@ -1,30 +1,9 @@
 package com.bmob.im.demo.ui.fragment;
 
-import java.net.ContentHandler;
+
 import java.util.Arrays;
 import java.util.List;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import cn.bmob.im.BmobUserManager;
-import cn.bmob.v3.listener.FindCallback;
-
 import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.bean.User;
@@ -34,7 +13,7 @@ import com.bmob.im.demo.ui.MyGameActivity;
 import com.bmob.im.demo.ui.SlideSetMyInfoActivity;
 import com.bmob.im.demo.util.ImageLoadOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
-
+import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
@@ -49,8 +28,9 @@ import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+
+@SuppressLint("ValidFragment")
 public class LeftFragment extends Fragment {
 
 	private View mView;  
@@ -68,7 +48,8 @@ public class LeftFragment extends Fragment {
     
     
   
-    public LeftFragment(Context context) {
+   
+	public LeftFragment(Context context) {
 		super();
 		this.context = context;
 	}

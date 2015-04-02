@@ -31,6 +31,13 @@ public class GameView extends BoardView {
 	 * 第一关为100秒钟的时间
 	 */
 	private int totalTime = 60;
+	
+	public void setTotalTime(int totalTime) {
+		this.totalTime = totalTime;
+	}
+	
+	
+
 	private int leftTime;
 	
 	public static SoundPlay soundPlay;

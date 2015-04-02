@@ -11,6 +11,7 @@
     	android:layout_height="wrap_content"
         android:text="3333333"
         android:textColor="#ffffff"
+        android:layout_marginBottom="7dp"
         android:layout_gravity="center"/>
 
 

@@ -147,6 +147,7 @@ public class NearPeopleMapActivity extends BaseActivity implements OnGetGeoCoder
 						Bundle data = new Bundle();
 						data.putString("from", "other");
 						data.putString("username", user.getUsername());
+						data.putInt("gamedifficulty", user.getGameDifficulty());
 						
 						intent.putExtras(data);
 						
@@ -264,7 +265,6 @@ public class NearPeopleMapActivity extends BaseActivity implements OnGetGeoCoder
 			// ShowToast(nearUser.getNick());
 			
 			markerText.setText(nearUser.getNick());
-			// markerBitmap = createViewBitmap(layout_marker);
 			
 			
 			//∆Ù”√ªÊÕºª∫¥Ê

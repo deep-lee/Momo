@@ -163,6 +163,7 @@ public class SetMyInfoActivity extends ActivityBase implements OnClickListener {
 			btn_chat.setVisibility(View.GONE);
 			btn_add_friend.setVisibility(View.GONE);
 			layout_game_difficulty.setVisibility(View.VISIBLE);
+			layout_game_difficulty.setOnClickListener(this);
 		} else {
 			initTopBarForLeft("详细资料");
 			iv_nickarraw.setVisibility(View.INVISIBLE);
@@ -236,6 +237,7 @@ public class SetMyInfoActivity extends ActivityBase implements OnClickListener {
 		tv_set_gender.setText(user.getSex() == true ? "男" : "女");
 		tv_set_birthday.setText(user.getBirthday());
 		
+		
 		switch (user.getGameType()) {
 		case 0:
 			tv_set_game.setText("水果连连看");
@@ -245,6 +247,18 @@ public class SetMyInfoActivity extends ActivityBase implements OnClickListener {
 			break;
 		case 2:
 			tv_set_game.setText("mixed color");
+			break;
+		}
+		
+		switch (user.getGameDifficulty()) {
+		case 0:
+			tv_set_game_difficulty.setText("简单");
+			break;
+		case 1:
+			tv_set_game_difficulty.setText("一般");
+			break;
+		case 2:
+			tv_set_game_difficulty.setText("困难");
 			break;
 		}
 		
@@ -322,8 +336,76 @@ public class SetMyInfoActivity extends ActivityBase implements OnClickListener {
 		case R.id.layout_game:
 			showGameChooseDialog();
 			break;
+		case R.id.layout_game_difficulty:
+			showGameDifficultyChooseDialog();
+			break;
 		}
 	}
+	
+	String[] gameDifficulty = new String[]{ "简单", "一般", "困难" };
+	// 游戏难度选择
+	private void showGameDifficultyChooseDialog() {
+		new AlertDialog.Builder(this)
+		.setTitle("单选框")
+		.setIcon(android.R.drawable.ic_dialog_info)
+		.setSingleChoiceItems(gameDifficulty, user.getGameDifficulty(),
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog,
+							int which) {
+						BmobLog.i("点击的是"+games[which]);
+						if (user.getGameDifficulty() != which) {
+							updateGameDifficulty(which);
+						}
+						dialog.dismiss();
+					}
+				})
+		.setNegativeButton("取消", null)
+		.show();
+	}
+	
+	
+	private void updateGameDifficulty(final int which) {
+		final User u = new User();
+		
+		if(which == 0){
+			u.setGameDifficulty(0);
+		}else if(which == 1){
+			u.setGameDifficulty(1);
+		}
+		else if(which == 2){
+			u.setGameDifficulty(2);
+		}
+		
+		updateUserData(u,new UpdateListener() {
+
+			@Override
+			public void onSuccess() {
+				// TODO Auto-generated method stub
+				switch (which) {
+				case 0:
+					tv_set_game_difficulty.setText("简单");
+					break;
+
+				case 1:
+					tv_set_game_difficulty.setText("一般");
+					break;
+					
+				case 2:
+					tv_set_game_difficulty.setText("困难");
+					break;
+				}
+				
+				ShowToast("修改成功");
+			}
+
+			@Override
+			public void onFailure(int arg0, String arg1) {
+				// TODO Auto-generated method stub
+				ShowToast("onFailure:" + arg1);
+			}
+		});
+	}
+	
 	String[] games = new String[]{ "水果连连看", "猜数字", "mixed color" };
 	private void showGameChooseDialog() {
 		new AlertDialog.Builder(this)

@@ -55,6 +55,8 @@ public class GameFruitActivity extends Activity implements OnClickListener, OnTi
 	
 	String from;
 	
+	int gamedifficulty = 1;
+	
 	
 	private Handler handler = new Handler(){
 		@Override
@@ -93,11 +95,7 @@ public class GameFruitActivity extends Activity implements OnClickListener, OnTi
 		
 		Bundle data = getIntent().getExtras();
 		
-		from = data.getString("from");
 		
-		if (from.equals("other")) {
-			username = data.getString("username");
-		}
 		
 		 btnPlay = (ImageButton) findViewById(R.id.play_btn);
 	     btnRefresh = (ImageButton) findViewById(R.id.refresh_btn);
@@ -119,7 +117,24 @@ public class GameFruitActivity extends Activity implements OnClickListener, OnTi
 	     gameView.setOnToolsChangedListener(this);
 	     GameView.initSound(this);
 	     
-	     
+	     from = data.getString("from");
+			
+		if (from.equals("other")) {
+			username = data.getString("username");
+			gamedifficulty = data.getInt("gamedifficulty");
+			
+			switch (gamedifficulty) {
+			case 0:
+				gameView.setTotalTime(80);
+				break;
+			case 1:
+				gameView.setTotalTime(60);
+				break;
+			case 2:
+				gameView.setTotalTime(40);
+				break;
+			}
+		}
 	     
 	     Animation scale = AnimationUtils.loadAnimation(this,R.anim.scale_anim);
 	     imgTitle.startAnimation(scale);

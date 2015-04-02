@@ -58,6 +58,10 @@ public class GuessNumberActivity extends Activity implements OnClickListener{
 	public MediaPlayer player;
 	public static SoundPlay soundPlay;
 	
+	int gamedifficulty = 1;
+	
+	int totalTimes = 5;
+	
 	private int[] numBtuId = {
 		R.id.game_guess_zore, R.id.game_guess_one, R.id.game_guess_two, 
 		R.id.game_guess_three, R.id.game_guess_four, R.id.game_guess_five, 
@@ -106,6 +110,22 @@ public class GuessNumberActivity extends Activity implements OnClickListener{
 		
 		if (from.equals("other")) {
 			username = data.getString("username");
+			gamedifficulty = data.getInt("gamedifficulty");
+			
+			switch (gamedifficulty) {
+			case 0:
+				setTotalTimes(10);
+				break;
+			case 1:
+				setTotalTimes(8);
+				break;
+			case 2:
+				setTotalTimes(5);
+				break;
+
+			default:
+				break;
+			}
 		}
 		
 		play.setOnClickListener(this);
@@ -124,6 +144,8 @@ public class GuessNumberActivity extends Activity implements OnClickListener{
 			numberBtn[i] = (Button) findViewById(numBtuId[i]);
 			numberBtn[i].setOnClickListener(this);
 		}
+		
+		
 	}
 
 	@Override
@@ -212,7 +234,7 @@ public class GuessNumberActivity extends Activity implements OnClickListener{
 				return;
 			}else {
 				guessTime++;
-				if(guessTime <= 5)
+				if(guessTime <= totalTimes)
 				{
 					guessNum = Integer.parseInt(input.getText().toString());
 					caculate();
@@ -255,34 +277,42 @@ public class GuessNumberActivity extends Activity implements OnClickListener{
 	}
 	
 	private void caculate() {
-		if (guessTime <= 5) {
+		if (guessTime <= totalTimes) {
 			if (guessNum > randomNum) {
-				if (guessTime == 5) {
-					showDialog(5 - guessTime, 1, true);
+				if (guessTime == totalTimes) {
+					showDialog(totalTimes - guessTime, 1, true);
 				}
 				else {
-					showDialog(5 - guessTime, 1, false);
+					showDialog(totalTimes - guessTime, 1, false);
 				}
 			}
 			else if (guessNum < randomNum) {
-				if (guessTime == 5) {
-					showDialog(5 - guessTime, -1, true);
+				if (guessTime == totalTimes) {
+					showDialog(totalTimes - guessTime, -1, true);
 				}
 				else {
-					showDialog(5 - guessTime, -1, false);
+					showDialog(totalTimes - guessTime, -1, false);
 				}
 			}
 			else {
-				if (guessTime == 5) {
-					showDialog(5 - guessTime, 0, true);
+				if (guessTime == totalTimes) {
+					showDialog(totalTimes - guessTime, 0, true);
 				}
 				else {
-					showDialog(5 - guessTime, 0, false);
+					showDialog(totalTimes - guessTime, 0, false);
 				}
 			}
 		}
 	}
 	
+	public int getTotalTimes() {
+		return totalTimes;
+	}
+
+	public void setTotalTimes(int totalTimes) {
+		this.totalTimes = totalTimes;
+	}
+
 	private void showDialog(int leftTime, final int isBigger, final Boolean isOver) {
 		LinearLayout showResult = (LinearLayout) getLayoutInflater().inflate(R.layout.guess_dialog, null);
 		lefTextView = (TextView) showResult.findViewById(R.id.guess_dialog_left_time);

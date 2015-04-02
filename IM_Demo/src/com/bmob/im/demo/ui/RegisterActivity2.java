@@ -581,6 +581,7 @@ public class RegisterActivity2 extends BaseActivity implements OnClickListener{
 		bu.setNick(nick); // 设置昵称
 		bu.setBirthday(showBirth.getText().toString());
 		bu.setGameType(gameType);
+		bu.setGameDifficulty(1);
 		
 		//将user和设备id进行绑定
 		bu.setDeviceType("android");
