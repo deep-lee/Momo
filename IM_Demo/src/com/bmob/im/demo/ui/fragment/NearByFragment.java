@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.TranslateAnimation;
@@ -21,8 +22,11 @@ import com.bmob.im.demo.ui.FragmentBase;
 import com.bmob.im.demo.ui.MainActivity;
 import com.bmob.im.demo.ui.NearPeopleMapActivity;
 import com.bmob.im.demo.ui.ShakeActivity;
+import com.bmob.im.demo.util.ActionItem;
 import com.bmob.im.demo.util.ShakeListener;
 import com.bmob.im.demo.util.ShakeListener.OnShakeListener;
+import com.bmob.im.demo.view.HeaderLayout.onRightImageButtonClickListener;
+import com.bmob.im.demo.view.TitlePopup;
 
 public class NearByFragment extends FragmentBase implements OnClickListener{
 	
@@ -32,6 +36,7 @@ public class NearByFragment extends FragmentBase implements OnClickListener{
 	private RelativeLayout mImgDn;
 	
 	Context mContext;
+	TitlePopup titlePopup;
 	
 	
 	public NearByFragment(Context mContext) {
@@ -62,12 +67,29 @@ public class NearByFragment extends FragmentBase implements OnClickListener{
 	public void onActivityCreated(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
+		initData();
 		initView();
+	}
+	
+	private void initData(){
+		titlePopup.addAction(new ActionItem(mContext, R.string.only_female, R.drawable.only_female));
+		titlePopup.addAction(new ActionItem(mContext, R.string.only_male, R.drawable.only_male));
+		titlePopup.addAction(new ActionItem(mContext, R.string.all_female_male, R.drawable.all_female_male));
 	}
 
 	private void initView() {
 		// TODO Auto-generated method stub
-		initTopBarForOnlyTitle("附近的人");
+		
+		titlePopup = new TitlePopup(mContext, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		
+		initTopBarForRight("附近的人", R.drawable.title_btn_function, new onRightImageButtonClickListener() {
+			
+			@Override
+			public void onClick() {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		
 		mVibrator = (Vibrator)((MainActivity)mContext).getApplication().getSystemService(mContext.VIBRATOR_SERVICE);
 		
@@ -90,7 +112,7 @@ public class NearByFragment extends FragmentBase implements OnClickListener{
 					
 					Intent intent = new Intent();
 					intent.setClass(mContext, NearPeopleMapActivity.class);
-					startActivity(intent);
+					mContext.startActivity(intent);
 					
 					}
 				}, 1000);

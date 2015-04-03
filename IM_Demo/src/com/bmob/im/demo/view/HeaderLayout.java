@@ -31,6 +31,8 @@ public class HeaderLayout extends LinearLayout {
 	private LinearLayout mLayoutLeftImageButtonLayout;
 	private ImageButton mLeftImageButton;
 	private onLeftImageButtonClickListener mLeftImageButtonClickListener;
+	
+	public final static int[] mLocation = new int[2];
 
 	public enum HeaderStyle {// 头部整体样式
 		DEFAULT_TITLE, TITLE_LIFT_IMAGEBUTTON, TITLE_RIGHT_IMAGEBUTTON, TITLE_DOUBLE_IMAGEBUTTON;
@@ -125,6 +127,8 @@ public class HeaderLayout extends LinearLayout {
 				.findViewById(R.id.header_layout_imagebuttonlayout);
 		mRightImageButton = (Button) mRightImageButtonView
 				.findViewById(R.id.header_ib_imagebutton);
+		
+		mRightImageButtonView.getLocationOnScreen(mLocation);
 		mLayoutRightImageButtonLayout.setOnClickListener(new OnClickListener() {
 
 			@Override

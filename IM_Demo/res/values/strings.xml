@@ -95,5 +95,7 @@
     <string name="black_list">黑名单</string>
     <string name="title_activity_position_roam">PositionRoamActivity</string>
     <string name="game_difficulty">游戏难度</string>
-
+	<string name="only_female">只看女生</string>
+	<string name="only_male">只看男生</string>
+	<string name="all_female_male">全部查看</string>
 </resources>

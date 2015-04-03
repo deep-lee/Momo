@@ -35,15 +35,15 @@ public class User extends BmobChatUser {
 	private Blog blog;
 	
 	private String birthday;
-	private int gameType;
+	private String gameType;
 	
-	private int gameDifficulty = 1;
+	private String gameDifficulty;
 	
 	
-	public int getGameDifficulty() {
+	public String getGameDifficulty() {
 		return gameDifficulty;
 	}
-	public void setGameDifficulty(int gameDifficulty) {
+	public void setGameDifficulty(String gameDifficulty) {
 		this.gameDifficulty = gameDifficulty;
 	}
 	public String getBirthday() {
@@ -52,10 +52,10 @@ public class User extends BmobChatUser {
 	public void setBirthday(String birthday) {
 		this.birthday = birthday;
 	}
-	public int getGameType() {
+	public String getGameType() {
 		return gameType;
 	}
-	public void setGameType(int gameType) {
+	public void setGameType(String gameType) {
 		this.gameType = gameType;
 	}
 	

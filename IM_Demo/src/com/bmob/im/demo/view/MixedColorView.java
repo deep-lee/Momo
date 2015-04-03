@@ -89,7 +89,7 @@ public class MixedColorView extends SurfaceView implements
 	
 	String from;
 	String username;
-	int gamedifficulty = 1;
+	String gamedifficulty = "";
 	
 	private Handler mHandler =new Handler(){  
         @Override  
@@ -183,19 +183,29 @@ public class MixedColorView extends SurfaceView implements
 		
 		if (from.equals("other")) {
 			username = data.getString("username");
-			gamedifficulty = data.getInt("gamedifficulty");
+			gamedifficulty = data.getString("gamedifficulty");
 			
-			switch (gamedifficulty) {
-			case 0:
-				UIModel.GAME_ATTRIBUTE_MAX_TIME_PER_STAGE = 5;
-				break;
-			case 1:
-				UIModel.GAME_ATTRIBUTE_MAX_TIME_PER_STAGE = 4;
-				break;
-			case 2:
-				UIModel.GAME_ATTRIBUTE_MAX_TIME_PER_STAGE = 3;
-				break;
-			}
+			if (gamedifficulty.equals("¼òµ¥")) {
+				UIModel.GAME_ATTRIBUTE_MAX_TIME_PER_STAGE = 5000;
+				
+			}else if (gamedifficulty.equals("Ò»°ã")) {
+				UIModel.GAME_ATTRIBUTE_MAX_TIME_PER_STAGE = 4000;
+				
+			}else if (gamedifficulty.equals("À§ÄÑ")) {
+				UIModel.GAME_ATTRIBUTE_MAX_TIME_PER_STAGE = 3000;
+			}		
+			
+//			switch (gamedifficulty) {
+//			case 0:
+//				UIModel.GAME_ATTRIBUTE_MAX_TIME_PER_STAGE = 5000;
+//				break;
+//			case 1:
+//				UIModel.GAME_ATTRIBUTE_MAX_TIME_PER_STAGE = 4000;
+//				break;
+//			case 2:
+//				UIModel.GAME_ATTRIBUTE_MAX_TIME_PER_STAGE = 3000;
+//				break;
+//			}
 		}
 	}
 	

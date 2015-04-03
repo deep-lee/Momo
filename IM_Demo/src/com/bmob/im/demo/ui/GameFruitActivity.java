@@ -55,7 +55,7 @@ public class GameFruitActivity extends Activity implements OnClickListener, OnTi
 	
 	String from;
 	
-	int gamedifficulty = 1;
+	String gamedifficulty = "简单";
 	
 	
 	private Handler handler = new Handler(){
@@ -102,6 +102,36 @@ public class GameFruitActivity extends Activity implements OnClickListener, OnTi
 	     btnTip = (ImageButton) findViewById(R.id.tip_btn);
 	     imgTitle = (ImageView) findViewById(R.id.title_img);
 	     gameView = (GameView) findViewById(R.id.game_view);
+	     
+	     from = data.getString("from");
+			
+			if (from.equals("other")) {
+				username = data.getString("username");
+				gamedifficulty = data.getString("gamedifficulty");
+				
+				if (gamedifficulty.equals("简单")) {
+					gameView.setTotalTime(80);
+					
+				}else if (gamedifficulty.equals("一般")) {
+					gameView.setTotalTime(60);
+					
+				}else if (gamedifficulty.equals("困难")) {
+					gameView.setTotalTime(40);
+				}
+				
+//				switch (gamedifficulty) {
+//				case 0:
+//					gameView.setTotalTime(80);
+//					break;
+//				case 1:
+//					gameView.setTotalTime(60);
+//					break;
+//				case 2:
+//					gameView.setTotalTime(40);
+//					break;
+//				}
+			}
+	     
 	     clock = (ImageView) findViewById(R.id.clock);
 	     progress = (SeekBar) findViewById(R.id.timer);
 	     textRefreshNum = (TextView) findViewById(R.id.text_refresh_num);
@@ -117,24 +147,7 @@ public class GameFruitActivity extends Activity implements OnClickListener, OnTi
 	     gameView.setOnToolsChangedListener(this);
 	     GameView.initSound(this);
 	     
-	     from = data.getString("from");
-			
-		if (from.equals("other")) {
-			username = data.getString("username");
-			gamedifficulty = data.getInt("gamedifficulty");
-			
-			switch (gamedifficulty) {
-			case 0:
-				gameView.setTotalTime(80);
-				break;
-			case 1:
-				gameView.setTotalTime(60);
-				break;
-			case 2:
-				gameView.setTotalTime(40);
-				break;
-			}
-		}
+	   
 	     
 	     Animation scale = AnimationUtils.loadAnimation(this,R.anim.scale_anim);
 	     imgTitle.startAnimation(scale);

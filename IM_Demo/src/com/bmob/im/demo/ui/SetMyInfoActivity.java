@@ -238,29 +238,21 @@ public class SetMyInfoActivity extends ActivityBase implements OnClickListener {
 		tv_set_birthday.setText(user.getBirthday());
 		
 		
-		switch (user.getGameType()) {
-		case 0:
-			tv_set_game.setText("水果连连看");
-			break;
-		case 1:
-			tv_set_game.setText("猜数字");
-			break;
-		case 2:
-			tv_set_game.setText("mixed color");
-			break;
-		}
+		tv_set_game.setText(user.getGameType());
 		
-		switch (user.getGameDifficulty()) {
-		case 0:
-			tv_set_game_difficulty.setText("简单");
-			break;
-		case 1:
-			tv_set_game_difficulty.setText("一般");
-			break;
-		case 2:
-			tv_set_game_difficulty.setText("困难");
-			break;
-		}
+		tv_set_game_difficulty.setText(user.getGameDifficulty());
+		
+//		switch (user.getGameDifficulty()) {
+//		case 0:
+//			tv_set_game_difficulty.setText("简单");
+//			break;
+//		case 1:
+//			tv_set_game_difficulty.setText("一般");
+//			break;
+//		case 2:
+//			tv_set_game_difficulty.setText("困难");
+//			break;
+//		}
 		
 		// 检测是不是从好友列表中过来的
 		if (from.equals("other")) {
@@ -348,12 +340,12 @@ public class SetMyInfoActivity extends ActivityBase implements OnClickListener {
 		new AlertDialog.Builder(this)
 		.setTitle("单选框")
 		.setIcon(android.R.drawable.ic_dialog_info)
-		.setSingleChoiceItems(gameDifficulty, user.getGameDifficulty(),
+		.setSingleChoiceItems(gameDifficulty, 0,
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog,
 							int which) {
 						BmobLog.i("点击的是"+games[which]);
-						if (user.getGameDifficulty() != which) {
+						if (!user.getGameDifficulty().equals(gameDifficulty[which])) {
 							updateGameDifficulty(which);
 						}
 						dialog.dismiss();
@@ -368,12 +360,12 @@ public class SetMyInfoActivity extends ActivityBase implements OnClickListener {
 		final User u = new User();
 		
 		if(which == 0){
-			u.setGameDifficulty(0);
+			u.setGameDifficulty("简单");
 		}else if(which == 1){
-			u.setGameDifficulty(1);
+			u.setGameDifficulty("一般");
 		}
 		else if(which == 2){
-			u.setGameDifficulty(2);
+			u.setGameDifficulty("困难");
 		}
 		
 		updateUserData(u,new UpdateListener() {
@@ -429,12 +421,12 @@ public class SetMyInfoActivity extends ActivityBase implements OnClickListener {
 		final User u = new User();
 		
 		if(which == 0){
-			u.setGameType(0);
+			u.setGameType("水果连连看");
 		}else if(which == 1){
-			u.setGameType(1);
+			u.setGameType("猜数字");
 		}
 		else if(which == 2){
-			u.setGameType(2);
+			u.setGameType("mixed color");
 		}
 		
 		updateUserData(u,new UpdateListener() {

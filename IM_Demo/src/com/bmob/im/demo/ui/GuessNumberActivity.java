@@ -58,7 +58,7 @@ public class GuessNumberActivity extends Activity implements OnClickListener{
 	public MediaPlayer player;
 	public static SoundPlay soundPlay;
 	
-	int gamedifficulty = 1;
+	String gamedifficulty = "";
 	
 	int totalTimes = 5;
 	
@@ -110,22 +110,32 @@ public class GuessNumberActivity extends Activity implements OnClickListener{
 		
 		if (from.equals("other")) {
 			username = data.getString("username");
-			gamedifficulty = data.getInt("gamedifficulty");
+			gamedifficulty = data.getString("gamedifficulty");
 			
-			switch (gamedifficulty) {
-			case 0:
+			if (gamedifficulty.equals("¼òµ¥")) {
 				setTotalTimes(10);
-				break;
-			case 1:
+				
+			}else if (gamedifficulty.equals("Ò»°ã")) {
 				setTotalTimes(8);
-				break;
-			case 2:
+				
+			}else if (gamedifficulty.equals("À§ÄÑ")) {
 				setTotalTimes(5);
-				break;
-
-			default:
-				break;
 			}
+//			
+//			switch (gamedifficulty) {
+//			case 0:
+//				setTotalTimes(10);
+//				break;
+//			case 1:
+//				setTotalTimes(8);
+//				break;
+//			case 2:
+//				setTotalTimes(5);
+//				break;
+//
+//			default:
+//				break;
+//			}
 		}
 		
 		play.setOnClickListener(this);

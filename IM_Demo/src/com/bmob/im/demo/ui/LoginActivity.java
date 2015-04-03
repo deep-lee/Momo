@@ -119,7 +119,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		progress.setMessage("ÕýÔÚµÇÂ½...");
 		progress.setCanceledOnTouchOutside(false);
 		progress.show();
-		User user = new User();
+		final User user = new User();
 		user.setUsername(name);
 		user.setPassword(password);
 		userManager.login(user,new SaveListener() {
@@ -140,6 +140,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 				progress.dismiss();
 				Intent intent = new Intent(LoginActivity.this,MainActivity.class);
 				startActivity(intent);
+				ShowToast(user.getGameType() + "");
 				finish();
 			}
 

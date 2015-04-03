@@ -82,7 +82,7 @@ public class RegisterActivity2 extends BaseActivity implements OnClickListener{
 	WheelMain wheelMain;
 	
 	
-	int gameType = 0;
+	String gameType = "";
 	
 	
 	ViewFlipper viewFlipper;
@@ -152,7 +152,17 @@ public class RegisterActivity2 extends BaseActivity implements OnClickListener{
 			public void onItemSelected(AdapterView<?> parent, View view,
 					int position, long id) {
 				// TODO Auto-generated method stub
-				gameType = position;
+				switch (position) {
+				case 0:
+					gameType = "水果连连看";
+					break;
+				case 1:
+					gameType = "猜数字";
+					break;
+				case 2:
+					gameType = "mixed color";
+					break;
+				}
 			}
 
 			@Override
@@ -180,31 +190,6 @@ public class RegisterActivity2 extends BaseActivity implements OnClickListener{
 		back.setOnClickListener(this);
 		next.setOnClickListener(this);
 		birthView.setOnClickListener(this);
-		gameChoose.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-			@Override
-			public void onItemSelected(AdapterView<?> parent, View view,
-					int position, long id) {
-				// TODO Auto-generated method stub
-				gameType = position;
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> parent) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
-
-//		btn_register = (Button) findViewById(R.id.btn_register);
-//		btn_register.setOnClickListener(new OnClickListener() {
-//
-//			@Override
-//			public void onClick(View arg0) {
-//				// TODO Auto-generated method stub
-//				register();
-//			}
-//		});
 		checkUser();
 	}
 	
@@ -558,7 +543,6 @@ public class RegisterActivity2 extends BaseActivity implements OnClickListener{
 	private void register(){
 		String name = et_username.getText().toString();
 		String password = et_password.getText().toString();
-		String pwd_again = et_email.getText().toString();
 		String nick = et_nick.getText().toString();
 		
 		
@@ -581,7 +565,7 @@ public class RegisterActivity2 extends BaseActivity implements OnClickListener{
 		bu.setNick(nick); // 设置昵称
 		bu.setBirthday(showBirth.getText().toString());
 		bu.setGameType(gameType);
-		bu.setGameDifficulty(1);
+		bu.setGameDifficulty("简单");
 		
 		//将user和设备id进行绑定
 		bu.setDeviceType("android");
@@ -640,10 +624,6 @@ public class RegisterActivity2 extends BaseActivity implements OnClickListener{
 			break;
 			
 		case R.id.register_second_birthday_choose:
-//			DatePickDialogUtil dateTimePicKDialog = new DatePickDialogUtil(  
-//                    RegisterActivity2.this, initBirth);  
-//            dateTimePicKDialog.dateTimePicKDialog(showBirth);  
-			
 			seleteBirth();
             
 			break;

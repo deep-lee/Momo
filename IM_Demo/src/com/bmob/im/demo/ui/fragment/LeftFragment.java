@@ -46,7 +46,9 @@ public class LeftFragment extends Fragment {
             .asList("我的游戏","设置", "地点漫游","关于", "退出登陆");  
     private ListAdapter mAdapter;  
     
-    
+    public LeftFragment() {
+
+	}
   
    
 	public LeftFragment(Context context) {
