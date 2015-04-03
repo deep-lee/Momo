@@ -1,6 +1,7 @@
 package com.bmob.im.demo.ui;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.EditText;
 import cn.bmob.v3.listener.UpdateListener;
 
@@ -33,7 +34,7 @@ public class UpdateInfoActivity extends ActivityBase {
 				new onRightImageButtonClickListener() {
 
 					@Override
-					public void onClick() {
+					public void onClick(View v) {
 						// TODO Auto-generated method stub
 						String nick = edit_nick.getText().toString();
 						if (nick.equals("")) {

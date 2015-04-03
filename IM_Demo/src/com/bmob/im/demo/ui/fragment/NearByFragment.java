@@ -1,5 +1,6 @@
 package com.bmob.im.demo.ui.fragment;
 
+import android.R.integer;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.os.Handler;
 import android.os.Vibrator;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewDebug.FlagToString;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
@@ -39,6 +41,9 @@ public class NearByFragment extends FragmentBase implements OnClickListener{
 	TitlePopup titlePopup;
 	
 	
+	public int nearsSex;
+	
+	
 	public NearByFragment(Context mContext) {
 		super();
 		this.mContext = mContext;
@@ -48,6 +53,7 @@ public class NearByFragment extends FragmentBase implements OnClickListener{
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		
 	}
 	
 	@Override
@@ -55,6 +61,7 @@ public class NearByFragment extends FragmentBase implements OnClickListener{
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		return inflater.inflate(R.layout.fragment_shake, container, false);
+		
 	}
 
 	@Override
@@ -71,23 +78,33 @@ public class NearByFragment extends FragmentBase implements OnClickListener{
 		initView();
 	}
 	
+	public void nearBySexChanged(int sex) {
+		setNearsSex(sex);
+		nearsSex = sex;
+		ShowToast("SEX:" + nearsSex);
+	}
+	
 	private void initData(){
-		titlePopup.addAction(new ActionItem(mContext, R.string.only_female, R.drawable.only_female));
-		titlePopup.addAction(new ActionItem(mContext, R.string.only_male, R.drawable.only_male));
-		titlePopup.addAction(new ActionItem(mContext, R.string.all_female_male, R.drawable.all_female_male));
+		
+		flag = true;
+		titlePopup = new TitlePopup(mContext, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, this);
+		
+		titlePopup.addAction(new ActionItem(mContext, R.string.only_female));
+		titlePopup.addAction(new ActionItem(mContext, R.string.only_male));
+		titlePopup.addAction(new ActionItem(mContext, R.string.all_female_male));
 	}
 
 	private void initView() {
 		// TODO Auto-generated method stub
 		
-		titlePopup = new TitlePopup(mContext, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 		
-		initTopBarForRight("附近的人", R.drawable.title_btn_function, new onRightImageButtonClickListener() {
+		
+		initTopBarForRight("附近的人", R.drawable.more2, new onRightImageButtonClickListener() {
 			
 			@Override
-			public void onClick() {
+			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				
+				titlePopup.show(v);
 			}
 		});
 		
@@ -112,6 +129,8 @@ public class NearByFragment extends FragmentBase implements OnClickListener{
 					
 					Intent intent = new Intent();
 					intent.setClass(mContext, NearPeopleMapActivity.class);
+					intent.putExtra("nearsSex", nearsSex);
+					// ShowToast("SEX:" + nearsSex);
 					mContext.startActivity(intent);
 					
 					}

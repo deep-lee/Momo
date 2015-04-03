@@ -23,6 +23,11 @@ public class ActionItem {
 		this.mDrawable = context.getResources().getDrawable(drawableId);
 	}
 	
+	public ActionItem(Context context, int titleId){
+		this.mTitle = context.getResources().getText(titleId);
+
+	}
+	
 	public ActionItem(Context context, CharSequence title, int drawableId) {
 		this.mTitle = title;
 		this.mDrawable = context.getResources().getDrawable(drawableId);

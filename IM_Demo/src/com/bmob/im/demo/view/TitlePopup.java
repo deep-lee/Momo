@@ -3,10 +3,15 @@ package com.bmob.im.demo.view;
 import java.util.ArrayList;
 
 import com.bmob.im.demo.R;
+import com.bmob.im.demo.ui.FragmentBase;
+import com.bmob.im.demo.ui.fragment.NearByFragment;
 import com.bmob.im.demo.util.ActionItem;
 import com.bmob.im.demo.util.MenuUtil;
 
+import A.in;
+import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.view.Gravity;
@@ -50,14 +55,21 @@ public class TitlePopup extends PopupWindow {
 	private ListView mListView;
 	
 
-	private ArrayList<ActionItem> mActionItems = new ArrayList<ActionItem>();			
+	private ArrayList<ActionItem> mActionItems = new ArrayList<ActionItem>();		
+
+	SharedPreferences sharedPreferences;
+	SharedPreferences.Editor editor;
+	
+	int nearsSex;
+	static NearByFragment fragment = null;
+	
 	
 	public TitlePopup(Context context){
 
-		this(context, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		this(context, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, fragment);
 	}
 	
-	public TitlePopup(Context context, int width, int height){
+	public TitlePopup(Context context, int width, int height, NearByFragment fragment2){
 		this.mContext = context;
 		
 
@@ -77,10 +89,17 @@ public class TitlePopup extends PopupWindow {
 		
 		setBackgroundDrawable(new BitmapDrawable());
 		
+		fragment = fragment2;
+		
 
 		setContentView(LayoutInflater.from(mContext).inflate(R.layout.title_popup, null));
 		
 		mLocation = HeaderLayout.mLocation;
+		
+
+		sharedPreferences = mContext.getSharedPreferences("test", Activity.MODE_PRIVATE);
+		editor = sharedPreferences.edit();
+		nearsSex = sharedPreferences.getInt("nearsSex", 2);
 		
 		initUI();
 	}
@@ -92,13 +111,21 @@ public class TitlePopup extends PopupWindow {
 		mListView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int index,long arg3) {
-				// 点击事件
-			Toast.makeText(mContext, index + "", Toast.LENGTH_LONG).show();
+
+			// Toast.makeText(mContext, index + "", Toast.LENGTH_LONG).show();
+			
+			if (nearsSex == index) {
 				
-				dismiss();
+			}else {
+				editor.putInt("nearsSex", index);
+				nearsSex = index;
+				editor.commit();
 				
+				fragment.nearBySexChanged(index);
+
+			}
 				
-				
+			dismiss();
 				if(mItemOnClickListener != null)
 					mItemOnClickListener.onItemClick(mActionItems.get(index), index);
 			}

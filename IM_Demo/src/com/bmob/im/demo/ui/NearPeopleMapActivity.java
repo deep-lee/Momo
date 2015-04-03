@@ -93,6 +93,9 @@ public class NearPeopleMapActivity extends BaseActivity implements OnGetGeoCoder
 		static BDLocation lastLocation = null;
 
 		BitmapDescriptor bdgeo = BitmapDescriptorFactory.fromResource(R.drawable.icon_geo); 
+		
+		int nearsSex = 2;
+		Boolean sexValue = null;
 	
 	
 	@SuppressLint("InflateParams")
@@ -103,6 +106,21 @@ public class NearPeopleMapActivity extends BaseActivity implements OnGetGeoCoder
 		
 		layout_marker = LayoutInflater.from(this).inflate(R.layout.item_nears_map_marker, null);
 		markerText = (TextView) layout_marker.findViewById(R.id.marker_text);
+		
+		nearsSex = getIntent().getIntExtra("nearsSex", 2);
+		ShowToast("SEX:" + nearsSex);
+		switch (nearsSex) {
+		case 0:
+			sexValue = false;
+			break;
+		case 1:
+			sexValue = true;
+		case 2:
+			sexValue = null;
+
+		default:
+			break;
+		}
 		
 		initTopBarForLeft("附近的人");
 		initBaiduMap();
@@ -143,18 +161,7 @@ public class NearPeopleMapActivity extends BaseActivity implements OnGetGeoCoder
 						else if (gameType.equals("mixed color")) {
 							intent.setClass(NearPeopleMapActivity.this, MixedColorMenuActivity.class);
 						}
-						
-//						switch (gameType) {
-//							case 0:
-//								intent.setClass(NearPeopleMapActivity.this, GameFruitActivity.class);
-//								break;
-//							case 1:
-//								intent.setClass(NearPeopleMapActivity.this, GuessNumberActivity.class);
-//								break;
-//							case 2:
-//								intent.setClass(NearPeopleMapActivity.this, MixedColorMenuActivity.class);
-//								break;
-//						}
+
 						
 						Bundle data = new Bundle();
 						data.putString("from", "other");
@@ -219,7 +226,7 @@ public class NearPeopleMapActivity extends BaseActivity implements OnGetGeoCoder
 	
 	// 在地图上显示附近的人的信息
 	private void initNearsOnMap() {
-		ShowToast(nears.size() + "");
+		// ShowToast(nears.size() + "");
 		
 		Marker marker;
 		
@@ -229,7 +236,7 @@ public class NearPeopleMapActivity extends BaseActivity implements OnGetGeoCoder
 			// ShowToast(nearUser.getNick());
 			
 			markerText.setText(nearUser.getNick());
-			Toast.makeText(NearPeopleMapActivity.this, nearUser.getNick(), Toast.LENGTH_SHORT).show();
+			// Toast.makeText(NearPeopleMapActivity.this, nearUser.getNick(), Toast.LENGTH_SHORT).show();
 			
 			//启用绘图缓存
 		    layout_marker.setDrawingCacheEnabled(true);		
@@ -303,7 +310,7 @@ public class NearPeopleMapActivity extends BaseActivity implements OnGetGeoCoder
 //		        equalProperty：自己定义的其他属性：使用方法AddWhereEqualTo对应的属性名称 - 
 //		        equalObj：查询equalProperty属性对应的属性值 - 
 //		        findCallback - ：回调 
-			userManager.queryKiloMetersListByPage(isUpdate,0,"location", longtitude, latitude, true, QUERY_KILOMETERS,"sex", false, new FindListener<User>() {
+			userManager.queryKiloMetersListByPage(isUpdate,0,"location", longtitude, latitude, true, QUERY_KILOMETERS,"sex", sexValue, new FindListener<User>() {
 			
 				
 //			    分页加载全部的用户列表：排除自己，是否排除好友由开发者决定，可以添加额外查询条件

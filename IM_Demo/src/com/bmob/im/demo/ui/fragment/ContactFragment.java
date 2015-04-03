@@ -111,7 +111,7 @@ public class ContactFragment extends FragmentBase implements OnItemClickListener
 				new onRightImageButtonClickListener() {
 
 					@Override
-					public void onClick() {
+					public void onClick(View v) {
 						// TODO Auto-generated method stub
 						startAnimActivity(AddFriendActivity.class);
 					}

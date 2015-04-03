@@ -1,11 +1,13 @@
 package com.bmob.im.demo.view;
 
+import android.R.integer;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -31,7 +33,7 @@ public class HeaderLayout extends LinearLayout {
 	private LinearLayout mLayoutLeftImageButtonLayout;
 	private ImageButton mLeftImageButton;
 	private onLeftImageButtonClickListener mLeftImageButtonClickListener;
-	
+	private ImageView nearsSex;
 	public final static int[] mLocation = new int[2];
 
 	public enum HeaderStyle {// 头部整体样式
@@ -61,7 +63,25 @@ public class HeaderLayout extends LinearLayout {
 		// findViewByHeaderId(R.id.header_layout_middleview_container);中间部分添加搜索或者其他按钮时可打开
 		mLayoutRightContainer = (LinearLayout) findViewByHeaderId(R.id.header_layout_rightview_container);
 		mHtvSubTitle = (TextView) findViewByHeaderId(R.id.header_htv_subtitle);
+		nearsSex = (ImageView) findViewByHeaderId(R.id.header_title_img);
 
+	}
+	
+	public void showNearsSex(Boolean show) {
+		if (show) {
+			nearsSex.setVisibility(View.VISIBLE);
+		}
+		else {
+			nearsSex.setVisibility(View.INVISIBLE);
+		}
+	}
+	
+	public void setNearsSexImg(int sex) {
+		if (sex == 0) {
+			nearsSex.setImageResource(R.drawable.female);
+		}else if (sex == 1) {
+			nearsSex.setImageResource(R.drawable.male);
+		}
 	}
 
 	public View findViewByHeaderId(int id) {
@@ -134,7 +154,7 @@ public class HeaderLayout extends LinearLayout {
 			@Override
 			public void onClick(View arg0) {
 				if (mRightImageButtonClickListener != null) {
-					mRightImageButtonClickListener.onClick();
+					mRightImageButtonClickListener.onClick(arg0);
 				}
 			}
 		});
@@ -203,7 +223,7 @@ public class HeaderLayout extends LinearLayout {
 	}
 
 	public interface onRightImageButtonClickListener {
-		void onClick();
+		void onClick(View v);
 	}
 
 	public void setOnLeftImageButtonClickListener(

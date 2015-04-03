@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.view.View;
 import cn.bmob.im.util.BmobLog;
 
 import com.baidu.location.BDLocation;
@@ -91,7 +92,7 @@ public class LocationActivity extends BaseActivity implements
 					new onRightImageButtonClickListener() {
 
 						@Override
-						public void onClick() {
+						public void onClick(View v) {
 							// TODO Auto-generated method stub
 							gotoChatPage();
 						}

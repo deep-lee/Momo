@@ -1,6 +1,9 @@
 package com.bmob.im.demo.ui;
 
+import android.R.bool;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -32,11 +35,18 @@ public abstract class FragmentBase extends Fragment {
 	/**
 	 * 公用的Header布局
 	 */
-	public HeaderLayout mHeaderLayout;
+	public static HeaderLayout mHeaderLayout;
 
 	protected View contentView;
 	
 	public LayoutInflater mInflater;
+	
+	SharedPreferences sharedPreferences;
+	SharedPreferences.Editor editor;
+	
+	int nearsSex = 2;
+	
+	public Boolean flag = false;
 	
 	private Handler handler = new Handler();
 	
@@ -57,11 +67,31 @@ public abstract class FragmentBase extends Fragment {
 		userManager = BmobUserManager.getInstance(getActivity());
 		manager = BmobChatManager.getInstance(getActivity());
 		mInflater = LayoutInflater.from(getActivity());
+		
+		sharedPreferences = getActivity().getSharedPreferences("test", Activity.MODE_PRIVATE);
+		editor = sharedPreferences.edit();
+		nearsSex = sharedPreferences.getInt("nearsSex", 2);
+		
 	}
 
 	
 	public FragmentBase() {
 		
+	}
+	
+	
+	public void setNearsSex(int show) {
+		if (show == 0) {
+			mHeaderLayout.showNearsSex(true);
+			mHeaderLayout.setNearsSexImg(0);
+		}
+		else if(show == 1){
+			mHeaderLayout.showNearsSex(true);
+			mHeaderLayout.setNearsSexImg(1);
+		}
+		else {
+			mHeaderLayout.showNearsSex(false);
+		}
 	}
 
 	Toast mToast;
@@ -152,6 +182,10 @@ public abstract class FragmentBase extends Fragment {
 		mHeaderLayout.init(HeaderStyle.TITLE_RIGHT_IMAGEBUTTON);
 		mHeaderLayout.setTitleAndRightImageButton(titleName, rightDrawableId,
 				listener);
+		
+		if (flag) {
+			setNearsSex(nearsSex);
+		}
 	}
 	
 	// 左边按钮的点击事件
