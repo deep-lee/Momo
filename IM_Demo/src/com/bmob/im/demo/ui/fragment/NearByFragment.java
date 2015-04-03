@@ -44,6 +44,10 @@ public class NearByFragment extends FragmentBase implements OnClickListener{
 	public int nearsSex;
 	
 	
+	public NearByFragment() {
+		super();
+	}
+
 	public NearByFragment(Context mContext) {
 		super();
 		this.mContext = mContext;

@@ -3,16 +3,20 @@ package com.bmob.im.demo.ui.fragment;
 
 import java.util.Arrays;
 import java.util.List;
+
 import cn.bmob.im.BmobUserManager;
+
 import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.bean.User;
+import com.bmob.im.demo.ui.AttractionsRomaActivity;
 import com.bmob.im.demo.ui.LoginActivity;
 import com.bmob.im.demo.ui.MainActivity;
 import com.bmob.im.demo.ui.MyGameActivity;
 import com.bmob.im.demo.ui.SlideSetMyInfoActivity;
 import com.bmob.im.demo.util.ImageLoadOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+
 import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.content.Context;
@@ -114,6 +118,9 @@ public class LeftFragment extends Fragment {
 				case 2:
 					// Toast.makeText(getActivity(), position+"选中", Toast.LENGTH_LONG).show();
 					//添加方法
+					Intent romaIntent = new Intent();
+					romaIntent.setClass(context, AttractionsRomaActivity.class);
+					startActivity(romaIntent);
 					break;	
 					
 					// 关于

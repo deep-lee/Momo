@@ -40,6 +40,7 @@ import com.bmob.im.demo.bean.User;
 import com.bmob.im.demo.ui.LocationActivity.BaiduReceiver;
 import com.bmob.im.demo.ui.LocationActivity.MyLocationListenner;
 import com.bmob.im.demo.util.CollectionUtils;
+import com.bmob.im.demo.view.HeaderLayout.onLeftImageButtonClickListener;
 import com.bmob.im.demo.view.HeaderLayout.onRightImageButtonClickListener;
 
 import android.R.integer;
@@ -62,7 +63,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class NearPeopleMapActivity extends BaseActivity implements OnGetGeoCoderResultListener {
+public class NearPeopleMapActivity extends BaseActivity implements OnGetGeoCoderResultListener, onLeftImageButtonClickListener {
 	
 		// 附近的人列表
 		List<User> nears = new ArrayList<User>();
@@ -96,6 +97,8 @@ public class NearPeopleMapActivity extends BaseActivity implements OnGetGeoCoder
 		
 		int nearsSex = 2;
 		Boolean sexValue = null;
+		
+		BmobGeoPoint currentGeoPoint;
 	
 	
 	@SuppressLint("InflateParams")
@@ -121,6 +124,8 @@ public class NearPeopleMapActivity extends BaseActivity implements OnGetGeoCoder
 		default:
 			break;
 		}
+		
+		currentGeoPoint = (BmobGeoPoint) getIntent().getSerializableExtra("currentGeoPoint");
 		
 		initTopBarForLeft("附近的人");
 		initBaiduMap();
@@ -541,5 +546,15 @@ public class NearPeopleMapActivity extends BaseActivity implements OnGetGeoCoder
 		super.onDestroy();
 		// 回收 bitmap 资源
 		bdgeo.recycle();
+	}
+
+
+	@Override
+	public void onClick() {
+		// TODO Auto-generated method stub
+		if (currentGeoPoint != null) {
+			mApplication.setLongtitude(currentGeoPoint.getLongitude() + "");
+		    mApplication.setLatitude(currentGeoPoint.getLatitude() + "");
+		}
 	}
 }

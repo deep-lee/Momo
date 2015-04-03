@@ -146,15 +146,15 @@ public class RecentFragment extends FragmentBase implements OnItemClickListener,
 				}
 	}
 	
-//	private boolean hidden;
-//	@Override
-//	public void onHiddenChanged(boolean hidden) {
-//		super.onHiddenChanged(hidden);
-//		this.hidden = hidden;
-//		if(!hidden){
-//			refresh();
-//		}
-//	}
+	private boolean hidden;
+	@Override
+	public void onHiddenChanged(boolean hidden) {
+		super.onHiddenChanged(hidden);
+		this.hidden = hidden;
+		if(!hidden){
+			refresh();
+		}
+	}
 	
 	public void refresh(){
 		try {
@@ -169,13 +169,13 @@ public class RecentFragment extends FragmentBase implements OnItemClickListener,
 		}
 	}
 	
-//	@Override
-//	public void onResume() {
-//		super.onResume();
-//		if(!hidden){
-//			refresh();
-//		}
-//	}
+	@Override
+	public void onResume() {
+		super.onResume();
+		if(!hidden){
+			refresh();
+		}
+	}
 	
 	@Override
 	public void onRefresh() {
