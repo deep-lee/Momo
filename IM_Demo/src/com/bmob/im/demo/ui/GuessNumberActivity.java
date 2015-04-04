@@ -33,7 +33,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class GuessNumberActivity extends Activity implements OnClickListener{
+public class GuessNumberActivity extends BaseActivity implements OnClickListener{
 	
 	EditText input;
 	Button[] numberBtn = new Button[10];

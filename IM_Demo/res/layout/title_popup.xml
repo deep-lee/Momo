@@ -14,5 +14,5 @@
         android:listSelector="@drawable/title_list_selector"
         android:padding="3dp"
         android:scrollingCache="false" />
-
+           
 </LinearLayout>

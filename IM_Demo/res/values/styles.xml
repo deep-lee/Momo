@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
@@ -20,7 +20,7 @@
     
      <style name="ActionBar">
         <item name="android:orientation">horizontal</item>
-        <item name="android:background">@drawable/top_bar</item>
+        
         <item name="android:layout_width">fill_parent</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:layout_height">@dimen/base_action_bar_height</item>
@@ -28,7 +28,7 @@
     
       <style name="ActionBarTitle">
         <item name="android:textSize">@dimen/base_action_bar_title_size</item>
-        <item name="android:textColor">@color/base_color_text_white</item>
+        
         <item name="android:gravity">left|center</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">fill_parent</item>

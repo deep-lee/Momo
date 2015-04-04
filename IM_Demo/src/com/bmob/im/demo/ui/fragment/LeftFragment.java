@@ -3,11 +3,13 @@ package com.bmob.im.demo.ui.fragment;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import cn.bmob.im.BmobUserManager;
 
 import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
+import com.bmob.im.demo.adapter.SlideAdapter;
 import com.bmob.im.demo.bean.User;
 import com.bmob.im.demo.ui.AttractionsRomaActivity;
 import com.bmob.im.demo.ui.FragmentBase;
@@ -50,6 +52,8 @@ public class LeftFragment extends Fragment {
     private List<String> mDatas = Arrays  
             .asList("我的游戏","设置", "景点漫游","关于", "退出登陆");  
     private ListAdapter mAdapter;  
+    
+    List<Map<String, Object>> list;
 
     
     public LeftFragment() {
@@ -60,7 +64,7 @@ public class LeftFragment extends Fragment {
 	public LeftFragment(Context context) {
 		super();
 		this.context = context;
-
+		
 	}
 
 	@Override  
@@ -90,8 +94,11 @@ public class LeftFragment extends Fragment {
         
         mCategories = (ListView) mView  
                 .findViewById(R.id.slide_listview);  
-        mAdapter = new ArrayAdapter<String>(getActivity(),  
-                android.R.layout.simple_list_item_1, mDatas);  
+//        mAdapter = new ArrayAdapter<String>(getActivity(),  
+//                android.R.layout.simple_list_item_1, mDatas);  
+        
+        SlideAdapter mAdapter = new SlideAdapter(context);   
+        
         mCategories.setAdapter(mAdapter);  
         //菜单点击事件
         mCategories.setOnItemClickListener(new OnItemClickListener() {

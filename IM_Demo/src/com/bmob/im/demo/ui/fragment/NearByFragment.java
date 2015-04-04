@@ -97,9 +97,7 @@ public class NearByFragment extends FragmentBase implements OnClickListener{
 	private void initView() {
 		// TODO Auto-generated method stub
 		
-		
-		
-		initTopBarForRight("附近的人", R.drawable.more2, new onRightImageButtonClickListener() {
+		initTopBarForRight("附近的人", R.drawable.base_action_bar_nears_sex_selector, new onRightImageButtonClickListener() {
 			
 			@Override
 			public void onClick(View v) {
