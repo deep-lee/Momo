@@ -10,6 +10,7 @@ import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.bean.User;
 import com.bmob.im.demo.ui.AttractionsRomaActivity;
+import com.bmob.im.demo.ui.FragmentBase;
 import com.bmob.im.demo.ui.LoginActivity;
 import com.bmob.im.demo.ui.MainActivity;
 import com.bmob.im.demo.ui.MyGameActivity;
@@ -47,8 +48,9 @@ public class LeftFragment extends Fragment {
     TextView slideNick;
     
     private List<String> mDatas = Arrays  
-            .asList("我的游戏","设置", "地点漫游","关于", "退出登陆");  
+            .asList("我的游戏","设置", "景点漫游","关于", "退出登陆");  
     private ListAdapter mAdapter;  
+
     
     public LeftFragment() {
 
@@ -58,6 +60,7 @@ public class LeftFragment extends Fragment {
 	public LeftFragment(Context context) {
 		super();
 		this.context = context;
+
 	}
 
 	@Override  
@@ -98,9 +101,6 @@ public class LeftFragment extends Fragment {
 					long id) {
 				switch (position) {
 				case 0:
-					// Toast.makeText(getActivity(), position+"选中", Toast.LENGTH_LONG).show();
-					// 添加方法
-					
 					Intent gameIntent = new Intent();
 					gameIntent.setClass(context, MyGameActivity.class);
 					startActivity(gameIntent);
@@ -110,17 +110,14 @@ public class LeftFragment extends Fragment {
 					Intent intent = new Intent();
 					intent.setClass(context, SlideSetMyInfoActivity.class);
 					startActivity(intent);
-					// Toast.makeText(getActivity(), position+"选中", Toast.LENGTH_LONG).show();
-					//添加方法
 					break;
 					
 					// 地点漫游
 				case 2:
-					// Toast.makeText(getActivity(), position+"选中", Toast.LENGTH_LONG).show();
-					//添加方法
 					Intent romaIntent = new Intent();
 					romaIntent.setClass(context, AttractionsRomaActivity.class);
 					startActivity(romaIntent);
+					
 					break;	
 					
 					// 关于
@@ -132,7 +129,6 @@ public class LeftFragment extends Fragment {
 					CustomApplcation.getInstance().logout();
 					((MainActivity)context).finish();
 					startActivity(new Intent(context, LoginActivity.class));
-					//添加方法
 					break;
 				}
 			}

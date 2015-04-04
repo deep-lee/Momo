@@ -99,6 +99,6 @@
     <string name="only_male">只看男生</string>
     <string name="all_female_male">全部查看</string>
     <string name="title_activity_attractions_roma">AttractionsRomaActivity</string>
-   
+    <string name="title_activity_attractions_roma_map">AttractionsRomaMapActivity</string>
 
 </resources>

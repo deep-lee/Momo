@@ -98,7 +98,8 @@ public class NearPeopleMapActivity extends BaseActivity implements OnGetGeoCoder
 		int nearsSex = 2;
 		Boolean sexValue = null;
 		
-		BmobGeoPoint currentGeoPoint;
+		BmobGeoPoint currentGeoPoint = null;
+		BmobGeoPoint randomGeoPoint = null;
 	
 	
 	@SuppressLint("InflateParams")
@@ -126,6 +127,7 @@ public class NearPeopleMapActivity extends BaseActivity implements OnGetGeoCoder
 		}
 		
 		currentGeoPoint = (BmobGeoPoint) getIntent().getSerializableExtra("currentGeoPoint");
+		randomGeoPoint = (BmobGeoPoint) getIntent().getSerializableExtra("randomGeoPoint");
 		
 		initTopBarForLeft("附近的人");
 		initBaiduMap();
@@ -296,7 +298,13 @@ public class NearPeopleMapActivity extends BaseActivity implements OnGetGeoCoder
 		if(!mApplication.getLatitude().equals("")&&!mApplication.getLongtitude().equals("")){
 			double latitude = Double.parseDouble(mApplication.getLatitude());
 			double longtitude = Double.parseDouble(mApplication.getLongtitude());
-			BRequest.QUERY_LIMIT_COUNT = 20;
+			
+			if (randomGeoPoint != null) {
+				latitude = randomGeoPoint.getLatitude();
+				longtitude = randomGeoPoint.getLongitude();
+				QUERY_KILOMETERS = 10;
+			}
+			BRequest.QUERY_LIMIT_COUNT = 50;
 			//封装的查询方法，当进入此页面时 isUpdate为false，当下拉刷新的时候设置为true就行。
 			//此方法默认每页查询10条数据,若想查询多于10条，可在查询之前设置BRequest.QUERY_LIMIT_COUNT，如：BRequest.QUERY_LIMIT_COUNT=20
 			// 此方法是新增的查询指定1公里内的性别为女性的用户列表，默认包含好友列表
@@ -388,27 +396,6 @@ public class NearPeopleMapActivity extends BaseActivity implements OnGetGeoCoder
 		
 	}
 
-	/**
-	 * 回到聊天界面
-	 * @Title: gotoChatPage
-	 * @Description: TODO
-	 * @param
-	 * @return void
-	 * @throws
-	 */
-	private void gotoChatPage() {
-		if(lastLocation!=null){
-			Intent intent = new Intent();
-			intent.putExtra("y", lastLocation.getLongitude());// 经度
-			intent.putExtra("x", lastLocation.getLatitude());// 维度
-			intent.putExtra("address", lastLocation.getAddrStr());
-			setResult(RESULT_OK, intent);
-			this.finish();
-		}else{
-			ShowToast("获取地理位置信息失败!");
-		}
-	}
-
 	private void initLocClient() {
 		// 开启定位图层
 		mBaiduMap.setMyLocationEnabled(true);
@@ -427,11 +414,11 @@ public class NearPeopleMapActivity extends BaseActivity implements OnGetGeoCoder
 		option.setIgnoreKillProcess(true);
 		mLocClient.setLocOption(option);
 		mLocClient.start();
-		if (mLocClient != null && mLocClient.isStarted())
+		if (randomGeoPoint == null && mLocClient != null && mLocClient.isStarted())
 			// 请求定位
 		    mLocClient.requestLocation();
 
-		if (lastLocation != null) {
+		if (lastLocation != null && randomGeoPoint == null) {
 			// 显示在地图上
 			LatLng ll = new LatLng(lastLocation.getLatitude(),
 					lastLocation.getLongitude());
@@ -462,26 +449,58 @@ public class NearPeopleMapActivity extends BaseActivity implements OnGetGeoCoder
 			}
 			lastLocation = location;
 			
+			if (currentGeoPoint != null) {
+				currentGeoPoint.setLongitude(location.getLongitude());
+				currentGeoPoint.setLatitude(location.getLatitude());
+			}
+			
 			BmobLog.i("lontitude = " + location.getLongitude() + ",latitude = "
 					+ location.getLatitude() + ",地址 = "
 					+ lastLocation.getAddrStr());
-
-			MyLocationData locData = new MyLocationData.Builder()
-					.accuracy(location.getRadius())
-					// 此处设置开发者获取到的方向信息，顺时针0-360
-					.direction(100).latitude(location.getLatitude())
-					.longitude(location.getLongitude()).build();
-			mBaiduMap.setMyLocationData(locData);
-			LatLng ll = new LatLng(location.getLatitude(),
-					location.getLongitude());
-			String address = location.getAddrStr();
-			if (address != null && !address.equals("")) {
-				lastLocation.setAddrStr(address);
-			} else {
-				// 反Geo搜索
-				// 如果地址为空，就通过经度和纬度信息进行反向Geo搜索
-				mSearch.reverseGeoCode(new ReverseGeoCodeOption().location(ll));
+			
+			MyLocationData locData = null;
+			LatLng ll = null;
+			
+			if (randomGeoPoint == null) {
+				locData = new MyLocationData.Builder()
+				.accuracy(location.getRadius())
+				// 此处设置开发者获取到的方向信息，顺时针0-360
+				.direction(100).latitude(location.getLatitude())
+				.longitude(location.getLongitude()).build();
+				mBaiduMap.setMyLocationData(locData);
+				ll = new LatLng(location.getLatitude(),
+						location.getLongitude());
+				String address = location.getAddrStr();
+				if (address != null && !address.equals("")) {
+					lastLocation.setAddrStr(address);
+				} else {
+					// 反Geo搜索
+					// 如果地址为空，就通过经度和纬度信息进行反向Geo搜索
+					mSearch.reverseGeoCode(new ReverseGeoCodeOption().location(ll));
+				}
 			}
+			else {
+				locData = new MyLocationData.Builder()
+				.accuracy(location.getRadius())
+				// 此处设置开发者获取到的方向信息，顺时针0-360
+				.direction(100).latitude(randomGeoPoint.getLatitude())
+				.longitude(randomGeoPoint.getLongitude()).build();
+				mBaiduMap.setMyLocationData(locData);
+				ll = new LatLng(randomGeoPoint.getLatitude(),
+						randomGeoPoint.getLongitude());
+				String address = location.getAddrStr();
+				if (address != null && !address.equals("")) {
+					lastLocation.setAddrStr(address);
+				} else {
+					// 反Geo搜索
+					// 如果地址为空，就通过经度和纬度信息进行反向Geo搜索
+					mSearch.reverseGeoCode(new ReverseGeoCodeOption().location(ll));
+				}
+			}
+
+			
+			
+			
 			// 显示在地图上
 			MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
 			mBaiduMap.animateMapStatus(u);

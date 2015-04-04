@@ -771,6 +771,7 @@ public final class R {
         public static final int time=0x7f090046;
         public static final int tips=0x7f090026;
         public static final int title_activity_attractions_roma=0x7f090061;
+        public static final int title_activity_attractions_roma_map=0x7f090062;
         public static final int title_activity_game_fruit=0x7f090045;
         public static final int title_activity_guess_number=0x7f09004b;
         public static final int title_activity_mixed_color=0x7f090055;

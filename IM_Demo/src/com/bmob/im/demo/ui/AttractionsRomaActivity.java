@@ -80,7 +80,6 @@ public class AttractionsRomaActivity extends BaseActivity {
 		mShakeListener = new ShakeListener(AttractionsRomaActivity.this);
         mShakeListener.setOnShakeListener(new OnShakeListener() {
 			public void onShake() {
-				// startAnim();
 				
 				startVibrato();
 				
@@ -98,16 +97,19 @@ public class AttractionsRomaActivity extends BaseActivity {
 				new Handler().postDelayed(new Runnable(){
 					@Override
 					public void run(){
+						
+					stopFly();
 					mVibrator.cancel();
 					mShakeListener.start();
 					
 					Intent intent = new Intent();
 					intent.setClass(AttractionsRomaActivity.this, NearPeopleMapActivity.class);
 					intent.putExtra("currentGeoPoint", currentGeoPoint);
+					intent.putExtra("randomGeoPoint", randomGeoPoint);
 					startActivity(intent);
 					
 					}
-				}, 2000);
+				}, 2500);
 			}
 		});
 	}
@@ -117,9 +119,6 @@ public class AttractionsRomaActivity extends BaseActivity {
 		player = MediaPlayer.create(this, R.raw.awe);
 		player.setLooping(false);
         player.start();
-
-		
-		
 		mVibrator.vibrate( new long[]{500,200,500,200}, -1); 
 	}
 	

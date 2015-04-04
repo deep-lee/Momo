@@ -1,7 +1,5 @@
 package com.bmob.im.demo.ui.fragment;
 
-import android.R.integer;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
@@ -10,7 +8,6 @@ import android.os.Handler;
 import android.os.Vibrator;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewDebug.FlagToString;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
@@ -18,12 +15,10 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.TranslateAnimation;
 import android.widget.RelativeLayout;
-
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.ui.FragmentBase;
 import com.bmob.im.demo.ui.MainActivity;
 import com.bmob.im.demo.ui.NearPeopleMapActivity;
-import com.bmob.im.demo.ui.ShakeActivity;
 import com.bmob.im.demo.util.ActionItem;
 import com.bmob.im.demo.util.ShakeListener;
 import com.bmob.im.demo.util.ShakeListener.OnShakeListener;
@@ -32,7 +27,7 @@ import com.bmob.im.demo.view.TitlePopup;
 
 public class NearByFragment extends FragmentBase implements OnClickListener{
 	
-	ShakeListener mShakeListener = null;
+	public ShakeListener mShakeListener = null;
 	Vibrator mVibrator;
 	private RelativeLayout mImgUp;
 	private RelativeLayout mImgDn;
@@ -40,6 +35,7 @@ public class NearByFragment extends FragmentBase implements OnClickListener{
 	Context mContext;
 	TitlePopup titlePopup;
 	
+	public static Boolean flagShake = false;
 	
 	public int nearsSex;
 	
@@ -112,17 +108,22 @@ public class NearByFragment extends FragmentBase implements OnClickListener{
 			}
 		});
 		
-		mVibrator = (Vibrator)((MainActivity)mContext).getApplication().getSystemService(mContext.VIBRATOR_SERVICE);
+		mVibrator = (Vibrator)((MainActivity)mContext).getApplication().getSystemService(Context.VIBRATOR_SERVICE);
 		
 		mImgUp = (RelativeLayout) findViewById(R.id.fragment_shakeImgUp);
 		mImgDn = (RelativeLayout) findViewById(R.id.fragment_shakeImgDown);
 		
 		
 		mShakeListener = new ShakeListener((MainActivity)mContext);
+		
+
         mShakeListener.setOnShakeListener(new OnShakeListener() {
 			public void onShake() {
 				startAnim();
 				mShakeListener.stop();
+				
+				
+				ShowToast("现在是附近的人，不是景点漫游");
 				
 				startVibrato();
 				new Handler().postDelayed(new Runnable(){
@@ -130,7 +131,6 @@ public class NearByFragment extends FragmentBase implements OnClickListener{
 					public void run(){
 					mVibrator.cancel();
 					mShakeListener.start();
-					
 					Intent intent = new Intent();
 					intent.setClass(mContext, NearPeopleMapActivity.class);
 					intent.putExtra("nearsSex", nearsSex);
@@ -171,5 +171,4 @@ public class NearByFragment extends FragmentBase implements OnClickListener{
         player.start();
 		mVibrator.vibrate( new long[]{500,200,500,200}, -1); 
 	}
-	
 }

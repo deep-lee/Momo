@@ -45,7 +45,7 @@ public class MainActivity extends ActivityBase implements EventListener{
 	private ContactFragment contactFragment;
 	private RecentFragment recentFragment;
 	private SettingsFragment settingFragment;
-	private NearByFragment nearByFragment;
+	public NearByFragment nearByFragment;
 	private Fragment[] fragments;
 	private int index;
 	private int currentTabIndex;
@@ -65,8 +65,10 @@ public class MainActivity extends ActivityBase implements EventListener{
 		//开启广播接收器
 		initNewMessageBroadCast();
 		initTagMessageBroadCast();
+		
 		initView();
 		initTab();
+		
 	}
 
 	private void initView(){
@@ -181,6 +183,10 @@ public class MainActivity extends ActivityBase implements EventListener{
 		//清空
 		MyMessageReceiver.mNewNum=0;
 		
+		if (nearByFragment != null && nearByFragment.mShakeListener != null) {
+			nearByFragment.mShakeListener.start();
+		}
+		
 	}
 	
 	@Override
@@ -188,6 +194,10 @@ public class MainActivity extends ActivityBase implements EventListener{
 		// TODO Auto-generated method stub
 		super.onPause();
 		MyMessageReceiver.ehList.remove(this);// 取消监听推送的消息
+		
+		if (nearByFragment != null && nearByFragment.mShakeListener != null) {
+			nearByFragment.mShakeListener.stop();
+		}
 	}
 	
 	@Override
@@ -354,5 +364,6 @@ public class MainActivity extends ActivityBase implements EventListener{
 		//取消定时检测服务
 		BmobChat.getInstance(this).stopPollService();
 	}
+	
 	
 }

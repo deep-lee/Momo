@@ -22,7 +22,7 @@ public class Attractions {
 		attarctionsSet.add(new BmobGeoPoint(104.055,30.650696));  // 2 武侯祠
 		attarctionsSet.add(new BmobGeoPoint(103.620669,31.007682));  // 3 都江堰
 		attarctionsSet.add(new BmobGeoPoint(104.003307,30.55768));  // 4 川大江安校区
-		attarctionsSet.add(new BmobGeoPoint(16.942693,31.446724));  // 5 舒城中学
+		attarctionsSet.add(new BmobGeoPoint(116.942693,31.446724));  // 5 舒城中学
 		attarctionsSet.add(new BmobGeoPoint(109.291934,34.39444));  // 7 西安兵马俑
 		attarctionsSet.add(new BmobGeoPoint(118.194253,30.082226));  // 8 安徽黄山
 		attarctionsSet.add(new BmobGeoPoint(118.073672,24.452335));  // 9 厦门鼓浪屿
@@ -67,7 +67,7 @@ public class Attractions {
 	}
 	
 	public BmobGeoPoint getRandomAttractions() {
-		int random = (int)(Math.random() * 43);
+		int random = (int)(Math.random() * 42);
 		return attarctionsSet.get(random);
 	}
 	

@@ -221,8 +221,12 @@
             android:label="@string/title_activity_position_roam" >
         </activity>
         <activity
-            android:name="com.bmob.im.demo.ui.AttractionsRomaActivity"
+            android:name=".ui.AttractionsRomaActivity"
             android:label="@string/title_activity_attractions_roma" >
+        </activity>
+        <activity
+            android:name="com.bmob.im.demo.ui.AttractionsRomaMapActivity"
+            android:label="@string/title_activity_attractions_roma_map" >
         </activity>
     </application>
 
