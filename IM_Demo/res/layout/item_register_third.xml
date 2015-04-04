@@ -5,27 +5,42 @@
     android:orientation="vertical" >
     
     
-    <LinearLayout 
-           style="@style/Register_Input">
-           
+    <RelativeLayout
+        android:id="@+id/register_game_choose_layout"
+       style="@style/Register_Input">
+
+        <TextView
+            style="@style/Smile.TextView._Black"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10.0dp"
+            android:textStyle="bold"
+            android:text="选择游戏" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
+
             <TextView
-            	style="@style/Smile.TextView._Black"
-            	android:layout_height="match_parent"
-           		android:gravity="center_vertical"
-            	android:paddingLeft="10dp"
-            	android:text="解锁游戏"
-            	android:textStyle="bold" />
+                android:id="@+id/register_game_choose_show"
+                style="@style/Smile.TextView._Black"
+                android:drawablePadding="10dp" 
+                android:textColor="#FF3E96"
+                android:text="水果连连看"/>
             
-            <Spinner 
-                android:layout_marginLeft="20dp"
-                android:id="@+id/register_game_select_spinner"
-           		android:layout_width="fill_parent"
-           		android:layout_marginRight="20dp"
-           		android:background="@drawable/spinner_bg"
-           		android:layout_gravity="center"
-           		android:layout_height="35dp"/>
-           
-       </LinearLayout>
+            <ImageView
+                android:id="@+id/register_game_arrow"
+                style="@style/Smile.ImageView"
+                android:layout_width="20dp"
+                android:contentDescription="@string/action_settings"
+                android:src="@drawable/register_bottom_arrow" />
+            
+        </LinearLayout>
+    </RelativeLayout>
        
         <RelativeLayout
         	android:id="@+id/register_avator"

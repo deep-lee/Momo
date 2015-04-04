@@ -22,7 +22,7 @@
             	android:hint="@string/login_nick_tip" />
     	</LinearLayout>
     
-    	<LinearLayout 
+    	<RelativeLayout 
         	style="@style/Register_Input">
         
         	<TextView
@@ -33,32 +33,31 @@
             	android:text="@string/register_select_sex"
             	android:textStyle="bold" />
         
-        	<RadioGroup 
-            	android:id="@+id/sex_radioGroup" 
-            	android:orientation="horizontal"
-            	android:contentDescription="性别" 
-            	android:layout_width="wrap_content" 
-            	android:layout_height="wrap_content">
-            
-            	<RadioButton 
-                	android:layout_marginLeft="50dp"
-                	android:layout_width="wrap_content" 
-                	android:layout_height="wrap_content" 
-                	android:id="@+id/radioMale" 
-                	android:text="男" 
-                	android:checked="true"/>
-            
-            	<RadioButton 
-                	android:layout_marginLeft="50dp"
-                	android:layout_width="wrap_content" 
-                	android:layout_height="wrap_content" 
-                	android:id="@+id/radioFemale" 
-                	android:text="女"/>
-            
-       	 	</RadioGroup>
-    	</LinearLayout>
+        	<ImageView 
+        	    android:id="@+id/sex_select_man"
+        	    android:layout_width="wrap_content"
+        	    android:layout_height="wrap_content"
+        	    android:layout_gravity="center"
+        	    android:layout_alignParentRight="true"
+            	android:layout_centerVertical="true"
+            	android:layout_marginRight="10dp"
+        	    android:src="@drawable/sex_man"/>   
+        	    
+        	<ImageView 
+        	    android:id="@+id/sex_select_woman"
+        	    android:layout_width="wrap_content"
+        	    android:layout_height="wrap_content"
+        	    android:layout_gravity="center"
+        	    android:layout_alignParentRight="true"
+            	android:layout_centerVertical="true"
+            	android:layout_marginRight="10dp"
+            	android:visibility="invisible"
+        	    android:src="@drawable/sex_woman"/> 	 	
+        </RelativeLayout>
+        
     	
-    	<LinearLayout 
+    	
+    	<RelativeLayout 
     	    android:id="@+id/register_second_birthday_choose"
     	    style="@style/Register_Input">
     	    
@@ -76,9 +75,13 @@
     	        android:layout_height="wrap_content"
     	        android:layout_marginLeft="80dp"
     	        android:textSize="15dp"
+    	        android:layout_gravity="center"
+    	        android:layout_marginRight="10dp"
+        	    android:layout_alignParentRight="true"
+            	android:layout_centerVertical="true"
     	        android:text="点击选择生日"/>
     	    
-    	</LinearLayout>
+    	</RelativeLayout>
     
 
 </LinearLayout>

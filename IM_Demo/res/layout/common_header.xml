@@ -21,7 +21,7 @@
         android:layout_centerVertical="true"
         android:gravity="center"
         android:orientation="horizontal" >
-
+ 
         <TextView
             android:id="@+id/header_htv_subtitle"
             style="@style/ActionBarTitle"

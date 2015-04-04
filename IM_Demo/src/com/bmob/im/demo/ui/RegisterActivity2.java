@@ -67,9 +67,10 @@ public class RegisterActivity2 extends BaseActivity implements OnClickListener{
 	Button back, next;
 	EditText et_username, et_password, et_email, et_nick;
 	View birthView;
-	RadioGroup sex_select; // 性别选择
 	Boolean sex;
-	Spinner gameChoose;
+	RelativeLayout gameChoose;
+	TextView gameChooseShow;
+	ImageView sexMan, sexWoman;
 	
 	ArrayAdapter adapter;
 	
@@ -82,7 +83,7 @@ public class RegisterActivity2 extends BaseActivity implements OnClickListener{
 	WheelMain wheelMain;
 	
 	
-	String gameType = "";
+	String gameType = "水果连连看";
 	
 	
 	ViewFlipper viewFlipper;
@@ -114,7 +115,9 @@ public class RegisterActivity2 extends BaseActivity implements OnClickListener{
 		// 只有左边有按钮以及标题
 		initTopBarForLeft("注册");
 		birthView = findViewById(R.id.register_second_birthday_choose);
-		gameChoose = (Spinner) findViewById(R.id.register_game_select_spinner);
+		gameChoose = (RelativeLayout) findViewById(R.id.register_game_choose_layout);
+		gameChoose.setOnClickListener(this);
+		gameChooseShow = (TextView) findViewById(R.id.register_game_choose_show);
 		viewFlipper = (ViewFlipper) findViewById(R.id.reg_vf_viewflipper);
 		
 		back = (Button) findViewById(R.id.reg_btn_previous);
@@ -126,7 +129,10 @@ public class RegisterActivity2 extends BaseActivity implements OnClickListener{
 		et_password = (EditText) findViewById(R.id.et_password);
 		et_nick = (EditText) findViewById(R.id.et_nick);
 		et_email = (EditText) findViewById(R.id.et_email);
-		sex_select = (RadioGroup) findViewById(R.id.sex_radioGroup);
+		sexMan = (ImageView) findViewById(R.id.sex_select_man);
+		sexWoman = (ImageView) findViewById(R.id.sex_select_woman);
+		sexMan.setOnClickListener(this);
+		sexWoman.setOnClickListener(this);
 		sex = true;
 		back.setText("返回");
 		
@@ -141,51 +147,7 @@ public class RegisterActivity2 extends BaseActivity implements OnClickListener{
 		adapter = ArrayAdapter.createFromResource(this, R.array.games, android.R.layout.simple_spinner_item);
 		 
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-	 
-		gameChoose.setAdapter(adapter);
-		
-		gameChoose.setSelection(0);
-		
-		gameChoose.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
-			@Override
-			public void onItemSelected(AdapterView<?> parent, View view,
-					int position, long id) {
-				// TODO Auto-generated method stub
-				switch (position) {
-				case 0:
-					gameType = "水果连连看";
-					break;
-				case 1:
-					gameType = "猜数字";
-					break;
-				case 2:
-					gameType = "mixed color";
-					break;
-				}
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> parent) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
-		
-		sex_select.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-			
-			@Override
-			public void onCheckedChanged(RadioGroup group, int checkedId) {
-				// TODO Auto-generated method stub
-				int id = group.getCheckedRadioButtonId();
-				if (id == R.id.radioMale) {
-					sex = true;
-				}
-				else {
-					sex = false;
-				}
-			}
-		});
 		
 		back.setOnClickListener(this);
 		next.setOnClickListener(this);
@@ -625,11 +587,53 @@ public class RegisterActivity2 extends BaseActivity implements OnClickListener{
 			
 		case R.id.register_second_birthday_choose:
 			seleteBirth();
-            
+		case R.id.sex_select_man:
+			sex = false;
+			sexMan.setVisibility(View.GONE);
+			sexWoman.setVisibility(View.VISIBLE);
+			break;
+		case R.id.sex_select_woman:
+			sex = true;
+			sexMan.setVisibility(View.VISIBLE);
+			sexWoman.setVisibility(View.GONE);
+			break;
+		case R.id.register_game_choose_layout:
+			showGameChooseDialog();
 			break;
 		default:
 			break;
 		}
+	}
+	
+	String[] games = new String[]{ "水果连连看", "猜数字", "mixed color" };
+	private void showGameChooseDialog() {
+		new AlertDialog.Builder(this)
+		.setTitle("单选框")
+		.setIcon(android.R.drawable.ic_dialog_info)
+		.setSingleChoiceItems(games, 0,
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog,
+							int which) {
+						BmobLog.i("点击的是"+games[which]);
+						switch (which) {
+						case 0:
+							gameType = "水果连连看";
+							break;
+						case 1:
+							gameType = "猜数字";
+							break;
+						case 2:
+							gameType = "mixed color";
+							break;
+						default:
+							break;
+						}
+						gameChooseShow.setText(gameType);
+						dialog.dismiss();
+					}
+				})
+		.setNegativeButton("取消", null)
+		.show();
 	}
 	
 	public Boolean getHasChoseBirth() {

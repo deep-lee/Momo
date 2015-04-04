@@ -377,7 +377,7 @@ public class GuessNumberActivity extends Activity implements OnClickListener{
 				});
 			}
 			else if(isBigger == 0){
-				lefTextView.setVisibility(View.INVISIBLE);
+				lefTextView.setVisibility(View.GONE);
 				trueOrFalseView.setText("你猜对了！");
 				soundPlay.play(ID_SOUND_WIN, 0);
 				
@@ -429,7 +429,7 @@ public class GuessNumberActivity extends Activity implements OnClickListener{
 			});
 			
 			if(isBigger == 0){
-				lefTextView.setVisibility(View.INVISIBLE);
+				lefTextView.setVisibility(View.GONE);
 				trueOrFalseView.setText("你猜对了！");
 				soundPlay.play(ID_SOUND_WIN, 0);
 				
@@ -469,7 +469,7 @@ public class GuessNumberActivity extends Activity implements OnClickListener{
 				}
 			}
 			else {
-				lefTextView.setVisibility(View.INVISIBLE);
+				lefTextView.setVisibility(View.GONE);
 				trueOrFalseView.setText("你输了！");
 				
 				soundPlay.play(ID_SOUND_LOSE, 0);
