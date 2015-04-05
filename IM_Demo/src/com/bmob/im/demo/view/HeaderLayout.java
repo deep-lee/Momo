@@ -179,6 +179,7 @@ public class HeaderLayout extends LinearLayout {
 		} else {
 			mHtvSubTitle.setVisibility(View.GONE);
 		}
+		
 	}
 
 	public void setTitleAndRightButton(CharSequence title, int backid,String text,

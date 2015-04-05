@@ -14,20 +14,28 @@ import android.widget.TextView;
 public class SlideAdapter extends BaseAdapter{
 	
 	private int iconId[] = {
-		R.drawable.slide_item_game,	
-		R.drawable.slide_item_game,
-		R.drawable.slide_item_game,
-		R.drawable.slide_item_game,
-		R.drawable.slide_item_game
+		R.drawable.slide_icon_game,	
+		R.drawable.slide_icon_set,
+		R.drawable.slide_icon_roma,
+		R.drawable.slide_icon_about,
+		R.drawable.slide_icon_exit
 	};
 	
-	private String slideItemName[] = {
-		"我的游戏",
-		"设置",
-		"景点漫游",
-		"关于",
-		"退出登录"
-	};
+//	private String slideItemName[] = {
+//		"我的游戏",
+//		"设置",
+//		"景点漫游",
+//		"关于",
+//		"退出登录"
+//	};
+	
+	private int itemName[] = {
+			R.drawable.slide_list_item_game,	
+			R.drawable.slide_list_item_set,
+			R.drawable.slide_list_item_roma,
+			R.drawable.slide_list_item_about,
+			R.drawable.slide_list_item_exit
+		};
 	
 	private Context context;
     
@@ -73,9 +81,9 @@ public class SlideAdapter extends BaseAdapter{
         
         //得到条目中的子组件
        ImageView icon = (ImageView) convertView.findViewById(R.id.item_icon);
-       TextView name = (TextView) convertView.findViewById(R.id.item_name);
+       ImageView name = (ImageView) convertView.findViewById(R.id.item_name);
         
-       name.setText(slideItemName[position]);
+       name.setImageResource(itemName[position]);
        icon.setImageResource(iconId[position]);
         
        return convertView;

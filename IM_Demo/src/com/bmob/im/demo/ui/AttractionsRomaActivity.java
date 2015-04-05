@@ -56,7 +56,7 @@ public class AttractionsRomaActivity extends BaseActivity {
 		
 		attractions = new Attractions();
 		
-		initTopBarForLeft("景点漫游");
+		initTopBarForLeft("景点穿越");
 		tips = (ImageView) findViewById(R.id.attractions_roma_tips);
 		
 		mVibrator = (Vibrator)getApplication().getSystemService(VIBRATOR_SERVICE);

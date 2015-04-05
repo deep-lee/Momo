@@ -1,6 +1,7 @@
 package com.bmob.im.demo.ui;
 
 import android.R.bool;
+import android.R.integer;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;

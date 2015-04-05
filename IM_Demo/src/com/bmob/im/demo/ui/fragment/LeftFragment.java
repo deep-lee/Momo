@@ -1,6 +1,7 @@
 package com.bmob.im.demo.ui.fragment;
 
 
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -17,13 +18,16 @@ import com.bmob.im.demo.ui.LoginActivity;
 import com.bmob.im.demo.ui.MainActivity;
 import com.bmob.im.demo.ui.MyGameActivity;
 import com.bmob.im.demo.ui.SlideSetMyInfoActivity;
+import com.bmob.im.demo.util.FontManager;
 import com.bmob.im.demo.util.ImageLoadOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -76,6 +80,7 @@ public class LeftFragment extends Fragment {
             initView(inflater, container);  
         }  
         return mView;  
+        
     }  
   
     private void initView(LayoutInflater inflater, ViewGroup container)  

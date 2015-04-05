@@ -5,11 +5,17 @@ import java.util.List;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import cn.bmob.im.BmobChatManager;
 import cn.bmob.im.BmobUserManager;
@@ -22,6 +28,7 @@ import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.bean.User;
 import com.bmob.im.demo.util.CollectionUtils;
+import com.bmob.im.demo.util.FontManager;
 import com.bmob.im.demo.view.HeaderLayout;
 import com.bmob.im.demo.view.HeaderLayout.HeaderStyle;
 import com.bmob.im.demo.view.HeaderLayout.onLeftImageButtonClickListener;
@@ -58,6 +65,8 @@ public class BaseActivity extends FragmentActivity {
 		getWindowManager().getDefaultDisplay().getMetrics(metric);
 		mScreenWidth = metric.widthPixels;
 		mScreenHeight = metric.heightPixels;
+		
+		
 	}
 
 	Toast mToast;
@@ -269,4 +278,23 @@ public class BaseActivity extends FragmentActivity {
 			}
 		}
 	}
+	
+//	public View findViewById(int id){
+//		  
+//		View v = super.findViewById(id);
+//		Typeface tf = Typeface.createFromAsset(this.getAssets(), "fonts/123.otf");
+//		  
+//		if (v instanceof TextView) {
+//              
+//			((TextView) v).setTypeface(tf);
+//        }else if (v instanceof Button) {
+//              
+//        	((Button) v).setTypeface(tf);
+//        } else if (v instanceof EditText) {
+//              
+//        	((EditText) v).setTypeface(tf);
+//        }
+//		
+//		return v;
+//	}
 }
