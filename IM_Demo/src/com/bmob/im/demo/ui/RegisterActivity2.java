@@ -50,6 +50,7 @@ import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 import cn.bmob.v3.listener.UploadFileListener;
 
+import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.bean.User;
 import com.bmob.im.demo.config.BmobConstants;
@@ -550,6 +551,9 @@ public class RegisterActivity2 extends BaseActivity implements OnClickListener{
 				updateUserLocation();
 				//发广播通知登陆页面退出
 				sendBroadcast(new Intent(BmobConstants.ACTION_REGISTER_SUCCESS_FINISH));
+				
+//				updateUserPhotoWall();
+				
 				// 启动主页
 				Intent intent = new Intent(RegisterActivity2.this,MainActivity.class);
 				startActivity(intent);
@@ -567,6 +571,27 @@ public class RegisterActivity2 extends BaseActivity implements OnClickListener{
 		});
 	}
 
+//	public void updateUserPhotoWall(){
+//		User u = (User) userManager.getCurrentUser(User.class);
+//		final User user = new User();
+//		user.setObjectId(u.getObjectId());
+//		user.setPhotoWallFile("tttttttttttttttttt");
+//		
+//		user.update(this, new UpdateListener() {
+//			
+//			@Override
+//			public void onSuccess() {
+//				// TODO Auto-generated method stub
+//				ShowToast("111111111111");
+//			}
+//			
+//			@Override
+//			public void onFailure(int arg0, String arg1) {
+//				// TODO Auto-generated method stub
+//				ShowToast("222222222222222");
+//			}
+//		});
+//	}
 
 	@Override
 	public void onClick(View v) {

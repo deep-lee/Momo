@@ -279,22 +279,4 @@ public class BaseActivity extends FragmentActivity {
 		}
 	}
 	
-//	public View findViewById(int id){
-//		  
-//		View v = super.findViewById(id);
-//		Typeface tf = Typeface.createFromAsset(this.getAssets(), "fonts/123.otf");
-//		  
-//		if (v instanceof TextView) {
-//              
-//			((TextView) v).setTypeface(tf);
-//        }else if (v instanceof Button) {
-//              
-//        	((Button) v).setTypeface(tf);
-//        } else if (v instanceof EditText) {
-//              
-//        	((EditText) v).setTypeface(tf);
-//        }
-//		
-//		return v;
-//	}
 }

@@ -1,4 +1,7 @@
-package com.bmob.im.demo;
+package com.bmob.im.demo.ui;
+
+import com.bmob.im.demo.R;
+import com.bmob.im.demo.R.layout;
 
 import android.app.Activity;
 import android.os.Bundle;

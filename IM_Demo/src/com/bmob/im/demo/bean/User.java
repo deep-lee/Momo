@@ -1,5 +1,7 @@
 package com.bmob.im.demo.bean;
 
+import java.util.ArrayList;
+
 import cn.bmob.im.bean.BmobChatUser;
 import cn.bmob.v3.datatype.BmobGeoPoint;
 import cn.bmob.v3.datatype.BmobRelation;
@@ -39,7 +41,16 @@ public class User extends BmobChatUser {
 	
 	private String gameDifficulty;
 	
+	private String photoWallFile;
 	
+	
+	
+	public String getPhotoWallFile() {
+		return photoWallFile;
+	}
+	public void setPhotoWallFile(String photoWallFile) {
+		this.photoWallFile = photoWallFile;
+	}
 	public String getGameDifficulty() {
 		return gameDifficulty;
 	}

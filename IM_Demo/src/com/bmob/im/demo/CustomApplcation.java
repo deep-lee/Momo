@@ -1,6 +1,7 @@
 package com.bmob.im.demo;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,6 +46,8 @@ public class CustomApplcation extends Application {
 
 	// 上一次定位到的经纬度
 	public static BmobGeoPoint lastPoint = null;
+	
+	public ArrayList<String> myWallPhoto;
 
 	@Override
 	public void onCreate() {
@@ -59,6 +62,7 @@ public class CustomApplcation extends Application {
 	private void init() {
 		mMediaPlayer = MediaPlayer.create(this, R.raw.notify);
 		mNotificationManager = (NotificationManager) getSystemService(android.content.Context.NOTIFICATION_SERVICE);
+		myWallPhoto = new ArrayList<String>();
 		
 		// 初始化ImageLoader
 		initImageLoader(getApplicationContext());

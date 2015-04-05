@@ -79,7 +79,8 @@ public class SetMyInfoActivity extends ActivityBase implements OnClickListener {
 	LinearLayout layout_all;
 
 	Button btn_chat, btn_back, btn_add_friend;
-	RelativeLayout layout_head, layout_nick, layout_gender, layout_black_tips, layout_birthday, layout_game, layout_game_difficulty;
+	RelativeLayout layout_head, layout_nick, layout_gender, layout_black_tips, 
+					layout_birthday, layout_game, layout_game_difficulty, layout_photo_wall;
 
 	String from = "";
 	String username = "";
@@ -123,6 +124,8 @@ public class SetMyInfoActivity extends ActivityBase implements OnClickListener {
 		layout_nick = (RelativeLayout) findViewById(R.id.layout_nick); // 昵称布局
 		layout_gender = (RelativeLayout) findViewById(R.id.layout_gender); // 性别布局
 		layout_game_difficulty = (RelativeLayout) findViewById(R.id.layout_game_difficulty); // 游戏难度布局
+		layout_photo_wall = (RelativeLayout) findViewById(R.id.layout_photo_wall);
+		layout_photo_wall.setOnClickListener(this);
 		
 		iv_sexarrow = (ImageView) findViewById(R.id.iv_sexarraw);
 		iv_birthdayarrow = (ImageView) findViewById(R.id.iv_birthdayarraw);
@@ -330,6 +333,12 @@ public class SetMyInfoActivity extends ActivityBase implements OnClickListener {
 			break;
 		case R.id.layout_game_difficulty:
 			showGameDifficultyChooseDialog();
+			break;
+		case R.id.layout_photo_wall:
+			Intent intent2 = new Intent();
+			intent2.setClass(SetMyInfoActivity.this, PhotoWallActivity.class);
+			intent2.putExtra("from", from);
+			startActivity(intent2);
 			break;
 		}
 	}

@@ -5,7 +5,7 @@
     android:versionName="1.1.5" >
 
     <uses-sdk
-        android:minSdkVersion="11"
+        android:minSdkVersion="12"
         android:targetSdkVersion="14" />
 
     <supports-screens
@@ -217,7 +217,7 @@
             android:label="@string/title_activity_my_game" >
         </activity>
         <activity
-            android:name=".PositionRoamActivity"
+            android:name=".ui.PositionRoamActivity"
             android:label="@string/title_activity_position_roam" >
         </activity>
         <activity
@@ -225,8 +225,17 @@
             android:label="@string/title_activity_attractions_roma" >
         </activity>
         <activity
-            android:name="com.bmob.im.demo.ui.AttractionsRomaMapActivity"
+            android:name=".ui.AttractionsRomaMapActivity"
             android:label="@string/title_activity_attractions_roma_map" >
+        </activity>
+        <activity
+            android:name=".ui.PhotoWallActivity"
+            android:label="@string/title_activity_photo_wall" >
+        </activity>
+        <activity
+            android:name="com.bmob.im.demo.ui.SelectPictureActivity"
+            android:label="@string/title_activity_select_picture" 
+            android:theme="@style/DialogStyleBottom">
         </activity>
     </application>
 

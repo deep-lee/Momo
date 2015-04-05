@@ -1,5 +1,8 @@
 package com.bmob.im.demo.ui;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -20,6 +23,7 @@ import cn.bmob.im.config.BmobConfig;
 import cn.bmob.im.db.BmobDB;
 import cn.bmob.im.inteface.EventListener;
 
+import com.bmob.BmobProFile;
 import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.MyMessageReceiver;
 import com.bmob.im.demo.R;
@@ -84,6 +88,35 @@ public class MainActivity extends ActivityBase implements EventListener{
 		mTabs[0].setSelected(true);
 		
 		initLeftView();
+		
+		// 启动获取照片墙的线程
+		initWallPhoto();
+	}
+	
+	private void initWallPhoto() {
+		
+		Thread newThread; //声明一个子线程
+		newThread = new Thread(new Runnable() {
+		    @Override
+		    public void run() {
+		    	//这里写入子线程需要做的工作
+		    	// 当前的user
+		    	User u = (User) userManager.getCurrentUser(User.class);
+		    	String allPhoto = u.getPhotoWallFile();
+		    	if (allPhoto != null) {
+		    		String myPhotoOrigin[] = allPhoto.split(";");
+			    	for (int i = 0; i < myPhotoOrigin.length; i++) {
+			    		String photo[] = myPhotoOrigin[i].split("_");
+			    		String URL = BmobProFile.getInstance(MainActivity.this).
+			    				signURL(photo[0],photo[1],
+			    						"802bd62ef67cd4ba3fc8211835b432d4",100,"deeplee");
+			    		mApplication.myWallPhoto.add(URL);
+					}
+				}
+		    }
+		});
+		newThread.start(); //启动线程
+		    
 	}
 		
 		
