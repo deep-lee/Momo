@@ -57,6 +57,7 @@
         android:background="@drawable/base_horizontal_line" >
     </View>
 
+    <!-- 
     <LinearLayout
         android:id="@+id/layout_near"
         android:layout_width="match_parent"
@@ -92,12 +93,13 @@
         android:layout_below="@id/layout_near"
         android:background="@drawable/base_horizontal_line" >
     </View>
+     -->
     
     <LinearLayout
         android:id="@+id/layout_black_new"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/line2"
+        android:layout_below="@id/line1"
         android:clickable="true"
         android:orientation="horizontal" >
 
@@ -108,7 +110,7 @@
             android:layout_marginTop="6.0dip"
             android:contentDescription="@string/action_settings"
             android:padding="5dp"
-            android:src="@drawable/icon_near" />
+            android:src="@drawable/black_list_icon" />
 
         <TextView
             style="@style/Smile.TextView._Black"

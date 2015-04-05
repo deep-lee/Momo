@@ -220,7 +220,7 @@ public class ContactFragment extends FragmentBase implements OnItemClickListener
 	ImageView iv_msg_tips;
 	TextView tv_new_name;
 	LinearLayout layout_new;//新朋友
-	LinearLayout layout_near;//附近的人
+	// LinearLayout layout_near;//附近的人
 	LinearLayout layout_black;// 黑名单
 	
 	private void initListView() {
@@ -233,8 +233,8 @@ public class ContactFragment extends FragmentBase implements OnItemClickListener
 		// 新的好友
 		layout_new =(LinearLayout)headView.findViewById(R.id.layout_new);
 		
-		// 附近的人
-		layout_near =(LinearLayout)headView.findViewById(R.id.layout_near);
+//		// 附近的人
+//		layout_near =(LinearLayout)headView.findViewById(R.id.layout_near);
 		
 		layout_black = (LinearLayout) headView.findViewById(R.id.layout_black_new);
 		
@@ -248,15 +248,15 @@ public class ContactFragment extends FragmentBase implements OnItemClickListener
 				startAnimActivity(intent);
 			}
 		});
-		layout_near.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				Intent intent = new Intent(getActivity(), ShakeActivity.class);
-				startAnimActivity(intent);
-			}
-		});
+//		layout_near.setOnClickListener(new OnClickListener() {
+//			
+//			@Override
+//			public void onClick(View arg0) {
+//				// TODO Auto-generated method stub
+//				Intent intent = new Intent(getActivity(), ShakeActivity.class);
+//				startAnimActivity(intent);
+//			}
+//		});
 		
 		layout_black.setOnClickListener(new OnClickListener() {
 			
