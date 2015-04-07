@@ -103,15 +103,16 @@ public class MainActivity extends ActivityBase implements EventListener{
 		    	// µ±Ç°µÄuser
 		    	User u = (User) userManager.getCurrentUser(User.class);
 		    	String allPhoto = u.getPhotoWallFile();
-		    	if (allPhoto != null) {
+		    	if ((allPhoto != null) && (!allPhoto.equals(""))) {
 		    		String myPhotoOrigin[] = allPhoto.split(";");
-			    	for (int i = 0; i < myPhotoOrigin.length; i++) {
-			    		String photo[] = myPhotoOrigin[i].split("_");
-			    		String URL = BmobProFile.getInstance(MainActivity.this).
-			    				signURL(photo[0],photo[1],
-			    						"802bd62ef67cd4ba3fc8211835b432d4",100,"deeplee");
-			    		mApplication.myWallPhoto.add(URL);
+		    		
+		    		CustomApplcation.numOfPhoto = myPhotoOrigin.length;
+		    		
+		    		for (int i = 0; i < myPhotoOrigin.length; i++) {
+						CustomApplcation.myWallPhoto.add(myPhotoOrigin[i]);
+						ShowToast(myPhotoOrigin[i]);
 					}
+		    		
 				}
 		    }
 		});

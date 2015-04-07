@@ -104,5 +104,11 @@
     <string name="title_activity_photo_wall">PhotoWallActivity</string>
     <string name="set_info_photo_wall">照片墙</string>
     <string name="title_activity_select_picture">SelectPictureActivity</string>
+    <string name="title_activity_image_show">ImageShowActivity</string>
+    <string name="title_activity_photo_wall_fall">PhotoWallFallActivity</string>
+    <string name="border_top">Border Top</string>
+    <string name="border_bottom">Border Bottom</string>
+    <string name="image_url">Image Url</string>
+    <string name="title_activity_image_details">ImageDetailsActivity</string>
 
 </resources>

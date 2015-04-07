@@ -160,7 +160,7 @@
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".MyMessageReceiver" >
+        <receiver android:name="com.bmob.im.demo.MyMessageReceiver" >
             <intent-filter>
                 <action android:name="cn.bmob.push.action.MESSAGE" />
             </intent-filter>
@@ -233,9 +233,21 @@
             android:label="@string/title_activity_photo_wall" >
         </activity>
         <activity
-            android:name="com.bmob.im.demo.ui.SelectPictureActivity"
-            android:label="@string/title_activity_select_picture" 
-            android:theme="@style/DialogStyleBottom">
+            android:name=".ui.SelectPictureActivity"
+            android:label="@string/title_activity_select_picture"
+            android:theme="@style/DialogStyleBottom" >
+        </activity>
+        <activity
+            android:name=".ui.ImageShowActivity"
+            android:label="@string/title_activity_image_show" >
+        </activity>
+        <activity
+            android:name=".ui.PhotoWallFallActivity"
+            android:label="@string/title_activity_photo_wall_fall" >
+        </activity>
+        <activity
+            android:name="com.bmob.im.demo.ui.ImageDetailsActivity"
+            android:label="@string/title_activity_image_details" >
         </activity>
     </application>
 

@@ -131,10 +131,10 @@ public class SetMyInfoActivity extends ActivityBase implements OnClickListener {
 		iv_birthdayarrow = (ImageView) findViewById(R.id.iv_birthdayarraw);
 		iv_gamearrow = (ImageView) findViewById(R.id.iv_gamearraw);
 		
-		iv_sexarrow.setVisibility(View.INVISIBLE);
-		iv_birthdayarrow.setVisibility(View.INVISIBLE);
-		iv_gamearrow.setVisibility(View.INVISIBLE);
-		layout_game_difficulty.setVisibility(View.INVISIBLE);
+		iv_sexarrow.setVisibility(View.GONE);
+		iv_birthdayarrow.setVisibility(View.GONE);
+		iv_gamearrow.setVisibility(View.GONE);
+		layout_game_difficulty.setVisibility(View.GONE);
 		
 		layout_birthday = (RelativeLayout) findViewById(R.id.layout_birthday);
 		layout_game = (RelativeLayout) findViewById(R.id.layout_game);
@@ -169,7 +169,7 @@ public class SetMyInfoActivity extends ActivityBase implements OnClickListener {
 			layout_game_difficulty.setOnClickListener(this);
 		} else {
 			initTopBarForLeft("详细资料");
-			iv_nickarraw.setVisibility(View.INVISIBLE);
+			iv_nickarraw.setVisibility(View.GONE);
 			iv_arraw.setVisibility(View.INVISIBLE);
 			//不管对方是不是你的好友，均可以发送消息--BmobIM_V1.1.2修改
 			btn_chat.setEnabled(true);
@@ -336,7 +336,7 @@ public class SetMyInfoActivity extends ActivityBase implements OnClickListener {
 			break;
 		case R.id.layout_photo_wall:
 			Intent intent2 = new Intent();
-			intent2.setClass(SetMyInfoActivity.this, PhotoWallActivity.class);
+			intent2.setClass(SetMyInfoActivity.this, PhotoWallFallActivity.class);
 			intent2.putExtra("from", from);
 			startActivity(intent2);
 			break;

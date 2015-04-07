@@ -47,8 +47,10 @@ public class CustomApplcation extends Application {
 	// 上一次定位到的经纬度
 	public static BmobGeoPoint lastPoint = null;
 	
-	public ArrayList<String> myWallPhoto;
-
+	public static ArrayList<String> myWallPhoto;
+	
+	public static int numOfPhoto = 0;
+	
 	@Override
 	public void onCreate() {
 		// TODO Auto-generated method stub

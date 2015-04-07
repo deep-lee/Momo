@@ -14,6 +14,9 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HashSet;
 import java.util.Set;
 
+import cn.bmob.v3.datatype.BmobFile;
+
+import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.util.DiskLruCache;
 import com.bmob.im.demo.util.DiskLruCache.Snapshot;
@@ -33,6 +36,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 /**
  * GridView的适配器，负责异步从网络上下载图片展示在照片墙上。
@@ -65,10 +69,21 @@ public class PhotoWallAdapter extends ArrayAdapter<String> {
 	 * 记录每个子项的高度。
 	 */
 	private int mItemHeight = 0;
+	
+	String[] mObjects;
 
 	public PhotoWallAdapter(Context context, int textViewResourceId, String[] objects,
 			GridView photoWall) {
+		
 		super(context, textViewResourceId, objects);
+		mObjects = new String[objects.length];
+		
+		for (int i = 0; i < objects.length; i++) {
+			mObjects[i] = objects[i];
+		}
+		
+		
+		
 		mPhotoWall = photoWall;
 		taskCollection = new HashSet<BitmapWorkerTask>();
 		// 获取应用程序最大可用内存
@@ -94,6 +109,35 @@ public class PhotoWallAdapter extends ArrayAdapter<String> {
 			e.printStackTrace();
 		}
 	}
+	
+	@Override  
+    public int getCount() {  
+        // TODO Auto-generated method stub  
+        return mObjects.length;  
+    }  
+	
+	public void setData() {
+		String data[] = (String[])(CustomApplcation.myWallPhoto).toArray(new String[0]);
+		
+		mObjects = null;
+		
+		mObjects = new String[data.length];
+		for (int i = 0; i < data.length; i++) {
+			mObjects[i] = data[i];
+		}
+	}
+	
+    @Override  
+    public String getItem(int arg0) {  
+        // TODO Auto-generated method stub  
+        return mObjects[arg0];  
+    }  
+    
+    @Override  
+    public long getItemId(int arg0) {  
+        // TODO Auto-generated method stub  
+        return 0;  
+    }
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
@@ -113,6 +157,8 @@ public class PhotoWallAdapter extends ArrayAdapter<String> {
 		imageView.setImageResource(R.drawable.empty_photo);
 		loadBitmaps(imageView, url);
 		return view;
+		
+		
 	}
 
 	/**
@@ -339,6 +385,7 @@ public class PhotoWallAdapter extends ArrayAdapter<String> {
 			BufferedInputStream in = null;
 			try {
 				final URL url = new URL(urlString);
+				
 				urlConnection = (HttpURLConnection) url.openConnection();
 				in = new BufferedInputStream(urlConnection.getInputStream(), 8 * 1024);
 				out = new BufferedOutputStream(outputStream, 8 * 1024);
