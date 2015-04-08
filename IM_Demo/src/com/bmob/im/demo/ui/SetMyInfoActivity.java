@@ -4,6 +4,7 @@ import java.io.File;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -59,6 +60,7 @@ import com.bmob.im.demo.util.PhotoUtil;
 import com.bmob.im.demo.util.ScreenInfo;
 import com.bmob.im.demo.util.WheelMain;
 import com.bmob.im.demo.view.dialog.DialogTips;
+import com.bmob.im.demo.view.dialog.SingleChoiceDialog;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
@@ -85,6 +87,11 @@ public class SetMyInfoActivity extends ActivityBase implements OnClickListener {
 	String from = "";
 	String username = "";
 	User user;
+	
+	List<String> sexs = new ArrayList<String>();
+	List<String> gameList = new ArrayList<String>();
+	List<String> gameDifficultyList = new ArrayList<String>();
+	
 
 	WheelMain wheelMain;
 	
@@ -148,6 +155,16 @@ public class SetMyInfoActivity extends ActivityBase implements OnClickListener {
 		btn_add_friend.setEnabled(false);
 		btn_chat.setEnabled(false);
 		btn_back.setEnabled(false);
+		
+		sexs.add("男");
+		sexs.add("女");
+		gameList.add("水果连连看");
+		gameList.add("猜数字");
+		gameList.add("mixed color");
+		
+		gameDifficultyList.add("简单");
+		gameDifficultyList.add("一般");
+		gameDifficultyList.add("困难");
 		
 		// 个人资料
 		if (from.equals("me")) {
@@ -343,25 +360,39 @@ public class SetMyInfoActivity extends ActivityBase implements OnClickListener {
 		}
 	}
 	
-	String[] gameDifficulty = new String[]{ "简单", "一般", "困难" };
 	// 游戏难度选择
 	private void showGameDifficultyChooseDialog() {
-		new AlertDialog.Builder(this)
-		.setTitle("单选框")
-		.setIcon(android.R.drawable.ic_dialog_info)
-		.setSingleChoiceItems(gameDifficulty, 0,
-				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog,
-							int which) {
-						BmobLog.i("点击的是"+games[which]);
-						if (!user.getGameDifficulty().equals(gameDifficulty[which])) {
-							updateGameDifficulty(which);
-						}
-						dialog.dismiss();
-					}
-				})
-		.setNegativeButton("取消", null)
-		.show();
+		
+		final SingleChoiceDialog singleChoiceDialog = new SingleChoiceDialog(SetMyInfoActivity.this,
+				gameDifficultyList, "确定", "取消", "游戏难度", true);
+		
+		singleChoiceDialog.SetOnSuccessListener(new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				int selectItem = singleChoiceDialog.getSelectItem();
+				
+				if (gameDifficultyList.get(selectItem).equals(tv_set_game_difficulty.getText().toString())) {
+					return;
+				}else {
+					updateGameDifficulty(selectItem);
+					singleChoiceDialog.dismiss();
+				}
+			}
+		});
+		
+		singleChoiceDialog.SetOnCancelListener(new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+		singleChoiceDialog.show();
+		
 	}
 	
 	
@@ -406,23 +437,39 @@ public class SetMyInfoActivity extends ActivityBase implements OnClickListener {
 			}
 		});
 	}
-	
-	String[] games = new String[]{ "水果连连看", "猜数字", "mixed color" };
+
 	private void showGameChooseDialog() {
-		new AlertDialog.Builder(this)
-		.setTitle("单选框")
-		.setIcon(android.R.drawable.ic_dialog_info)
-		.setSingleChoiceItems(games, 0,
-				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog,
-							int which) {
-						BmobLog.i("点击的是"+games[which]);
-						updateGame(which);
-						dialog.dismiss();
-					}
-				})
-		.setNegativeButton("取消", null)
-		.show();
+		
+		final SingleChoiceDialog singleChoiceDialog = new SingleChoiceDialog(SetMyInfoActivity.this,
+				gameList, "确定", "取消", "解锁游戏", true);
+		
+		singleChoiceDialog.SetOnSuccessListener(new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				int selectItem = singleChoiceDialog.getSelectItem();
+				
+				if (gameList.get(selectItem).equals(tv_set_game.getText().toString())) {
+					return;
+				}else {
+					updateGame(selectItem);
+					singleChoiceDialog.dismiss();
+				}
+			}
+		});
+		
+		singleChoiceDialog.SetOnCancelListener(new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+		singleChoiceDialog.show();
+		
 	}
 	
 	private void updateGame(final int which) {
@@ -525,22 +572,40 @@ public class SetMyInfoActivity extends ActivityBase implements OnClickListener {
 		
 	}
 	
-	String[] sexs = new String[]{ "男", "女" };
+	
+
 	private void showSexChooseDialog() {
-		new AlertDialog.Builder(this)
-		.setTitle("单选框")
-		.setIcon(android.R.drawable.ic_dialog_info)
-		.setSingleChoiceItems(sexs, 0,
-				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog,
-							int which) {
-						BmobLog.i("点击的是"+sexs[which]);
-						updateInfo(which);
-						dialog.dismiss();
-					}
-				})
-		.setNegativeButton("取消", null)
-		.show();
+		
+		final SingleChoiceDialog singleChoiceDialog = new SingleChoiceDialog(SetMyInfoActivity.this,
+				sexs, "确定", "取消", "性别", true);
+		
+		singleChoiceDialog.SetOnSuccessListener(new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				int selectItem = singleChoiceDialog.getSelectItem();
+				
+				if (sexs.get(selectItem).equals(tv_set_gender.getText().toString())) {
+					return;
+				}else {
+					updateInfo(selectItem);
+					singleChoiceDialog.dismiss();
+				}
+			}
+		});
+		
+		singleChoiceDialog.SetOnCancelListener(new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+		singleChoiceDialog.show();
+		
 	}
 
 	
@@ -552,7 +617,7 @@ public class SetMyInfoActivity extends ActivityBase implements OnClickListener {
 	  */
 	private void updateInfo(int which) {
 		final User u = new User();
-		if(which==0){
+		if(which == 0){
 			u.setSex(true);
 		}else{
 			u.setSex(false);
@@ -657,8 +722,9 @@ public class SetMyInfoActivity extends ActivityBase implements OnClickListener {
 		dialog = null;
 	}
 
-	RelativeLayout layout_choose;
-	RelativeLayout layout_photo;
+	LinearLayout layout_choose;
+	LinearLayout layout_photo;
+	LinearLayout layout_cancle;
 	PopupWindow avatorPop;
 
 	public String filePath = "";
@@ -669,8 +735,17 @@ public class SetMyInfoActivity extends ActivityBase implements OnClickListener {
 	private void showAvatarPop() {
 		View view = LayoutInflater.from(this).inflate(R.layout.pop_showavator,
 				null);
-		layout_choose = (RelativeLayout) view.findViewById(R.id.layout_choose);
-		layout_photo = (RelativeLayout) view.findViewById(R.id.layout_photo);
+		layout_choose = (LinearLayout) view.findViewById(R.id.register_select_picture_from_image);
+		layout_photo = (LinearLayout) view.findViewById(R.id.register_select_picture_from_camera);
+		layout_cancle = (LinearLayout) view.findViewById(R.id.register_select_picture_cancle);
+		layout_cancle.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				avatorPop.dismiss();
+			}
+		});
 		layout_photo.setOnClickListener(new OnClickListener() {
 
 			@Override

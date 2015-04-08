@@ -15,6 +15,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.TranslateAnimation;
 import android.widget.RelativeLayout;
+
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.ui.FragmentBase;
 import com.bmob.im.demo.ui.MainActivity;
@@ -78,6 +79,22 @@ public class NearByFragment extends FragmentBase implements OnClickListener{
 		initView();
 	}
 	
+
+	@Override
+    public void onHiddenChanged(boolean hidden) {
+    	// TODO Auto-generated method stub
+    	super.onHiddenChanged(hidden);
+    	if(hidden)
+    	{
+    		ShowToast("关闭附近的人监听器");
+    		mShakeListener.stop();
+    	}
+    	else {
+    		initData();
+    		initView();
+		}
+    }
+	
 	public void nearBySexChanged(int sex) {
 		setNearsSex(sex);
 		nearsSex = sex;
@@ -128,7 +145,7 @@ public class NearByFragment extends FragmentBase implements OnClickListener{
 					@Override
 					public void run(){
 					mVibrator.cancel();
-					mShakeListener.start();
+					// mShakeListener.start();
 					Intent intent = new Intent();
 					intent.setClass(mContext, NearPeopleMapActivity.class);
 					intent.putExtra("nearsSex", nearsSex);
@@ -136,7 +153,7 @@ public class NearByFragment extends FragmentBase implements OnClickListener{
 					mContext.startActivity(intent);
 					
 					}
-				}, 1000);
+				},2000);
 			}
 		});
 	}
@@ -169,4 +186,6 @@ public class NearByFragment extends FragmentBase implements OnClickListener{
         player.start();
 		mVibrator.vibrate( new long[]{500,200,500,200}, -1); 
 	}
+	
+	
 }

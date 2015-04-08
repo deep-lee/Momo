@@ -54,6 +54,7 @@
             android:layout_width="match_parent"
             android:gravity="left|center"
             android:lineSpacingMultiplier="1.2" />
+        
     </LinearLayout>
 
     <FrameLayout

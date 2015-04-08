@@ -36,6 +36,8 @@ import com.bmob.im.demo.ui.fragment.SettingsFragment;
 import com.bmob.im.demo.util.FontManager;
 import com.bmob.im.demo.util.ImageLoadOptions;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnClosedListener;
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenedListener;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
@@ -59,7 +61,8 @@ public class MainActivity extends ActivityBase implements EventListener{
 	ImageView iv_recent_tips,iv_contact_tips;//消息提示
 	ImageView slideAvator;
 	
-	View slideView;
+	
+	FragmentTransaction trx;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -95,11 +98,11 @@ public class MainActivity extends ActivityBase implements EventListener{
 	
 	private void initWallPhoto() {
 		
-		Thread newThread; //声明一个子线程
+		Thread newThread; // 声明一个子线程
 		newThread = new Thread(new Runnable() {
 		    @Override
 		    public void run() {
-		    	//这里写入子线程需要做的工作
+		    	// 这里写入子线程需要做的工作
 		    	// 当前的user
 		    	User u = (User) userManager.getCurrentUser(User.class);
 		    	String allPhoto = u.getPhotoWallFile();
@@ -144,7 +147,36 @@ public class MainActivity extends ActivityBase implements EventListener{
         //为侧滑菜单设置布局  
         menu.setMenu(R.layout.slide_fragment); 
         
-        slideView = getLayoutInflater().inflate(R.layout.slide_fragment, null);
+      //侧滑打开时调用
+        menu.setOnOpenedListener(new OnOpenedListener() {
+			
+			@Override
+			public void onOpened() {
+				// TODO Auto-generated method stub
+				if(currentTabIndex == 2)
+				{
+					trx = getSupportFragmentManager().beginTransaction();
+					trx.hide(nearByFragment).commit();
+					ShowToast("关闭附近的人监听器");
+				}
+				
+			}
+		});
+        
+        menu.setOnClosedListener(new OnClosedListener() {
+			
+			@Override
+			public void onClosed() {
+				// TODO Auto-generated method stub
+				if(currentTabIndex == 2)
+				{
+					trx = getSupportFragmentManager().beginTransaction();
+					trx.show(nearByFragment).commit();
+					ShowToast("打开附近的人监听器");
+				}
+			}
+		});
+        
         
         android.app.Fragment leftMenuFragment = new LeftFragment(MainActivity.this);  
        // setBehindContentView(R.layout.left_menu_frame);  
@@ -184,7 +216,7 @@ public class MainActivity extends ActivityBase implements EventListener{
 			break;
 		}
 		if (currentTabIndex != index) {
-			FragmentTransaction trx = getSupportFragmentManager().beginTransaction();
+			trx = getSupportFragmentManager().beginTransaction();
 			trx.hide(fragments[currentTabIndex]);
 			if (!fragments[index].isAdded()) {
 				trx.add(R.id.fragment_container, fragments[index]);
@@ -219,7 +251,7 @@ public class MainActivity extends ActivityBase implements EventListener{
 		//清空
 		MyMessageReceiver.mNewNum=0;
 		
-		if (nearByFragment != null && nearByFragment.mShakeListener != null) {
+		if (currentTabIndex == 2 && nearByFragment != null && nearByFragment.mShakeListener != null) {
 			nearByFragment.mShakeListener.start();
 		}
 		

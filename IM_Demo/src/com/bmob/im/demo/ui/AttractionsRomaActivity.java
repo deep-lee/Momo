@@ -56,7 +56,7 @@ public class AttractionsRomaActivity extends BaseActivity {
 		
 		attractions = new Attractions();
 		
-		initTopBarForLeft("景点穿越");
+		initTopBarForLeft("景点漫游");
 		tips = (ImageView) findViewById(R.id.attractions_roma_tips);
 		
 		mVibrator = (Vibrator)getApplication().getSystemService(VIBRATOR_SERVICE);
@@ -85,6 +85,8 @@ public class AttractionsRomaActivity extends BaseActivity {
 				
 			    runFly();
 			    
+			    mShakeListener.stop();
+			    
 			    currentGeoPoint = new BmobGeoPoint(Double.parseDouble(mApplication.getLongtitude()), Double.parseDouble(mApplication.getLatitude()));
 			    
 			    randomGeoPoint = attractions.getRandomAttractions();
@@ -100,7 +102,7 @@ public class AttractionsRomaActivity extends BaseActivity {
 						
 					stopFly();
 					mVibrator.cancel();
-					mShakeListener.start();
+					
 					
 					Intent intent = new Intent();
 					intent.setClass(AttractionsRomaActivity.this, NearPeopleMapActivity.class);
@@ -112,6 +114,13 @@ public class AttractionsRomaActivity extends BaseActivity {
 				}, 2500);
 			}
 		});
+	}
+	
+	@Override
+	public void	onResume()
+	{
+		super.onResume();
+		mShakeListener.start();
 	}
 	
 	public void startVibrato(){	

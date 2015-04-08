@@ -45,7 +45,9 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.Toast;
+
 import com.bmob.im.demo.ui.*;
+import com.bmob.im.demo.view.dialog.DialogTips;
 
 public class MixedColorView extends SurfaceView implements
 		SurfaceHolder.Callback{
@@ -94,27 +96,20 @@ public class MixedColorView extends SurfaceView implements
 	private Handler mHandler =new Handler(){  
         @Override  
         public void handleMessage(Message msg){  
+        	
+        	final DialogTips dialogTips;
               
             // 游戏结束
             if (msg.what == 123) {
-				Builder dialog = new AlertDialog.Builder(mContext);
-				dialog.setTitle("游戏结果");
-				
-				dialog.setPositiveButton("退出游戏", new DialogInterface.OnClickListener() {
-					
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						// TODO Auto-generated method stub
-						correct = 0;
-						((MixedColorActivity)(mContext)).quit();
-					}
-				});
 				
 				// 成功解锁
 				if (correct >=7) {
-					dialog.setMessage("恭喜你，游戏过关！");
+
 					if (from.equals("me")) {
-						dialog.setNegativeButton("再来一次", new DialogInterface.OnClickListener() {
+
+						dialogTips = new DialogTips(mContext, "恭喜你，游戏过关！", "再来一次", "退出游戏", "结果", false);
+						
+						dialogTips.SetOnSuccessListener(new DialogInterface.OnClickListener() {
 							
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
@@ -123,13 +118,27 @@ public class MixedColorView extends SurfaceView implements
 								restartGame();
 							}
 						});
-					}else if (from.equals("other")) {
-						dialog.setNegativeButton("查看资料", new DialogInterface.OnClickListener() {
+						dialogTips.SetOnCancelListener(new DialogInterface.OnClickListener() {
 							
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
 								// TODO Auto-generated method stub
-								
+								correct = 0;
+								((MixedColorActivity)(mContext)).quit();
+							}
+						});
+						
+						dialogTips.show();
+						
+					}else if (from.equals("other")) {
+						
+						dialogTips = new DialogTips(mContext, "恭喜你，游戏过关！", "查看资料", "退出游戏", "结果", false);
+						
+						dialogTips.SetOnSuccessListener(new DialogInterface.OnClickListener() {
+							
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								// TODO Auto-generated method stub
 								Intent intent = new Intent();
 								intent.setClass(mContext, SetMyInfoActivity.class);
 								
@@ -139,14 +148,26 @@ public class MixedColorView extends SurfaceView implements
 								mContext.startActivity(intent);
 								
 								((MixedColorActivity)mContext).quit();
-								
 							}
 						});
+						dialogTips.SetOnCancelListener(new DialogInterface.OnClickListener() {
+							
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								// TODO Auto-generated method stub
+								correct = 0;
+								((MixedColorActivity)(mContext)).quit();
+							}
+						});
+						
+						dialogTips.show();
 					}
 				}
 				else {
-					dialog.setMessage("很抱歉，游戏失败！");
-					dialog.setNegativeButton("再来一次", new DialogInterface.OnClickListener() {
+					
+					dialogTips = new DialogTips(mContext, "很抱歉，游戏失败！", "再来一次", "退出游戏", "结果", false);
+					
+					dialogTips.SetOnSuccessListener(new DialogInterface.OnClickListener() {
 						
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
@@ -155,12 +176,19 @@ public class MixedColorView extends SurfaceView implements
 							restartGame();
 						}
 					});
+					dialogTips.SetOnCancelListener(new DialogInterface.OnClickListener() {
+						
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							// TODO Auto-generated method stub
+							correct = 0;
+							((MixedColorActivity)(mContext)).quit();
+						}
+					});
+					
+					dialogTips.show();
 				}
-				
-				AlertDialog result = dialog.create();
-				result.setCancelable(false);
-				result.setCanceledOnTouchOutside(false);
-				result.show();
+	
 			}
             
             super.handleMessage(msg);
@@ -195,17 +223,6 @@ public class MixedColorView extends SurfaceView implements
 				UIModel.GAME_ATTRIBUTE_MAX_TIME_PER_STAGE = 3000;
 			}		
 			
-//			switch (gamedifficulty) {
-//			case 0:
-//				UIModel.GAME_ATTRIBUTE_MAX_TIME_PER_STAGE = 5000;
-//				break;
-//			case 1:
-//				UIModel.GAME_ATTRIBUTE_MAX_TIME_PER_STAGE = 4000;
-//				break;
-//			case 2:
-//				UIModel.GAME_ATTRIBUTE_MAX_TIME_PER_STAGE = 3000;
-//				break;
-//			}
 		}
 	}
 	

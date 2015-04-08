@@ -3,16 +3,19 @@ package com.bmob.im.demo.ui;
 
 
 import com.bmob.im.demo.R;
+import com.bmob.im.demo.view.dialog.DialogTips;
 
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -68,4 +71,25 @@ public class MixedColorMenuActivity extends Activity implements OnClickListener 
 		public void onServiceDisconnected(ComponentName className) {
 		}
 	};
+	
+	@Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+        	
+        	DialogTips dialogTips = new DialogTips(MixedColorMenuActivity.this, "确认退出游戏？", "确认", "取消", "退出", false);
+        	dialogTips.SetOnSuccessListener(new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// TODO Auto-generated method stub
+					finish();;
+				}
+			});
+        	dialogTips.show();
+        	dialogTips = null;
+            return true;
+        } else {
+            return super.onKeyDown(keyCode, event);
+        }
+    }
 }

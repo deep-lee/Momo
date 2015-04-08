@@ -4,7 +4,7 @@ import com.bmob.im.demo.R;
 import com.bmob.im.demo.R.layout;
 import com.bmob.im.demo.bean.User;
 import com.bmob.im.demo.util.SoundPlay;
-import com.bmob.im.demo.view.dialog.MyDialog;
+import com.bmob.im.demo.view.dialog.DialogTips;
 
 import A.thing;
 import android.R.integer;
@@ -121,21 +121,6 @@ public class GuessNumberActivity extends BaseActivity implements OnClickListener
 			}else if (gamedifficulty.equals("困难")) {
 				setTotalTimes(5);
 			}
-//			
-//			switch (gamedifficulty) {
-//			case 0:
-//				setTotalTimes(10);
-//				break;
-//			case 1:
-//				setTotalTimes(8);
-//				break;
-//			case 2:
-//				setTotalTimes(5);
-//				break;
-//
-//			default:
-//				break;
-//			}
 		}
 		
 		play.setOnClickListener(this);
@@ -324,81 +309,106 @@ public class GuessNumberActivity extends BaseActivity implements OnClickListener
 	}
 
 	private void showDialog(int leftTime, final int isBigger, final Boolean isOver) {
-		LinearLayout showResult = (LinearLayout) getLayoutInflater().inflate(R.layout.guess_dialog, null);
-		lefTextView = (TextView) showResult.findViewById(R.id.guess_dialog_left_time);
-		trueOrFalseView = (TextView) showResult.findViewById(R.id.guess_dialog_true_or_false);
 		
-		Builder dialog = new AlertDialog.Builder(this);
-		dialog.setTitle("猜测结果");
-		dialog.setView(showResult);
+		final DialogTips dialogTips;
 		
 		
 		if (!isOver) {
 			
-			dialog.setPositiveButton("退出游戏", new AlertDialog.OnClickListener() {
-
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					// TODO Auto-generated method stub
-					showQuitDialog(isOver,isBigger);
-					dialog.dismiss();
-				}
-			});
-			
-			lefTextView.setText("你还有" + leftTime + "机会");
 			if (isBigger == 1) {
-				trueOrFalseView.setText("你猜大了");
-				soundPlay.play(ID_SOUND_AO, 0);
-				dialog.setNegativeButton("继续猜测", new AlertDialog.OnClickListener(){
 
+				soundPlay.play(ID_SOUND_AO, 0);
+				
+				dialogTips = new DialogTips(GuessNumberActivity.this, "你猜大了，你还有" + leftTime + "次机会", "继续猜测", "退出游戏", "结果", false);
+				dialogTips.SetOnSuccessListener(new DialogInterface.OnClickListener() {
+					
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						// TODO Auto-generated method stub
-						
 						input.setText("");
 						numHasInput = 0;
 					}
-					
 				});
+				
+				dialogTips.SetOnCancelListener(new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+						showQuitDialog(isOver,isBigger);
+						dialogTips.dismiss();
+					}
+				});
+				
+				dialogTips.show();
+				
 			}
 			else if (isBigger == -1) {
-				trueOrFalseView.setText("你猜小了");
 				soundPlay.play(ID_SOUND_AO, 0);
-				dialog.setNegativeButton("继续猜测", new AlertDialog.OnClickListener(){
-
+				
+				dialogTips = new DialogTips(GuessNumberActivity.this, "你猜小了，你还有" + leftTime + "次机会", "继续猜测", "退出游戏", "结果", false);
+				dialogTips.SetOnSuccessListener(new DialogInterface.OnClickListener() {
+					
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						// TODO Auto-generated method stub
-						
 						input.setText("");
 						numHasInput = 0;
 					}
-					
 				});
+				
+				dialogTips.SetOnCancelListener(new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+						showQuitDialog(isOver,isBigger);
+						dialogTips.dismiss();
+					}
+				});
+				
+				dialogTips.show();
+				
 			}
 			else if(isBigger == 0){
-				lefTextView.setVisibility(View.GONE);
-				trueOrFalseView.setText("你猜对了！");
 				soundPlay.play(ID_SOUND_WIN, 0);
 				
 				if (from.equals("me")) {
-					dialog.setNegativeButton("再来一局", new AlertDialog.OnClickListener(){
-
+					
+					dialogTips = new DialogTips(GuessNumberActivity.this, "你猜对了", "增加难度", "退出游戏", "结果", false);
+					dialogTips.SetOnSuccessListener(new DialogInterface.OnClickListener() {
+						
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
 							// TODO Auto-generated method stub
 							input.setText("");
+							if (getTotalTimes() > 0) {
+								setTotalTimes(getTotalTimes() - 1);
+							}
 							numHasInput = 0;
 							createRandomNum();
 							guessTime = 0;
 						}
-						
 					});
 					
+					dialogTips.SetOnCancelListener(new DialogInterface.OnClickListener() {
+						
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							// TODO Auto-generated method stub
+							showQuitDialog(isOver,isBigger);
+							dialogTips.dismiss();
+						}
+					});
+					
+					dialogTips.show();
+					
 				}
-				else if(from.equals("other")){
-					dialog.setNegativeButton("查看资料", new AlertDialog.OnClickListener(){
-
+				else if(from.equals("other")){				
+					
+					dialogTips = new DialogTips(GuessNumberActivity.this, "你猜对了", "查看资料", "退出游戏", "结果", false);
+					dialogTips.SetOnSuccessListener(new DialogInterface.OnClickListener() {
+						
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
 							// TODO Auto-generated method stub
@@ -411,50 +421,66 @@ public class GuessNumberActivity extends BaseActivity implements OnClickListener
 							
 							finish();
 						}
-						
 					});
+					
+					dialogTips.SetOnCancelListener(new DialogInterface.OnClickListener() {
+						
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							// TODO Auto-generated method stub
+							showQuitDialog(isOver,isBigger);
+							dialogTips.dismiss();
+						}
+					});
+					
+					dialogTips.show();
 				}
 			}
 		}
 		else {
 			
-			dialog.setPositiveButton("退出游戏", new AlertDialog.OnClickListener() {
-
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					// TODO Auto-generated method stub
-					showQuitDialog(isOver,isBigger);
-					dialog.dismiss();
-				}
-			});
-			
 			if(isBigger == 0){
-				lefTextView.setVisibility(View.GONE);
-				trueOrFalseView.setText("你猜对了！");
 				soundPlay.play(ID_SOUND_WIN, 0);
 				
 				if (from.equals("me")) {
-					dialog.setNegativeButton("再来一局", new AlertDialog.OnClickListener(){
-
+					
+					dialogTips = new DialogTips(GuessNumberActivity.this, "你猜对了", "增加难度", "退出游戏", "结果", false);
+					dialogTips.SetOnSuccessListener(new DialogInterface.OnClickListener() {
+						
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
 							// TODO Auto-generated method stub
 							input.setText("");
+							if (getTotalTimes() > 0) {
+								setTotalTimes(getTotalTimes() - 1);
+							}
 							numHasInput = 0;
 							createRandomNum();
 							guessTime = 0;
 						}
-						
 					});
 					
-				}
-				else if(from.equals("other")){
-					dialog.setNegativeButton("查看资料", new AlertDialog.OnClickListener(){
-
+					dialogTips.SetOnCancelListener(new DialogInterface.OnClickListener() {
+						
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
 							// TODO Auto-generated method stub
-							
+							showQuitDialog(isOver,isBigger);
+							dialogTips.dismiss();
+						}
+					});
+					
+					dialogTips.show();
+					
+				}
+				else if(from.equals("other")){
+					
+					dialogTips = new DialogTips(GuessNumberActivity.this, "你猜对了", "查看资料", "退出游戏", "结果", false);
+					dialogTips.SetOnSuccessListener(new DialogInterface.OnClickListener() {
+						
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							// TODO Auto-generated method stub
 							Intent intent = new Intent();
 							intent.setClass(GuessNumberActivity.this, SetMyInfoActivity.class);
 							intent.putExtra("from", "add");
@@ -464,19 +490,31 @@ public class GuessNumberActivity extends BaseActivity implements OnClickListener
 							
 							finish();
 						}
-						
 					});
+					
+					dialogTips.SetOnCancelListener(new DialogInterface.OnClickListener() {
+						
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							// TODO Auto-generated method stub
+							showQuitDialog(isOver,isBigger);
+							dialogTips.dismiss();
+						}
+					});
+					
+					dialogTips.show();
+					
 				}
 			}
 			else {
-				lefTextView.setVisibility(View.GONE);
-				trueOrFalseView.setText("你输了！");
 				
 				soundPlay.play(ID_SOUND_LOSE, 0);
 				
 				if (from.equals("me")) {
-					dialog.setNegativeButton("再来一次", new AlertDialog.OnClickListener(){
-
+					
+					dialogTips = new DialogTips(GuessNumberActivity.this, "你输了", "再来一次", "退出游戏", "结果", false);
+					dialogTips.SetOnSuccessListener(new DialogInterface.OnClickListener() {
+						
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
 							// TODO Auto-generated method stub
@@ -484,14 +522,26 @@ public class GuessNumberActivity extends BaseActivity implements OnClickListener
 							numHasInput = 0;
 							createRandomNum();
 							guessTime = 0;
-							
 						}
-						
 					});
 					
+					dialogTips.SetOnCancelListener(new DialogInterface.OnClickListener() {
+						
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							// TODO Auto-generated method stub
+							showQuitDialog(isOver,isBigger);
+							dialogTips.dismiss();
+						}
+					});
+					
+					dialogTips.show();
+					
 				}else if (from.equals("other")) {
-					dialog.setNegativeButton("重新开始", new AlertDialog.OnClickListener(){
-
+					
+					dialogTips = new DialogTips(GuessNumberActivity.this, "你输了", "再来一次", "退出游戏", "结果", false);
+					dialogTips.SetOnSuccessListener(new DialogInterface.OnClickListener() {
+						
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
 							// TODO Auto-generated method stub
@@ -499,44 +549,42 @@ public class GuessNumberActivity extends BaseActivity implements OnClickListener
 							numHasInput = 0;
 							createRandomNum();
 							guessTime = 0;
-							
 						}
-						
 					});
+					
+					dialogTips.SetOnCancelListener(new DialogInterface.OnClickListener() {
+						
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							// TODO Auto-generated method stub
+							showQuitDialog(isOver,isBigger);
+							dialogTips.dismiss();
+						}
+					});
+					
+					dialogTips.show();
 				}
 			}
 		}
-		
-		AlertDialog result = dialog.create();
-		result.setCancelable(false);
-		result.setCanceledOnTouchOutside(false);
-		result.show();
 		
 	}
 	
 	@Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-        	final Dialog dialog = new AlertDialog.Builder(this)
-            .setIcon(R.drawable.buttons_bg20)
-            .setTitle(R.string.quit)
-            .setMessage(R.string.sure_quit)
-            .setPositiveButton(R.string.alert_dialog_ok, new DialogInterface.OnClickListener() {
-
+        	
+        	DialogTips dialogTips = new DialogTips(GuessNumberActivity.this, "确认退出游戏？", "确认", "取消", "退出", false);
+        	dialogTips.SetOnSuccessListener(new DialogInterface.OnClickListener() {
+				
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					// TODO Auto-generated method stub
 					quit();
 				}
-
-            })
-            .setNegativeButton(R.string.alert_dialog_cancel, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface arg0, int whichButton) {
-                	
-                }
-            })
-            .create();
-			dialog.show();
+			});
+        	dialogTips.show();
+        	dialogTips = null;
+        	
             return true;
         } else {
             return super.onKeyDown(keyCode, event);
@@ -545,42 +593,44 @@ public class GuessNumberActivity extends BaseActivity implements OnClickListener
 	
 	private void showQuitDialog(final Boolean isOver, final int isBigger) {
 		
-		final Dialog dialog1 = new AlertDialog.Builder(this).setIcon(R.drawable.buttons_bg20)
-	            .setTitle(R.string.quit)
-	            .setMessage(R.string.sure_quit)
-	            .setPositiveButton(R.string.alert_dialog_ok, new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						// TODO Auto-generated method stub
-						quit();
+		DialogTips dialogTips = new DialogTips(GuessNumberActivity.this, "确认退出？", "确认", "取消", "退出", false);
+		
+		dialogTips.SetOnSuccessListener(new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				quit();
+			}
+		});
+		
+		dialogTips.SetOnCancelListener(new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				if (!isOver) {
+					if (isBigger == 0) {
+						input.setText("");
+						numHasInput = 0;
+						createRandomNum();
+						guessTime = 0;
 					}
-
-	            })
-	            .setNegativeButton(R.string.alert_dialog_cancel, new DialogInterface.OnClickListener() {
-	                public void onClick(DialogInterface arg0, int whichButton) {
-	                	if (!isOver) {
-							if (isBigger == 0) {
-								input.setText("");
-								numHasInput = 0;
-								createRandomNum();
-								guessTime = 0;
-							}
-							else {
-								input.setText("");
-								numHasInput = 0;
-							}
-						}
-	                	else {
-	                		input.setText("");
-							numHasInput = 0;
-							createRandomNum();
-							guessTime = 0;
-						}
-	                }
-	            })
-	            .create();
-				dialog1.show();
+					else {
+						input.setText("");
+						numHasInput = 0;
+					}
+				}
+            	else {
+            		input.setText("");
+					numHasInput = 0;
+					createRandomNum();
+					guessTime = 0;
+				}
+			}
+		});
+		
+		dialogTips.show();
 	}
 	
 }

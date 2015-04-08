@@ -70,7 +70,7 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
 	LinearLayout register_layout_all;
 
 	
-	RelativeLayout layout_choose, layout_photo;
+	LinearLayout layout_choose, layout_photo, layout_cancle;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -129,8 +129,19 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
 	private void showAvatarPop() {
 		View view = LayoutInflater.from(this).inflate(R.layout.pop_showavator,
 				null);
-		layout_choose = (RelativeLayout) view.findViewById(R.id.layout_choose);
-		layout_photo = (RelativeLayout) view.findViewById(R.id.layout_photo);
+		layout_choose = (LinearLayout) view.findViewById(R.id.register_select_picture_from_image);
+		layout_photo = (LinearLayout) view.findViewById(R.id.register_select_picture_from_camera);
+		layout_cancle = (LinearLayout) view.findViewById(R.id.register_select_picture_cancle);
+		layout_cancle.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				avatorPop.dismiss();
+			}
+		});
+		
+		
 		layout_photo.setOnClickListener(new OnClickListener() {
 
 			@Override

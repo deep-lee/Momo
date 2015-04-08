@@ -38,7 +38,7 @@ public class SelectPictureActivity extends Activity implements OnClickListener{
 	private static final String TAG = "SelectPicActivity";
 	
 	private LinearLayout dialogLayout;
-	private Button takePhotoBtn,pickPhotoBtn,cancelBtn;
+	private View takePhoto,pickPhoto,cancel;
 
 	/**获取到的图片路径*/
 	private String picPath;
@@ -58,12 +58,12 @@ public class SelectPictureActivity extends Activity implements OnClickListener{
 	private void initView() {
 		dialogLayout = (LinearLayout) findViewById(R.id.dialog_layout);
 		dialogLayout.setOnClickListener(this);
-		takePhotoBtn = (Button) findViewById(R.id.btn_take_photo);
-		takePhotoBtn.setOnClickListener(this);
-		pickPhotoBtn = (Button) findViewById(R.id.btn_pick_photo);
-		pickPhotoBtn.setOnClickListener(this);
-		cancelBtn = (Button) findViewById(R.id.btn_cancel);
-		cancelBtn.setOnClickListener(this);
+		takePhoto = findViewById(R.id.select_picture_from_camera);
+		takePhoto.setOnClickListener(this);
+		pickPhoto = findViewById(R.id.select_picture_from_image);
+		pickPhoto.setOnClickListener(this);
+		cancel = findViewById(R.id.select_picture_cancle);
+		cancel.setOnClickListener(this);
 		
 		lastIntent = getIntent();
 	}
@@ -74,10 +74,10 @@ public class SelectPictureActivity extends Activity implements OnClickListener{
 		case R.id.dialog_layout:
 			finish();
 			break;
-		case R.id.btn_take_photo:
+		case R.id.select_picture_from_camera:
 			takePhoto();
 			break;
-		case R.id.btn_pick_photo:
+		case R.id.select_picture_from_image:
 			pickPhoto();
 			break;
 		default:

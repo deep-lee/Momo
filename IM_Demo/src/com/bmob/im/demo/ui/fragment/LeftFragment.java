@@ -1,6 +1,7 @@
 package com.bmob.im.demo.ui.fragment;
 
 
+import java.io.File;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
@@ -29,6 +30,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -140,6 +142,13 @@ public class LeftFragment extends Fragment {
 				case 4:
 					CustomApplcation.getInstance().logout();
 					((MainActivity)context).finish();
+					CustomApplcation.myWallPhoto.clear();
+					// É¾³ýÍ¼Æ¬»º´æµÄÄÚÈÝ
+					String imageDir = Environment.getExternalStorageDirectory().getPath()
+							+ "/Bmob_IM_test/PhotoWallFalls/";
+					File file = new File(imageDir);
+					delete(file);
+					
 					startActivity(new Intent(context, LoginActivity.class));
 					break;
 				}
@@ -147,6 +156,8 @@ public class LeftFragment extends Fragment {
         	
 		});
     }
+    
+    
     
     
 	
@@ -160,6 +171,8 @@ public class LeftFragment extends Fragment {
 		if (avatar != null && !avatar.equals("")) {
 			ImageLoader.getInstance().displayImage(avatar, slideAvator,
 					ImageLoadOptions.getOptions());
+			
+			
 		
 		} else {
 			
@@ -167,4 +180,25 @@ public class LeftFragment extends Fragment {
 			slideAvator.setImageResource(R.drawable.default_head);
 		}
 	}
+	
+
+    public static void delete(File file) {  
+        if (file.isFile()) {  
+            file.delete();  
+            return;  
+        }  
+  
+        if(file.isDirectory()){  
+            File[] childFiles = file.listFiles();  
+            if (childFiles == null || childFiles.length == 0) {  
+                file.delete();  
+                return;  
+            }  
+      
+            for (int i = 0; i < childFiles.length; i++) {  
+                delete(childFiles[i]);  
+            }  
+            file.delete();  
+        }  
+   } 
 }

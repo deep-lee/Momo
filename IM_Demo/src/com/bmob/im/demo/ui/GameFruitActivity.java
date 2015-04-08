@@ -8,13 +8,14 @@ import com.bmob.im.demo.view.GameView;
 import com.bmob.im.demo.view.OnStateListener;
 import com.bmob.im.demo.view.OnTimerListener;
 import com.bmob.im.demo.view.OnToolsChangeListener;
-import com.bmob.im.demo.view.dialog.MyDialog;
+import com.bmob.im.demo.view.dialog.DialogTips;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -44,7 +45,6 @@ public class GameFruitActivity extends Activity implements OnClickListener, OnTi
 	private ImageView imgTitle;
 	private GameView gameView;
 	private SeekBar progress;
-	private MyDialog dialog;
 	private ImageView clock;
 	private TextView textRefreshNum;
 	private TextView textTipNum;
@@ -64,13 +64,18 @@ public class GameFruitActivity extends Activity implements OnClickListener, OnTi
 			switch(msg.what){
 			case 0:
 				// 赢了就可以进入个人信息页面
-				dialog = new MyDialog(GameFruitActivity.this,gameView,"你赢了",gameView.getTotalTime() - progress.getProgress(),true, from, username);
-				dialog.show();
+//				dialog = new MyDialog(GameFruitActivity.this,gameView,"你赢了",gameView.getTotalTime() - progress.getProgress(),true, from, username);
+//				dialog.show();
+				
+				showWinDialog();
+				
 				break;
 			case 1:
 				// 输了再次返回地图界面
-				dialog = new MyDialog(GameFruitActivity.this,gameView,"你输了",gameView.getTotalTime() - progress.getProgress(),false, from, username);
-				dialog.show();
+//				dialog = new MyDialog(GameFruitActivity.this,gameView,"你输了",gameView.getTotalTime() - progress.getProgress(),false, from, username);
+//				dialog.show();
+				
+				showFailDialog();
 			}
 		}
 	};
@@ -119,17 +124,6 @@ public class GameFruitActivity extends Activity implements OnClickListener, OnTi
 					gameView.setTotalTime(40);
 				}
 				
-//				switch (gamedifficulty) {
-//				case 0:
-//					gameView.setTotalTime(80);
-//					break;
-//				case 1:
-//					gameView.setTotalTime(60);
-//					break;
-//				case 2:
-//					gameView.setTotalTime(40);
-//					break;
-//				}
 			}
 	     
 	     clock = (ImageView) findViewById(R.id.clock);
@@ -159,6 +153,118 @@ public class GameFruitActivity extends Activity implements OnClickListener, OnTi
 		
 	}
 	
+	private void showFailDialog() {
+		
+		if (from.equals("me")) {
+			
+			DialogTips dialogTips = new DialogTips(GameFruitActivity.this, "你输了", "再试一次", "退出", "结果", false);
+			dialogTips.SetOnSuccessListener(new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// TODO Auto-generated method stub
+					gameView.startPlay();
+				}
+			});
+			
+			dialogTips.SetOnCancelListener(new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// TODO Auto-generated method stub
+					showQuitDialog(false);
+				}
+			});
+			
+			dialogTips.show();
+			dialogTips = null;
+			
+		}else if (from.equals("other")) {
+			DialogTips dialogTips = new DialogTips(GameFruitActivity.this, "你输了", "再试一次", "退出", "结果", false);
+			dialogTips.SetOnSuccessListener(new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// TODO Auto-generated method stub
+					gameView.startPlay();
+				}
+			});
+			
+			dialogTips.SetOnCancelListener(new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// TODO Auto-generated method stub
+					showQuitDialog(false);
+				}
+			});
+			
+			dialogTips.show();
+			dialogTips = null;
+		}
+		
+	}
+	
+	private void showWinDialog() {
+		if (from.equals("me")) {
+			
+			DialogTips dialogTips = new DialogTips(GameFruitActivity.this, "你赢了", "增加难度", "退出", "结果", false);
+			dialogTips.SetOnSuccessListener(new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// TODO Auto-generated method stub
+					gameView.startNextPlay();
+				}
+			});
+			
+			dialogTips.SetOnCancelListener(new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// TODO Auto-generated method stub
+					showQuitDialog(true);
+				}
+			});
+			
+			dialogTips.show();
+			dialogTips = null;
+			
+		}else if (from.equals("other")) {
+			DialogTips dialogTips = new DialogTips(GameFruitActivity.this, "你赢了", "查看资料", "退出", "结果", false);
+			dialogTips.SetOnSuccessListener(new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// TODO Auto-generated method stub
+					gotoMomo();
+					quit();
+				}
+			});
+			
+			dialogTips.SetOnCancelListener(new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// TODO Auto-generated method stub
+					showQuitDialog(true);
+				}
+			});
+			
+			dialogTips.show();
+			dialogTips = null;
+		}
+	}
+	
+	private void gotoMomo() {
+		Intent intent = new Intent();
+		intent.setClass(GameFruitActivity.this, SetMyInfoActivity.class);
+		
+		intent.putExtra("from", "add");
+		intent.putExtra("username", username);
+		
+		startActivity(intent);
+	}
 	
 	@Override
     protected void onPause() {
@@ -261,30 +367,59 @@ public class GameFruitActivity extends Activity implements OnClickListener, OnTi
 	@Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-        	final Dialog dialog = new AlertDialog.Builder(this)
-            .setIcon(R.drawable.buttons_bg20)
-            .setTitle(R.string.quit)
-            .setMessage(R.string.sure_quit)
-            .setPositiveButton(R.string.alert_dialog_ok, new DialogInterface.OnClickListener() {
-
+        	
+        	DialogTips dialogTips = new DialogTips(GameFruitActivity.this, "确认退出游戏？", "确认", "取消", "退出", false);
+        	dialogTips.SetOnSuccessListener(new DialogInterface.OnClickListener() {
+				
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					// TODO Auto-generated method stub
 					quit();
 				}
-
-            })
-            .setNegativeButton(R.string.alert_dialog_cancel, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface arg0, int whichButton) {
-                	
-                }
-            })
-            .create();
-			dialog.show();
+			});
+        	dialogTips.show();
+        	dialogTips = null;
+        	
+        	
             return true;
         } else {
             return super.onKeyDown(keyCode, event);
         }
     }
+	
+	private void showQuitDialog(final Boolean flag) {
+		
+		DialogTips dialogTips = new DialogTips(GameFruitActivity.this, "确认退出？", "确认", "取消", "退出", false);
+		
+		dialogTips.SetOnSuccessListener(new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				quit();
+			}
+		});
+		
+		dialogTips.SetOnCancelListener(new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				
+				if (flag) {
+					if (from.equals("me")) {
+						gameView.startNextPlay();
+					}
+					else if (from.equals("other")) {
+						gameView.startPlay();
+					}
+				}else {
+					gameView.startPlay();
+				}
+			}
+		});
+		
+		dialogTips.show();
+	}
 
 }

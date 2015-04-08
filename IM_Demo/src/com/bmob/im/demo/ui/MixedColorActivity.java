@@ -2,6 +2,7 @@ package com.bmob.im.demo.ui;
 
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.view.MixedColorView;
+import com.bmob.im.demo.view.dialog.DialogTips;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -41,26 +42,18 @@ public class MixedColorActivity extends Activity {
 	@Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-        	final Dialog dialog = new AlertDialog.Builder(this)
-            .setIcon(R.drawable.buttons_bg20)
-            .setTitle(R.string.quit)
-            .setMessage(R.string.sure_quit)
-            .setPositiveButton(R.string.alert_dialog_ok, new DialogInterface.OnClickListener() {
-
+        	
+        	DialogTips dialogTips = new DialogTips(MixedColorActivity.this, "确认退出游戏？", "确认", "取消", "退出", false);
+        	dialogTips.SetOnSuccessListener(new DialogInterface.OnClickListener() {
+				
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					// TODO Auto-generated method stub
 					quit();
 				}
-
-            })
-            .setNegativeButton(R.string.alert_dialog_cancel, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface arg0, int whichButton) {
-                	
-                }
-            })
-            .create();
-			dialog.show();
+			});
+        	dialogTips.show();
+        	dialogTips = null;
             return true;
         } else {
             return super.onKeyDown(keyCode, event);

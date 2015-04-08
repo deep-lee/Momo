@@ -4,6 +4,7 @@ import java.io.File;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -17,6 +18,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
@@ -61,6 +64,7 @@ import com.bmob.im.demo.util.JudgeDate;
 import com.bmob.im.demo.util.PhotoUtil;
 import com.bmob.im.demo.util.ScreenInfo;
 import com.bmob.im.demo.util.WheelMain;
+import com.bmob.im.demo.view.dialog.SingleChoiceDialog;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class RegisterActivity2 extends BaseActivity implements OnClickListener{
@@ -86,6 +90,8 @@ public class RegisterActivity2 extends BaseActivity implements OnClickListener{
 	
 	String gameType = "水果连连看";
 	
+	List<String> gameList = new ArrayList<String>();
+	
 	
 	ViewFlipper viewFlipper;
 	int currentPage = 0;
@@ -102,7 +108,28 @@ public class RegisterActivity2 extends BaseActivity implements OnClickListener{
 	RelativeLayout register_layout_all;
 
 	
-	RelativeLayout layout_choose, layout_photo;
+	LinearLayout layout_choose, layout_photo, layout_cancle;
+	
+	Handler handler = new Handler(){
+		public void handleMessage(Message msg) {   
+            switch (msg.what) {   
+            
+            	case 0:
+    				//更新地理位置信息
+    				updateUserLocation();
+    				//发广播通知登陆页面退出
+    				sendBroadcast(new Intent(BmobConstants.ACTION_REGISTER_SUCCESS_FINISH));
+            		// 启动主页
+    				Intent intent = new Intent(RegisterActivity2.this,MainActivity.class);
+    				startActivity(intent);
+    				finish();
+            		break;
+            
+            }   
+            super.handleMessage(msg);   
+       }
+	};
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -154,6 +181,10 @@ public class RegisterActivity2 extends BaseActivity implements OnClickListener{
 		next.setOnClickListener(this);
 		birthView.setOnClickListener(this);
 		checkUser();
+		
+		gameList.add("水果连连看");
+		gameList.add("猜数字");
+		gameList.add("mixed color");
 	}
 	
 	
@@ -164,8 +195,17 @@ public class RegisterActivity2 extends BaseActivity implements OnClickListener{
 	private void showAvatarPop() {
 		View view = LayoutInflater.from(this).inflate(R.layout.pop_showavator,
 				null);
-		layout_choose = (RelativeLayout) view.findViewById(R.id.layout_choose);
-		layout_photo = (RelativeLayout) view.findViewById(R.id.layout_photo);
+		layout_choose = (LinearLayout) view.findViewById(R.id.register_select_picture_from_image);
+		layout_photo = (LinearLayout) view.findViewById(R.id.register_select_picture_from_camera);
+		layout_cancle = (LinearLayout) view.findViewById(R.id.register_select_picture_cancle);
+		layout_cancle.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				avatorPop.dismiss();
+			}
+		});
 		layout_photo.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -420,6 +460,11 @@ public class RegisterActivity2 extends BaseActivity implements OnClickListener{
 				ShowToast("头像更新成功！");
 				// 更新头像
 				refreshAvatar(url);
+				
+				Message message = new Message();
+				message.what = 0;
+				handler.sendMessage(message);
+				
 			}
 
 			@Override
@@ -541,23 +586,14 @@ public class RegisterActivity2 extends BaseActivity implements OnClickListener{
 			public void onSuccess() {
 				// TODO Auto-generated method stub
 				
-				// 更新用户的头像
-				uploadAvatar();
+				
 				progress.dismiss();
 				ShowToast("注册成功");
 				// 将设备与username进行绑定
 				userManager.bindInstallationForRegister(bu.getUsername());
-				//更新地理位置信息
-				updateUserLocation();
-				//发广播通知登陆页面退出
-				sendBroadcast(new Intent(BmobConstants.ACTION_REGISTER_SUCCESS_FINISH));
 				
-//				updateUserPhotoWall();
-				
-				// 启动主页
-				Intent intent = new Intent(RegisterActivity2.this,MainActivity.class);
-				startActivity(intent);
-				finish();
+				// 更新用户的头像
+				uploadAvatar();
 				
 			}
 
@@ -571,27 +607,6 @@ public class RegisterActivity2 extends BaseActivity implements OnClickListener{
 		});
 	}
 
-//	public void updateUserPhotoWall(){
-//		User u = (User) userManager.getCurrentUser(User.class);
-//		final User user = new User();
-//		user.setObjectId(u.getObjectId());
-//		user.setPhotoWallFile("tttttttttttttttttt");
-//		
-//		user.update(this, new UpdateListener() {
-//			
-//			@Override
-//			public void onSuccess() {
-//				// TODO Auto-generated method stub
-//				ShowToast("111111111111");
-//			}
-//			
-//			@Override
-//			public void onFailure(int arg0, String arg1) {
-//				// TODO Auto-generated method stub
-//				ShowToast("222222222222222");
-//			}
-//		});
-//	}
 
 	@Override
 	public void onClick(View v) {
@@ -612,6 +627,7 @@ public class RegisterActivity2 extends BaseActivity implements OnClickListener{
 			
 		case R.id.register_second_birthday_choose:
 			seleteBirth();
+			break;
 		case R.id.sex_select_man:
 			sex = false;
 			sexMan.setVisibility(View.GONE);
@@ -630,35 +646,47 @@ public class RegisterActivity2 extends BaseActivity implements OnClickListener{
 		}
 	}
 	
-	String[] games = new String[]{ "水果连连看", "猜数字", "mixed color" };
 	private void showGameChooseDialog() {
-		new AlertDialog.Builder(this)
-		.setTitle("单选框")
-		.setIcon(android.R.drawable.ic_dialog_info)
-		.setSingleChoiceItems(games, 0,
-				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog,
-							int which) {
-						BmobLog.i("点击的是"+games[which]);
-						switch (which) {
-						case 0:
-							gameType = "水果连连看";
-							break;
-						case 1:
-							gameType = "猜数字";
-							break;
-						case 2:
-							gameType = "mixed color";
-							break;
-						default:
-							break;
-						}
-						gameChooseShow.setText(gameType);
-						dialog.dismiss();
-					}
-				})
-		.setNegativeButton("取消", null)
-		.show();
+		
+		final SingleChoiceDialog singleChoiceDialog = new SingleChoiceDialog(RegisterActivity2.this,
+				gameList, "确定", "取消", "解锁游戏", true);
+		
+		singleChoiceDialog.SetOnSuccessListener(new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				int selectItem = singleChoiceDialog.getSelectItem();
+				
+				switch (selectItem) {
+				case 0:
+					gameType = "水果连连看";
+					break;
+				case 1:
+					gameType = "猜数字";
+					break;
+				case 2:
+					gameType = "mixed color";
+					break;
+				default:
+					break;
+				}
+				gameChooseShow.setText(gameType);
+				singleChoiceDialog.dismiss();
+			}
+		});
+		
+		singleChoiceDialog.SetOnCancelListener(new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+		singleChoiceDialog.show();
+		
 	}
 	
 	public Boolean getHasChoseBirth() {
