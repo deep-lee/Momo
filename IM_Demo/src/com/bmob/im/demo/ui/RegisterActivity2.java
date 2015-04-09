@@ -30,16 +30,12 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.RadioGroup;
-import android.widget.Spinner;
-import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
@@ -53,17 +49,16 @@ import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 import cn.bmob.v3.listener.UploadFileListener;
 
-import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.bean.User;
 import com.bmob.im.demo.config.BmobConstants;
 import com.bmob.im.demo.util.CommonUtils;
-import com.bmob.im.demo.util.DatePickDialogUtil;
 import com.bmob.im.demo.util.ImageLoadOptions;
 import com.bmob.im.demo.util.JudgeDate;
 import com.bmob.im.demo.util.PhotoUtil;
 import com.bmob.im.demo.util.ScreenInfo;
 import com.bmob.im.demo.util.WheelMain;
+import com.bmob.im.demo.view.dialog.DateChooseDialog;
 import com.bmob.im.demo.view.dialog.SingleChoiceDialog;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -86,6 +81,7 @@ public class RegisterActivity2 extends BaseActivity implements OnClickListener{
 	String initBirth = "";
 	DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	WheelMain wheelMain;
+	ProgressDialog progress;
 	
 	
 	String gameType = "水果连连看";
@@ -119,6 +115,7 @@ public class RegisterActivity2 extends BaseActivity implements OnClickListener{
     				updateUserLocation();
     				//发广播通知登陆页面退出
     				sendBroadcast(new Intent(BmobConstants.ACTION_REGISTER_SUCCESS_FINISH));
+    				progress.dismiss();
             		// 启动主页
     				Intent intent = new Intent(RegisterActivity2.this,MainActivity.class);
     				startActivity(intent);
@@ -560,7 +557,7 @@ public class RegisterActivity2 extends BaseActivity implements OnClickListener{
 			return;
 		}
 		
-		final ProgressDialog progress = new ProgressDialog(RegisterActivity2.this);
+		progress = new ProgressDialog(RegisterActivity2.this);
 		progress.setMessage("正在注册...");
 		progress.setCanceledOnTouchOutside(false);
 		progress.show();
@@ -587,7 +584,7 @@ public class RegisterActivity2 extends BaseActivity implements OnClickListener{
 				// TODO Auto-generated method stub
 				
 				
-				progress.dismiss();
+				// progress.dismiss();
 				ShowToast("注册成功");
 				// 将设备与username进行绑定
 				userManager.bindInstallationForRegister(bu.getUsername());
@@ -758,48 +755,72 @@ public class RegisterActivity2 extends BaseActivity implements OnClickListener{
 		}
 	}
 	
-	private void seleteBirth() {
+	private void seleteBirth(){
 		
+//		LayoutInflater inflater=LayoutInflater.from(RegisterActivity2.this);
+//		final View timepickerview=inflater.inflate(R.layout.timepicker, null);
+//		ScreenInfo screenInfo = new ScreenInfo(RegisterActivity2.this);
+//		wheelMain = new WheelMain(timepickerview);
+//		wheelMain.screenheight = screenInfo.getHeight();
+//		String time = showBirth.getText().toString();
+//		Calendar calendar = Calendar.getInstance();
+//		if(JudgeDate.isDate(time, "yyyy-MM-dd")){
+//			try {
+//				calendar.setTime(dateFormat.parse(time));
+//			} catch (ParseException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
+//		int year = calendar.get(Calendar.YEAR);
+//		int month = calendar.get(Calendar.MONTH);
+//		int day = calendar.get(Calendar.DAY_OF_MONTH);
+//		wheelMain.initDateTimePicker(year,month,day);
+//		new AlertDialog.Builder(RegisterActivity2.this)
+//		.setTitle("选择日期")
+//		.setView(timepickerview)
+//		.setPositiveButton("设置", new DialogInterface.OnClickListener() {
+//			@Override
+//			public void onClick(DialogInterface dialog, int which) {
+//				showBirth.setText(wheelMain.getTime());
+//				hasChoseBirth = true;
+//			}
+//		})
+//		.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+//			@Override
+//			public void onClick(DialogInterface dialog, int which) {
+//				
+//				showBirth.setText("点击选择生日");
+//				hasChoseBirth = false;
+//				
+//			}
+//		})
+//		.show();
 		
-		LayoutInflater inflater=LayoutInflater.from(RegisterActivity2.this);
-		final View timepickerview=inflater.inflate(R.layout.timepicker, null);
-		ScreenInfo screenInfo = new ScreenInfo(RegisterActivity2.this);
-		wheelMain = new WheelMain(timepickerview);
-		wheelMain.screenheight = screenInfo.getHeight();
-		String time = showBirth.getText().toString();
-		Calendar calendar = Calendar.getInstance();
-		if(JudgeDate.isDate(time, "yyyy-MM-dd")){
-			try {
-				calendar.setTime(dateFormat.parse(time));
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		int year = calendar.get(Calendar.YEAR);
-		int month = calendar.get(Calendar.MONTH);
-		int day = calendar.get(Calendar.DAY_OF_MONTH);
-		wheelMain.initDateTimePicker(year,month,day);
-		new AlertDialog.Builder(RegisterActivity2.this)
-		.setTitle("选择日期")
-		.setView(timepickerview)
-		.setPositiveButton("设置", new DialogInterface.OnClickListener() {
+		final DateChooseDialog dateChooseDialog = new DateChooseDialog(RegisterActivity2.this, "确定", "取消", "选择生日", false);
+		dateChooseDialog.SetOnSuccessListener(new DialogInterface.OnClickListener() {
+			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				showBirth.setText(wheelMain.getTime());
+				// TODO Auto-generated method stub
+				showBirth.setText(dateChooseDialog.getDate());
 				hasChoseBirth = true;
 			}
-		})
-		.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+		});
+		dateChooseDialog.SetOnCancelListener(new DialogInterface.OnClickListener() {
+			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				
-				showBirth.setText("点击选择生日");
-				hasChoseBirth = false;
-				
+				// TODO Auto-generated method stub
+				if (!hasChoseBirth) {
+					showBirth.setText("点击选择生日");
+					hasChoseBirth = false;
+				}
 			}
-		})
-		.show();
+		});
+		
+		dateChooseDialog.show();
+	
 		
 	}
 

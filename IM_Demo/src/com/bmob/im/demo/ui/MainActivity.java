@@ -64,6 +64,8 @@ public class MainActivity extends ActivityBase implements EventListener{
 	
 	FragmentTransaction trx;
 	
+	Boolean menuFlag;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -94,6 +96,8 @@ public class MainActivity extends ActivityBase implements EventListener{
 		
 		// 启动获取照片墙的线程
 		initWallPhoto();
+		
+		menuFlag = false;
 	}
 	
 	private void initWallPhoto() {
@@ -155,8 +159,10 @@ public class MainActivity extends ActivityBase implements EventListener{
 				// TODO Auto-generated method stub
 				if(currentTabIndex == 2)
 				{
-					trx = getSupportFragmentManager().beginTransaction();
-					trx.hide(nearByFragment).commit();
+					menuFlag = true;
+					//trx = getSupportFragmentManager().beginTransaction();
+					//trx.hide(nearByFragment).commit();
+					nearByFragment.closeShakeListeber();
 					ShowToast("关闭附近的人监听器");
 				}
 				
@@ -170,8 +176,11 @@ public class MainActivity extends ActivityBase implements EventListener{
 				// TODO Auto-generated method stub
 				if(currentTabIndex == 2)
 				{
-					trx = getSupportFragmentManager().beginTransaction();
-					trx.show(nearByFragment).commit();
+					menuFlag = false;
+					//trx = getSupportFragmentManager().beginTransaction();
+					//trx.show(nearByFragment).commit();
+					
+					nearByFragment.openShakeListener();
 					ShowToast("打开附近的人监听器");
 				}
 			}
@@ -252,7 +261,10 @@ public class MainActivity extends ActivityBase implements EventListener{
 		MyMessageReceiver.mNewNum=0;
 		
 		if (currentTabIndex == 2 && nearByFragment != null && nearByFragment.mShakeListener != null) {
-			nearByFragment.mShakeListener.start();
+			
+			if (!nearByFragment.getFlag() && menuFlag == false) {
+				nearByFragment.openShakeListener();
+			}	
 		}
 		
 	}

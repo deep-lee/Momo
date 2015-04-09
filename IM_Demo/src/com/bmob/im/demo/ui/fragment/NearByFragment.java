@@ -40,7 +40,17 @@ public class NearByFragment extends FragmentBase implements OnClickListener{
 	
 	public int nearsSex;
 	
+	public Boolean flag = false;
 	
+	
+	public Boolean getFlag() {
+		return flag;
+	}
+
+	public void setFlag(Boolean flag) {
+		this.flag = flag;
+	}
+
 	public NearByFragment() {
 		super();
 	}
@@ -87,11 +97,13 @@ public class NearByFragment extends FragmentBase implements OnClickListener{
     	if(hidden)
     	{
     		ShowToast("关闭附近的人监听器");
-    		mShakeListener.stop();
+    		closeShakeListeber();
     	}
     	else {
-    		initData();
-    		initView();
+//    		initData();
+//    		initView();
+    		
+    		openShakeListener();
 		}
     }
 	
@@ -110,6 +122,8 @@ public class NearByFragment extends FragmentBase implements OnClickListener{
 		titlePopup.addAction(new ActionItem(mContext, R.string.only_male));
 		titlePopup.addAction(new ActionItem(mContext, R.string.all_female_male));
 	}
+	
+	
 
 	private void initView() {
 		// TODO Auto-generated method stub
@@ -130,12 +144,12 @@ public class NearByFragment extends FragmentBase implements OnClickListener{
 		
 		
 		mShakeListener = new ShakeListener((MainActivity)mContext);
-		
+		flag = true;
 
         mShakeListener.setOnShakeListener(new OnShakeListener() {
 			public void onShake() {
 				startAnim();
-				mShakeListener.stop();
+				closeShakeListeber();
 				
 				
 				ShowToast("现在是附近的人，不是景点漫游");
@@ -187,5 +201,14 @@ public class NearByFragment extends FragmentBase implements OnClickListener{
 		mVibrator.vibrate( new long[]{500,200,500,200}, -1); 
 	}
 	
+	public void openShakeListener() {
+		mShakeListener.start();
+		flag = true;
+	}
+	
+	public void closeShakeListeber() {
+		mShakeListener.stop();
+		flag = false;
+	}
 	
 }

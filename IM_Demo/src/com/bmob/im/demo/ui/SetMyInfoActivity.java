@@ -59,6 +59,7 @@ import com.bmob.im.demo.util.JudgeDate;
 import com.bmob.im.demo.util.PhotoUtil;
 import com.bmob.im.demo.util.ScreenInfo;
 import com.bmob.im.demo.util.WheelMain;
+import com.bmob.im.demo.view.dialog.DateChooseDialog;
 import com.bmob.im.demo.view.dialog.DialogTips;
 import com.bmob.im.demo.view.dialog.SingleChoiceDialog;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -517,41 +518,74 @@ public class SetMyInfoActivity extends ActivityBase implements OnClickListener {
 	
 	private void showBirthdayChooseDialog() {
 		
-		LayoutInflater inflater=LayoutInflater.from(SetMyInfoActivity.this);
-		final View timepickerview=inflater.inflate(R.layout.timepicker, null);
-		ScreenInfo screenInfo = new ScreenInfo(SetMyInfoActivity.this);
-		wheelMain = new WheelMain(timepickerview);
-		wheelMain.screenheight = screenInfo.getHeight();
-		String time = tv_set_birthday.getText().toString();
-		Calendar calendar = Calendar.getInstance();
-		if(JudgeDate.isDate(time, "yyyy-MM-dd")){
-			try {
-				calendar.setTime(dateFormat.parse(time));
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		int year = calendar.get(Calendar.YEAR);
-		int month = calendar.get(Calendar.MONTH);
-		int day = calendar.get(Calendar.DAY_OF_MONTH);
-		wheelMain.initDateTimePicker(year,month,day);
-		new AlertDialog.Builder(SetMyInfoActivity.this)
-		.setTitle("选择日期")
-		.setView(timepickerview)
-		.setPositiveButton("设置", new DialogInterface.OnClickListener() {
+//		LayoutInflater inflater=LayoutInflater.from(SetMyInfoActivity.this);
+//		final View timepickerview=inflater.inflate(R.layout.timepicker, null);
+//		ScreenInfo screenInfo = new ScreenInfo(SetMyInfoActivity.this);
+//		wheelMain = new WheelMain(timepickerview);
+//		wheelMain.screenheight = screenInfo.getHeight();
+//		String time = tv_set_birthday.getText().toString();
+//		Calendar calendar = Calendar.getInstance();
+//		if(JudgeDate.isDate(time, "yyyy-MM-dd")){
+//			try {
+//				calendar.setTime(dateFormat.parse(time));
+//			} catch (ParseException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
+//		int year = calendar.get(Calendar.YEAR);
+//		int month = calendar.get(Calendar.MONTH);
+//		int day = calendar.get(Calendar.DAY_OF_MONTH);
+//		wheelMain.initDateTimePicker(year,month,day);
+//		new AlertDialog.Builder(SetMyInfoActivity.this)
+//		.setTitle("选择日期")
+//		.setView(timepickerview)
+//		.setPositiveButton("设置", new DialogInterface.OnClickListener() {
+//			@Override
+//			public void onClick(DialogInterface dialog, int which) {
+//				
+//				final User u = new User();
+//				u.setBirthday(wheelMain.getTime());
+//				updateUserData(u,new UpdateListener() {
+//
+//					@Override
+//					public void onSuccess() {
+//						// TODO Auto-generated method stub
+//						ShowToast("修改成功");
+//						tv_set_birthday.setText(wheelMain.getTime());
+//					}
+//
+//					@Override
+//					public void onFailure(int arg0, String arg1) {
+//						// TODO Auto-generated method stub
+//						ShowToast("onFailure:" + arg1);
+//					}
+//				});
+//			}
+//		})
+//		.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+//			@Override
+//			public void onClick(DialogInterface dialog, int which) {
+//
+//			}
+//		})
+//		.show();
+		
+		final DateChooseDialog dateChooseDialog = new DateChooseDialog(SetMyInfoActivity.this, "确定", "取消", "选择生日", false);
+		dateChooseDialog.SetOnSuccessListener(new DialogInterface.OnClickListener() {
+			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				
+				// TODO Auto-generated method stub
 				final User u = new User();
-				u.setBirthday(wheelMain.getTime());
+				u.setBirthday(dateChooseDialog.getDate());
 				updateUserData(u,new UpdateListener() {
 
 					@Override
 					public void onSuccess() {
 						// TODO Auto-generated method stub
 						ShowToast("修改成功");
-						tv_set_birthday.setText(wheelMain.getTime());
+						tv_set_birthday.setText(dateChooseDialog.getDate());
 					}
 
 					@Override
@@ -561,14 +595,17 @@ public class SetMyInfoActivity extends ActivityBase implements OnClickListener {
 					}
 				});
 			}
-		})
-		.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+		});
+		dateChooseDialog.SetOnCancelListener(new DialogInterface.OnClickListener() {
+			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
 
 			}
-		})
-		.show();
+		});
+		
+		dateChooseDialog.show();
 		
 	}
 	
