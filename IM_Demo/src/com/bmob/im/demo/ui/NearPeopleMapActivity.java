@@ -42,6 +42,9 @@ import com.bmob.im.demo.ui.LocationActivity.MyLocationListenner;
 import com.bmob.im.demo.util.CollectionUtils;
 import com.bmob.im.demo.view.HeaderLayout.onLeftImageButtonClickListener;
 import com.bmob.im.demo.view.HeaderLayout.onRightImageButtonClickListener;
+import com.deep.momo.game.ui.GameFruitActivity;
+import com.deep.momo.game.ui.GuessNumberActivity;
+import com.deep.momo.game.ui.MixedColorMenuActivity;
 
 import android.R.integer;
 import android.annotation.SuppressLint;

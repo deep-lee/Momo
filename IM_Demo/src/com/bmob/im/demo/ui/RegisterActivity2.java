@@ -1,5 +1,7 @@
 package com.bmob.im.demo.ui;
 
+import static cn.smssdk.framework.utils.R.getStringRes;
+
 import java.io.File;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -9,24 +11,38 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import android.R.integer;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources.NotFoundException;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
@@ -38,9 +54,11 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 import cn.bmob.im.bean.BmobChatUser;
 import cn.bmob.im.util.BmobLog;
+import cn.bmob.push.a.project;
 import cn.bmob.v3.BmobInstallation;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.datatype.BmobFile;
@@ -48,6 +66,8 @@ import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 import cn.bmob.v3.listener.UploadFileListener;
+import cn.smssdk.EventHandler;
+import cn.smssdk.SMSSDK;
 
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.bean.User;
@@ -59,52 +79,70 @@ import com.bmob.im.demo.util.PhotoUtil;
 import com.bmob.im.demo.util.ScreenInfo;
 import com.bmob.im.demo.util.WheelMain;
 import com.bmob.im.demo.view.dialog.DateChooseDialog;
+import com.bmob.im.demo.view.dialog.DialogTips;
 import com.bmob.im.demo.view.dialog.SingleChoiceDialog;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.soundcloud.android.crop.Crop;
 
 public class RegisterActivity2 extends BaseActivity implements OnClickListener{
 
 	Button back, next;
-	EditText et_username, et_password, et_email, et_nick;
-	View birthView;
-	Boolean sex;
-	RelativeLayout gameChoose;
-	TextView gameChooseShow;
-	ImageView sexMan, sexWoman;
 	
-	ArrayAdapter adapter;
+	// 第一页
+	EditText et_username, et_confim_code;
+	Button getConfimCode;
 	
+	// 第二页
+	EditText  et_password, et_password_confim;
+	
+	// 第三页
+	ImageView setAvator;
+	EditText  et_nick, et_birth;
 	Boolean hasChoseBirth = false;
 	
-	TextView showBirth;
+	// 第四页
+	ImageView setSexMale, setSexFemal;
+	EditText et_game, et_love, et_hobbi;
+	Drawable bitMale;
+	Drawable bitMaleChoose;
+	Drawable bitFemale;
+	Drawable bitFemaleChoose;
+	Boolean hasChooseGame = false;
+	Boolean hasChooseLove = false;
+	
+	Boolean sex;
+	
+	int time = 30;
+
+	
+	
+	
 	String birthday = "";
 	String initBirth = "";
 	DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-	WheelMain wheelMain;
 	ProgressDialog progress;
 	
-	
-	String gameType = "水果连连看";
+	String gameType = "";
 	
 	List<String> gameList = new ArrayList<String>();
-	
+	List<String> loveList = new ArrayList<String>();
 	
 	ViewFlipper viewFlipper;
 	int currentPage = 0;
 	
 	BmobChatUser currentUser;
 	
-	// 注册头像选择的layout以及按钮
-	RelativeLayout layout_regitster_avator;
-	ImageView register_avator, register_avator_arrow;
-	
 	// 判断是否修改了头像
 	Boolean avator_changed = false;
 	
 	RelativeLayout register_layout_all;
-
 	
 	LinearLayout layout_choose, layout_photo, layout_cancle;
+	
+	// 我的头像地址
+	File dir;
+	
+	private String mCurrentPhotoPath;
 	
 	Handler handler = new Handler(){
 		public void handleMessage(Message msg) {   
@@ -127,63 +165,167 @@ public class RegisterActivity2 extends BaseActivity implements OnClickListener{
        }
 	};
 	
+	Handler handlerGetVerfyCode = new Handler(){
+		public void handleMessage(Message msg) { 
+            switch (msg.what) {   
+            
+            	case 1:
+            		getConfimCode.setClickable(false);
+            		getConfimCode.setText("剩余" + time + "秒");
+            		time--;
+            		if (time != 0) {
+						Message message1 = new Message();
+						message1.what = 1;
+						handlerGetVerfyCode.sendMessageDelayed(message1, 1000);
+					}
+            		else {
+            			Message message2 = new Message();
+						message2.what = 2;
+						handlerGetVerfyCode.sendMessageDelayed(message2, 1000);
+					}
+            		break;
+            	case 2:
+            		getConfimCode.setClickable(true);
+            		getConfimCode.setText("获取验证码");
+            		time = 30;
+            		break;
+            	case 3:
+            		gotoNextPage();
+            		break;
+            
+            }   
+            super.handleMessage(msg);  
+		}
+	};
+	
+	 EventHandler eh=new EventHandler(){
+		 
+         @Override
+         public void afterEvent(int event, int result, Object data) {
+
+            if (result == SMSSDK.RESULT_COMPLETE) {
+            	
+	             //回调完成
+	             if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) 
+	             {
+	            	 //提交验证码成功，进入到下一个页面
+	            	 progress.dismiss();
+	            	 progress = null;
+	            	 
+	            	 Message message = new Message();
+	            	 message.what = 3;
+	            	 handlerGetVerfyCode.sendMessage(message);
+	            	
+	             }
+	             else if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE)
+	             {
+	            	 //获取验证码成功
+	            	 ShowToast("获取验证码成功");
+	             }
+	             else if (event ==SMSSDK.EVENT_GET_SUPPORTED_COUNTRIES)
+	             {
+	            	 //返回支持发送验证码的国家列表
+	             } 
+            }
+            else
+            {                                                                 
+	              ((Throwable)data).printStackTrace(); 
+	              int resId = getStringRes(RegisterActivity2.this, "smssdk_network_error");
+	              Toast.makeText(RegisterActivity2.this, "验证码错误", Toast.LENGTH_SHORT).show();
+	              if (resId > 0) {
+	            	  Toast.makeText(RegisterActivity2.this, resId, Toast.LENGTH_SHORT).show();
+	              }
+           	}
+         } 
+	 }; 
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_register_activity2);
+		setContentView(R.layout.activity_register_2);
+		
+		 SMSSDK.initSDK(RegisterActivity2.this, "6a8b985fa723", "1c7bdde34361d3339f0bf840cee36f2e");
+		 SMSSDK.registerEventHandler(eh); //注册短信回调
+		 
+		// 只有左边有按钮以及标题
+		initTopBarForLeft("注册");
+		viewFlipper = (ViewFlipper) findViewById(R.id.reg_vf_viewflipper);
 		
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日");       
 		Date curDate = new Date(System.currentTimeMillis());//获取当前时间       
 		initBirth = formatter.format(curDate);   
-
-		// 只有左边有按钮以及标题
-		initTopBarForLeft("注册");
-		birthView = findViewById(R.id.register_second_birthday_choose);
-		gameChoose = (RelativeLayout) findViewById(R.id.register_game_choose_layout);
-		gameChoose.setOnClickListener(this);
-		gameChooseShow = (TextView) findViewById(R.id.register_game_choose_show);
-		viewFlipper = (ViewFlipper) findViewById(R.id.reg_vf_viewflipper);
 		
+		// 下方按钮
 		back = (Button) findViewById(R.id.reg_btn_previous);
 		next = (Button) findViewById(R.id.reg_btn_next);
+		back.setOnClickListener(this);
+		next.setOnClickListener(this);
 		
-		showBirth = (TextView) findViewById(R.id.register_second_show_birthday);
-
+		// 第一页
 		et_username = (EditText) findViewById(R.id.et_username);
-		et_password = (EditText) findViewById(R.id.et_password);
-		et_nick = (EditText) findViewById(R.id.et_nick);
-		et_email = (EditText) findViewById(R.id.et_email);
-		sexMan = (ImageView) findViewById(R.id.sex_select_man);
-		sexWoman = (ImageView) findViewById(R.id.sex_select_woman);
-		sexMan.setOnClickListener(this);
-		sexWoman.setOnClickListener(this);
+		et_confim_code = (EditText) findViewById(R.id.et_confim_code);
+		getConfimCode = (Button) findViewById(R.id.register_btn_get_verfy_code);
+		getConfimCode.setOnClickListener(this);
+		
+		// 第二页
+		et_password = (EditText) findViewById(R.id.et_pwd);
+		et_password_confim = (EditText) findViewById(R.id.et_password_again);
+		
+		// 第三页
+		setAvator = (ImageView) findViewById(R.id.register_set_avator);
+		et_nick = (EditText) findViewById(R.id.register_set_nick_et);
+		et_birth = (EditText) findViewById(R.id.register_set_birthday_et);
+		setAvator.setOnClickListener(this);
+		et_birth.setOnClickListener(this);
+		
+		// 第四页
+		bitMale = getResources().getDrawable(R.drawable.register_sex_select_n);
+		bitFemale = getResources().getDrawable(R.drawable.register_sex_select_n);
+		bitMaleChoose = getResources().getDrawable(R.drawable.register_sex_select_p);
+		bitFemaleChoose = getResources().getDrawable(R.drawable.register_sex_select_p);
+		
+		setSexMale = (ImageView) findViewById(R.id.register_sex_select_male);
+		setSexMale.setImageDrawable(bitMaleChoose);
+		setSexFemal = (ImageView) findViewById(R.id.register_sex_select_female);
+		et_game = (EditText) findViewById(R.id.register_set_game_et);
+		et_love = (EditText) findViewById(R.id.register_set_love_et);
+		et_hobbi = (EditText) findViewById(R.id.register_set_hobbi_et);
+		
+		setSexMale.setOnClickListener(this);
+		setSexFemal.setOnClickListener(this);
+		et_game.setOnClickListener(this);
+		et_love.setOnClickListener(this);
+		
 		sex = true;
 		back.setText("返回");
 		
-		layout_regitster_avator = (RelativeLayout) findViewById(R.id.register_avator);
-		register_avator = (ImageView) findViewById(R.id.register_select_avator);
-		register_avator_arrow = (ImageView) findViewById(R.id.register_select_avator_arraw);
+		dir = new File(BmobConstants.MyAvatarDir);
+		if (!dir.exists()) {
+			dir.mkdirs();
+		}
+		
 		register_layout_all = (RelativeLayout) findViewById(R.id.register_layout_all);
 		
-		layout_regitster_avator.setOnClickListener(this);
-		
-		
-		adapter = ArrayAdapter.createFromResource(this, R.array.games, android.R.layout.simple_spinner_item);
-		 
-		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-		
-		back.setOnClickListener(this);
-		next.setOnClickListener(this);
-		birthView.setOnClickListener(this);
-		checkUser();
+		// checkUser();
 		
 		gameList.add("水果连连看");
 		gameList.add("猜数字");
 		gameList.add("mixed color");
+		
+		loveList.add("热恋");
+		loveList.add("单身");
+		loveList.add("失恋");
+		loveList.add("保密");
 	}
 	
+	
+	
+	private void gotoNextPage() {
+		 viewFlipper.showNext();
+		 currentPage++;
+		 back.setText("上一步");
+	}
 	
 	PopupWindow avatorPop;
 
@@ -209,26 +351,28 @@ public class RegisterActivity2 extends BaseActivity implements OnClickListener{
 			public void onClick(View arg0) {
 				ShowLog("点击拍照");
 				// TODO Auto-generated method stub
-				layout_choose.setBackgroundColor(getResources().getColor(
-						R.color.base_color_text_white));
-				layout_photo.setBackgroundDrawable(getResources().getDrawable(
-						R.drawable.pop_bg_press));
+//				layout_choose.setBackgroundColor(getResources().getColor(
+//						R.color.base_color_text_white));
+//				layout_photo.setBackgroundDrawable(getResources().getDrawable(
+//						R.drawable.pop_bg_press));
+//				
+//				// 我的头像地址
+//				File dir = new File(BmobConstants.MyAvatarDir);
+//				if (!dir.exists()) {
+//					dir.mkdirs();
+//				}
+//				// 原图
+//				File file = new File(dir, new SimpleDateFormat("yyMMddHHmmss")
+//						.format(new Date()));
+//				filePath = file.getAbsolutePath();// 获取相片的保存路径
+//				Uri imageUri = Uri.fromFile(file);
+//
+//				Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//				intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+//				startActivityForResult(intent,
+//						BmobConstants.REQUESTCODE_UPLOADAVATAR_CAMERA);
 				
-				// 我的头像地址
-				File dir = new File(BmobConstants.MyAvatarDir);
-				if (!dir.exists()) {
-					dir.mkdirs();
-				}
-				// 原图
-				File file = new File(dir, new SimpleDateFormat("yyMMddHHmmss")
-						.format(new Date()));
-				filePath = file.getAbsolutePath();// 获取相片的保存路径
-				Uri imageUri = Uri.fromFile(file);
-
-				Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-				intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-				startActivityForResult(intent,
-						BmobConstants.REQUESTCODE_UPLOADAVATAR_CAMERA);
+				getImageFromCamera();
 			}
 		});
 		layout_choose.setOnClickListener(new OnClickListener() {
@@ -237,15 +381,18 @@ public class RegisterActivity2 extends BaseActivity implements OnClickListener{
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 				ShowLog("点击相册");
-				layout_photo.setBackgroundColor(getResources().getColor(
-						R.color.base_color_text_white));
-				layout_choose.setBackgroundDrawable(getResources().getDrawable(
-						R.drawable.pop_bg_press));
-				Intent intent = new Intent(Intent.ACTION_PICK, null);
-				intent.setDataAndType(
-						MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
-				startActivityForResult(intent,
-						BmobConstants.REQUESTCODE_UPLOADAVATAR_LOCATION);
+//				layout_photo.setBackgroundColor(getResources().getColor(
+//						R.color.base_color_text_white));
+//				layout_choose.setBackgroundDrawable(getResources().getDrawable(
+//						R.drawable.pop_bg_press));
+//				Intent intent = new Intent(Intent.ACTION_PICK, null);
+//				intent.setDataAndType(
+//						MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+//				startActivityForResult(intent,
+//						BmobConstants.REQUESTCODE_UPLOADAVATAR_LOCATION);
+				
+				pickImage();
+				
 			}
 		});
 
@@ -273,6 +420,32 @@ public class RegisterActivity2 extends BaseActivity implements OnClickListener{
 	}
 	
 	
+	protected void getImageFromCamera() {
+		
+//		layout_choose.setBackgroundColor(getResources().getColor(
+//				R.color.base_color_text_white));
+//		layout_photo.setBackgroundDrawable(getResources().getDrawable(
+//				R.drawable.pop_bg_press));
+		
+		// 原图
+		File file = new File(dir, new SimpleDateFormat("yyMMddHHmmss")
+				.format(new Date()));
+		filePath = file.getAbsolutePath();// 获取相片的保存路径
+		Uri imageUri = Uri.fromFile(file);
+
+         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+         intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+
+         mCurrentPhotoPath = imageUri.getPath();
+
+         startActivityForResult(intent, BmobConstants.REQUESTCODE_UPLOADAVATAR_CAMERA);
+    }
+	
+	protected void pickImage(){
+		Crop.pickImage(this);
+	}
+	
+	
 	Bitmap newBitmap;
 	boolean isFromCamera = false;// 区分拍照旋转
 	int degree = 0;
@@ -281,75 +454,145 @@ public class RegisterActivity2 extends BaseActivity implements OnClickListener{
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
-		switch (requestCode) {
-		case BmobConstants.REQUESTCODE_UPLOADAVATAR_CAMERA:// 拍照修改头像
-			if (resultCode == RESULT_OK) {
-				if (!Environment.getExternalStorageState().equals(
-						Environment.MEDIA_MOUNTED)) {
-					ShowToast("SD不可用");
-					return;
-				}
-				isFromCamera = true;
-				File file = new File(filePath);
-				// 获取图片的旋转角度
-				degree = PhotoUtil.readPictureDegree(file.getAbsolutePath());
-				Log.i("life", "拍照后的角度：" + degree);
-				
-				// 系统裁减头像
-				startImageAction(Uri.fromFile(file), 200, 200,
-						BmobConstants.REQUESTCODE_UPLOADAVATAR_CROP, true);
-			}
-			break;
-		case BmobConstants.REQUESTCODE_UPLOADAVATAR_LOCATION:// 本地修改头像
-			if (avatorPop != null) {
+		
+		if(resultCode == Activity.RESULT_OK) {
+            if(requestCode == Crop.REQUEST_PICK) {
+                beginCrop( data.getData());
+            }
+            else if(requestCode == Crop.REQUEST_CROP) {
+                handleCrop( resultCode, data);
+            }
+            else if(requestCode == BmobConstants.REQUESTCODE_UPLOADAVATAR_CAMERA) {
+                System.out.println( " REQUESTCODE_UPLOADAVATAR_CAMERA " + mCurrentPhotoPath);
+                if(mCurrentPhotoPath != null) {
+                    beginCrop( Uri.fromFile( new File( mCurrentPhotoPath)));
+                }
+            }
+        }
+		
+//		switch (requestCode) {
+//		case BmobConstants.REQUESTCODE_UPLOADAVATAR_CAMERA:// 拍照修改头像
+//			if (resultCode == RESULT_OK) {
+//				if (!Environment.getExternalStorageState().equals(
+//						Environment.MEDIA_MOUNTED)) {
+//					ShowToast("SD不可用");
+//					return;
+//				}
+//				isFromCamera = true;
+//				File file = new File(filePath);
+//				// 获取图片的旋转角度
+//				degree = PhotoUtil.readPictureDegree(file.getAbsolutePath());
+//				Log.i("life", "拍照后的角度：" + degree);
+//				
+//				// 系统裁减头像
+//				startImageAction(Uri.fromFile(file), 200, 200,
+//						BmobConstants.REQUESTCODE_UPLOADAVATAR_CROP, true);
+//			}
+//			break;
+//		case BmobConstants.REQUESTCODE_UPLOADAVATAR_LOCATION:// 本地修改头像
+//			if (avatorPop != null) {
+//				avatorPop.dismiss();
+//			}
+//			Uri uri = null;
+//			if (data == null) {
+//				return;
+//			}
+//			if (resultCode == RESULT_OK) {
+//				if (!Environment.getExternalStorageState().equals(
+//						Environment.MEDIA_MOUNTED)) {
+//					ShowToast("SD不可用");
+//					return;
+//				}
+//				isFromCamera = false;
+//				uri = data.getData();
+//				
+//				// 系统裁减头像
+//				startImageAction(uri, 200, 200,
+//						BmobConstants.REQUESTCODE_UPLOADAVATAR_CROP, true);
+//			} else {
+//				ShowToast("照片获取失败");
+//			}
+//
+//			break;
+//		case BmobConstants.REQUESTCODE_UPLOADAVATAR_CROP:// 裁剪头像返回
+//			// TODO sent to crop
+//			if (avatorPop != null) {
+//				avatorPop.dismiss();
+//			}
+//			if (data == null) {
+//				// Toast.makeText(this, "取消选择", Toast.LENGTH_SHORT).show();
+//				return;
+//			} else {
+//				// 保存裁减的头像
+//				saveCropAvator(data);
+//			}
+//			// 初始化文件路径
+//			filePath = "";
+//			
+//			// 已经修改了头像
+//			avator_changed = true;
+//			// 上传头像
+//			// uploadAvatar();
+//			break;
+//		default:
+//			break;
+//
+//		}
+	}
+	
+	String path = "";
+	private void handleCrop(int resultCode, Intent result) {
+        if (resultCode == Activity.RESULT_OK) {
+            System.out.println(" handleCrop: Crop.getOutput(result) "+Crop.getOutput(result));
+            
+            ViewGroup.LayoutParams lp = setAvator.getLayoutParams();
+            lp.width = LayoutParams.FILL_PARENT;
+            lp.height = LayoutParams.FILL_PARENT;
+            setAvator.setLayoutParams(lp);
+            setAvator.setImageURI( Crop.getOutput(result));
+            
+            if (avatorPop != null) {
 				avatorPop.dismiss();
 			}
-			Uri uri = null;
-			if (data == null) {
-				return;
-			}
-			if (resultCode == RESULT_OK) {
-				if (!Environment.getExternalStorageState().equals(
-						Environment.MEDIA_MOUNTED)) {
-					ShowToast("SD不可用");
-					return;
-				}
-				isFromCamera = false;
-				uri = data.getData();
-				
-				// 系统裁减头像
-				startImageAction(uri, 200, 200,
-						BmobConstants.REQUESTCODE_UPLOADAVATAR_CROP, true);
-			} else {
-				ShowToast("照片获取失败");
-			}
-
-			break;
-		case BmobConstants.REQUESTCODE_UPLOADAVATAR_CROP:// 裁剪头像返回
-			// TODO sent to crop
-			if (avatorPop != null) {
-				avatorPop.dismiss();
-			}
-			if (data == null) {
-				// Toast.makeText(this, "取消选择", Toast.LENGTH_SHORT).show();
-				return;
-			} else {
-				// 保存裁减的头像
-				saveCropAvator(data);
-			}
-			// 初始化文件路径
-			filePath = "";
 			
 			// 已经修改了头像
 			avator_changed = true;
-			// 上传头像
-			// uploadAvatar();
-			break;
-		default:
-			break;
+            
+            
+//            mCircleView.setImageBitmap( getCircleBitmap(Crop.getOutput(result)));
+        } else if (resultCode == Crop.RESULT_ERROR) {
+            Toast.makeText(RegisterActivity2.this, Crop.getError(result).getMessage(),
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
 
-		}
-	}
+    private Bitmap getCircleBitmap(Uri uri) {
+       Bitmap src =  BitmapFactory.decodeFile( uri.getPath());
+       Bitmap output = Bitmap.createBitmap( src.getWidth(), src.getHeight(), Bitmap.Config.RGB_565);
+       Canvas canvas = new Canvas( output);
+
+       Paint paint = new Paint();
+       Rect rect = new Rect( 0, 0, src.getWidth(), src.getHeight());
+
+       paint.setAntiAlias( true);
+       paint.setFilterBitmap( true);
+       paint.setDither( true);
+       canvas.drawARGB( 0, 0, 0, 0);
+       canvas.drawCircle( src.getWidth() / 2, src.getWidth() / 2, src.getWidth() / 2, paint);
+       paint.setXfermode( new PorterDuffXfermode( PorterDuff.Mode.SRC_IN));
+       canvas.drawBitmap( src, rect, rect, paint);
+       return output;
+    }
+
+    private void beginCrop(Uri source) {
+        String fileName = new SimpleDateFormat("yyMMddHHmmss").format(new Date())  + ".png";
+        File cropFile = new File( dir, fileName);
+        Uri outputUri = Uri.fromFile( cropFile);
+        
+        // 剪裁后的文件路径
+        path = cropFile.getAbsolutePath();
+        new Crop( source).output( outputUri).setCropType(true).start( this);
+    }
 	
 	/**
 	 * @Title: startImageAction
@@ -379,7 +622,7 @@ public class RegisterActivity2 extends BaseActivity implements OnClickListener{
 	}
 	
 	
-	String path;
+	
 
 	/**
 	 * 保存裁剪的头像
@@ -400,7 +643,7 @@ public class RegisterActivity2 extends BaseActivity implements OnClickListener{
 					// 旋转图片一定角度
 					bitmap = PhotoUtil.rotaingImageView(degree, bitmap);
 				}
-				register_avator.setImageBitmap(bitmap);
+				setAvator.setImageBitmap(bitmap);
 				// 保存图片
 				String filename = new SimpleDateFormat("yyMMddHHmmss")
 						.format(new Date())+".png";
@@ -486,63 +729,63 @@ public class RegisterActivity2 extends BaseActivity implements OnClickListener{
 	 */
 	private void refreshAvatar(String avatar) {
 		if (avatar != null && !avatar.equals("")) {
-			ImageLoader.getInstance().displayImage(avatar, register_avator,
+			ImageLoader.getInstance().displayImage(avatar, setAvator,
 					ImageLoadOptions.getOptions());
 		} else {
 			
 			// 否则显示默认的头像
-			register_avator.setImageResource(R.drawable.default_head);
+			setAvator.setImageResource(R.drawable.default_head);
 		}
 	}
 	
 	
 	private void checkUser(){
-		BmobQuery<User> query = new BmobQuery<User>();
-		query.addWhereEqualTo("username", "smile");
-		query.findObjects(this, new FindListener<User>() {
-
-			@Override
-			public void onError(int arg0, String arg1) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void onSuccess(List<User> arg0) {
-				// TODO Auto-generated method stub
-				if(arg0!=null && arg0.size()>0){
-					User user = arg0.get(0);
-					user.setPassword("1234567");
-					user.update(RegisterActivity2.this, new UpdateListener() {
-						
-						@Override
-						public void onSuccess() {
-							// TODO Auto-generated method stub
-							userManager.login("smile", "1234567", new SaveListener() {
-								
-								@Override
-								public void onSuccess() {
-									// TODO Auto-generated method stub
-									Log.i("smile", "登陆成功");
-								}
-								
-								@Override
-								public void onFailure(int code, String msg) {
-									// TODO Auto-generated method stub
-									Log.i("smile", "登陆失败："+code+".msg = "+msg);
-								}
-							});
-						}
-						
-						@Override
-						public void onFailure(int code, String msg) {
-							// TODO Auto-generated method stub
-							
-						}
-					});
-				}
-			}
-		});
+//		BmobQuery<User> query = new BmobQuery<User>();
+//		query.addWhereEqualTo("username", "smile");
+//		query.findObjects(this, new FindListener<User>() {
+//
+//			@Override
+//			public void onError(int arg0, String arg1) {
+//				// TODO Auto-generated method stub
+//
+//			}
+//
+//			@Override
+//			public void onSuccess(List<User> arg0) {
+//				// TODO Auto-generated method stub
+//				if(arg0!=null && arg0.size()>0){
+//					User user = arg0.get(0);
+//					user.setPassword("1234567");
+//					user.update(RegisterActivity2.this, new UpdateListener() {
+//						
+//						@Override
+//						public void onSuccess() {
+//							// TODO Auto-generated method stub
+//							userManager.login("smile", "1234567", new SaveListener() {
+//								
+//								@Override
+//								public void onSuccess() {
+//									// TODO Auto-generated method stub
+//									Log.i("smile", "登陆成功");
+//								}
+//								
+//								@Override
+//								public void onFailure(int code, String msg) {
+//									// TODO Auto-generated method stub
+//									Log.i("smile", "登陆失败："+code+".msg = "+msg);
+//								}
+//							});
+//						}
+//						
+//						@Override
+//						public void onFailure(int code, String msg) {
+//							// TODO Auto-generated method stub
+//							
+//						}
+//					});
+//				}
+//			}
+//		});
 	}
 	
 	private void register(){
@@ -568,9 +811,11 @@ public class RegisterActivity2 extends BaseActivity implements OnClickListener{
 		bu.setPassword(password);
 		bu.setSex(sex);
 		bu.setNick(nick); // 设置昵称
-		bu.setBirthday(showBirth.getText().toString());
+		bu.setBirthday(et_birth.getText().toString());
 		bu.setGameType(gameType);
 		bu.setGameDifficulty("简单");
+		bu.setLove(et_love.getText().toString());
+		bu.setHobbi(et_hobbi.getText().toString());
 		
 		//将user和设备id进行绑定
 		bu.setDeviceType("android");
@@ -610,37 +855,176 @@ public class RegisterActivity2 extends BaseActivity implements OnClickListener{
 		// TODO Auto-generated method stub
 		int id = v.getId();
 		switch (id) {
-		case R.id.register_avator:
-			showAvatarPop();
-			break;
-
+			
+		// 前一页
 		case R.id.reg_btn_previous:
 			showPrevious();
 			break;
 			
+		// 后一页
 		case R.id.reg_btn_next:
 			showNext();
 			break;
 			
-		case R.id.register_second_birthday_choose:
+		// 获取验证码
+		case R.id.register_btn_get_verfy_code:
+			getVerfyCode();
+			break;
+			
+		// 设置头像
+		case R.id.register_set_avator:
+			showAvatarPop();
+			break;
+		
+		// 设置生日
+		case R.id.register_set_birthday_et:
 			seleteBirth();
 			break;
-		case R.id.sex_select_man:
-			sex = false;
-			sexMan.setVisibility(View.GONE);
-			sexWoman.setVisibility(View.VISIBLE);
+			
+		// 设置男性
+		case R.id.register_sex_select_male:
+			if (!sex) {
+				sex = true;
+				setSexFemal.setImageDrawable(bitFemale);
+				setSexMale.setImageDrawable(bitMaleChoose);
+			}
 			break;
-		case R.id.sex_select_woman:
-			sex = true;
-			sexMan.setVisibility(View.VISIBLE);
-			sexWoman.setVisibility(View.GONE);
+			
+		// 设置女性
+		case R.id.register_sex_select_female:
+			if (sex) {
+				sex = false;
+				setSexFemal.setImageDrawable(bitFemaleChoose);
+				setSexMale.setImageDrawable(bitMale);
+			}
 			break;
-		case R.id.register_game_choose_layout:
+			
+		// 设置游戏
+		case R.id.register_set_game_et:
 			showGameChooseDialog();
 			break;
+			
+		// 设置情感状况
+		case R.id.register_set_love_et:
+			showLoveChooseDialog();
+			break;
+			
 		default:
 			break;
 		}
+	}
+	
+	/*
+	 * 选择情感状况
+	 * author:Deep
+	 */
+	private void showLoveChooseDialog() {
+		
+		final SingleChoiceDialog singleChoiceDialog = new SingleChoiceDialog(RegisterActivity2.this,
+				loveList, "确定", "取消", "情感状况", true);
+		
+		singleChoiceDialog.SetOnSuccessListener(new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				int selectItem = singleChoiceDialog.getSelectItem();
+				
+				switch (selectItem) {
+				case 0:
+					et_love.setText("热恋");
+					break;
+				case 1:
+					et_love.setText("单身");
+					break;
+				case 2:
+					et_love.setText("失恋");
+					break;
+				case 3:
+					et_love.setText("保密");
+					break;
+				default:
+					break;
+				}
+				hasChooseLove = true;
+				singleChoiceDialog.dismiss();
+			}
+		});
+		
+		singleChoiceDialog.SetOnCancelListener(new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+		singleChoiceDialog.show();
+		
+	}
+	
+	private void getVerfyCode() {
+		
+		if (TextUtils.isEmpty(et_username.getText().toString())) {
+			ShowToast(R.string.toast_error_username_null);
+			return;
+		}
+		
+		// 检查用户名是否已经存在
+		if (!CommonUtils.isNetworkAvailable(RegisterActivity2.this)) {
+			ShowToast(R.string.network_tips);
+			return;
+		}
+		
+		BmobQuery<User> query = new BmobQuery<User>();
+		query.addWhereEqualTo("username", et_username.getText().toString());
+		query.findObjects(this, new FindListener<User>() {
+
+			@Override
+			public void onError(int arg0, String arg1) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onSuccess(List<User> arg0) {
+				// TODO Auto-generated method stub
+				if (arg0 != null && arg0.size() > 0) {
+					ShowToast(R.string.username_has_exited);
+					return;
+				}
+				
+				showSurePhoneNumDialog();
+			}
+		});
+			
+	}
+	
+	private void showSurePhoneNumDialog() {
+		DialogTips dialogTips = new DialogTips(RegisterActivity2.this, "我们将发送短信验证码到这个号码：+86 " + et_username.getText().toString(),
+				"确定", "取消", "确认手机号码", true);
+		dialogTips.SetOnSuccessListener(new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				// 如果不为空，就请求发送验证码
+				SMSSDK.getVerificationCode("86", et_username.getText().toString());
+				Message message = new Message();
+				message.what = 1;
+				handlerGetVerfyCode.sendMessage(message);
+			}
+		});
+		dialogTips.SetOnCancelListener(new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		dialogTips.show();
 	}
 	
 	private void showGameChooseDialog() {
@@ -668,7 +1052,8 @@ public class RegisterActivity2 extends BaseActivity implements OnClickListener{
 				default:
 					break;
 				}
-				gameChooseShow.setText(gameType);
+				hasChooseGame = true;
+				et_game.setText(gameType);
 				singleChoiceDialog.dismiss();
 			}
 		});
@@ -709,6 +1094,12 @@ public class RegisterActivity2 extends BaseActivity implements OnClickListener{
 			back.setText("上一步");
 			next.setText("下一步");
 		}
+		else if (currentPage == 3) {
+			viewFlipper.showPrevious();	
+			currentPage--;
+			back.setText("上一步");
+			next.setText("下一步");
+		}
 		
 	}
 	
@@ -720,22 +1111,51 @@ public class RegisterActivity2 extends BaseActivity implements OnClickListener{
 				return;
 			}
 
+			if (TextUtils.isEmpty(et_confim_code.getText().toString())) {
+				ShowToast(R.string.toast_error_confim_code_null);
+				return;
+			}
+			
+			SMSSDK.submitVerificationCode("86", et_username.getText().toString(), et_confim_code.getText().toString());
+			
+			progress = new ProgressDialog(RegisterActivity2.this);
+			progress.setMessage("正在验证");
+			progress.setCanceledOnTouchOutside(false);
+			progress.show();
+			
+//			viewFlipper.showNext();
+//			currentPage++;
+//			back.setText("上一步");
+			
+		}
+		
+		else if (currentPage == 1) {
 			if (TextUtils.isEmpty(et_password.getText().toString())) {
 				ShowToast(R.string.toast_error_password_null);
 				return;
 			}
-			if (!(et_password.getText().toString()).equals(et_email.getText().toString())) {
+			
+			if (et_password.getText().toString().length() < 6) {
+				ShowToast(R.string.login_password_number_error);
+				return;
+			}
+			
+			if (!et_password_confim.getText().toString().equals(et_password.getText().toString())) {
 				ShowToast(R.string.toast_error_comfirm_password);
 				return;
 			}
 			
 			viewFlipper.showNext();
 			currentPage++;
-			back.setText("上一步");
-			
+			next.setText("下一步");
 		}
 		
-		else if (currentPage == 1) {
+		else if (currentPage == 2) {
+			if (!avator_changed) {
+				ShowToast(R.string.toast_error_change_avator);
+				return;
+			}
+			
 			if (TextUtils.isEmpty(et_nick.getText().toString())) {
 				ShowToast(R.string.toast_error_nick_null);
 				return;
@@ -749,53 +1169,22 @@ public class RegisterActivity2 extends BaseActivity implements OnClickListener{
 			currentPage++;
 			next.setText("注册");
 		}
-		
-		else if (currentPage == 2) {
+		else if(currentPage == 3){
+			if (!hasChooseGame) {
+				ShowToast(R.string.toast_error_game_null);
+				return;
+			}
+			
+			if (!hasChooseLove) {
+				ShowToast(R.string.toast_error_love_null);
+				return;
+			}
+			
 			register();
 		}
 	}
 	
 	private void seleteBirth(){
-		
-//		LayoutInflater inflater=LayoutInflater.from(RegisterActivity2.this);
-//		final View timepickerview=inflater.inflate(R.layout.timepicker, null);
-//		ScreenInfo screenInfo = new ScreenInfo(RegisterActivity2.this);
-//		wheelMain = new WheelMain(timepickerview);
-//		wheelMain.screenheight = screenInfo.getHeight();
-//		String time = showBirth.getText().toString();
-//		Calendar calendar = Calendar.getInstance();
-//		if(JudgeDate.isDate(time, "yyyy-MM-dd")){
-//			try {
-//				calendar.setTime(dateFormat.parse(time));
-//			} catch (ParseException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//		}
-//		int year = calendar.get(Calendar.YEAR);
-//		int month = calendar.get(Calendar.MONTH);
-//		int day = calendar.get(Calendar.DAY_OF_MONTH);
-//		wheelMain.initDateTimePicker(year,month,day);
-//		new AlertDialog.Builder(RegisterActivity2.this)
-//		.setTitle("选择日期")
-//		.setView(timepickerview)
-//		.setPositiveButton("设置", new DialogInterface.OnClickListener() {
-//			@Override
-//			public void onClick(DialogInterface dialog, int which) {
-//				showBirth.setText(wheelMain.getTime());
-//				hasChoseBirth = true;
-//			}
-//		})
-//		.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-//			@Override
-//			public void onClick(DialogInterface dialog, int which) {
-//				
-//				showBirth.setText("点击选择生日");
-//				hasChoseBirth = false;
-//				
-//			}
-//		})
-//		.show();
 		
 		final DateChooseDialog dateChooseDialog = new DateChooseDialog(RegisterActivity2.this, "确定", "取消", "选择生日", false);
 		dateChooseDialog.SetOnSuccessListener(new DialogInterface.OnClickListener() {
@@ -803,7 +1192,7 @@ public class RegisterActivity2 extends BaseActivity implements OnClickListener{
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				// TODO Auto-generated method stub
-				showBirth.setText(dateChooseDialog.getDate());
+				et_birth.setText(dateChooseDialog.getDate());
 				hasChoseBirth = true;
 			}
 		});
@@ -813,15 +1202,21 @@ public class RegisterActivity2 extends BaseActivity implements OnClickListener{
 			public void onClick(DialogInterface dialog, int which) {
 				// TODO Auto-generated method stub
 				if (!hasChoseBirth) {
-					showBirth.setText("点击选择生日");
+					et_birth.setText("选择生日");
 					hasChoseBirth = false;
 				}
 			}
 		});
 		
 		dateChooseDialog.show();
-	
-		
+	}
+
+	@Override
+	public void finish() {
+		// TODO Auto-generated method stub
+		super.finish();
+		// registerEventHandler必须和unregisterEventHandler配套使用，否则可能造成内存泄漏。
+		SMSSDK.unregisterEventHandler(eh);
 	}
 
 }

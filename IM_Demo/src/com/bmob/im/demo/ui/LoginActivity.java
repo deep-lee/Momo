@@ -32,7 +32,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 
 	EditText et_username, et_password;
 	Button btn_login;
-	TextView btn_register;
+	Button btn_register;
 
 	private MyBroadcastReceiver receiver = new MyBroadcastReceiver();
 
@@ -66,7 +66,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		et_username = (EditText) findViewById(R.id.et_username);
 		et_password = (EditText) findViewById(R.id.et_password);
 		btn_login = (Button) findViewById(R.id.btn_login);
-		btn_register = (TextView) findViewById(R.id.btn_register);
+		btn_register = (Button) findViewById(R.id.btn_register);
 		btn_login.setOnClickListener(this);
 		btn_register.setOnClickListener(this);
 	}

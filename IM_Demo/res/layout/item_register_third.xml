@@ -4,85 +4,100 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
     
-    
-    <RelativeLayout
-        android:id="@+id/register_game_choose_layout"
-       style="@style/Register_Input">
+     <RelativeLayout 
+        android:id="@+id/register_set_avator_layout"
+        android:layout_width="140dp"
+        android:orientation="vertical"
+        android:background="@drawable/register_set_avator_layout_bg"
+        android:layout_gravity="center"
+        android:layout_marginTop="40dip"
+        android:layout_height="140dp">
 
-        <TextView
-            style="@style/Smile.TextView._Black"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10.0dp"
-            android:textStyle="bold"
-            android:text="选择游戏" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:gravity="center_vertical"
-            android:orientation="horizontal" >
-
-            <TextView
-                android:id="@+id/register_game_choose_show"
-                style="@style/Smile.TextView._Black"
-                android:drawablePadding="10dp" 
-                android:textColor="#FF3E96"
-                android:text="水果连连看"/>
-            
-            <ImageView
-                android:id="@+id/register_game_arrow"
-                style="@style/Smile.ImageView"
-                android:layout_width="20dp"
-                android:contentDescription="@string/action_settings"
-                android:src="@drawable/register_bottom_arrow" />
-            
-        </LinearLayout>
+        <ImageView
+            android:id="@+id/register_set_avator"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/register_set_avator_default" />
     </RelativeLayout>
-       
-        <RelativeLayout
-        	android:id="@+id/register_avator"
-        	android:layout_width="match_parent"
-        	android:layout_height="wrap_content"
-	        android:background="@drawable/base_edit_input"
-	        android:minHeight="80dp"
-        	android:layout_marginTop="10.0dp"
-        	android:layout_marginLeft="10.0dp"
-        	android:layout_marginRight="10.0dp">
-
+    
+      <TextView 
+            android:layout_height="wrap_content"
+            android:text="选择头像"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:textSize="15sp"
+            android:layout_width="wrap_content"/>
+      
+      <LinearLayout  
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:layout_marginTop="40dip"
+         android:orientation="horizontal">
+         
         <TextView
-            style="@style/Smile.TextView._Black"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:text="@string/add_avator" 
-            android:textStyle="bold"
-            android:paddingLeft="10dp"/>
-
-        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
             android:gravity="center_vertical"
-            android:orientation="horizontal" >
+            android:paddingLeft="20dp"
+            android:textSize="20sp"
+            android:text="@string/login_nick"
+            android:textStyle="bold" />
 
-            <ImageView
-                android:id="@+id/register_select_avator"
-                style="@style/Smile.ImageView"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:padding="5dp"
-                android:src="@drawable/default_head" />
+        <EditText
+            android:id="@+id/register_set_nick_et"
+            style="@style/Register_Edit"
+            android:layout_marginRight="20dp"
+            android:ems="10"
+            android:gravity="center_vertical"
+            android:hint="@string/login_nick_tip" >
+        </EditText>
 
-            <ImageView
-                android:id="@+id/register_select_avator_arraw"
-                style="@style/Smile.ImageView"
-                android:layout_width="20dp"
-                android:contentDescription="@string/action_settings"
-                android:src="@drawable/register_bottom_arrow" />
-        </LinearLayout>
-    	</RelativeLayout>
+    </LinearLayout>
+    
+      <ImageView 
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:paddingLeft="20dp"
+         android:src="@drawable/register_line"
+         android:layout_marginRight="20dp"
+         android:layout_marginTop="20dip"/>
+    
+      <LinearLayout  
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:layout_marginTop="25dip"
+         android:orientation="horizontal">
+         
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:paddingLeft="20dp"
+            android:textSize="20sp"
+            android:text="@string/add_birthday"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/register_set_birthday_et"
+            style="@style/Register_Edit"
+            android:layout_marginRight="20dp"
+            android:ems="10"
+            android:editable="false"
+            android:clickable="true"
+            android:cursorVisible="false"
+            android:gravity="center_vertical"
+            android:hint="@string/add_birthday_hint" />
+
+    </LinearLayout>
+    
+      <ImageView 
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:paddingLeft="20dp"
+         android:src="@drawable/register_line"
+         android:layout_marginRight="20dp"
+         android:layout_marginTop="20dip"/>
     
 
 </LinearLayout>

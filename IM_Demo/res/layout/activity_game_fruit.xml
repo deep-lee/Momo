@@ -37,7 +37,7 @@
     	android:paddingRight="10dip"
     	android:paddingBottom="5dip"
     	/>
-    <com.bmob.im.demo.view.GameView
+    <com.deep.momo.game.view.GameView
     	android:layout_width="wrap_content" 
     	android:layout_height="wrap_content" 
     	android:id="@+id/game_view"

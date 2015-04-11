@@ -43,8 +43,23 @@ public class User extends BmobChatUser {
 	
 	private String photoWallFile;
 	
+	private String love;
+	private String hobbi;
 	
 	
+	
+	public String getLove() {
+		return love;
+	}
+	public void setLove(String love) {
+		this.love = love;
+	}
+	public String getHobbi() {
+		return hobbi;
+	}
+	public void setHobbi(String hobbi) {
+		this.hobbi = hobbi;
+	}
 	public String getPhotoWallFile() {
 		return photoWallFile;
 	}

@@ -8,8 +8,10 @@ import java.util.Random;
 
 
 
+
 import com.bmob.im.demo.util.ColorData;
 import com.bmob.im.demo.util.RectArea;
+import com.deep.momo.game.view.MixedColorView;
 
 import android.R.integer;
 import android.graphics.RectF;

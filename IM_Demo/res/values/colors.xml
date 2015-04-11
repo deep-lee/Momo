@@ -37,4 +37,11 @@
     <color name="guess_narmal">#9bcd9b</color>
     <color name="guess_pressed">#fff68f</color>
     <color name="select_picture_btn_pressed">#EED5B7</color>
+    <color name="color_blue">#6776EC</color>
+    <color name="color_press_blue">#004A80</color>
+    
+    <color name="crop_button_bar">#f3f3f3</color>
+    <color name="crop_button_text">#666666</color>
+    <color name="crop_selector_pressed">#1a000000</color>
+    <color name="crop_selector_focused">#77000000</color>
 </resources>

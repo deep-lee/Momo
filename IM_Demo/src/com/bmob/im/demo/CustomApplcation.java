@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
 import android.app.Application;
 import android.app.NotificationManager;
 import android.content.Context;
@@ -16,7 +15,6 @@ import cn.bmob.im.BmobUserManager;
 import cn.bmob.im.bean.BmobChatUser;
 import cn.bmob.im.db.BmobDB;
 import cn.bmob.v3.datatype.BmobGeoPoint;
-
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
@@ -58,6 +56,8 @@ public class CustomApplcation extends Application {
 		// 是否开启debug模式--默认开启状态
 		BmobChat.DEBUG_MODE = true;
 		mInstance = this;
+	 	
+		
 		init();
 	}
 

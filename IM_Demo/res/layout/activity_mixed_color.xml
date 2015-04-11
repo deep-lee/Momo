@@ -4,7 +4,7 @@
 	android:layout_height="fill_parent"
 	android:orientation="vertical">
 	
-	<com.bmob.im.demo.view.MixedColorView
+	<com.deep.momo.game.view.MixedColorView
 		android:id="@+id/mixed_color" 
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent" />

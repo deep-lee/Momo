@@ -17,10 +17,10 @@ import com.bmob.im.demo.ui.AttractionsRomaActivity;
 import com.bmob.im.demo.ui.FragmentBase;
 import com.bmob.im.demo.ui.LoginActivity;
 import com.bmob.im.demo.ui.MainActivity;
-import com.bmob.im.demo.ui.MyGameActivity;
 import com.bmob.im.demo.ui.SlideSetMyInfoActivity;
 import com.bmob.im.demo.util.FontManager;
 import com.bmob.im.demo.util.ImageLoadOptions;
+import com.deep.momo.game.ui.MyGameActivity;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import android.annotation.SuppressLint;
