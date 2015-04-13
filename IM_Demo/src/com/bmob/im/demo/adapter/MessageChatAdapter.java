@@ -163,7 +163,7 @@ public class MessageChatAdapter extends BaseListAdapter<BmobMsg> {
 			ImageLoader.getInstance().displayImage(avatar, iv_avatar, ImageLoadOptions.getOptions(),animateFirstListener);
 		}else{
 			// 没有头像信息就使用默认的头像信息
-			iv_avatar.setImageResource(R.drawable.head);
+			iv_avatar.setImageResource(R.drawable.default_head);
 		}
 		
 		iv_avatar.setOnClickListener(new OnClickListener() {

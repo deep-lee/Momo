@@ -12,7 +12,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import cn.bmob.im.BmobChat;
 import cn.bmob.im.BmobChatManager;
@@ -49,10 +51,9 @@ import com.nostra13.universalimageloader.core.ImageLoader;
  */
 public class MainActivity extends ActivityBase implements EventListener{
 
-	private Button[] mTabs;
+	private ImageButton[] mTabs;
 	private ContactFragment contactFragment;
 	private RecentFragment recentFragment;
-	private SettingsFragment settingFragment;
 	public NearByFragment nearByFragment;
 	private Fragment[] fragments;
 	private int index;
@@ -63,6 +64,8 @@ public class MainActivity extends ActivityBase implements EventListener{
 	
 	
 	FragmentTransaction trx;
+	
+	private LayoutParams []params;
 	
 	Boolean menuFlag;
 	
@@ -83,14 +86,36 @@ public class MainActivity extends ActivityBase implements EventListener{
 	}
 
 	private void initView(){
-		mTabs = new Button[3];
-		mTabs[0] = (Button) findViewById(R.id.btn_message);
-		mTabs[1] = (Button) findViewById(R.id.btn_contract);
-		mTabs[2] = (Button) findViewById(R.id.btn_set);
+		mTabs = new ImageButton[3];
+		mTabs[0] = (ImageButton) findViewById(R.id.btn_message);
+		mTabs[1] = (ImageButton) findViewById(R.id.btn_contract);
+		mTabs[2] = (ImageButton) findViewById(R.id.btn_nears);
 		iv_recent_tips = (ImageView)findViewById(R.id.iv_recent_tips);
 		iv_contact_tips = (ImageView)findViewById(R.id.iv_contact_tips);
 		//把第一个tab设为选中状态
 		mTabs[0].setSelected(true);
+		
+		mTabs[0].setImageDrawable(getResources().getDrawable(R.drawable.comon_main_bottom_recents_p));
+		
+//		mTabs[1].setImageDrawable(getResources().getDrawable(R.drawable.comon_main_bottom_contacts_p));
+//		
+//		mTabs[2].setImageDrawable(getResources().getDrawable(R.drawable.comon_main_bottom_nears_p));
+		
+//		mTabs[0].setScaleX((float) 1.3);
+//		mTabs[0].setScaleY((float) 1.3);
+//		
+//		params = new LayoutParams[3];
+//		params[0] = mTabs[0].getLayoutParams();  
+//		ShowToast(mTabs[0].getHeight() + "");
+//		
+//		
+//		params[0].width = mTabs[0].getWidth() + 20 ;
+//		params[0].height = mTabs[1].getHeight() + 20;
+//		
+//		mTabs[0].setLayoutParams(params[0]);
+//		
+//		params[1] = mTabs[1].getLayoutParams();
+//		params[2] = mTabs[2].getLayoutParams();
 		
 		initLeftView();
 		
@@ -197,7 +222,6 @@ public class MainActivity extends ActivityBase implements EventListener{
 	private void initTab(){
 		contactFragment = new ContactFragment();
 		recentFragment = new RecentFragment();
-		settingFragment = new SettingsFragment();
 		nearByFragment = new NearByFragment(MainActivity.this);
 		
 		fragments = new Fragment[] {recentFragment, contactFragment, nearByFragment };
@@ -220,7 +244,7 @@ public class MainActivity extends ActivityBase implements EventListener{
 		case R.id.btn_contract:
 			index = 1;
 			break;
-		case R.id.btn_set:
+		case R.id.btn_nears:
 			index = 2;
 			break;
 		}
@@ -231,6 +255,43 @@ public class MainActivity extends ActivityBase implements EventListener{
 				trx.add(R.id.fragment_container, fragments[index]);
 			}
 			trx.show(fragments[index]).commit();
+			
+			
+			
+			switch (index) {
+			case 0:
+				if (currentTabIndex == 1) {
+					mTabs[1].setImageDrawable(getResources().getDrawable(R.drawable.comon_main_bottom_contacts_n));
+				}
+				else if (currentTabIndex == 2) {
+					mTabs[2].setImageDrawable(getResources().getDrawable(R.drawable.comon_main_bottom_nears_n));
+				}
+				mTabs[index].setImageDrawable(getResources().getDrawable(R.drawable.comon_main_bottom_recents_p));
+				break;
+				
+			case 1:
+				if (currentTabIndex == 0) {
+					mTabs[0].setImageDrawable(getResources().getDrawable(R.drawable.comon_main_bottom_recents_n));
+				}
+				else if (currentTabIndex == 2) {
+					mTabs[2].setImageDrawable(getResources().getDrawable(R.drawable.comon_main_bottom_nears_n));
+				}
+				mTabs[index].setImageDrawable(getResources().getDrawable(R.drawable.comon_main_bottom_contacts_p));
+				break;
+				
+			case 2:
+				if (currentTabIndex == 1) {
+					mTabs[1].setImageDrawable(getResources().getDrawable(R.drawable.comon_main_bottom_contacts_n));
+				}
+				else if (currentTabIndex == 0) {
+					mTabs[0].setImageDrawable(getResources().getDrawable(R.drawable.comon_main_bottom_recents_n));
+				}
+				mTabs[index].setImageDrawable(getResources().getDrawable(R.drawable.comon_main_bottom_nears_p));
+				break;
+
+			default:
+				break;
+			}		
 		}
 		mTabs[currentTabIndex].setSelected(false);
 		//把当前tab设为选中状态

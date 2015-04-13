@@ -99,6 +99,8 @@ public class XListView extends ListView implements OnScrollListener {
 						getViewTreeObserver().removeGlobalOnLayoutListener(this);
 					}
 				});
+		
+		this.setDivider(m_context.getResources().getDrawable(R.drawable.common_list_view_divider_line));
 	}
 
 	public boolean getPullLoading() {

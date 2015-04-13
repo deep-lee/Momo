@@ -20,7 +20,7 @@
     <string name="login_confim_pwd">确认密码 </string>
     <string name="login_nick">昵称</string>
     <string name="login_nick_tip">输入昵称</string>
-    <string name="message_search_hint">s搜索</string>
+    <string name="message_search_hint">搜索</string>
     <string name="main_tab_recent">会话</string>
     <string name="main_tab_contact">联系人</string>
     <string name="mian_tab_set">设置</string>

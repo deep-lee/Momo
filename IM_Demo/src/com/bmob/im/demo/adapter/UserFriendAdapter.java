@@ -84,13 +84,13 @@ public class UserFriendAdapter extends BaseAdapter implements SectionIndexer {
 		}
 
 		User friend = data.get(position);
-		final String name = friend.getUsername();
+		final String name = friend.getNick();
 		final String avatar = friend.getAvatar();
 
 		if (!TextUtils.isEmpty(avatar)) {
 			ImageLoader.getInstance().displayImage(avatar, viewHolder.avatar, ImageLoadOptions.getOptions());
 		} else {
-			viewHolder.avatar.setImageDrawable(ct.getResources().getDrawable(R.drawable.head));
+			viewHolder.avatar.setImageDrawable(ct.getResources().getDrawable(R.drawable.default_head));
 		}
 		viewHolder.name.setText(name);
 

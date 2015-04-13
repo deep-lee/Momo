@@ -2,19 +2,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background= "#ffffff"
+    android:background	= "@drawable/main_fragment_bg"
     android:orientation="vertical" >
     
     <include
         android:id="@+id/common_actionbar"
         layout="@layout/include_action_bar" />
-    
+      
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:background= "#ffffff"
         android:layout_centerInParent="true" >
-			
+			  
         <ImageView
             android:id="@+id/fragment_shakeBg"
             android:layout_width="fill_parent"
@@ -32,7 +32,7 @@
                 android:id="@+id/fragment_shakeImgUp"   
         		android:layout_width="fill_parent"
         		android:layout_height="190dp"        		
-        		android:background="#ffffff">        		
+        		android:background="@drawable/main_fragment_bg">        		
                 <ImageView            		
             		android:layout_width="wrap_content"
             		android:layout_height="wrap_content"
@@ -45,7 +45,7 @@
                 android:id="@+id/fragment_shakeImgDown"
         		android:layout_width="fill_parent"
         		android:layout_height="350dp"        		
-        		android:background="#ffffff">        		
+        		android:background="@drawable/main_fragment_bg">        		
                 <ImageView            		
             		android:layout_width="wrap_content"
             		android:layout_height="wrap_content"

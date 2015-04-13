@@ -42,7 +42,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
-                android:background="@drawable/base_horization_line" />
+                android:background="@drawable/common_list_view_divider_line" />
   
             <EditText
                 android:id="@+id/et_password"
