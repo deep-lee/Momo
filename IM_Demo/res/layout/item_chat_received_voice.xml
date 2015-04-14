@@ -36,8 +36,8 @@
             android:layout_marginTop="10dp"
             android:layout_toRightOf="@id/iv_avatar"
             android:gravity="left"
-            android:background="@drawable/chat_left_qp"
-            android:minWidth="80dp"
+            android:background="@drawable/bg_msgbox_receive_normal"
+            android:minWidth="60dp"
             android:minHeight="45dp"
             android:paddingBottom="5dp"
             android:paddingLeft="15dp"
@@ -48,6 +48,7 @@
                 android:id="@+id/iv_voice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:contentDescription="@string/add_avator"
                 android:src="@drawable/voice_right3" />
         </LinearLayout>

@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -38,6 +39,7 @@ import com.bmob.im.demo.ui.fragment.SettingsFragment;
 import com.bmob.im.demo.util.FontManager;
 import com.bmob.im.demo.util.ImageLoadOptions;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.CanvasTransformer;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnClosedListener;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenedListener;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -61,6 +63,8 @@ public class MainActivity extends ActivityBase implements EventListener{
 	
 	ImageView iv_recent_tips,iv_contact_tips;//消息提示
 	ImageView slideAvator;
+	
+	public static SlidingMenu menu;
 	
 	
 	FragmentTransaction trx;
@@ -156,7 +160,7 @@ public class MainActivity extends ActivityBase implements EventListener{
 	private void initLeftView() {
 		
 		// configure the SlidingMenu  
-        SlidingMenu menu = new SlidingMenu(this);  
+        menu = new SlidingMenu(this);  
         menu.setMode(SlidingMenu.LEFT);  
         // 设置触摸屏幕的模式  
         menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);  
@@ -211,11 +215,30 @@ public class MainActivity extends ActivityBase implements EventListener{
 			}
 		});
         
+      //缩放动画效果，超级棒的，大神的参数我没看懂
+        CanvasTransformer mCanvasTransformer =  new CanvasTransformer(){  
+            @Override  
+            public void transformCanvas(Canvas canvas, float percentOpen) {  
+                float scale = (float) (percentOpen*0.25 + 0.75);  
+                canvas.scale(scale, scale, canvas.getWidth()/2, canvas.getHeight()/2);                
+            }  
+              
+        };  
+        menu.setBehindCanvasTransformer(mCanvasTransformer);
+        
         
         android.app.Fragment leftMenuFragment = new LeftFragment(MainActivity.this);  
        // setBehindContentView(R.layout.left_menu_frame);  
         getFragmentManager().beginTransaction()  
                 .replace(R.id.left_fragment, leftMenuFragment).commit();   
+	}
+	
+	
+	/*
+	 * 动态显示左侧菜单
+	 */
+	public static void showLeft() {
+		menu.showMenu();
 	}
 
 	

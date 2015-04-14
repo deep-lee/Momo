@@ -37,7 +37,7 @@
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
             android:layout_toLeftOf="@id/iv_avatar"
-            android:background="@drawable/chat_right_qp" >
+            android:background="@drawable/bg_msgbox_send_normal" >
 
             <TextView
                 android:id="@+id/tv_location"
@@ -46,6 +46,8 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_gravity="center"
                 android:background="@drawable/location_default"
                 android:gravity="center|bottom"
                 android:textColor="@android:color/white" />

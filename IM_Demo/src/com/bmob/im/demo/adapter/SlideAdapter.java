@@ -1,8 +1,11 @@
 package com.bmob.im.demo.adapter;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+
 import com.bmob.im.demo.R;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,13 +24,9 @@ public class SlideAdapter extends BaseAdapter{
 		R.drawable.slide_icon_exit
 	};
 	
-//	private String slideItemName[] = {
-//		"我的游戏",
-//		"设置",
-//		"景点漫游",
-//		"关于",
-//		"退出登录"
-//	};
+	
+	private List<String> mDatas = Arrays  
+            .asList("我的游戏","设置", "景点漫游","关于", "退出登陆");  
 	
 	private int itemName[] = {
 			R.drawable.slide_list_item_game,	
@@ -81,9 +80,9 @@ public class SlideAdapter extends BaseAdapter{
         
         //得到条目中的子组件
        ImageView icon = (ImageView) convertView.findViewById(R.id.item_icon);
-       ImageView name = (ImageView) convertView.findViewById(R.id.item_name);
+       TextView name = (TextView) convertView.findViewById(R.id.item_name);
         
-       name.setImageResource(itemName[position]);
+       name.setText(mDatas.get(position));
        icon.setImageResource(iconId[position]);
         
        return convertView;

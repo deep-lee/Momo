@@ -35,8 +35,8 @@
             android:layout_marginRight="@dimen/margin_chat_top"
             android:layout_marginTop="10dp"
             android:layout_toLeftOf="@id/iv_avatar"
-            android:background="@drawable/chat_right_qp"
-            android:minWidth="80dp"
+            android:background="@drawable/bg_msgbox_send_normal"
+            android:minWidth="60dp"
             android:minHeight="45dp"
             android:gravity="right"
             android:paddingBottom="5dp"
@@ -50,6 +50,7 @@
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/add_avator"
                 android:scaleType="fitCenter"
+                android:layout_gravity="center"
                 android:src="@drawable/voice_left3" />
         </LinearLayout>
 

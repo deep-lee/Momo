@@ -20,7 +20,9 @@ import com.bmob.im.demo.R;
 import com.bmob.im.demo.adapter.MessageRecentAdapter;
 import com.bmob.im.demo.ui.ChatActivity;
 import com.bmob.im.demo.ui.FragmentBase;
+import com.bmob.im.demo.ui.MainActivity;
 import com.bmob.im.demo.view.ClearEditText;
+import com.bmob.im.demo.view.HeaderLayout.onLeftImageButtonClickListener;
 import com.bmob.im.demo.view.dialog.DialogTips;
 import com.bmob.im.demo.view.xlist.XListView;
 import com.bmob.im.demo.view.xlist.XListView.IXListViewListener;
@@ -52,7 +54,14 @@ public class RecentFragment extends FragmentBase implements OnItemClickListener,
 	}
 	
 	private void initView(){
-		initTopBarForOnlyTitle("会话");
+		initTopBarForLeft("会话", R.drawable.default_head, new onLeftImageButtonClickListener() {
+			
+			@Override
+			public void onClick() {
+				// TODO Auto-generated method stub
+				MainActivity.showLeft();
+			}
+		});
 		mListView = (XListView)findViewById(R.id.list);
 		mListView.setOnItemClickListener(this);
 		mListView.setOnItemLongClickListener(this);		

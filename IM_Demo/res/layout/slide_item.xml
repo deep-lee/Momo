@@ -9,17 +9,17 @@
 	    android:layout_height="30dp"   
 	    android:layout_gravity="center"
 	    android:layout_width="30dp"/> 
+	    
 	     
-	<ImageView   
+<!-- 	<ImageView   
 	    android:id="@+id/item_name"   
 	    android:layout_width="wrap_content"  
 	    android:layout_gravity="center" 
 	    android:layout_height="wrap_content"     
 	    android:minHeight="?android:attr/listPreferredItemHeight"   
 	    android:gravity="center_vertical"   
-	    android:paddingLeft="5dip"/> 
-	     
-	<!--  
+	    android:paddingLeft="5dip"/>  -->
+	      
 	<TextView   
 	    android:id="@+id/item_name"   
 	    android:layout_width="wrap_content"  
@@ -29,5 +29,4 @@
 	    android:minHeight="?android:attr/listPreferredItemHeight"   
 	    android:gravity="center_vertical"   
 	    android:paddingLeft="5dip"/>  
-	-->    
 </LinearLayout> 

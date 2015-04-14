@@ -172,6 +172,18 @@ public abstract class FragmentBase extends Fragment {
 				new OnLeftButtonClickListener());
 	}
 	
+	public void initTopBarForLeft(String titleName,int leftDrawableId,
+			onLeftImageButtonClickListener listener)
+	{
+		mHeaderLayout = (HeaderLayout)findViewById(R.id.common_actionbar);
+		mHeaderLayout.init(HeaderStyle.TITLE_LIFT_IMAGEBUTTON);
+		mHeaderLayout.setTitleAndLeftImageButton(titleName, leftDrawableId,
+				listener);
+		if (flag) {
+			setNearsSex(nearsSex);
+		}
+	}
+	
 	/** ср╠ъ+title
 	  * initTopBarForRight
 	  * @return void

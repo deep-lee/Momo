@@ -20,6 +20,7 @@ import com.bmob.im.demo.ui.MainActivity;
 import com.bmob.im.demo.ui.SlideSetMyInfoActivity;
 import com.bmob.im.demo.util.FontManager;
 import com.bmob.im.demo.util.ImageLoadOptions;
+import com.bmob.im.demo.view.dialog.DialogTips;
 import com.deep.momo.game.ui.MyGameActivity;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -27,6 +28,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -55,8 +57,7 @@ public class LeftFragment extends Fragment {
     ImageView slideAvator;
     TextView slideNick;
     
-    private List<String> mDatas = Arrays  
-            .asList("我的游戏","设置", "景点漫游","关于", "退出登陆");  
+    
     private ListAdapter mAdapter;  
     
     List<Map<String, Object>> list;
@@ -140,26 +141,47 @@ public class LeftFragment extends Fragment {
 					break;
 					// 退出登录
 				case 4:
-					CustomApplcation.getInstance().logout();
-					((MainActivity)context).finish();
-					CustomApplcation.myWallPhoto.clear();
-					// 删除图片缓存的内容
-					String imageDir = Environment.getExternalStorageDirectory().getPath()
-							+ "/Bmob_IM_test/PhotoWallFalls/";
-					File file = new File(imageDir);
-					delete(file);
-					
-					startActivity(new Intent(context, LoginActivity.class));
+					showLogoutDialog();
 					break;
 				}
 			}
         	
 		});
     }
-    
-    
-    
-    
+
+    private void showLogoutDialog() {
+    	DialogTips dialogTips = new DialogTips(context, "确认退出登陆？", "退出", "取消", "退出", false);
+    	
+    	dialogTips.SetOnSuccessListener(new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				CustomApplcation.getInstance().logout();
+				((MainActivity)context).finish();
+				CustomApplcation.myWallPhoto.clear();
+				// 删除图片缓存的内容
+				String imageDir = Environment.getExternalStorageDirectory().getPath()
+						+ "/Bmob_IM_test/PhotoWallFalls/";
+				File file = new File(imageDir);
+				delete(file);
+				
+				startActivity(new Intent(context, LoginActivity.class));
+			}
+		});
+    	
+    	dialogTips.SetOnCancelListener(new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+    	
+    	dialogTips.show();
+	}
+	
 	
 	/**
 	 * 更新头像 refreshAvatar

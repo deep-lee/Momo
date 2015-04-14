@@ -34,6 +34,7 @@ import com.baidu.mapapi.search.geocode.GeoCoder;
 import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
+import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.R.layout;
 import com.bmob.im.demo.bean.User;
@@ -74,7 +75,7 @@ public class NearPeopleMapActivity extends BaseActivity implements OnGetGeoCoder
 		private double QUERY_KILOMETERS = 1;
 	
 		View layout_marker;
-		TextView markerText;
+		TextView markerText, distanceText;
 		
 		View markerView;
 		// 定位相关
@@ -113,6 +114,7 @@ public class NearPeopleMapActivity extends BaseActivity implements OnGetGeoCoder
 		
 		layout_marker = LayoutInflater.from(this).inflate(R.layout.item_nears_map_marker, null);
 		markerText = (TextView) layout_marker.findViewById(R.id.marker_text);
+		distanceText = (TextView) layout_marker.findViewById(R.id.marker_distance);
 		
 		nearsSex = getIntent().getIntExtra("nearsSex", 2);
 		ShowToast("SEX:" + nearsSex);
@@ -248,6 +250,20 @@ public class NearPeopleMapActivity extends BaseActivity implements OnGetGeoCoder
 			markerText.setText(nearUser.getNick());
 			// Toast.makeText(NearPeopleMapActivity.this, nearUser.getNick(), Toast.LENGTH_SHORT).show();
 			
+			// 获取联系人的地理位置信息
+			BmobGeoPoint location = nearUser.getLocation();
+			String currentLat = CustomApplcation.getInstance().getLatitude();
+			String currentLong = CustomApplcation.getInstance().getLongtitude();
+			if(location!=null && !currentLat.equals("") && !currentLong.equals("")){
+				
+				// 算与附近的人之间的距离
+				double distance = DistanceOfTwoPoints(Double.parseDouble(currentLat),Double.parseDouble(currentLong),nearUser.getLocation().getLatitude(), 
+						nearUser.getLocation().getLongitude());
+				distanceText.setText(String.valueOf(distance)+"米");
+			}else{
+				distanceText.setText("未知");
+			}
+			
 			//启用绘图缓存
 		    layout_marker.setDrawingCacheEnabled(true);		
 		    //调用下面这个方法非常重要，如果没有调用这个方法，得到的bitmap为null
@@ -262,7 +278,7 @@ public class NearPeopleMapActivity extends BaseActivity implements OnGetGeoCoder
 			ShowLog("+++++++++++++++" + markerBitmap.getWidth() + "  " + markerBitmap.getHeight());
 			
 			// 获取附近的人的地理位置信息
-			BmobGeoPoint location = nearUser.getLocation();
+			// BmobGeoPoint location = nearUser.getLocation();
 			point = new LatLng(location.getLatitude(), location.getLongitude());
 			
 			BitmapDescriptor bitmap = BitmapDescriptorFactory.fromBitmap(markerBitmap);
@@ -578,5 +594,33 @@ public class NearPeopleMapActivity extends BaseActivity implements OnGetGeoCoder
 			mApplication.setLongtitude(currentGeoPoint.getLongitude() + "");
 		    mApplication.setLatitude(currentGeoPoint.getLatitude() + "");
 		}
+	}
+	
+	private static final double EARTH_RADIUS = 6378137;
+
+	private static double rad(double d) {
+		return d * Math.PI / 180.0;
+	}
+	
+	
+	/**
+	 * 根据两点间经纬度坐标（double值），计算两点间距离，
+	 * @param lat1
+	 * @param lng1
+	 * @param lat2
+	 * @param lng2
+	 * @return 距离：单位为米
+	 */
+	public static double DistanceOfTwoPoints(double lat1, double lng1,double lat2, double lng2) {
+		double radLat1 = rad(lat1);
+		double radLat2 = rad(lat2);
+		double a = radLat1 - radLat2;
+		double b = rad(lng1) - rad(lng2);
+		double s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2)
+				+ Math.cos(radLat1) * Math.cos(radLat2)
+				* Math.pow(Math.sin(b / 2), 2)));
+		s = s * EARTH_RADIUS;
+		s = Math.round(s * 10000) / 10000;
+		return s;
 	}
 }

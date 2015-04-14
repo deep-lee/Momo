@@ -33,21 +33,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-             android:paddingLeft="15dp"
+            android:paddingLeft="15dp"
             android:paddingRight="5dp"
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
-            
+            android:gravity="center"
             android:layout_toRightOf="@id/iv_avatar"
-            android:background="@drawable/chat_left_qp" >
+            android:background="@drawable/bg_msgbox_receive_normal" >
 
             <TextView
                 android:id="@+id/tv_location"
-                style="@style/chat_content_date_style"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/location_default"
                 android:gravity="center"
+                android:lineSpacingExtra="2dp"
+                android:layout_gravity="center"
+                android:layout_marginRight="5dp"
                 android:textColor="@android:color/white" />
         </LinearLayout>
 
