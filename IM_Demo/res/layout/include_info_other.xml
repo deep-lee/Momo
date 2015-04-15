@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+    <LinearLayout 
+	    android:id="@+id/info_other_tv_layout"
+	    android:layout_height="30dp"
+	    android:orientation="horizontal"
+	    android:background="#F0FFFF"
+	    android:layout_width="fill_parent">
+	                
+	    <TextView 
+		    android:id="@+id/info_other_tv"
+		    android:text="其他"
+		    android:textColor="#999999"
+		    android:textSize="12sp"
+		    android:layout_marginLeft="10dp"
+		    android:layout_gravity="center"
+		    android:layout_height="wrap_content"
+		    android:layout_width="fill_parent"/>
+	                
+	</LinearLayout>
+	    		
+
+	            
+	<RelativeLayout
+	    android:id="@+id/rl_profile14"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_below="@+id/info_other_tv_layout"
+	    android:background="#ffffff" >
+	
+	    <TextView 
+	        android:id="@+id/info_usually_appear"
+	        android:layout_height="wrap_content"
+	        android:text="常出没地"
+	        android:layout_marginLeft="10dp"
+	        android:textColor="#999999"
+	        android:layout_centerVertical="true"
+	        android:layout_width="wrap_content"/>
+	
+	    <LinearLayout 
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical"
+	        android:layout_centerInParent="true"
+	        android:layout_width="fill_parent">
+	                    
+	        <TextView 
+		        android:id="@+id/info_usually_appear_details"
+		        android:layout_height="wrap_content"
+		        android:text="未填写"
+		        android:layout_gravity="center_vertical"
+		        android:layout_marginLeft="100dp"
+		        android:layout_marginTop="22dp"
+		        android:layout_width="wrap_content"/>
+	                    
+	         <View
+				android:layout_width="wrap_content"
+				android:layout_marginTop="20dp"
+				android:layout_marginLeft="100dp"
+				android:layout_height="@dimen/base_line_width_2"
+				android:background="@drawable/base_horizontal_line" >
+			 </View>
+	                    
+	     </LinearLayout>
+	                
+	</RelativeLayout>
+	
+	<RelativeLayout
+	    android:id="@+id/rl_profile15"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_below="@+id/rl_profile14"
+	    android:background="#ffffff" >
+	
+	    <TextView 
+	        android:id="@+id/info_register_time"
+	        android:layout_height="wrap_content"
+	        android:text="注册时间"
+	        android:layout_marginLeft="10dp"
+	        android:textColor="#999999"
+	        android:layout_centerVertical="true"
+	        android:layout_width="wrap_content"/>
+	
+	    <LinearLayout 
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical"
+	        android:layout_centerInParent="true"
+	        android:layout_width="fill_parent">
+	                    
+	        <TextView 
+		        android:id="@+id/info_register_time_details"
+		        android:layout_height="wrap_content"
+		        android:text="未填写"
+		        android:layout_gravity="center_vertical"
+		        android:layout_marginLeft="100dp"
+		        android:layout_marginTop="22dp"
+		        android:layout_width="wrap_content"/>
+	                    
+	         <View
+				android:layout_width="wrap_content"
+				android:layout_marginTop="20dp"
+				android:layout_marginLeft="100dp"
+				android:layout_height="@dimen/base_line_width_2"
+				android:background="@drawable/base_horizontal_line" >
+			 </View>
+	                    
+	     </LinearLayout>
+	                
+	</RelativeLayout>
+
+</RelativeLayout>

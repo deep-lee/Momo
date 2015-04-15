@@ -17,7 +17,8 @@ import com.bmob.im.demo.ui.AttractionsRomaActivity;
 import com.bmob.im.demo.ui.FragmentBase;
 import com.bmob.im.demo.ui.LoginActivity;
 import com.bmob.im.demo.ui.MainActivity;
-import com.bmob.im.demo.ui.SlideSetMyInfoActivity;
+import com.bmob.im.demo.ui.SetMyInfoActivity2;
+import com.bmob.im.demo.ui.SlideSetActivity;
 import com.bmob.im.demo.util.FontManager;
 import com.bmob.im.demo.util.ImageLoadOptions;
 import com.bmob.im.demo.view.dialog.DialogTips;
@@ -115,20 +116,30 @@ public class LeftFragment extends Fragment {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 					long id) {
 				switch (position) {
+				// 我的游戏
 				case 0:
 					Intent gameIntent = new Intent();
 					gameIntent.setClass(context, MyGameActivity.class);
 					startActivity(gameIntent);
+					break;
+					
+				case 1:
+					Intent personIntent = new Intent();
+					personIntent.setClass(context, SetMyInfoActivity2.class);
+					personIntent.putExtra("from", "me");
+					startActivity(personIntent);
 					
 					break;
-				case 1:
+					
+				// 设置
+				case 2:
 					Intent intent = new Intent();
-					intent.setClass(context, SlideSetMyInfoActivity.class);
+					intent.setClass(context, SlideSetActivity.class);
 					startActivity(intent);
 					break;
 					
 					// 地点漫游
-				case 2:
+				case 3:
 					Intent romaIntent = new Intent();
 					romaIntent.setClass(context, AttractionsRomaActivity.class);
 					startActivity(romaIntent);
@@ -136,11 +147,11 @@ public class LeftFragment extends Fragment {
 					break;	
 					
 					// 关于
-				case 3:
+				case 4:
 					
 					break;
 					// 退出登录
-				case 4:
+				case 5:
 					showLogoutDialog();
 					break;
 				}

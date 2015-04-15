@@ -14,7 +14,7 @@
     <dimen name="tab_padding_left_right">40dp</dimen>
     <dimen name="tab_height">48dp</dimen>
     <dimen name="base_line_width_1">1dip</dimen>
-    <dimen name="base_line_width_2">2dip</dimen>
+    <dimen name="base_line_width_2">1dip</dimen>
     <dimen name="base_line_width">0.5dip</dimen>
 
     <dimen name="time_line_line_left_margin">24dip</dimen>
@@ -34,4 +34,8 @@
     <dimen name="image_thumbnail_spacing">1dp</dimen>
     
     <dimen name="crop_bar_height">40dp</dimen>
+    
+    <dimen name="image_profile_headbg_height">200dp</dimen>
+    <dimen name="image_profile_avatar_size">120dp</dimen>    
+    <dimen name="view_profile_headbottom_height">20dp</dimen>
 </resources>

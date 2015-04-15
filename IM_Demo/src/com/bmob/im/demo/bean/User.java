@@ -1,7 +1,5 @@
 package com.bmob.im.demo.bean;
 
-import java.util.ArrayList;
-
 import cn.bmob.im.bean.BmobChatUser;
 import cn.bmob.v3.datatype.BmobGeoPoint;
 import cn.bmob.v3.datatype.BmobRelation;
@@ -36,30 +34,117 @@ public class User extends BmobChatUser {
 	
 	private Blog blog;
 	
+	// 生日
 	private String birthday;
+	
+	// 游戏类型
 	private String gameType;
 	
+	// 游戏难度
 	private String gameDifficulty;
 	
+	// 照片墙
 	private String photoWallFile;
 	
+	// 情感状况
 	private String love;
-	private String hobbi;
+	
+	// 个性签名
+	private String personalizedSignature = "未填写";
+	
+	// 职业
+	private String career = "未填写";
+	
+	// 公司
+	private String company = "未填写";
+	
+	//学校
+	private String school = "未填写";
+	
+	// 家乡
+	private String hometown = "未填写";
+	
+	private String book = "未填写";
+	
+	private String movie = "未填写";
+	
+	private String music = "未填写";
+	
+	// 兴趣爱好
+	private String interests = "未填写";
+		
+	private String usuallyAppear = "未填写";
 	
 	
 	
+	
+	public String getPersonalizedSignature() {
+		return personalizedSignature;
+	}
+	public void setPersonalizedSignature(String personalizedSignature) {
+		this.personalizedSignature = personalizedSignature;
+	}
+	public String getCareer() {
+		return career;
+	}
+	public void setCareer(String career) {
+		this.career = career;
+	}
+	public String getCompany() {
+		return company;
+	}
+	public void setCompany(String company) {
+		this.company = company;
+	}
+	public String getSchool() {
+		return school;
+	}
+	public void setSchool(String school) {
+		this.school = school;
+	}
+	public String getHometown() {
+		return hometown;
+	}
+	public void setHometown(String hometown) {
+		this.hometown = hometown;
+	}
+	public String getBook() {
+		return book;
+	}
+	public void setBook(String book) {
+		this.book = book;
+	}
+	public String getMovie() {
+		return movie;
+	}
+	public void setMovie(String movie) {
+		this.movie = movie;
+	}
+	public String getMusic() {
+		return music;
+	}
+	public void setMusic(String music) {
+		this.music = music;
+	}
+	public String getInterests() {
+		return interests;
+	}
+	public void setInterests(String interests) {
+		this.interests = interests;
+	}
+	public String getUsuallyAppear() {
+		return usuallyAppear;
+	}
+	public void setUsuallyAppear(String usuallyAppear) {
+		this.usuallyAppear = usuallyAppear;
+	}
 	public String getLove() {
 		return love;
 	}
 	public void setLove(String love) {
 		this.love = love;
 	}
-	public String getHobbi() {
-		return hobbi;
-	}
-	public void setHobbi(String hobbi) {
-		this.hobbi = hobbi;
-	}
+	
 	public String getPhotoWallFile() {
 		return photoWallFile;
 	}

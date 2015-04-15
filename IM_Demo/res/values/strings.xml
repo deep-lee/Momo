@@ -124,14 +124,19 @@
     <string name="image_url">Image Url</string>
     <string name="title_activity_image_details">ImageDetailsActivity</string>
     <string name="title_activity_crop_image">CropImageActivity</string>
-    
-    
     <string name="crop_saving" translatable="false">正在保存…</string>
     <string name="crop_wait" translatable="false">请等待…</string>
     <string name="crop_pick_error" translatable="false">没有可用图片资源</string>
-
     <string name="crop_done" translatable="false">确认</string>
     <string name="crop_cancel">取消</string>
     <string name="username_has_exited">当前手机号码已被注册</string>
+    <string name="slide_set_account_safe">账号与安全</string>
+    <string name="slide_set_account_bangding">账号绑定</string>
+    <string name="slide_set_hiding_mode">隐身模式</string>
+    <string name="slide_set_meaasge_notify">消息提醒</string>
+    <string name="slide_set_person_dress">个性装扮</string>
+    <string name="slide_set_emoj_store">表情商城</string>
+    <string name="title_activity_set_message_notify">SetMessageNotifyActivity</string>
+    <string name="title_activity_set_my_info_activity2">SetMyInfoActivity2</string>
 
 </resources>

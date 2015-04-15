@@ -86,7 +86,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 	public void onClick(View v) {
 		if (v == btn_register) {
 			Intent intent = new Intent(LoginActivity.this,
-					RegisterActivity2.class);
+					RegisterActivity.class);
 			startActivity(intent);
 		} else {
 			

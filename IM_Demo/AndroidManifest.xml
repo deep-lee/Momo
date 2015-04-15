@@ -197,15 +197,12 @@
             android:label="@string/title_activity_mixed_color_menu" >
         </activity>
         <activity
-            android:name=".ui.RegisterActivity2"
+            android:name=".ui.RegisterActivity"
             android:label="@string/title_activity_register_activity2" >
         </activity>
+
         <activity
-            android:name=".ui.RegisterActivity3"
-            android:label="@string/title_activity_register_activity3" >
-        </activity>
-        <activity
-            android:name=".ui.SlideSetMyInfoActivity"
+            android:name=".ui.SlideSetActivity"
             android:label="@string/title_activity_slide_set_my_info" >
         </activity>
         <activity
@@ -253,6 +250,14 @@
         <activity
             android:name="com.soundcloud.android.crop.CropImageActivity"
             android:label="@string/title_activity_crop_image" >
+        </activity>
+        <activity
+            android:name=".ui.SetMessageNotifyActivity"
+            android:label="@string/title_activity_set_message_notify" >
+        </activity>
+        <activity
+            android:name="com.bmob.im.demo.ui.SetMyInfoActivity2"
+            android:label="@string/title_activity_set_my_info_activity2" >
         </activity>
     </application>
 
