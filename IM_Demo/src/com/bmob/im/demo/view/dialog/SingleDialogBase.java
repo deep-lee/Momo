@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.view.View.OnFocusChangeListener;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
+import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -101,6 +102,22 @@ public abstract class SingleDialogBase extends Dialog {
 		
 		mListView = (ListView)findViewById(R.id.single_choice_listView);
 		
+		mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
+			
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem,
+					int visibleItemCount, int totalItemCount) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
 
 		// 设置按钮事件监听
 		positiveButton = (Button)findViewById(R.id.single_choice_dialog_positivebutton);
@@ -161,7 +178,7 @@ public abstract class SingleDialogBase extends Dialog {
 		mListView.setAdapter(mSingleChoicAdapter);
 		mListView.setOnItemClickListener(mSingleChoicAdapter);   
 		
-		setListViewHeightBasedOnChildren(mListView);
+		// setListViewHeightBasedOnChildren(mListView);
 	
 	}
 

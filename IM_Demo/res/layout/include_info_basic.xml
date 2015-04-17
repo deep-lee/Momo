@@ -43,12 +43,13 @@
 	        android:layout_height="wrap_content"
 	        android:orientation="vertical"
 	        android:layout_centerInParent="true"
+	        android:layout_marginRight="10dp"
 	        android:layout_width="fill_parent">
 	                    
 	        <TextView 
 		        android:id="@+id/info_nick_details"
 		        android:layout_height="wrap_content"
-		        android:text="11111"
+		        android:text="@string/info_ddetault_text"
 		        android:layout_gravity="center_vertical"
 		        android:layout_marginLeft="100dp"
 		        android:layout_marginTop="22dp"
@@ -88,13 +89,14 @@
 	    <LinearLayout 
 	        android:layout_height="wrap_content"
 	        android:orientation="vertical"
+	        android:layout_marginRight="10dp"
 	        android:layout_centerInParent="true"
 	        android:layout_width="fill_parent">
 	                    
 	        <TextView 
 		        android:id="@+id/info_account_details"
 		        android:layout_height="wrap_content"
-		        android:text="11111"
+		        android:text="@string/info_ddetault_text"
 		        android:layout_gravity="center_vertical"
 		        android:layout_marginLeft="100dp"
 		        android:layout_marginTop="22dp"
@@ -131,13 +133,14 @@
 	    <LinearLayout 
 	        android:layout_height="wrap_content"
 	        android:orientation="vertical"
+	        android:layout_marginRight="10dp"
 	        android:layout_centerInParent="true"
 	        android:layout_width="fill_parent">
 	                    
 	        <TextView 
 		        android:id="@+id/info_personalized_signature_details"
 		        android:layout_height="wrap_content"
-		        android:text="未填写"
+		        android:text="@string/info_ddetault_text"
 		        android:layout_gravity="center_vertical"
 		        android:layout_marginLeft="100dp"
 		        android:layout_marginTop="22dp"
@@ -174,13 +177,14 @@
 	    <LinearLayout 
 	        android:layout_height="wrap_content"
 	        android:orientation="vertical"
+	        android:layout_marginRight="10dp"
 	        android:layout_centerInParent="true"
 	        android:layout_width="fill_parent">
 	                    
 	        <TextView 
 		        android:id="@+id/info_game_details"
 		        android:layout_height="wrap_content"
-		        android:text="未填写"
+		        android:text="@string/info_ddetault_text"
 		        android:layout_gravity="center_vertical"
 		        android:layout_marginLeft="100dp"
 		        android:layout_marginTop="22dp"
@@ -217,13 +221,14 @@
 	    <LinearLayout 
 	        android:layout_height="wrap_content"
 	        android:orientation="vertical"
+	        android:layout_marginRight="10dp"
 	        android:layout_centerInParent="true"
 	        android:layout_width="fill_parent">
 	                    
 	        <TextView 
 		        android:id="@+id/info_game_difficulty_details"
 		        android:layout_height="wrap_content"
-		        android:text="未填写"
+		        android:text="@string/info_ddetault_text"
 		        android:layout_gravity="center_vertical"
 		        android:layout_marginLeft="100dp"
 		        android:layout_marginTop="22dp"
@@ -260,13 +265,14 @@
 	    <LinearLayout 
 	        android:layout_height="wrap_content"
 	        android:orientation="vertical"
+	        android:layout_marginRight="10dp"
 	        android:layout_centerInParent="true"
 	        android:layout_width="fill_parent">
 	                    
 	        <TextView 
 		        android:id="@+id/info_love_status_details"
 		        android:layout_height="wrap_content"
-		        android:text="未填写"
+		        android:text="@string/info_ddetault_text"
 		        android:layout_gravity="center_vertical"
 		        android:layout_marginLeft="100dp"
 		        android:layout_marginTop="22dp"
@@ -303,13 +309,14 @@
 	    <LinearLayout 
 	        android:layout_height="wrap_content"
 	        android:orientation="vertical"
+	        android:layout_marginRight="10dp"
 	        android:layout_centerInParent="true"
 	        android:layout_width="fill_parent">
 	                    
 	        <TextView 
 		        android:id="@+id/info_career_details"
 		        android:layout_height="wrap_content"
-		        android:text="未填写"
+		        android:text="@string/info_ddetault_text"
 		        android:layout_gravity="center_vertical"
 		        android:layout_marginLeft="100dp"
 		        android:layout_marginTop="22dp"
@@ -346,13 +353,14 @@
 	    <LinearLayout 
 	        android:layout_height="wrap_content"
 	        android:orientation="vertical"
+	        android:layout_marginRight="10dp"
 	        android:layout_centerInParent="true"
 	        android:layout_width="fill_parent">
 	                    
 	        <TextView 
 		        android:id="@+id/info_company_details"
 		        android:layout_height="wrap_content"
-		        android:text="未填写"
+		        android:text="@string/info_ddetault_text"
 		        android:layout_gravity="center_vertical"
 		        android:layout_marginLeft="100dp"
 		        android:layout_marginTop="22dp"
@@ -389,13 +397,14 @@
 	    <LinearLayout 
 	        android:layout_height="wrap_content"
 	        android:orientation="vertical"
+	        android:layout_marginRight="10dp"
 	        android:layout_centerInParent="true"
 	        android:layout_width="fill_parent">
 	                    
 	        <TextView 
 		        android:id="@+id/info_school_details"
 		        android:layout_height="wrap_content"
-		        android:text="未填写"
+		        android:text="@string/info_ddetault_text"
 		        android:layout_gravity="center_vertical"
 		        android:layout_marginLeft="100dp"
 		        android:layout_marginTop="22dp"
@@ -432,13 +441,14 @@
 	    <LinearLayout 
 	        android:layout_height="wrap_content"
 	        android:orientation="vertical"
+	        android:layout_marginRight="10dp"
 	        android:layout_centerInParent="true"
 	        android:layout_width="fill_parent">
 	                    
 	        <TextView 
 		        android:id="@+id/info_hometown_details"
 		        android:layout_height="wrap_content"
-		        android:text="未填写"
+		        android:text="@string/info_ddetault_text"
 		        android:layout_gravity="center_vertical"
 		        android:layout_marginLeft="100dp"
 		        android:layout_marginTop="22dp"

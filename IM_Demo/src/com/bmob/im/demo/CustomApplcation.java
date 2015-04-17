@@ -3,7 +3,9 @@ package com.bmob.im.demo;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
 import android.app.Application;
 import android.app.NotificationManager;
 import android.content.Context;
@@ -15,6 +17,7 @@ import cn.bmob.im.BmobUserManager;
 import cn.bmob.im.bean.BmobChatUser;
 import cn.bmob.im.db.BmobDB;
 import cn.bmob.v3.datatype.BmobGeoPoint;
+
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
@@ -47,7 +50,29 @@ public class CustomApplcation extends Application {
 	
 	public static ArrayList<String> myWallPhoto;
 	
+	public static List<String> gameList = new ArrayList<String>();
+	public static List<String> loveList = new ArrayList<String>();
+	public static List<String> gameDifficultyList = new ArrayList<String>();
+	public static List<String> careerList = new ArrayList<String>();
+	
 	public static int numOfPhoto = 0;
+	
+//	public static int []careerName = {
+//			R.string.career_list_item_IT,
+//			R.string.career_list_item_Gong,
+//			R.string.career_list_item_Shang,
+//			R.string.career_list_item_Jin,
+//			R.string.career_list_item_Wen,
+//			R.string.career_list_item_YiShu,
+//			R.string.career_list_item_YiLiao,
+//			R.string.career_list_item_Fa,
+//			R.string.career_list_item_Jiao,
+//			R.string.career_list_item_Zheng,
+//			R.string.career_list_item_Xue,
+//			R.string.career_list_item_No
+//	};
+	
+	
 	
 	@Override
 	public void onCreate() {
@@ -65,6 +90,33 @@ public class CustomApplcation extends Application {
 		mMediaPlayer = MediaPlayer.create(this, R.raw.notify);
 		mNotificationManager = (NotificationManager) getSystemService(android.content.Context.NOTIFICATION_SERVICE);
 		myWallPhoto = new ArrayList<String>();
+		
+		gameList.add("水果连连看");
+		gameList.add("猜数字");
+		gameList.add("mixed color");
+		
+		loveList.add("热恋");
+		loveList.add("单身");
+		loveList.add("失恋");
+		loveList.add("保密");
+		
+		gameDifficultyList.add("简单");
+		gameDifficultyList.add("一般");
+		gameDifficultyList.add("困难");
+		
+		careerList.add(getString(R.string.career_list_item_IT));
+		careerList.add(getString(R.string.career_list_item_Gong));
+		careerList.add(getString(R.string.career_list_item_Shang));
+		careerList.add(getString(R.string.career_list_item_Jin));
+		careerList.add(getString(R.string.career_list_item_Wen));
+		careerList.add(getString(R.string.career_list_item_YiShu));
+		careerList.add(getString(R.string.career_list_item_YiLiao));
+		careerList.add(getString(R.string.career_list_item_Fa));
+		careerList.add(getString(R.string.career_list_item_Jiao));
+		careerList.add(getString(R.string.career_list_item_Zheng));
+		careerList.add(getString(R.string.career_list_item_Xue));
+		careerList.add(getString(R.string.career_list_item_No));
+		
 		
 		// 初始化ImageLoader
 		initImageLoader(getApplicationContext());

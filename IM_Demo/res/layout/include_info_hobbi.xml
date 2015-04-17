@@ -43,13 +43,14 @@
 	    <LinearLayout 
 	        android:layout_height="wrap_content"
 	        android:orientation="vertical"
+	        android:layout_marginRight="10dp"
 	        android:layout_centerInParent="true"
 	        android:layout_width="fill_parent">
 	                    
 	        <TextView 
 		        android:id="@+id/info_book_details"
 		        android:layout_height="wrap_content"
-		        android:text="未填写"
+		        android:text="@string/info_ddetault_text"
 		        android:layout_gravity="center_vertical"
 		        android:layout_marginLeft="100dp"
 		        android:layout_marginTop="22dp"
@@ -86,13 +87,14 @@
 	    <LinearLayout 
 	        android:layout_height="wrap_content"
 	        android:orientation="vertical"
+	        android:layout_marginRight="10dp"
 	        android:layout_centerInParent="true"
 	        android:layout_width="fill_parent">
 	                    
 	        <TextView 
 		        android:id="@+id/info_movie_details"
 		        android:layout_height="wrap_content"
-		        android:text="未填写"
+		        android:text="@string/info_ddetault_text"
 		        android:layout_gravity="center_vertical"
 		        android:layout_marginLeft="100dp"
 		        android:layout_marginTop="22dp"
@@ -129,13 +131,14 @@
 	    <LinearLayout 
 	        android:layout_height="wrap_content"
 	        android:orientation="vertical"
+	        android:layout_marginRight="10dp"
 	        android:layout_centerInParent="true"
 	        android:layout_width="fill_parent">
 	                    
 	        <TextView 
 		        android:id="@+id/info_music_details"
 		        android:layout_height="wrap_content"
-		        android:text="未填写"
+		        android:text="@string/info_ddetault_text"
 		        android:layout_gravity="center_vertical"
 		        android:layout_marginLeft="100dp"
 		        android:layout_marginTop="22dp"
@@ -172,13 +175,14 @@
 	    <LinearLayout 
 	        android:layout_height="wrap_content"
 	        android:orientation="vertical"
+	        android:layout_marginRight="10dp"
 	        android:layout_centerInParent="true"
 	        android:layout_width="fill_parent">
 	                    
 	        <TextView 
 		        android:id="@+id/info_interests_details"
 		        android:layout_height="wrap_content"
-		        android:text="未填写"
+		        android:text="@string/info_ddetault_text"
 		        android:layout_gravity="center_vertical"
 		        android:layout_marginLeft="100dp"
 		        android:layout_marginTop="22dp"

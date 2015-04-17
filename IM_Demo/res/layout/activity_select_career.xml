@@ -1,0 +1,61 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="${relativePackage}.${activityClass}" >
+    
+    <include
+        android:id="@+id/common_actionbar"
+        layout="@layout/include_action_bar" />
+    <RelativeLayout 
+        android:layout_width="fill_parent"
+        android:layout_below="@+id/common_actionbar"
+        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content">
+        
+        <EditText 
+            android:id="@+id/edit_my_info_career_select_et"
+            android:background="@drawable/bg_edittext"  
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:textColorHint="#AAAAAA"  
+    		android:textSize="15dip"  
+    		android:layout_marginLeft="10dp"
+    		android:layout_marginRight="10dp"
+    		android:singleLine="true"  
+    		android:hint="请输入你的职业"  />
+        
+        <TextView 
+            android:id="@+id/edit_my_info_career_select_tips"
+            android:text="所属行业"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/edit_my_info_career_select_et"
+            android:textColor="#9F79EE"
+            android:layout_marginLeft="20dp"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"/>
+        
+        <ImageView 
+            android:id="@+id/edit_my_info_career_select_line"
+            android:layout_width="fill_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/common_list_view_divider_line"
+            android:layout_below="@+id/edit_my_info_career_select_tips"
+            android:layout_height="wrap_content"/>
+        
+        <ListView 
+            android:id="@+id/edit_my_info_career_select_listview"
+            android:layout_width="fill_parent"
+            android:layout_marginLeft="20dp"
+            android:divider="@drawable/register_line"
+            android:dividerHeight="0.8dp"
+            android:layout_marginRight="20dp"
+            android:layout_below="@+id/edit_my_info_career_select_line"
+            android:layout_height="wrap_content">
+            
+        </ListView>
+    </RelativeLayout>
+
+</RelativeLayout>

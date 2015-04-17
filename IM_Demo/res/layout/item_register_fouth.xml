@@ -59,15 +59,26 @@
                 android:layout_height="wrap_content"/>  
         </RelativeLayout>
         
+        
     </RelativeLayout>
     
+    <TextView 
+        android:text="@string/register_sex_selected_no_change_tips"
+        android:layout_height="wrap_content"
+        android:textColor="#999999"
+		android:textSize="12sp"
+		android:layout_gravity="center"
+		android:gravity="center"
+		android:layout_marginTop="20dip"
+       	android:layout_width="fill_parent"/>
+    
     <ImageView 
+        android:id="@+id/register_sex_select_layout_line"
 	     android:layout_width="fill_parent"
 	     android:layout_height="wrap_content"
 	     android:paddingLeft="20dp"
 	     android:src="@drawable/register_line"
-	     android:layout_marginRight="20dp"
-	     android:layout_marginTop="20dip"/>
+	     android:layout_marginRight="20dp"/>
     
     <LinearLayout  
 	    android:layout_width="fill_parent"

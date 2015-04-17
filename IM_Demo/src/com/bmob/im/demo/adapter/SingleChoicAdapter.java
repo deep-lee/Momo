@@ -145,6 +145,7 @@ public class SingleChoicAdapter<T> extends BaseAdapter implements OnItemClickLis
 			mSelectItem = position;
 			notifyDataSetChanged();
 		}
+		
 	}  
 
 }

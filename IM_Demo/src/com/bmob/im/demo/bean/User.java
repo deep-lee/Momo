@@ -50,33 +50,30 @@ public class User extends BmobChatUser {
 	private String love;
 	
 	// ¸öĞÔÇ©Ãû
-	private String personalizedSignature = "Î´ÌîĞ´";
+	private String personalizedSignature;
 	
 	// Ö°Òµ
-	private String career = "Î´ÌîĞ´";
+	private String career;
 	
 	// ¹«Ë¾
-	private String company = "Î´ÌîĞ´";
+	private String company;
 	
 	//Ñ§Ğ£
-	private String school = "Î´ÌîĞ´";
+	private String school;
 	
 	// ¼ÒÏç
-	private String hometown = "Î´ÌîĞ´";
+	private String hometown;
 	
-	private String book = "Î´ÌîĞ´";
+	private String book;
 	
-	private String movie = "Î´ÌîĞ´";
+	private String movie;
 	
-	private String music = "Î´ÌîĞ´";
+	private String music;
 	
 	// ĞËÈ¤°®ºÃ
-	private String interests = "Î´ÌîĞ´";
+	private String interests;
 		
-	private String usuallyAppear = "Î´ÌîĞ´";
-	
-	
-	
+	private String usuallyAppear;
 	
 	public String getPersonalizedSignature() {
 		return personalizedSignature;

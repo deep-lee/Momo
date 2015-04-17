@@ -52,7 +52,7 @@
             android:gravity="center_vertical"
             android:hint="@string/login_nick_tip" >
         </EditText>
-
+  
     </LinearLayout>
     
       <ImageView 

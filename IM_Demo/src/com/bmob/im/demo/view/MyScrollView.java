@@ -23,6 +23,7 @@ import com.bmob.im.demo.ui.PhotoWallFallActivity;
 import com.bmob.im.demo.util.ImageLoader;
 import com.bmob.im.demo.view.dialog.DialogTips;
 
+import android.R.integer;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -210,10 +211,19 @@ public class MyScrollView extends ScrollView implements OnTouchListener {
 		if (hasSDCard()) {
 			int startIndex = page * PAGE_SIZE;
 			int endIndex = page * PAGE_SIZE + PAGE_SIZE;
-			if (startIndex < CustomApplcation.myWallPhoto.size()) {
+			
+			int size = 0;
+			if (PhotoWallFallActivity.from.equals("me")) {
+				size = CustomApplcation.myWallPhoto.size();
+			}
+			else if (PhotoWallFallActivity.from.equals("add") || PhotoWallFallActivity.from.equals("other")) {
+				size = PhotoWallFallActivity.otherPhotoWall.size();
+			}
+			
+			if (startIndex < size) {
 				Toast.makeText(getContext(), "ÕýÔÚ¼ÓÔØ...", Toast.LENGTH_SHORT).show();
-				if (endIndex > CustomApplcation.myWallPhoto.size()) {
-					endIndex = CustomApplcation.myWallPhoto.size();
+				if (endIndex > size) {
+					endIndex = size;
 				}
 				for (int i = startIndex; i < endIndex; i++) {
 					LoadImageTask task = new LoadImageTask();
@@ -299,7 +309,12 @@ public class MyScrollView extends ScrollView implements OnTouchListener {
 		protected Bitmap doInBackground(Integer... params) {
 			mItemPosition = params[0];
 //			mImageUrl = Images.imageUrls[mItemPosition];
-			mImageUrl = CustomApplcation.myWallPhoto.get(mItemPosition);
+			if (PhotoWallFallActivity.from.equals("me")) {
+				mImageUrl = CustomApplcation.myWallPhoto.get(mItemPosition);
+			}
+			else if (PhotoWallFallActivity.from.equals("add") || PhotoWallFallActivity.from.equals("other")) {
+				mImageUrl = PhotoWallFallActivity.otherPhotoWall.get(mItemPosition);
+			}
 			Bitmap imageBitmap = imageLoader.getBitmapFromMemoryCache(mImageUrl);
 			if (imageBitmap == null) {
 				imageBitmap = loadImage(mImageUrl);
@@ -362,26 +377,28 @@ public class MyScrollView extends ScrollView implements OnTouchListener {
 				imageView.setScaleType(ScaleType.FIT_XY);
 				imageView.setPadding(5, 5, 5, 5);
 				imageView.setTag(R.string.image_url, mImageUrl);
-				imageView.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						Intent intent = new Intent(getContext(), ImageDetailsActivity.class);
-						intent.putExtra("image_position", mItemPosition);
-						getContext().startActivity(intent);
-					}
-				});
-				
-				imageView.setOnLongClickListener(new OnLongClickListener() {
+				if (PhotoWallFallActivity.from.equals("me")) {
+					imageView.setOnClickListener(new OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							Intent intent = new Intent(getContext(), ImageDetailsActivity.class);
+							intent.putExtra("image_position", mItemPosition);
+							getContext().startActivity(intent);
+						}
+					});
 					
-					@Override
-					public boolean onLongClick(View v) {
-						// TODO Auto-generated method stub
+					imageView.setOnLongClickListener(new OnLongClickListener() {
 						
-						
-						showDeleteDialog(mItemPosition, imageViewList.size());
-						return false;
-					}
-				});
+						@Override
+						public boolean onLongClick(View v) {
+							// TODO Auto-generated method stub
+							
+							
+							showDeleteDialog(mItemPosition, imageViewList.size());
+							return false;
+						}
+					});
+				}
 				
 				findColumnToAdd(imageView, imageHeight).addView(imageView);
 				imageViewList.add(imageView);

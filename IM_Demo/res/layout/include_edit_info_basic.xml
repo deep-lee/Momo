@@ -1,0 +1,469 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+    <LinearLayout 
+	    android:id="@+id/info_edit_basic_tv_layout"
+	    android:layout_height="30dp"
+	    android:orientation="horizontal"
+	    android:background="#F0FFFF"
+	    android:layout_width="fill_parent">
+	                
+	    <TextView 
+		    android:id="@+id/info_edit_basic_tv"
+		    android:text="基本资料"
+		    android:textColor="#999999"
+		    android:textSize="12sp"
+		    android:layout_marginLeft="10dp"
+		    android:layout_gravity="center"
+		    android:layout_height="wrap_content"
+		    android:layout_width="fill_parent"/>
+	                
+	</LinearLayout>
+	
+    <RelativeLayout
+	    android:id="@+id/rl_nick_edit_layout"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_below="@+id/info_edit_basic_tv_layout"
+	    android:background="@drawable/common_edit_info_layout_bg" >
+	
+	    <TextView 
+	        android:id="@+id/info_edit_nick"
+	        android:layout_height="wrap_content"
+	        android:text="昵称"
+	        android:layout_marginLeft="10dp"
+	        android:textColor="#999999"
+	        android:layout_centerVertical="true"
+	        android:layout_width="wrap_content"/>
+	
+	    <LinearLayout 
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical"
+	        android:layout_marginRight="10dp"
+	        android:layout_centerInParent="true"
+	        android:layout_width="fill_parent">
+	                    
+	        <com.bmob.im.demo.view.EditTextWithDel
+		        android:id="@+id/info_edit_nick_details"
+		        android:layout_height="wrap_content"
+		        android:layout_gravity="center_vertical"
+		        android:layout_marginLeft="100dp"
+		        android:layout_marginTop="22dp"
+		        android:textSize="15sp"
+		        android:background="@drawable/base_edittext_selector"
+		        android:layout_width="fill_parent"/>
+	                    
+	         <View
+				android:layout_width="wrap_content"
+				android:layout_marginTop="20dp"
+				android:layout_marginLeft="100dp"
+				android:layout_height="@dimen/base_line_width_2"
+				android:background="@drawable/base_horizontal_line" >
+			 </View>
+	                    
+	     </LinearLayout>
+	                
+	</RelativeLayout>
+	    		
+	
+	<RelativeLayout
+	    android:id="@+id/rl_edit_birthday_layout"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_below="@+id/rl_nick_edit_layout"
+	    android:background="@drawable/common_edit_info_layout_bg" >
+	
+	    <TextView 
+	        android:id="@+id/info_edit_birthday"
+	        android:layout_height="wrap_content"
+	        android:text="生日"
+	        android:layout_marginLeft="10dp"
+	        android:textColor="#999999"
+	        android:layout_centerVertical="true"
+	        android:layout_width="wrap_content"/>
+	
+	    <LinearLayout 
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical"
+	        android:layout_marginRight="10dp"
+	        android:layout_centerInParent="true"
+	        android:layout_width="fill_parent">
+	                    
+	        <TextView
+		        android:id="@+id/info_edit_birthday_details"
+		        android:layout_height="wrap_content"
+		        android:layout_gravity="center_vertical"
+		        android:layout_marginLeft="100dp"
+		        android:layout_marginTop="22dp" 
+		        android:layout_width="fill_parent"/>
+	                    
+	         <View
+				android:layout_width="wrap_content"
+				android:layout_marginTop="20dp"
+				android:layout_marginLeft="100dp"
+				android:layout_height="@dimen/base_line_width_2"
+				android:background="@drawable/base_horizontal_line" >
+			 </View>
+	                    
+	     </LinearLayout>
+	                
+	</RelativeLayout>
+	
+	<RelativeLayout
+	    android:id="@+id/rl_edit_profile5"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:background="@drawable/common_edit_info_layout_bg"
+	    android:layout_below="@+id/rl_edit_birthday_layout">
+	
+	    <TextView 
+	        android:id="@+id/info_edit_personalized_signature"
+	        android:layout_height="wrap_content"
+	        android:text="个性签名"
+	        android:layout_marginLeft="10dp"
+	        android:textColor="#999999"
+	        android:layout_centerVertical="true"
+	        android:layout_width="wrap_content"/>
+	
+	    <LinearLayout 
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical"
+	        android:layout_marginRight="10dp"
+	        android:layout_centerInParent="true"
+	        android:layout_width="fill_parent">
+	                    
+	        <com.bmob.im.demo.view.EditTextWithDel
+		        android:id="@+id/info_edit_personalized_signature_details"
+		        android:layout_height="wrap_content"
+		        android:hint="@string/info_edit_person_hint"
+		        android:layout_gravity="center_vertical"
+		        android:layout_marginLeft="100dp"
+		        android:layout_marginTop="22dp"
+		        android:textSize="15sp"
+		        android:background="@drawable/base_edittext_selector"
+		        android:layout_width="fill_parent"/>
+	                    
+	         <View
+				android:layout_width="wrap_content"
+				android:layout_marginTop="20dp"
+				android:layout_marginLeft="100dp"
+				android:layout_height="@dimen/base_line_width_2"
+				android:background="@drawable/base_horizontal_line" >
+			 </View>
+	                    
+	     </LinearLayout>
+	                
+	</RelativeLayout>
+	
+	<RelativeLayout
+	    android:id="@+id/rl_edit_game_layout"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_below="@+id/rl_edit_profile5"
+	    android:background="@drawable/common_edit_info_layout_bg" >
+	
+	    <TextView 
+	        android:id="@+id/info_edit_game"
+	        android:layout_height="wrap_content"
+	        android:text="解锁游戏"
+	        android:layout_marginLeft="10dp"
+	        android:textColor="#999999"
+	        android:layout_centerVertical="true"
+	        android:layout_width="wrap_content"/>
+	
+	    <LinearLayout 
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical"
+	        android:layout_marginRight="10dp"
+	        android:layout_centerInParent="true"
+	        android:layout_width="fill_parent">
+	                    
+	        <TextView 
+		        android:id="@+id/info_edit_game_details"
+		        android:layout_height="wrap_content"
+		        android:layout_gravity="center_vertical"
+		        android:layout_marginLeft="100dp"
+		        android:layout_marginTop="22dp"
+		        android:layout_width="wrap_content"/>
+	                    
+	         <View
+				android:layout_width="wrap_content"
+				android:layout_marginTop="20dp"
+				android:layout_marginLeft="100dp"
+				android:layout_height="@dimen/base_line_width_2"
+				android:background="@drawable/base_horizontal_line" >
+			 </View>
+	                    
+	     </LinearLayout>
+	                
+	</RelativeLayout>
+	
+	<RelativeLayout
+	    android:id="@+id/rl_edit_game_difficulty"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_below="@+id/rl_edit_game_layout"
+	    android:background="@drawable/common_edit_info_layout_bg" >
+	
+	    <TextView 
+	        android:id="@+id/info_edit_game_difficulty"
+	        android:layout_height="wrap_content"
+	        android:text="游戏难度"
+	        android:layout_marginLeft="10dp"
+	        android:textColor="#999999"
+	        android:layout_centerVertical="true"
+	        android:layout_width="wrap_content"/>
+	
+	    <LinearLayout 
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical"
+	        android:layout_marginRight="10dp"
+	        android:layout_centerInParent="true"
+	        android:layout_width="fill_parent">
+	                    
+	        <TextView 
+		        android:id="@+id/info_edit_game_difficulty_details"
+		        android:layout_height="wrap_content"
+		        android:layout_gravity="center_vertical"
+		        android:layout_marginLeft="100dp"
+		        android:layout_marginTop="22dp"
+		        android:layout_width="wrap_content"/>
+	                    
+	         <View
+				android:layout_width="wrap_content"
+				android:layout_marginTop="20dp"
+				android:layout_marginLeft="100dp"
+				android:layout_height="@dimen/base_line_width_2"
+				android:background="@drawable/base_horizontal_line" >
+			 </View>
+	                    
+	     </LinearLayout>
+	                
+	</RelativeLayout>
+	
+	<RelativeLayout
+	    android:id="@+id/rl_edit_love_status_layout"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_below="@+id/rl_edit_game_difficulty"
+	    android:background="@drawable/common_edit_info_layout_bg" >
+	
+	    <TextView 
+	        android:id="@+id/info_edit_love_status"
+	        android:layout_height="wrap_content"
+	        android:text="情感状态"
+	        android:layout_marginLeft="10dp"
+	        android:textColor="#999999"
+	        android:layout_centerVertical="true"
+	        android:layout_width="wrap_content"/>
+	
+	    <LinearLayout 
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical"
+	        android:layout_marginRight="10dp"
+	        android:layout_centerInParent="true"
+	        android:layout_width="fill_parent">
+	                    
+	        <TextView 
+		        android:id="@+id/info_edit_love_status_details"
+		        android:layout_height="wrap_content"
+		        android:layout_gravity="center_vertical"
+		        android:layout_marginLeft="100dp"
+		        android:layout_marginTop="22dp"
+		        android:layout_width="wrap_content"/>
+	                    
+	         <View
+				android:layout_width="wrap_content"
+				android:layout_marginTop="20dp"
+				android:layout_marginLeft="100dp"
+				android:layout_height="@dimen/base_line_width_2"
+				android:background="@drawable/base_horizontal_line" >
+			 </View>
+	                    
+	     </LinearLayout>
+	                
+	</RelativeLayout>
+	
+	<RelativeLayout
+	    android:id="@+id/rl_edit_profile6"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_below="@+id/rl_edit_love_status_layout"
+	    android:background="#ffffff" >
+	
+	    <TextView 
+	        android:id="@+id/info_edit_career"
+	        android:layout_height="wrap_content"
+	        android:text="职业"
+	        android:layout_marginLeft="10dp"
+	        android:textColor="#999999"
+	        android:layout_centerVertical="true"
+	        android:layout_width="wrap_content"/>
+	
+	    <LinearLayout 
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical"
+	        android:layout_marginRight="10dp"
+	        android:layout_centerInParent="true"
+	        android:layout_width="fill_parent">
+	                    
+	        <TextView
+		        android:id="@+id/info_edit_career_details"
+		        android:layout_height="wrap_content"
+		        android:layout_gravity="center_vertical"
+		        android:layout_marginLeft="100dp"
+		        android:layout_marginTop="22dp"
+		        android:layout_width="fill_parent"/>
+	                    
+	         <View
+				android:layout_width="wrap_content"
+				android:layout_marginTop="20dp"
+				android:layout_marginLeft="100dp"
+				android:layout_height="@dimen/base_line_width_2"
+				android:background="@drawable/base_horizontal_line" >
+			 </View>
+	                    
+	     </LinearLayout>
+	                
+	</RelativeLayout>
+	
+	<RelativeLayout
+	    android:id="@+id/rl_edit_profile7"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_below="@+id/rl_edit_profile6"
+	    android:background="#ffffff" >
+	
+	    <TextView 
+	        android:id="@+id/info_edit_company"
+	        android:layout_height="wrap_content"
+	        android:text="公司"
+	        android:textColor="#999999"
+	        android:layout_marginLeft="10dp"
+	        android:layout_centerVertical="true"
+	        android:layout_width="wrap_content"/>
+	
+	    <LinearLayout 
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical"
+	        android:layout_marginRight="10dp"
+	        android:layout_centerInParent="true"
+	        android:layout_width="fill_parent">
+	                    
+	        <com.bmob.im.demo.view.EditTextWithDel
+		        android:id="@+id/info_edit_company_details"
+		        android:layout_height="wrap_content"
+		        android:layout_gravity="center_vertical"
+		        android:layout_marginLeft="100dp"
+		        android:layout_marginTop="22dp"
+		        android:hint="@string/info_edit_company_hint"
+		        android:background="@drawable/base_edittext_selector"
+		        android:textSize="15sp"
+		        android:layout_width="fill_parent"/>
+	                    
+	         <View
+				android:layout_width="wrap_content"
+				android:layout_marginTop="20dp"
+				android:layout_marginLeft="100dp"
+				android:layout_height="@dimen/base_line_width_2"
+				android:background="@drawable/base_horizontal_line" >
+			 </View>
+	                    
+	     </LinearLayout>
+	                
+	</RelativeLayout>
+	
+	<RelativeLayout
+	    android:id="@+id/rl_edit_profile8"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_below="@+id/rl_edit_profile7"
+	    android:background="#ffffff" >
+	
+	    <TextView 
+	        android:id="@+id/info_edit_school"
+	        android:layout_height="wrap_content"
+	        android:text="学校"
+	        android:textColor="#999999"
+	        android:layout_marginLeft="10dp"
+	        android:layout_centerVertical="true"
+	        android:layout_width="wrap_content"/>
+	
+	    <LinearLayout 
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical"
+	        android:layout_marginRight="10dp"
+	        android:layout_centerInParent="true"
+	        android:layout_width="fill_parent">
+	                    
+	        <com.bmob.im.demo.view.EditTextWithDel
+		        android:id="@+id/info_edit_school_details"
+		        android:layout_height="wrap_content"
+		        android:text="@string/info_ddetault_text"
+		        android:layout_gravity="center_vertical"
+		        android:layout_marginLeft="100dp"
+		        android:layout_marginTop="22dp"
+		        android:hint="@string/info_edit_school_hint"
+		        android:background="@drawable/base_edittext_selector"
+		        android:textSize="15sp"
+		        android:layout_width="fill_parent"/>
+	                    
+	         <View
+				android:layout_width="wrap_content"
+				android:layout_marginTop="20dp"
+				android:layout_marginLeft="100dp"
+				android:layout_height="@dimen/base_line_width_2"
+				android:background="@drawable/base_horizontal_line" >
+			 </View>
+	                    
+	     </LinearLayout>
+	                
+	</RelativeLayout>
+	
+	<RelativeLayout
+	    android:id="@+id/rl_edit_profile9"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_below="@+id/rl_edit_profile8"
+	    android:background="@drawable/common_edit_info_layout_bg" >
+	
+	    <TextView 
+	        android:id="@+id/info_edit_hometown"
+	        android:layout_height="wrap_content"
+	        android:text="家乡"
+	        android:textColor="#999999"
+	        android:layout_marginLeft="10dp"
+	        android:layout_centerVertical="true"
+	        android:layout_width="wrap_content"/>
+	
+	    <LinearLayout 
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical"
+	        android:layout_marginRight="10dp"
+	        android:layout_centerInParent="true"
+	        android:layout_width="fill_parent">
+	                    
+	        <TextView
+		        android:id="@+id/info_edit_hometown_details"
+		        android:layout_height="wrap_content"
+		        android:text="@string/info_edit_hometown_hint"
+		        android:layout_gravity="center_vertical"
+		        android:layout_marginLeft="100dp"
+		        android:layout_marginTop="22dp"
+		        android:layout_width="wrap_content"/>
+	                    
+	         <View
+				android:layout_width="wrap_content"
+				android:layout_marginTop="20dp"
+				android:layout_marginLeft="100dp"
+				android:layout_height="@dimen/base_line_width_2"
+				android:background="@drawable/base_horizontal_line" >
+			 </View>
+	                    
+	     </LinearLayout>
+	                
+	</RelativeLayout>
+
+</RelativeLayout>

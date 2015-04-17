@@ -69,6 +69,7 @@ import cn.bmob.v3.listener.UploadFileListener;
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
 
+import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.bean.User;
 import com.bmob.im.demo.config.BmobConstants;
@@ -124,8 +125,7 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
 	
 	String gameType = "";
 	
-	List<String> gameList = new ArrayList<String>();
-	List<String> loveList = new ArrayList<String>();
+	
 	
 	ViewFlipper viewFlipper;
 	int currentPage = 0;
@@ -309,14 +309,6 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
 		
 		// checkUser();
 		
-		gameList.add("水果连连看");
-		gameList.add("猜数字");
-		gameList.add("mixed color");
-		
-		loveList.add("热恋");
-		loveList.add("单身");
-		loveList.add("失恋");
-		loveList.add("保密");
 	}
 	
 	
@@ -350,28 +342,7 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
 			@Override
 			public void onClick(View arg0) {
 				ShowLog("点击拍照");
-				// TODO Auto-generated method stub
-//				layout_choose.setBackgroundColor(getResources().getColor(
-//						R.color.base_color_text_white));
-//				layout_photo.setBackgroundDrawable(getResources().getDrawable(
-//						R.drawable.pop_bg_press));
-//				
-//				// 我的头像地址
-//				File dir = new File(BmobConstants.MyAvatarDir);
-//				if (!dir.exists()) {
-//					dir.mkdirs();
-//				}
-//				// 原图
-//				File file = new File(dir, new SimpleDateFormat("yyMMddHHmmss")
-//						.format(new Date()));
-//				filePath = file.getAbsolutePath();// 获取相片的保存路径
-//				Uri imageUri = Uri.fromFile(file);
-//
-//				Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//				intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-//				startActivityForResult(intent,
-//						BmobConstants.REQUESTCODE_UPLOADAVATAR_CAMERA);
-				
+				// TODO Auto-generated method stub			
 				getImageFromCamera();
 			}
 		});
@@ -381,16 +352,6 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 				ShowLog("点击相册");
-//				layout_photo.setBackgroundColor(getResources().getColor(
-//						R.color.base_color_text_white));
-//				layout_choose.setBackgroundDrawable(getResources().getDrawable(
-//						R.drawable.pop_bg_press));
-//				Intent intent = new Intent(Intent.ACTION_PICK, null);
-//				intent.setDataAndType(
-//						MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
-//				startActivityForResult(intent,
-//						BmobConstants.REQUESTCODE_UPLOADAVATAR_LOCATION);
-				
 				pickImage();
 				
 			}
@@ -422,15 +383,10 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
 	
 	protected void getImageFromCamera() {
 		
-//		layout_choose.setBackgroundColor(getResources().getColor(
-//				R.color.base_color_text_white));
-//		layout_photo.setBackgroundDrawable(getResources().getDrawable(
-//				R.drawable.pop_bg_press));
-		
 		// 原图
 		File file = new File(dir, new SimpleDateFormat("yyMMddHHmmss")
 				.format(new Date()));
-		filePath = file.getAbsolutePath();// 获取相片的保存路径
+		filePath = file.getAbsolutePath(); // 获取相片的保存路径
 		Uri imageUri = Uri.fromFile(file);
 
          Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -469,75 +425,6 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
                 }
             }
         }
-		
-//		switch (requestCode) {
-//		case BmobConstants.REQUESTCODE_UPLOADAVATAR_CAMERA:// 拍照修改头像
-//			if (resultCode == RESULT_OK) {
-//				if (!Environment.getExternalStorageState().equals(
-//						Environment.MEDIA_MOUNTED)) {
-//					ShowToast("SD不可用");
-//					return;
-//				}
-//				isFromCamera = true;
-//				File file = new File(filePath);
-//				// 获取图片的旋转角度
-//				degree = PhotoUtil.readPictureDegree(file.getAbsolutePath());
-//				Log.i("life", "拍照后的角度：" + degree);
-//				
-//				// 系统裁减头像
-//				startImageAction(Uri.fromFile(file), 200, 200,
-//						BmobConstants.REQUESTCODE_UPLOADAVATAR_CROP, true);
-//			}
-//			break;
-//		case BmobConstants.REQUESTCODE_UPLOADAVATAR_LOCATION:// 本地修改头像
-//			if (avatorPop != null) {
-//				avatorPop.dismiss();
-//			}
-//			Uri uri = null;
-//			if (data == null) {
-//				return;
-//			}
-//			if (resultCode == RESULT_OK) {
-//				if (!Environment.getExternalStorageState().equals(
-//						Environment.MEDIA_MOUNTED)) {
-//					ShowToast("SD不可用");
-//					return;
-//				}
-//				isFromCamera = false;
-//				uri = data.getData();
-//				
-//				// 系统裁减头像
-//				startImageAction(uri, 200, 200,
-//						BmobConstants.REQUESTCODE_UPLOADAVATAR_CROP, true);
-//			} else {
-//				ShowToast("照片获取失败");
-//			}
-//
-//			break;
-//		case BmobConstants.REQUESTCODE_UPLOADAVATAR_CROP:// 裁剪头像返回
-//			// TODO sent to crop
-//			if (avatorPop != null) {
-//				avatorPop.dismiss();
-//			}
-//			if (data == null) {
-//				// Toast.makeText(this, "取消选择", Toast.LENGTH_SHORT).show();
-//				return;
-//			} else {
-//				// 保存裁减的头像
-//				saveCropAvator(data);
-//			}
-//			// 初始化文件路径
-//			filePath = "";
-//			
-//			// 已经修改了头像
-//			avator_changed = true;
-//			// 上传头像
-//			// uploadAvatar();
-//			break;
-//		default:
-//			break;
-//
-//		}
 	}
 	
 	String path = "";
@@ -738,56 +625,6 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
 		}
 	}
 	
-	
-	private void checkUser(){
-//		BmobQuery<User> query = new BmobQuery<User>();
-//		query.addWhereEqualTo("username", "smile");
-//		query.findObjects(this, new FindListener<User>() {
-//
-//			@Override
-//			public void onError(int arg0, String arg1) {
-//				// TODO Auto-generated method stub
-//
-//			}
-//
-//			@Override
-//			public void onSuccess(List<User> arg0) {
-//				// TODO Auto-generated method stub
-//				if(arg0!=null && arg0.size()>0){
-//					User user = arg0.get(0);
-//					user.setPassword("1234567");
-//					user.update(RegisterActivity2.this, new UpdateListener() {
-//						
-//						@Override
-//						public void onSuccess() {
-//							// TODO Auto-generated method stub
-//							userManager.login("smile", "1234567", new SaveListener() {
-//								
-//								@Override
-//								public void onSuccess() {
-//									// TODO Auto-generated method stub
-//									Log.i("smile", "登陆成功");
-//								}
-//								
-//								@Override
-//								public void onFailure(int code, String msg) {
-//									// TODO Auto-generated method stub
-//									Log.i("smile", "登陆失败："+code+".msg = "+msg);
-//								}
-//							});
-//						}
-//						
-//						@Override
-//						public void onFailure(int code, String msg) {
-//							// TODO Auto-generated method stub
-//							
-//						}
-//					});
-//				}
-//			}
-//		});
-	}
-	
 	private void register(){
 		String name = et_username.getText().toString();
 		String password = et_password.getText().toString();
@@ -816,6 +653,16 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
 		bu.setGameDifficulty("简单");
 		bu.setLove(et_love.getText().toString());
 		bu.setInterests(et_hobbi.getText().toString());
+		
+		bu.setPersonalizedSignature("未填写");
+		bu.setCareer("未填写");
+		bu.setCompany("未填写");
+		bu.setSchool("未填写");
+		bu.setHometown("未填写");
+		bu.setBook("未填写");
+		bu.setMovie("未填写");
+		bu.setMusic("未填写");
+		bu.setUsuallyAppear("未填写");
 		
 		//将user和设备id进行绑定
 		bu.setDeviceType("android");
@@ -921,7 +768,7 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
 	private void showLoveChooseDialog() {
 		
 		final SingleChoiceDialog singleChoiceDialog = new SingleChoiceDialog(RegisterActivity.this,
-				loveList, "确定", "取消", "情感状况", true);
+				CustomApplcation.loveList, "确定", "取消", "情感状况", true);
 		
 		singleChoiceDialog.SetOnSuccessListener(new DialogInterface.OnClickListener() {
 			
@@ -1030,7 +877,7 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
 	private void showGameChooseDialog() {
 		
 		final SingleChoiceDialog singleChoiceDialog = new SingleChoiceDialog(RegisterActivity.this,
-				gameList, "确定", "取消", "解锁游戏", true);
+				CustomApplcation.gameList, "确定", "取消", "解锁游戏", true);
 		
 		singleChoiceDialog.SetOnSuccessListener(new DialogInterface.OnClickListener() {
 			
@@ -1160,6 +1007,11 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
 				ShowToast(R.string.toast_error_nick_null);
 				return;
 			}
+			
+			if (et_nick.getText().toString().length() > 6) {
+				ShowToast(R.string.register_nick_too_long_error);
+				return;
+			}
 			if (!hasChoseBirth) {
 				ShowToast(R.string.toast_error_birth_null);
 				return;
@@ -1180,7 +1032,29 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
 				return;
 			}
 			
-			register();
+			DialogTips dialogTips = new DialogTips(RegisterActivity.this, "性别选定之后不可改变，确认选择？", 
+					"确认", "取消", "确认性别选择", true);
+			dialogTips.SetOnSuccessListener(new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// TODO Auto-generated method stub
+					register();
+				}
+			});
+			
+			dialogTips.SetOnCancelListener(new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
+			
+			dialogTips.show();
+			
+			
 		}
 	}
 	

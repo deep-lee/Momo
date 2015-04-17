@@ -44,4 +44,8 @@
     <color name="crop_button_text">#666666</color>
     <color name="crop_selector_pressed">#1a000000</color>
     <color name="crop_selector_focused">#77000000</color>
+    
+    <color name="common_edit_layout_pressed">#FFF8DC</color>
+    <color name="common_actiov_bar_right_btn_n">#6170E3</color>
+    <color name="common_actiov_bar_right_btn_p">#3866BB</color>
 </resources>

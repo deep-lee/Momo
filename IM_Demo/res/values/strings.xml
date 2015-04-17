@@ -19,7 +19,7 @@
     <string name="login_pwd">密码 </string>
     <string name="login_confim_pwd">确认密码 </string>
     <string name="login_nick">昵称</string>
-    <string name="login_nick_tip">输入昵称</string>
+    <string name="login_nick_tip">输入昵称（不多于6位）</string>
     <string name="message_search_hint">搜索</string>
     <string name="main_tab_recent">会话</string>
     <string name="main_tab_contact">联系人</string>
@@ -138,5 +138,36 @@
     <string name="slide_set_emoj_store">表情商城</string>
     <string name="title_activity_set_message_notify">SetMessageNotifyActivity</string>
     <string name="title_activity_set_my_info_activity2">SetMyInfoActivity2</string>
+    <string name="info_ddetault_text">正在加载...</string>
+    <string name="title_activity_edit_my_info">EditMyInfoActivity</string>
+    <string name="info_edit_person_hint">有什么话想说给附近的朋友听？</string>
+    <string name="info_edit_career_hint">请选择你的职业</string>
+    <string name="info_edit_company_hint">请填入你所在的公司</string>
+    <string name="info_edit_school_hint">请填入你的学校</string>
+    <string name="info_edit_hometown_hint">请选择你的家乡</string>
+    <string name="info_edit_book_hint">请填入你喜欢的书籍</string>
+    <string name="info_edit_movie_hint">请填入你喜欢的电影</string>
+    <string name="info_edit_music_hint">请填入你喜欢的音乐</string>
+    <string name="info_edit_interests_hint">请填入你的爱好</string>
+    <string name="info_edit_usually_appear_hint">请填入你的常出没地</string>
+    <string name="register_sex_selected_no_change_tips">性别选定之后不可改变，请慎重选择</string>
+    <string name="register_nick_too_long_error">昵称不能超过6位</string>
+    <string name="title_activity_citi_list">CitiListActivity</string>
+    <string name="title_activity_province_list">ProvinceListActivity</string>
+    <string name="title_activity_select_career">SelectCareerActivity</string>
+    
+    <string name="career_list_item_IT">计算机／互联网／通信</string>
+    <string name="career_list_item_Gong">生产／工艺／制造</string>
+    <string name="career_list_item_Shang">商业／服务业／个体经营</string>
+    <string name="career_list_item_Jin">金融／银行／投资／保险</string>
+    <string name="career_list_item_Wen">文化／广告／传媒</string>
+    <string name="career_list_item_YiShu">娱乐／艺术／表演</string>
+    <string name="career_list_item_YiLiao">医疗／护理／制药</string>
+    <string name="career_list_item_Fa">律师／法务</string>
+    <string name="career_list_item_Jiao">教育／培训</string>
+    <string name="career_list_item_Zheng">公务员／事业单位</string>
+    <string name="career_list_item_Xue">学生</string>
+    <string name="career_list_item_No">无</string>
+    
 
 </resources>

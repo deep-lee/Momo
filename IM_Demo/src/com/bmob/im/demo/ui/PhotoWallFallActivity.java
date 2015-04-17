@@ -1,6 +1,8 @@
 package com.bmob.im.demo.ui;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.listener.UpdateListener;
@@ -24,7 +26,7 @@ import android.view.Window;
 
 public class PhotoWallFallActivity extends BaseActivity {
 
-	public String from = "";
+	public static String from = "";
 	
 	private String picPath = null;
 	private static final String TAG = "uploadImage";
@@ -36,11 +38,15 @@ public class PhotoWallFallActivity extends BaseActivity {
 	
 	public MyScrollView photoWallView;
 	
+	public static List<String> otherPhotoWall;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_photo_wall_fall);
+		
+		otherPhotoWall = new ArrayList<String>();
 		
 		photoWallView = (MyScrollView) findViewById(R.id.my_scroll_view);
 		

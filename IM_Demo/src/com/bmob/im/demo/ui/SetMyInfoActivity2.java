@@ -1,7 +1,10 @@
 package com.bmob.im.demo.ui;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.http.HttpEntity;
@@ -11,10 +14,16 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
+import cn.bmob.im.BmobChatManager;
+import cn.bmob.im.config.BmobConfig;
 import cn.bmob.im.db.BmobDB;
 import cn.bmob.im.util.BmobLog;
+import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.datatype.BmobGeoPoint;
 import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.PushListener;
+import cn.bmob.v3.listener.UpdateListener;
+import cn.bmob.v3.listener.UploadFileListener;
 
 import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
@@ -22,27 +31,51 @@ import com.bmob.im.demo.R;
 import C.From;
 import android.R.integer;
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.MediaStore;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.bmob.im.demo.R.id;
 import com.bmob.im.demo.bean.User;
 import com.bmob.im.demo.config.BmobConstants;
+import com.bmob.im.demo.util.CollectionUtils;
+import com.bmob.im.demo.util.CommonUtils;
 import com.bmob.im.demo.util.ImageLoadOptions;
 import com.bmob.im.demo.view.InfoScrollView;
+import com.bmob.im.demo.view.dialog.DialogTips;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.soundcloud.android.crop.Crop;
 
 public class SetMyInfoActivity2 extends BaseActivity implements InfoScrollView.OnScrollListener, OnClickListener{
 	
@@ -59,8 +92,18 @@ public class SetMyInfoActivity2 extends BaseActivity implements InfoScrollView.O
 	// 编辑，添加好友，发起会话，添加到黑名单
 	Button btn_edit, btn_add, btn_chat, btn_black;
 	
-	// 黑名单提示
-	RelativeLayout black_list_tips;
+	// 黑名单提示，照片墙
+	RelativeLayout black_list_tips, photoWallLayout;
+	
+	RelativeLayout layout_all;
+	
+	// 
+	RelativeLayout rl_personalized_signature, rl_career, rl_company, rl_school, rl_hometown, rl_book, rl_movie, rl_music, rl_interests,
+					rl_usually_appear;
+	
+	ProgressBar [] progressBarArray;
+	
+	Boolean update = false;
 	
 
 	// from判断是自己的资料还是别人的资料界面
@@ -69,9 +112,20 @@ public class SetMyInfoActivity2 extends BaseActivity implements InfoScrollView.O
 	String username = "";
 	User user;
 	
+	public static int ETIT_MY_INFO = 100;
+	
+	// 我的头像地址
+	File dir;
+	
+	Uri updatedAtatar = null;
+	
+	private String mCurrentPhotoPath;
+	
+	LinearLayout layout_choose, layout_photo, layout_cancle;
+	
 	List<MYTask> photoTask;
 	
-	public ArrayList<String> otherWallPhoto;
+	public static ArrayList<String> otherWallPhoto = null;
 	
 	
 	Handler otherPhotoHandler = new Handler(){
@@ -82,6 +136,21 @@ public class SetMyInfoActivity2 extends BaseActivity implements InfoScrollView.O
             case 1:
             	downLoadOtherPhoto();
             	break;
+            }   
+            super.handleMessage(msg);   
+       }
+	};
+	
+	Handler updateAvatarHandler = new Handler(){
+		public void handleMessage(Message msg) {   
+            switch (msg.what) {   
+            
+            	case 0:
+    				updateAvatarprogressDialog.dismiss();
+    				updateAvatarprogressDialog = null;
+    				refreshUserAvatar();
+            		break;
+            
             }   
             super.handleMessage(msg);   
        }
@@ -105,7 +174,21 @@ public class SetMyInfoActivity2 extends BaseActivity implements InfoScrollView.O
 		
 		photoTask = new ArrayList<MYTask>();
 		
-		otherWallPhoto = new ArrayList<String>();
+		if (from.equals("other") || from.equals("add")) {
+			otherWallPhoto = getIntent().getStringArrayListExtra("photo");
+		}
+		
+		layout_all = (RelativeLayout) findViewById(R.id.info_layout_all);
+		
+		progressBarArray = new ProgressBar[3];
+		
+		progressBarArray[0] = (ProgressBar) findViewById(R.id.loading_process_dialog_progressBar1);
+		progressBarArray[1] = (ProgressBar) findViewById(R.id.loading_process_dialog_progressBar2);
+		progressBarArray[2] = (ProgressBar) findViewById(R.id.loading_process_dialog_progressBar3);
+		
+		photoWallLayout = (RelativeLayout) findViewById(R.id.rl_profile2);
+		
+		photoWallLayout.setOnClickListener(this);
 		
 		sv = (InfoScrollView)findViewById(R.id.sv_profile);
 		iv_head_bg = (ImageView)findViewById(R.id.iv_profile_bg);
@@ -116,7 +199,27 @@ public class SetMyInfoActivity2 extends BaseActivity implements InfoScrollView.O
 		iv_photo1 = (ImageView) findViewById(R.id.info_photo_1);
 		iv_photo2 = (ImageView) findViewById(R.id.info_photo_2);
 		iv_photo3 = (ImageView) findViewById(R.id.info_photo_3);
+		iv_photo1.setVisibility(View.INVISIBLE);
+		iv_photo2.setVisibility(View.INVISIBLE);
+		iv_photo3.setVisibility(View.INVISIBLE);
 		iv_sex = (ImageView) findViewById(R.id.info_sex_iv);
+		
+		dir = new File(BmobConstants.MyAvatarDir);
+		if (!dir.exists()) {
+			dir.mkdirs();
+		}
+		
+		// 如果是我的资料，点击头像可以进行更换头像
+		if (from.equals("me")) {
+			iv_avatar.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					showAvatarPop();
+				}
+			});
+		}
 		
 		tv_age = (TextView) findViewById(R.id.info_age_tv);
 		tv_distance = (TextView) findViewById(R.id.info_tv_last_location_distance);
@@ -145,6 +248,26 @@ public class SetMyInfoActivity2 extends BaseActivity implements InfoScrollView.O
 		btn_chat = (Button) findViewById(R.id.info_btn_chat);
 		btn_black = (Button) findViewById(R.id.info_btn_black);
 		black_list_tips = (RelativeLayout) findViewById(R.id.info_layout_black_tips);
+		
+		if (from.equals("me")) {
+			btn_edit.setOnClickListener(this);
+		}
+		btn_add.setOnClickListener(this);
+		btn_chat.setOnClickListener(this);
+		btn_black.setOnClickListener(this);
+		
+		rl_personalized_signature = (RelativeLayout) findViewById(R.id.rl_profile5);
+		rl_career = (RelativeLayout) findViewById(R.id.rl_profile6);
+		rl_company = (RelativeLayout) findViewById(R.id.rl_profile7);
+		rl_school = (RelativeLayout) findViewById(R.id.rl_profile8);
+		rl_hometown = (RelativeLayout) findViewById(R.id.rl_profile9);
+		
+		rl_book = (RelativeLayout) findViewById(R.id.rl_profile10);
+		rl_movie = (RelativeLayout) findViewById(R.id.rl_profile11);
+		rl_music = (RelativeLayout) findViewById(R.id.rl_profile12);
+		rl_interests = (RelativeLayout) findViewById(R.id.rl_profile13);
+		
+		rl_usually_appear = (RelativeLayout) findViewById(R.id.rl_profile14);
 		
 		// 如果是我的自己的资料
 		if (from.equals("me")) {
@@ -187,6 +310,8 @@ public class SetMyInfoActivity2 extends BaseActivity implements InfoScrollView.O
 		initOtherData(username);
 	}
 	
+	
+	
 	// 初始化我的资料
 	private void initMeData() {
 		User user = userManager.getCurrentUser(User.class);
@@ -220,6 +345,253 @@ public class SetMyInfoActivity2 extends BaseActivity implements InfoScrollView.O
 			}
 		});
 	}
+	
+	PopupWindow avatorPop;
+
+	public String filePath = "";
+	
+	private void showAvatarPop() {
+		View view = LayoutInflater.from(this).inflate(R.layout.pop_showavator,
+				null);
+		layout_choose = (LinearLayout) view.findViewById(R.id.register_select_picture_from_image);
+		layout_photo = (LinearLayout) view.findViewById(R.id.register_select_picture_from_camera);
+		layout_cancle = (LinearLayout) view.findViewById(R.id.register_select_picture_cancle);
+		layout_cancle.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				avatorPop.dismiss();
+			}
+		});
+		layout_photo.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				ShowLog("点击拍照");
+				// TODO Auto-generated method stub
+				
+				getImageFromCamera();
+			}
+		});
+		layout_choose.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				ShowLog("点击相册");
+				pickImage();
+				
+			}
+		});
+
+		avatorPop = new PopupWindow(view, mScreenWidth, 600);
+		avatorPop.setTouchInterceptor(new OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
+					avatorPop.dismiss();
+					return true;
+				}
+				return false;
+			}
+		});
+
+		avatorPop.setWidth(WindowManager.LayoutParams.MATCH_PARENT);
+		avatorPop.setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
+		avatorPop.setTouchable(true);
+		avatorPop.setFocusable(true);
+		avatorPop.setOutsideTouchable(true);
+		avatorPop.setBackgroundDrawable(new BitmapDrawable());
+		// 动画效果 从底部弹起
+		avatorPop.setAnimationStyle(R.style.Animations_GrowFromBottom);
+		avatorPop.showAtLocation(layout_all, Gravity.BOTTOM, 0, 0);
+	}
+	
+	/*
+	 * 
+	 */
+	protected void getImageFromCamera() {
+		// 原图
+		File file = new File(dir, new SimpleDateFormat("yyMMddHHmmss")
+				.format(new Date()));
+		filePath = file.getAbsolutePath();// 获取相片的保存路径
+		Uri imageUri = Uri.fromFile(file);
+
+         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+         intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+
+         mCurrentPhotoPath = imageUri.getPath();
+
+         startActivityForResult(intent, BmobConstants.REQUESTCODE_UPLOADAVATAR_CAMERA);
+    }
+	
+	protected void pickImage(){
+		Crop.pickImage(this);
+	}
+	
+	Bitmap newBitmap;
+	boolean isFromCamera = false;// 区分拍照旋转
+	int degree = 0;
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// TODO Auto-generated method stub
+		super.onActivityResult(requestCode, resultCode, data);
+		
+		if(resultCode == Activity.RESULT_OK) {
+            if(requestCode == Crop.REQUEST_PICK) {
+                beginCrop( data.getData());
+            }
+            else if(requestCode == Crop.REQUEST_CROP) {
+                handleCrop( resultCode, data);
+            }
+            else if(requestCode == BmobConstants.REQUESTCODE_UPLOADAVATAR_CAMERA) {
+                System.out.println( " REQUESTCODE_UPLOADAVATAR_CAMERA " + mCurrentPhotoPath);
+                if(mCurrentPhotoPath != null) {
+                    beginCrop( Uri.fromFile( new File( mCurrentPhotoPath)));
+                }
+            }
+            else if (requestCode == ETIT_MY_INFO) {
+            	update = data.getBooleanExtra("update", true);
+            	ShowToast(update + "");
+			}
+        }
+	}
+	
+	String path = "";
+	
+	ProgressDialog updateAvatarprogressDialog;
+	private void handleCrop(int resultCode, Intent result) {
+        if (resultCode == Activity.RESULT_OK) {
+            System.out.println(" handleCrop: Crop.getOutput(result) "+Crop.getOutput(result));
+            
+            if (avatorPop != null) {
+				avatorPop.dismiss();
+			}
+            
+            boolean isNetConnected = CommonUtils.isNetworkAvailable(this);
+            if (!isNetConnected) {
+            	ShowToast(R.string.network_tips);
+    			return;
+			}else {
+				// 上传头像
+	            updateAvatarprogressDialog = new ProgressDialog(SetMyInfoActivity2.this);
+	            updateAvatarprogressDialog.setMessage("正在更新头像...");
+	            updateAvatarprogressDialog.setCanceledOnTouchOutside(false);
+	            updateAvatarprogressDialog.show();
+	            
+	         	// 更新用户的头像
+				uploadAvatar();
+				
+				updatedAtatar = Crop.getOutput(result);
+			}
+        } else if (resultCode == Crop.RESULT_ERROR) {
+            Toast.makeText(SetMyInfoActivity2.this, Crop.getError(result).getMessage(),
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+	
+	private void refreshUserAvatar() {
+        if (updatedAtatar != null) {
+        	iv_avatar.setImageURI(updatedAtatar);
+		}
+        
+	}
+	
+	/*
+	 *  上传头像
+	 */
+	private void uploadAvatar() {
+		BmobLog.i("头像地址：" + path);
+		final BmobFile bmobFile = new BmobFile(new File(path));
+		bmobFile.upload(this, new UploadFileListener() {
+
+			@Override
+			public void onSuccess() {
+				// TODO Auto-generated method stub
+				// 获取文件上传之后文件在服务器断对应的地址
+				String url = bmobFile.getFileUrl(SetMyInfoActivity2.this);
+				// 更新BmobUser对象，也就是加上头像的地址
+				updateUserAvatar(url);
+			}
+
+			@Override
+			public void onProgress(Integer arg0) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void onFailure(int arg0, String msg) {
+				// TODO Auto-generated method stub
+				ShowToast("头像上传失败：" + msg);
+			}
+		});
+	}
+
+	// 更新用户的头像
+	private void updateUserAvatar(final String url) {
+		User  u =new User();
+		u.setAvatar(url);
+		updateUserData(u,new UpdateListener() {
+			@Override
+			public void onSuccess() {
+				// TODO Auto-generated method stub
+				ShowToast("头像更新成功！");
+				// 更新头像
+				refreshAvatar(url);
+				
+				Message message = new Message();
+				message.what = 0;
+				updateAvatarHandler.sendMessage(message);
+				
+			}
+
+			@Override
+			public void onFailure(int code, String msg) {
+				// TODO Auto-generated method stub
+				ShowToast("头像更新失败：" + msg);
+			}
+		});
+	}
+	
+	/*
+	 * 更新用户信息
+	 */
+	private void updateUserData(User user,UpdateListener listener){
+		User current = (User) userManager.getCurrentUser(User.class);
+		user.setObjectId(current.getObjectId());
+		user.update(this, listener);
+	}
+
+    private Bitmap getCircleBitmap(Uri uri) {
+       Bitmap src =  BitmapFactory.decodeFile( uri.getPath());
+       Bitmap output = Bitmap.createBitmap( src.getWidth(), src.getHeight(), Bitmap.Config.RGB_565);
+       Canvas canvas = new Canvas( output);
+
+       Paint paint = new Paint();
+       Rect rect = new Rect( 0, 0, src.getWidth(), src.getHeight());
+
+       paint.setAntiAlias( true);
+       paint.setFilterBitmap( true);
+       paint.setDither( true);
+       canvas.drawARGB( 0, 0, 0, 0);
+       canvas.drawCircle( src.getWidth() / 2, src.getWidth() / 2, src.getWidth() / 2, paint);
+       paint.setXfermode( new PorterDuffXfermode( PorterDuff.Mode.SRC_IN));
+       canvas.drawBitmap( src, rect, rect, paint);
+       return output;
+    }
+
+    private void beginCrop(Uri source) {
+        String fileName = new SimpleDateFormat("yyMMddHHmmss").format(new Date())  + ".png";
+        File cropFile = new File( dir, fileName);
+        Uri outputUri = Uri.fromFile( cropFile);
+        
+        // 剪裁后的文件路径
+        path = cropFile.getAbsolutePath();
+        new Crop( source).output( outputUri).setCropType(true).start( this);
+    }
 	
 	
 	private void updateUser(User user) {
@@ -256,7 +628,7 @@ public class SetMyInfoActivity2 extends BaseActivity implements InfoScrollView.O
 		}
 		
 		Calendar calendar = Calendar.getInstance();
-		int age;
+
 		String birthday = user.getBirthday();
 		String []array = birthday.split("-");
 		// 设置年龄
@@ -293,7 +665,12 @@ public class SetMyInfoActivity2 extends BaseActivity implements InfoScrollView.O
 		tv_account.setText(user.getUsername());
 		
 		// 个性签名
-		tv_personalized_signature.setText(user.getPersonalizedSignature());
+		if (user.getPersonalizedSignature().equals("未填写")) {
+			rl_personalized_signature.setVisibility(View.GONE);
+		}
+		else {
+			tv_personalized_signature.setText(user.getPersonalizedSignature());
+		}
 		
 		// 游戏
 		tv_game.setText(user.getGameType());
@@ -305,55 +682,79 @@ public class SetMyInfoActivity2 extends BaseActivity implements InfoScrollView.O
 		tv_love_status.setText(user.getLove());
 		
 		// 职业
-		tv_career.setText(user.getCareer());
+		if (user.getCareer().equals("未填写")) {
+			rl_career.setVisibility(View.GONE);
+		}else {
+			tv_career.setText(user.getCareer());
+		}
+		
 		
 		// 公司
-		tv_company.setText(user.getCompany());
+		if (user.getCompany().equals("未填写")) {
+			rl_company.setVisibility(View.GONE);
+		}
+		else {
+			tv_company.setText(user.getCompany());
+		}
 		
 		// 学校
-		tv_school.setText(user.getSchool());
+		if (user.getSchool().equals("未填写")) {
+			rl_school.setVisibility(View.GONE);
+		}
+		else {
+			tv_school.setText(user.getSchool());
+		}
 		
 		// 家乡
-		tv_hometown.setText(user.getHometown());
+		if (user.getHometown().equals("未填写")) {
+			rl_hometown.setVisibility(View.GONE);
+		}
+		else {
+			tv_hometown.setText(user.getHometown());
+		}
 		
 		// 书籍
-		tv_book.setText(user.getBook());
+		if (user.getBook().equals("未填写")) {
+			rl_book.setVisibility(View.GONE);
+		}
+		else {
+			tv_book.setText(user.getBook());
+		}
 		
 		// 电影
-		tv_movie.setText(user.getMovie());
+		if (user.getMovie().equals("未填写")) {
+			rl_movie.setVisibility(View.GONE);
+		}
+		else {
+			tv_movie.setText(user.getMovie());
+		}
 		
 		// 音乐
-		tv_music.setText(user.getMusic());
+		if (user.getMusic().equals("未填写")) {
+			rl_music.setVisibility(View.GONE);
+		}
+		else {
+			tv_music.setText(user.getMusic());
+		}
 		
 		// 兴趣爱好
-		tv_interests.setText(user.getInterests());
+		if (user.getInterests().equals("未填写")) {
+			rl_interests.setVisibility(View.GONE);
+		}
+		else {
+			tv_interests.setText(user.getInterests());
+		}
 		
 		// 常出没地
-		tv_usually_appear.setText(user.getUsuallyAppear());
+		if (user.getUsuallyAppear().equals("未填写")) {
+			rl_usually_appear.setVisibility(View.GONE);
+		}
+		else {
+			tv_usually_appear.setText(user.getUsuallyAppear());
+		}
 		
 		// 注册时间
 		tv_register_time.setText(user.getCreatedAt());
-		
-		
-//		tv_set_gender.setText(user.getSex() == true ? "男" : "女");
-//		tv_set_birthday.setText(user.getBirthday());
-//		
-//		
-//		tv_set_game.setText(user.getGameType());
-//		
-//		tv_set_game_difficulty.setText(user.getGameDifficulty());
-		
-//		switch (user.getGameDifficulty()) {
-//		case 0:
-//			tv_set_game_difficulty.setText("简单");
-//			break;
-//		case 1:
-//			tv_set_game_difficulty.setText("一般");
-//			break;
-//		case 2:
-//			tv_set_game_difficulty.setText("困难");
-//			break;
-//		}
 		
 		// 检测是不是从好友列表中过来的
 		if (from.equals("other")) {
@@ -365,6 +766,123 @@ public class SetMyInfoActivity2 extends BaseActivity implements InfoScrollView.O
 				btn_black.setVisibility(View.VISIBLE);
 				black_list_tips.setVisibility(View.GONE);
 			}
+		}
+	}
+	
+	
+	/*
+	 * 从编辑页面保存之后，返回
+	 */
+	private void updateAfterEditUserInfo()
+	{
+		Calendar calendar = Calendar.getInstance();
+
+		String birthday = user.getBirthday();
+		String []array = birthday.split("-");
+		// 设置年龄
+		tv_age.setText(calendar.get(Calendar.YEAR) - Integer.parseInt(array[0]) + "");
+		
+		// 昵称
+		tv_nick.setText(user.getNick());
+				
+		// 个性签名
+		if (user.getPersonalizedSignature().equals("未填写")) {
+			rl_personalized_signature.setVisibility(View.GONE);
+		}
+		else {
+			rl_personalized_signature.setVisibility(View.VISIBLE);
+			tv_personalized_signature.setText(user.getPersonalizedSignature());
+		}
+				
+		// 游戏
+		tv_game.setText(user.getGameType());
+				
+		// 游戏难度
+		tv_game_difficulty.setText(user.getGameDifficulty());
+				
+		// 情感状态
+		tv_love_status.setText(user.getLove());
+				
+		// 职业
+		
+		if (user.getCareer().equals("未填写")) {
+			rl_career.setVisibility(View.GONE);
+		}else {
+			rl_career.setVisibility(View.VISIBLE);
+			tv_career.setText(user.getCareer());
+		}
+				
+				
+		// 公司
+		if (user.getCompany().equals("未填写")) {
+			rl_company.setVisibility(View.GONE);
+		}
+		else {
+			rl_company.setVisibility(View.VISIBLE);
+			tv_company.setText(user.getCompany());
+		}
+				
+		// 学校
+		if (user.getSchool().equals("未填写")) {
+			rl_school.setVisibility(View.GONE);
+		}
+		else {
+			rl_school.setVisibility(View.VISIBLE);
+			tv_school.setText(user.getSchool());
+		}
+				
+		// 家乡
+		if (user.getHometown().equals("未填写")) {
+			rl_hometown.setVisibility(View.GONE);
+		}
+		else {
+			rl_hometown.setVisibility(View.VISIBLE);
+			tv_hometown.setText(user.getHometown());
+		}
+				
+		// 书籍
+		if (user.getBook().equals("未填写")) {
+			rl_book.setVisibility(View.GONE);
+		}
+		else {
+			rl_book.setVisibility(View.VISIBLE);
+			tv_book.setText(user.getBook());
+		}
+				
+		// 电影
+		if (user.getMovie().equals("未填写")) {
+			rl_movie.setVisibility(View.GONE);
+		}
+		else {
+			rl_movie.setVisibility(View.VISIBLE);
+			tv_movie.setText(user.getMovie());
+		}
+				
+		// 音乐
+		if (user.getMusic().equals("未填写")) {
+			rl_music.setVisibility(View.GONE);
+		}
+		else {
+			rl_music.setVisibility(View.VISIBLE);
+			tv_music.setText(user.getMusic());
+		}
+				
+		// 兴趣爱好
+		if (user.getInterests().equals("未填写")) {
+			rl_interests.setVisibility(View.GONE);
+		}
+		else {
+			rl_interests.setVisibility(View.VISIBLE);
+			tv_interests.setText(user.getInterests());
+		}
+				
+		// 常出没地
+		if (user.getUsuallyAppear().equals("未填写")) {
+			rl_usually_appear.setVisibility(View.GONE);
+		}
+		else {
+			rl_usually_appear.setVisibility(View.VISIBLE);
+			tv_usually_appear.setText(user.getUsuallyAppear());
 		}
 	}
 	
@@ -396,6 +914,8 @@ public class SetMyInfoActivity2 extends BaseActivity implements InfoScrollView.O
 		    
 	}
 	
+	
+	
 	/*
 	 * 下载非本人照片
 	 * author：deeplee
@@ -408,7 +928,8 @@ public class SetMyInfoActivity2 extends BaseActivity implements InfoScrollView.O
 				photoTask.add(task1);
 			}
 			else {
-				iv_photo1.setVisibility(View.GONE);
+				progressBarArray[0].setVisibility(View.INVISIBLE);
+				iv_photo1.setVisibility(View.INVISIBLE);
 			}
 			if (otherWallPhoto.size() >= 2 && !otherWallPhoto.get(1).equals("") && otherWallPhoto.get(1) != null) {
 				MYTask task2 = new MYTask(iv_photo2);
@@ -416,7 +937,8 @@ public class SetMyInfoActivity2 extends BaseActivity implements InfoScrollView.O
 				photoTask.add(task2);
 			}
 			else {
-				iv_photo2.setVisibility(View.GONE);
+				progressBarArray[1].setVisibility(View.INVISIBLE);
+				iv_photo2.setVisibility(View.INVISIBLE);
 			}
 			
 			if (otherWallPhoto.size() >= 3 && !otherWallPhoto.get(2).equals("") && otherWallPhoto.get(2) != null) {
@@ -425,13 +947,17 @@ public class SetMyInfoActivity2 extends BaseActivity implements InfoScrollView.O
 				photoTask.add(task3);
 			}
 			else {
-				iv_photo3.setVisibility(View.GONE);
+				progressBarArray[2].setVisibility(View.INVISIBLE);
+				iv_photo3.setVisibility(View.INVISIBLE);
 			}
 		}
 		else {
-			iv_photo1.setVisibility(View.GONE);
-			iv_photo2.setVisibility(View.GONE);
-			iv_photo3.setVisibility(View.GONE);
+			iv_photo1.setVisibility(View.INVISIBLE);
+			iv_photo2.setVisibility(View.INVISIBLE);
+			iv_photo3.setVisibility(View.INVISIBLE);
+			progressBarArray[1].setVisibility(View.INVISIBLE);
+			progressBarArray[2].setVisibility(View.INVISIBLE);
+			progressBarArray[0].setVisibility(View.INVISIBLE);
 		}
 	}
 	
@@ -441,30 +967,44 @@ public class SetMyInfoActivity2 extends BaseActivity implements InfoScrollView.O
 	 */
 	private void downLoadPhoto() {
 		
-		if (CustomApplcation.myWallPhoto.size() >= 1 && !CustomApplcation.myWallPhoto.get(0).equals("") && CustomApplcation.myWallPhoto.get(0) != null) {
-			MYTask task1 = new MYTask(iv_photo1);
-			task1.execute(CustomApplcation.myWallPhoto.get(0));
-			photoTask.add(task1);
+		if (CustomApplcation.myWallPhoto.size() > 0) {
+			if (CustomApplcation.myWallPhoto.size() >= 1 && !CustomApplcation.myWallPhoto.get(0).equals("") && CustomApplcation.myWallPhoto.get(0) != null) {
+				MYTask task1 = new MYTask(iv_photo1);
+				task1.execute(CustomApplcation.myWallPhoto.get(0));
+				photoTask.add(task1);
+			}
+			else {
+				progressBarArray[0].setVisibility(View.INVISIBLE);
+				iv_photo1.setVisibility(View.INVISIBLE);
+			}
+			if (CustomApplcation.myWallPhoto.size() >= 2 && !CustomApplcation.myWallPhoto.get(1).equals("") && CustomApplcation.myWallPhoto.get(1) != null) {
+				MYTask task2 = new MYTask(iv_photo2);
+				task2.execute(CustomApplcation.myWallPhoto.get(1));
+				photoTask.add(task2);
+			}
+			else {
+				progressBarArray[1].setVisibility(View.INVISIBLE);
+				iv_photo2.setVisibility(View.INVISIBLE);
+			}
+			
+			if (CustomApplcation.myWallPhoto.size() >= 3 && !CustomApplcation.myWallPhoto.get(2).equals("") && CustomApplcation.myWallPhoto.get(2) != null) {
+				MYTask task3 = new MYTask(iv_photo3);
+				task3.execute(CustomApplcation.myWallPhoto.get(2));
+				photoTask.add(task3);
+			}
+			else {
+				progressBarArray[2].setVisibility(View.INVISIBLE);
+				iv_photo3.setVisibility(View.INVISIBLE);
+			}
 		}
 		else {
-			iv_photo1.setVisibility(View.GONE);
-		}
-		if (CustomApplcation.myWallPhoto.size() >= 2 && !CustomApplcation.myWallPhoto.get(1).equals("") && CustomApplcation.myWallPhoto.get(1) != null) {
-			MYTask task2 = new MYTask(iv_photo2);
-			task2.execute(CustomApplcation.myWallPhoto.get(1));
-			photoTask.add(task2);
-		}
-		else {
-			iv_photo2.setVisibility(View.GONE);
-		}
-		
-		if (CustomApplcation.myWallPhoto.size() >= 3 && !CustomApplcation.myWallPhoto.get(2).equals("") && CustomApplcation.myWallPhoto.get(2) != null) {
-			MYTask task3 = new MYTask(iv_photo3);
-			task3.execute(CustomApplcation.myWallPhoto.get(2));
-			photoTask.add(task3);
-		}
-		else {
-			iv_photo3.setVisibility(View.GONE);
+			iv_photo1.setVisibility(View.INVISIBLE);
+			iv_photo2.setVisibility(View.INVISIBLE);
+			iv_photo3.setVisibility(View.INVISIBLE);
+			
+			progressBarArray[1].setVisibility(View.INVISIBLE);
+			progressBarArray[2].setVisibility(View.INVISIBLE);
+			progressBarArray[0].setVisibility(View.INVISIBLE);
 		}
 		
 	}
@@ -490,10 +1030,18 @@ public class SetMyInfoActivity2 extends BaseActivity implements InfoScrollView.O
 	public void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		
 		// 如果是个人资料的话
 		if (from.equals("me")) {
 			initMeData();
+			downLoadPhoto();
+		}
+		else {
+			downLoadOtherPhoto();
+		}
+		
+		if (update) {
+			user = userManager.getCurrentUser(User.class);
+    		updateAfterEditUserInfo();
 		}
 	}
 	
@@ -534,11 +1082,137 @@ public class SetMyInfoActivity2 extends BaseActivity implements InfoScrollView.O
 		lp.setMargins(0, top, 0, 0);
 		iv_head_bg.setLayoutParams(lp);
 	}
+	
+//	btn_edit = (Button) findViewById(R.id.btn_edit_info);
+//	btn_add = (Button) findViewById(R.id.info_btn_add_friend);
+//	btn_chat = (Button) findViewById(R.id.info_btn_chat);
+//	btn_black = (Button) findViewById(R.id.info_btn_black);
 
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		
+		switch (v.getId()) {
+		// 照片墙
+		case R.id.rl_profile2:
+			Intent intent1 = new Intent();
+			intent1.setClass(SetMyInfoActivity2.this, PhotoWallFallActivity.class);
+			intent1.putExtra("from", from);
+			intent1.putStringArrayListExtra("photo", otherWallPhoto);
+			startActivity(intent1);
+			break;
+			
+		// 编辑资料
+		case R.id.btn_edit_info:
+			Intent intent2 = new Intent();
+			intent2.setClass(SetMyInfoActivity2.this, EditMyInfoActivity.class);
+			startActivityForResult(intent2, ETIT_MY_INFO);
+			break;
+		// 添加好友
+		case R.id.info_btn_add_friend:
+			addFriend();
+			break;
+		// 发起会话
+		case R.id.info_btn_chat:
+			Intent intent3 = new Intent(this, ChatActivity.class);
+			intent3.putExtra("user", user);
+			startAnimActivity(intent3);
+			finish();
+			break;
+		// 添加到黑名单
+		case R.id.info_btn_black:
+			showBlackDialog(user.getUsername());
+			break;
+		
+		default:
+			break;
+		}
+		
+	}
+	
+	/**
+	 * 显示黑名单提示框
+	 * 
+	 * @Title: showBlackDialog
+	 * @Description: TODO
+	 * @param
+	 * @return void
+	 * @throws
+	 */
+	private void showBlackDialog(final String username) {
+		DialogTips dialog = new DialogTips(this, "加入黑名单",
+				"加入黑名单，你将不再收到对方的消息，确定要继续吗？", "确定", true, true);
+		dialog.SetOnSuccessListener(new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialogInterface, int userId) {
+				// 添加到黑名单列表
+				userManager.addBlack(username, new UpdateListener() {
+
+					@Override
+					public void onSuccess() {
+						// TODO Auto-generated method stub
+						ShowToast("黑名单添加成功!");
+						btn_black.setVisibility(View.GONE);
+						black_list_tips.setVisibility(View.VISIBLE);
+						// 重新设置下内存中保存的好友列表
+						CustomApplcation.getInstance().setContactList(CollectionUtils.list2map(BmobDB.create(SetMyInfoActivity2.this).getContactList()));
+					}
+
+					@Override
+					public void onFailure(int arg0, String arg1) {
+						// TODO Auto-generated method stub
+						ShowToast("黑名单添加失败:" + arg1);
+					}
+				});
+			}
+		});
+		// 显示确认对话框
+		dialog.show();
+		dialog = null;
+	}
+	
+	/**
+	 * 添加好友请求
+	 * 
+	 * @Title: addFriend
+	 * @Description: TODO
+	 * @param
+	 * @return void
+	 * @throws
+	 */
+	private void addFriend() {
+		
+		final ProgressDialog progress = new ProgressDialog(this);
+		progress.setMessage("正在添加...");
+		progress.setCanceledOnTouchOutside(false);
+		progress.show();
+		// 发送tag请求，TAG_ADD_CONTACT表示添加好友
+		
+//		
+//		给指定用户推送Tag标记的消息请提供回调操作:此方法方便开发者使用自定义tag标记的消息，不携带回调方法
+//
+//    参数：
+//        tag - 消息类型
+//        installId - 目标用户绑定的设备id
+//        pushCallback - 发送回调 
+		
+		BmobChatManager.getInstance(this).sendTagMessage(BmobConfig.TAG_ADD_CONTACT,
+				user.getObjectId(), new PushListener() {
+
+					@Override
+					public void onSuccess() {
+						// TODO Auto-generated method stub
+						progress.dismiss();
+						ShowToast("发送请求成功，等待对方验证！");
+					}
+
+					@Override
+					public void onFailure(int arg0, final String arg1) {
+						// TODO Auto-generated method stub
+						progress.dismiss();
+						ShowToast("发送请求失败！");
+						ShowLog("发送请求失败:" + arg1);
+					}
+				});
 	}
 	
 	private static final double EARTH_RADIUS = 6378137;
@@ -626,6 +1300,21 @@ public class SetMyInfoActivity2 extends BaseActivity implements InfoScrollView.O
             // TODO Auto-generated method stub
             super.onPostExecute(result);
             imageView.setImageBitmap(result);
+            
+            imageView.setVisibility(View.VISIBLE);
+            
+            switch (imageView.getId()) {
+			case R.id.info_photo_1:
+				progressBarArray[0].setVisibility(View.INVISIBLE);
+				break;
+				
+			case R.id.info_photo_2:
+				progressBarArray[1].setVisibility(View.INVISIBLE);
+				break;
+			case R.id.info_photo_3:
+				progressBarArray[2].setVisibility(View.INVISIBLE);
+				break;
+			}
         }
 
     }

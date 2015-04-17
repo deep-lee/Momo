@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_height="fill_parent"
     android:background="@drawable/base_dialog_bg"
     android:minWidth="300dp"
     android:orientation="vertical" >
@@ -43,19 +43,17 @@
         android:layout_height="0px"
         android:layout_weight="1"
         android:orientation="vertical"
-        android:paddingBottom="15dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp" >
 
         <ListView
 			 android:id="@+id/single_choice_listView"
 			 android:layout_width="fill_parent"
-			 android:layout_height="wrap_content" 
+			 android:layout_height="fill_parent" 
 			 android:cacheColorHint="#00000000"
 			 style="@style/Smile.TextView._Orange"
-			 android:divider="@drawable/base_horizontal_line_red"
-			 android:scrollbars="none"/>
-        
+			 android:scrollbars="none"
+			 android:divider="@drawable/base_horizontal_line_red"/>        
     </LinearLayout>
 
     <View

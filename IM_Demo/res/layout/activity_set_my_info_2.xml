@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/info_layout_all"
     tools:context="${relativePackage}.${activityClass}" >
     
     <RelativeLayout 
@@ -18,17 +19,7 @@
 	        android:layout_alignParentTop="true"
 	        android:background="@drawable/default_info_head_bg" />
         
-        <Button
-            android:id="@+id/btn_edit_info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/register_btn_bg"
-            android:layout_alignParentRight="true"
-			android:layout_marginRight="10dip"
-			android:layout_marginTop="10dip"
-            android:text="编辑"
-            android:textColor="#000000"
-            android:textSize="15sp" />
+        
 	
 	    <com.bmob.im.demo.view.InfoScrollView
 	        android:id="@+id/sv_profile"
@@ -53,7 +44,21 @@
 	                    android:layout_height="@dimen/image_profile_headbg_height"
 	                    android:layout_alignParentLeft="true"
 	                    android:layout_alignParentTop="true"
-	                    android:orientation="vertical" />
+	                    android:orientation="vertical">
+	                    
+	                    <Button
+				            android:id="@+id/btn_edit_info"
+				            android:layout_width="wrap_content"
+				            android:layout_height="wrap_content"
+				            android:background="@drawable/register_btn_bg"
+				            android:layout_gravity="right|top"
+							android:layout_marginRight="10dip"
+							android:layout_marginTop="10dip"
+				            android:text="编辑"
+				            android:textColor="#000000"
+				            android:textSize="15sp" />
+	                    
+	                </LinearLayout>
 	
 	                <View
 	                    android:id="@+id/v_profile_hearbottom"
@@ -97,23 +102,75 @@
 	                    android:layout_centerVertical="true"
 	                    android:layout_width="fill_parent">
 	                    
-	                    <ImageView 
-	                        android:id="@+id/info_photo_1"
+	                    <FrameLayout 
 	                        android:layout_width="68dp"
-	                        android:src="@drawable/game_icon"
-	                        android:layout_height="70dp"/>
+	                        android:layout_height="70dp">
+	                        
+	                        <ImageView 
+		                        android:id="@+id/info_photo_1"
+		                        android:layout_width="68dp"
+		                        android:layout_gravity="center"
+		                        android:src="@drawable/game_icon"
+		                        android:layout_height="70dp"/>
+	                        
+	                        <ProgressBar 
+	                            android:id="@+id/loading_process_dialog_progressBar1"
+								android:layout_width="68dp" 
+								android:layout_height="70dp"
+								android:layout_gravity="center"
+								android:indeterminate="false" 
+								android:layout_marginTop="20dp"
+								android:indeterminateDrawable="@anim/loading" />
+	                        
+	                    </FrameLayout>
 	                    
-	                    <ImageView 
-	                        android:id="@+id/info_photo_2"
+	                    <FrameLayout 
 	                        android:layout_width="68dp"
-	                        android:src="@drawable/game_icon"
-	                        android:layout_height="70dp"/>
+	                        android:layout_height="70dp">
+	                        
+	                        <ImageView 
+		                        android:id="@+id/info_photo_2"
+		                        android:layout_width="68dp"
+		                        android:layout_gravity="center"
+		                        android:src="@drawable/game_icon"
+		                        android:layout_height="70dp"/>
+	                        
+	                        <ProgressBar 
+	                            android:id="@+id/loading_process_dialog_progressBar2"
+								android:layout_width="68dp" 
+								android:layout_height="70dp"
+								android:layout_gravity="center"
+								android:layout_marginTop="20dp"
+								android:indeterminate="false" 
+								android:indeterminateDrawable="@anim/loading" />
+	                        
+	                    </FrameLayout>
 	                    
-	                    <ImageView 
-	                        android:id="@+id/info_photo_3"
+	                    <FrameLayout 
 	                        android:layout_width="68dp"
-	                        android:src="@drawable/game_icon"
-	                        android:layout_height="70dp"/>
+	                        android:layout_height="70dp">
+	                        
+	                        <ImageView 
+		                        android:id="@+id/info_photo_3"
+		                        android:layout_width="68dp"
+		                        android:src="@drawable/game_icon"
+		                        android:layout_gravity="center"
+		                        android:layout_height="70dp"/>
+	                        
+	                        <ProgressBar 
+	                            android:id="@+id/loading_process_dialog_progressBar3"
+								android:layout_width="68dp" 
+								android:layout_height="70dp"
+								android:layout_gravity="center"
+								android:layout_marginTop="20dp"
+								android:indeterminate="false" 
+								android:indeterminateDrawable="@anim/loading" />
+	                        
+	                    </FrameLayout>
+	                    
+	                    
+	                    
+	                    
 	                    
 	                </LinearLayout>
 	                

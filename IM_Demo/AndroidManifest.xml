@@ -200,7 +200,6 @@
             android:name=".ui.RegisterActivity"
             android:label="@string/title_activity_register_activity2" >
         </activity>
-
         <activity
             android:name=".ui.SlideSetActivity"
             android:label="@string/title_activity_slide_set_my_info" >
@@ -256,8 +255,24 @@
             android:label="@string/title_activity_set_message_notify" >
         </activity>
         <activity
-            android:name="com.bmob.im.demo.ui.SetMyInfoActivity2"
+            android:name=".ui.SetMyInfoActivity2"
             android:label="@string/title_activity_set_my_info_activity2" >
+        </activity>
+        <activity
+            android:name=".ui.EditMyInfoActivity"
+            android:label="@string/title_activity_edit_my_info" >
+        </activity>
+        <activity
+            android:name=".ui.CitiListActivity"
+            android:label="@string/title_activity_citi_list" >
+        </activity>
+        <activity
+            android:name=".ui.ProvinceListActivity"
+            android:label="@string/title_activity_province_list" >
+        </activity>
+        <activity
+            android:name="com.bmob.im.demo.ui.SelectCareerActivity"
+            android:label="@string/title_activity_select_career" >
         </activity>
     </application>
 
