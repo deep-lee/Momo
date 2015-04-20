@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/main_fragment_bg"
+    android:background="#ffffff"
     android:orientation="vertical" >
 
     <include
@@ -13,7 +13,7 @@
         android:id="@+id/layout_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/main_fragment_bg"
+        android:background="#ffffff"
         android:orientation="vertical" >
         
         <com.bmob.im.demo.view.ClearEditText
@@ -25,7 +25,7 @@
             android:layout_marginRight="20dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            android:background="@drawable/common_search_bg"
+            
             android:drawableLeft="@drawable/icon_msg_search"
             android:drawablePadding="10dp"
             android:hint="@string/message_search_hint"
@@ -38,6 +38,7 @@
             android:layout_height="match_parent"
             android:layout_below="@id/et_msg_search"
             android:layout_gravity="top"
+            android:layout_marginLeft="10dp"
             android:layout_marginRight="25dip"
             android:background="@drawable/user_add_top_bg"
             android:orientation="horizontal" >
@@ -45,8 +46,8 @@
             <ListView
                 android:id="@+id/list_friends"
                 android:layout_width="match_parent"
-                android:divider="@drawable/common_list_view_divider_line"
-                android:background="@drawable/main_fragment_bg"
+                
+                android:background="#ffffff"
                 android:layout_height="match_parent"
                 android:cacheColorHint="#00000000"
                 android:scrollbars="none" />

@@ -270,10 +270,6 @@
             android:name=".ui.ProvinceListActivity"
             android:label="@string/title_activity_province_list" >
         </activity>
-        <activity
-            android:name="com.bmob.im.demo.ui.SelectCareerActivity"
-            android:label="@string/title_activity_select_career" >
-        </activity>
     </application>
 
 </manifest>

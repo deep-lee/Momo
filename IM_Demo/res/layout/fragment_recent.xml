@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/main_fragment_bg"
+    android:background="#ffffff"
     android:orientation="vertical" >
   
     <include
@@ -24,7 +24,6 @@
         android:singleLine="true" />
 
      <com.bmob.im.demo.view.xlist.XListView
-        android:divider="@drawable/common_list_view_divider_line"
         android:dividerHeight="1dp"   
         android:paddingBottom="10dp"
     	android:fadingEdgeLength="0dp"
@@ -32,7 +31,7 @@
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/main_fragment_bg"
+        android:background="#ffffff"
         android:cacheColorHint="#00000000"
         />
 

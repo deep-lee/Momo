@@ -54,7 +54,7 @@ public class RecentFragment extends FragmentBase implements OnItemClickListener,
 	}
 	
 	private void initView(){
-		initTopBarForLeft("会话", R.drawable.default_head, new onLeftImageButtonClickListener() {
+		initTopBarForLeft("会话", R.drawable.base_common_bar_recent_more_selector, new onLeftImageButtonClickListener() {
 			
 			@Override
 			public void onClick() {

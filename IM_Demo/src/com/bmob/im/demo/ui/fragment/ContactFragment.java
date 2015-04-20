@@ -196,10 +196,10 @@ public class ContactFragment extends FragmentBase implements OnItemClickListener
 			sortModel.setObjectId(user.getObjectId());
 			sortModel.setContacts(user.getContacts());
 			// 汉字转换成拼音
-			String username = sortModel.getUsername();
+			String nick = sortModel.getNick();
 			// 若没有username
-			if (username != null) {
-				String pinyin = characterParser.getSelling(sortModel.getUsername());
+			if (nick != null) {
+				String pinyin = characterParser.getSelling(sortModel.getNick());
 				String sortString = pinyin.substring(0, 1).toUpperCase();
 				// 正则表达式，判断首字母是否是英文字母
 				if (sortString.matches("[A-Z]")) {
@@ -403,7 +403,7 @@ public class ContactFragment extends FragmentBase implements OnItemClickListener
 	}
 	
 	public void showDeleteDialog(final User user) {
-		DialogTips dialog = new DialogTips(getActivity(),user.getUsername(),"删除联系人", "确定",true,true);
+		DialogTips dialog = new DialogTips(getActivity(),user.getNick(),"删除联系人", "确定",true,true);
 		// 设置成功事件
 		dialog.SetOnSuccessListener(new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialogInterface, int userId) {

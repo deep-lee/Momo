@@ -7,8 +7,6 @@ import com.bmob.im.demo.ui.BaseActivity;
 import com.bmob.im.demo.ui.SetMyInfoActivity;
 import com.bmob.im.demo.util.SoundPlay;
 import com.bmob.im.demo.view.dialog.DialogTips;
-
-import A.thing;
 import android.R.integer;
 import android.app.Activity;
 import android.app.AlertDialog;

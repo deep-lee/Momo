@@ -7,8 +7,6 @@ import com.bmob.im.demo.ui.FragmentBase;
 import com.bmob.im.demo.ui.fragment.NearByFragment;
 import com.bmob.im.demo.util.ActionItem;
 import com.bmob.im.demo.util.MenuUtil;
-
-import A.in;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
