@@ -27,7 +27,7 @@ public class SlideAdapter extends BaseAdapter{
 	
 	
 	private List<String> mDatas = Arrays  
-            .asList("我的游戏", "个人", "设置", "景点漫游","关于", "退出登陆");  
+            .asList("游戏中心", "个人", "设置", "景点漫游","关于", "退出登陆");  
 	
 	
 	private Context context;

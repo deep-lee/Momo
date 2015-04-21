@@ -57,6 +57,7 @@ import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -88,6 +89,8 @@ public class SetMyInfoActivity2 extends BaseActivity implements InfoScrollView.O
 	TextView tv_age, tv_distance, tv_last_update_time, tv_nick, tv_account, tv_personalized_signature, tv_game, 
 			 tv_game_difficulty, tv_love_status, tv_career, tv_company, tv_school, tv_hometown, tv_book, 
 			 tv_movie, tv_music, tv_interests, tv_usually_appear, tv_register_time;
+	
+	ImageButton btn_back;
 	
 	// 编辑，添加好友，发起会话，添加到黑名单
 	Button btn_edit, btn_add, btn_chat, btn_black;
@@ -220,6 +223,9 @@ public class SetMyInfoActivity2 extends BaseActivity implements InfoScrollView.O
 				}
 			});
 		}
+		
+		btn_back = (ImageButton) findViewById(R.id.info_show_back_btn);
+		btn_back.setOnClickListener(this);
 		
 		tv_age = (TextView) findViewById(R.id.info_age_tv);
 		tv_distance = (TextView) findViewById(R.id.info_tv_last_location_distance);
@@ -1122,6 +1128,10 @@ public class SetMyInfoActivity2 extends BaseActivity implements InfoScrollView.O
 		// 添加到黑名单
 		case R.id.info_btn_black:
 			showBlackDialog(user.getUsername());
+			break;
+			
+		case R.id.info_show_back_btn:
+			this.finish();
 			break;
 		
 		default:

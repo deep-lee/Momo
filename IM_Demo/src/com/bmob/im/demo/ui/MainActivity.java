@@ -101,25 +101,6 @@ public class MainActivity extends ActivityBase implements EventListener{
 		
 		mTabs[0].setImageDrawable(getResources().getDrawable(R.drawable.comon_main_bottom_recents_p));
 		
-//		mTabs[1].setImageDrawable(getResources().getDrawable(R.drawable.comon_main_bottom_contacts_p));
-//		
-//		mTabs[2].setImageDrawable(getResources().getDrawable(R.drawable.comon_main_bottom_nears_p));
-		
-//		mTabs[0].setScaleX((float) 1.3);
-//		mTabs[0].setScaleY((float) 1.3);
-//		
-//		params = new LayoutParams[3];
-//		params[0] = mTabs[0].getLayoutParams();  
-//		ShowToast(mTabs[0].getHeight() + "");
-//		
-//		
-//		params[0].width = mTabs[0].getWidth() + 20 ;
-//		params[0].height = mTabs[1].getHeight() + 20;
-//		
-//		mTabs[0].setLayoutParams(params[0]);
-//		
-//		params[1] = mTabs[1].getLayoutParams();
-//		params[2] = mTabs[2].getLayoutParams();
 		
 		initLeftView();
 		
@@ -158,19 +139,45 @@ public class MainActivity extends ActivityBase implements EventListener{
 		
 		
 	private void initLeftView() {
-		
+		      
 		// configure the SlidingMenu  
         menu = new SlidingMenu(this);  
+        menu.setBehindOffsetRes(R.dimen.slidingmenu_offset); 
+        menu.setFadeEnabled(false);  
+        menu.setBehindScrollScale(0.25f);  
+        menu.setFadeDegree(0.25f);  
         menu.setMode(SlidingMenu.LEFT);  
+           
         // 设置触摸屏幕的模式  
         menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);  
-        menu.setShadowWidthRes(R.dimen.shadow_width);  
-        menu.setShadowDrawable(R.drawable.shadow);  
-  
-        // 设置滑动菜单视图的宽度  
-        menu.setBehindOffsetRes(R.dimen.slidingmenu_offset);  
-        // 设置渐入渐出效果的值  
-        menu.setFadeDegree(0.35f);  
+//        menu.setShadowWidthRes(R.dimen.shadow_width);  
+//        menu.setShadowDrawable(R.drawable.shadow);  
+//  
+//        // 设置滑动菜单视图的宽度  
+//        menu.setBehindOffsetRes(R.dimen.slidingmenu_offset);  
+//        // 设置渐入渐出效果的值  
+//        menu.setFadeDegree(0.35f);  
+        
+        // 配置背景图片  
+        menu.setBackgroundImage(R.drawable.img_frame_background);  
+        // 设置专场动画效果  
+        menu.setBehindCanvasTransformer(new SlidingMenu.CanvasTransformer() {  
+            @Override  
+            public void transformCanvas(Canvas canvas, float percentOpen) {  
+                float scale = (float) (percentOpen * 0.25 + 0.75);  
+                canvas.scale(scale, scale, -canvas.getWidth() / 2,  
+                        canvas.getHeight() / 2);  
+            }  
+        });  
+          
+        menu.setAboveCanvasTransformer(new SlidingMenu.CanvasTransformer() {  
+            @Override  
+            public void transformCanvas(Canvas canvas, float percentOpen) {  
+                float scale = (float) (1 - percentOpen * 0.25);  
+                canvas.scale(scale, scale, 0, canvas.getHeight() / 2);  
+            }  
+        });  
+        
         /** 
          * SLIDING_WINDOW will include the Title/ActionBar in the content 
          * section of the SlidingMenu, while SLIDING_CONTENT does not. 
@@ -215,16 +222,16 @@ public class MainActivity extends ActivityBase implements EventListener{
 			}
 		});
         
-      //缩放动画效果，超级棒的，大神的参数我没看懂
-        CanvasTransformer mCanvasTransformer =  new CanvasTransformer(){  
-            @Override  
-            public void transformCanvas(Canvas canvas, float percentOpen) {  
-                float scale = (float) (percentOpen*0.25 + 0.75);  
-                canvas.scale(scale, scale, canvas.getWidth()/2, canvas.getHeight()/2);                
-            }  
-              
-        };  
-        menu.setBehindCanvasTransformer(mCanvasTransformer);
+//      //缩放动画效果，超级棒的，大神的参数我没看懂
+//        CanvasTransformer mCanvasTransformer =  new CanvasTransformer(){  
+//            @Override  
+//            public void transformCanvas(Canvas canvas, float percentOpen) {  
+//                float scale = (float) (percentOpen*0.25 + 0.75);  
+//                canvas.scale(scale, scale, canvas.getWidth()/2, canvas.getHeight()/2);                
+//            }  
+//              
+//        };  
+//        menu.setBehindCanvasTransformer(mCanvasTransformer);
         
         
         android.app.Fragment leftMenuFragment = new LeftFragment(MainActivity.this);  

@@ -28,7 +28,6 @@
      <dimen name="margin_chat_top">5.0dip</dimen>
      
      <dimen name = "shadow_width" > 30dp </dimen >
-    <dimen name = "slidingmenu_offset" > 85dp </dimen >
     
     <dimen name="image_thumbnail_size">100dp</dimen>
     <dimen name="image_thumbnail_spacing">1dp</dimen>
@@ -38,4 +37,6 @@
     <dimen name="image_profile_headbg_height">200dp</dimen>
     <dimen name="image_profile_avatar_size">120dp</dimen>    
     <dimen name="view_profile_headbottom_height">20dp</dimen>
+    
+    <dimen name="slidingmenu_offset">60dp</dimen>
 </resources>

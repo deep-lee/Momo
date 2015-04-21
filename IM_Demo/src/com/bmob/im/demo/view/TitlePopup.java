@@ -38,7 +38,7 @@ public class TitlePopup extends PopupWindow {
 	private int[] mLocation = new int[2];
 	
 
-	private int mScreenWidth,mScreenHeight;
+	private int mScreenWidth, mScreenHeight;
 
 
 	private boolean mIsDirty;
@@ -156,7 +156,7 @@ public class TitlePopup extends PopupWindow {
 				
 				if(convertView == null){
 					textView = new TextView(mContext);
-					textView.setTextColor(mContext.getResources().getColor(android.R.color.white));
+					textView.setTextColor(mContext.getResources().getColor(android.R.color.black));
 					textView.setTextSize(14);
 
 					textView.setGravity(Gravity.CENTER);
