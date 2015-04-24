@@ -11,5 +11,22 @@
           <enum name="never" value="2" />
         </attr>
     </declare-styleable>
+    
+    <declare-styleable name="CircularProgressView">
+        <attr name="cpv_progress" format="float" />
+        <attr name="cpv_maxProgress" format="float" />
+        <attr name="cpv_animDuration" format="integer" />
+        <attr name="cpv_color" format="color"/>
+        <attr name="cpv_thickness" format="dimension"/>
+        <attr name="cpv_indeterminate" format="boolean" />
+        <attr name="cpv_animAutostart" format="boolean" />
+        <attr name="cpv_animSteps" format="integer" />
+    </declare-styleable>
+    
+    <declare-styleable name="RefreshView">
+        <attr name="type" format="enum">
+            <enum name="sun" value="0" />
+        </attr>
+    </declare-styleable>
 
 </resources>

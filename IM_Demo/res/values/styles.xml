@@ -296,6 +296,22 @@
         <item name="android:text">@string/crop_cancel</item>
     </style>
     
+    
+    <style name="MenuFragmentStyle" parent="AppBaseTheme">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:colorForeground">@android:color/transparent</item>
+        <item name="android:colorForegroundInverse">@android:color/transparent</item>
+        <item name="android:colorBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@android:color/transparent</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="TextView" />
+
+    <style name="TextView.DefaultStyle">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/menu_text_size</item>
+    </style>
 
 </resources>
 

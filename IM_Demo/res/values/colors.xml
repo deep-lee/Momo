@@ -48,4 +48,10 @@
     <color name="common_edit_layout_pressed">#FFF8DC</color>
     <color name="common_actiov_bar_right_btn_n">#6170E3</color>
     <color name="common_actiov_bar_right_btn_p">#3866BB</color>
+    
+    <color name="menu_fragment_background">#B3000000</color>
+    <color name="menu_item_background">#f2f2f2</color>
+    <color name="divider_color">#b5b5b5</color>
+    
+    <color name="material_blue_500">#2196F3</color>
 </resources>

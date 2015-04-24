@@ -169,5 +169,7 @@
     <string name="career_list_item_Xue">学生</string>
     <string name="career_list_item_No">无</string>
     
+    <string name="context_menu">Context menu</string>
+    
 
 </resources>

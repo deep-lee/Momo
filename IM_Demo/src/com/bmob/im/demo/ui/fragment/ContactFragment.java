@@ -164,7 +164,7 @@ public class ContactFragment extends FragmentBase implements OnItemClickListener
 		} else {
 			filterDateList.clear();
 			for (User sortModel : friends) {
-				String name = sortModel.getUsername();
+				String name = sortModel.getNick();
 				if (name != null) {
 					if (name.indexOf(filterStr.toString()) != -1
 							|| characterParser.getSelling(name).startsWith(

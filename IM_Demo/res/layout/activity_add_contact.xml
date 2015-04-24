@@ -45,7 +45,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:cacheColorHint="@android:color/transparent"
-        android:divider="@drawable/base_horizontal_line"
         android:dividerHeight="1dp"
         android:fadingEdgeLength="0dp"
         android:fastScrollEnabled="true"

@@ -47,6 +47,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -73,6 +74,7 @@ import com.bmob.im.demo.config.BmobConstants;
 import com.bmob.im.demo.util.CollectionUtils;
 import com.bmob.im.demo.util.CommonUtils;
 import com.bmob.im.demo.util.ImageLoadOptions;
+import com.bmob.im.demo.view.CircularProgressView;
 import com.bmob.im.demo.view.InfoScrollView;
 import com.bmob.im.demo.view.dialog.DialogTips;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -104,7 +106,7 @@ public class SetMyInfoActivity2 extends BaseActivity implements InfoScrollView.O
 	RelativeLayout rl_personalized_signature, rl_career, rl_company, rl_school, rl_hometown, rl_book, rl_movie, rl_music, rl_interests,
 					rl_usually_appear;
 	
-	ProgressBar [] progressBarArray;
+	CircularProgressView []progressView;
 	
 	Boolean update = false;
 	
@@ -129,6 +131,8 @@ public class SetMyInfoActivity2 extends BaseActivity implements InfoScrollView.O
 	List<MYTask> photoTask;
 	
 	public static ArrayList<String> otherWallPhoto = null;
+	
+	Thread []updateThread;
 	
 	
 	Handler otherPhotoHandler = new Handler(){
@@ -170,10 +174,12 @@ public class SetMyInfoActivity2 extends BaseActivity implements InfoScrollView.O
 		from = getIntent().getStringExtra("from"); //me add other
 		username = getIntent().getStringExtra("username");
 		
-		inintView();
+		initView();
 	}
 
-	private void inintView() {
+	private void initView() {
+		
+		updateThread = new Thread[3];
 		
 		photoTask = new ArrayList<MYTask>();
 		
@@ -183,11 +189,14 @@ public class SetMyInfoActivity2 extends BaseActivity implements InfoScrollView.O
 		
 		layout_all = (RelativeLayout) findViewById(R.id.info_layout_all);
 		
-		progressBarArray = new ProgressBar[3];
+		progressView = new CircularProgressView[3];
 		
-		progressBarArray[0] = (ProgressBar) findViewById(R.id.loading_process_dialog_progressBar1);
-		progressBarArray[1] = (ProgressBar) findViewById(R.id.loading_process_dialog_progressBar2);
-		progressBarArray[2] = (ProgressBar) findViewById(R.id.loading_process_dialog_progressBar3);
+		progressView[0] = (CircularProgressView) findViewById(R.id.progress_view1);
+		progressView[1] = (CircularProgressView) findViewById(R.id.progress_view2);
+		progressView[2] = (CircularProgressView) findViewById(R.id.progress_view3);
+		
+		// Test loading animation
+        startAnimationThreadStuff(1000);
 		
 		photoWallLayout = (RelativeLayout) findViewById(R.id.rl_profile2);
 		
@@ -315,6 +324,99 @@ public class SetMyInfoActivity2 extends BaseActivity implements InfoScrollView.O
 		
 		initOtherData(username);
 	}
+	
+	private void startAnimationThreadStuff(long delay)
+    {
+        if(updateThread[0] != null && updateThread[0].isAlive())
+            updateThread[0].interrupt();
+        if(updateThread[1] != null && updateThread[1].isAlive())
+            updateThread[1].interrupt();
+        if(updateThread[2] != null && updateThread[2].isAlive())
+            updateThread[2].interrupt();
+        final Handler handler0 = new Handler();
+        final Handler handler1 = new Handler();
+        final Handler handler2 = new Handler();
+        
+        handler0.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Start animation after a delay so there's no missed frames while the app loads up
+                progressView[0].setProgress(0f);
+                progressView[0].startAnimation(); // Alias for resetAnimation, it's all the same
+                // Run thread to update progress every half second until full
+                updateThread[0] = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        while (progressView[0].getProgress() < progressView[0].getMaxProgress() && !Thread.interrupted()) {
+                            // Must set progress in UI thread
+                            handler0.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    progressView[0].setProgress(progressView[0].getProgress() + 10);
+                                }
+                            });
+                            SystemClock.sleep(250);
+                        }
+                    }
+                });
+                updateThread[0].start();
+            }
+        }, delay);
+        
+        handler1.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Start animation after a delay so there's no missed frames while the app loads up
+                progressView[1].setProgress(0f);
+                progressView[1].startAnimation(); // Alias for resetAnimation, it's all the same
+                // Run thread to update progress every half second until full
+                updateThread[1] = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        while (progressView[1].getProgress() < progressView[1].getMaxProgress() && !Thread.interrupted()) {
+                            // Must set progress in UI thread
+                            handler0.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    progressView[1].setProgress(progressView[1].getProgress() + 10);
+                                }
+                            });
+                            SystemClock.sleep(250);
+                        }
+                    }
+                });
+                updateThread[1].start();
+            }
+        }, delay);
+        
+        handler2.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Start animation after a delay so there's no missed frames while the app loads up
+                progressView[2].setProgress(0f);
+                progressView[2].startAnimation(); // Alias for resetAnimation, it's all the same
+                // Run thread to update progress every half second until full
+                updateThread[2] = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        while (progressView[2].getProgress() < progressView[2].getMaxProgress() && !Thread.interrupted()) {
+                            // Must set progress in UI thread
+                            handler0.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    progressView[2].setProgress(progressView[2].getProgress() + 10);
+                                }
+                            });
+                            SystemClock.sleep(250);
+                        }
+                    }
+                });
+                updateThread[2].start();
+            }
+        }, delay);
+        
+        
+    }
 	
 	
 	
@@ -571,23 +673,6 @@ public class SetMyInfoActivity2 extends BaseActivity implements InfoScrollView.O
 		user.update(this, listener);
 	}
 
-    private Bitmap getCircleBitmap(Uri uri) {
-       Bitmap src =  BitmapFactory.decodeFile( uri.getPath());
-       Bitmap output = Bitmap.createBitmap( src.getWidth(), src.getHeight(), Bitmap.Config.RGB_565);
-       Canvas canvas = new Canvas( output);
-
-       Paint paint = new Paint();
-       Rect rect = new Rect( 0, 0, src.getWidth(), src.getHeight());
-
-       paint.setAntiAlias( true);
-       paint.setFilterBitmap( true);
-       paint.setDither( true);
-       canvas.drawARGB( 0, 0, 0, 0);
-       canvas.drawCircle( src.getWidth() / 2, src.getWidth() / 2, src.getWidth() / 2, paint);
-       paint.setXfermode( new PorterDuffXfermode( PorterDuff.Mode.SRC_IN));
-       canvas.drawBitmap( src, rect, rect, paint);
-       return output;
-    }
 
     private void beginCrop(Uri source) {
         String fileName = new SimpleDateFormat("yyMMddHHmmss").format(new Date())  + ".png";
@@ -934,7 +1019,7 @@ public class SetMyInfoActivity2 extends BaseActivity implements InfoScrollView.O
 				photoTask.add(task1);
 			}
 			else {
-				progressBarArray[0].setVisibility(View.INVISIBLE);
+				progressView[0].setVisibility(View.INVISIBLE);
 				iv_photo1.setVisibility(View.INVISIBLE);
 			}
 			if (otherWallPhoto.size() >= 2 && !otherWallPhoto.get(1).equals("") && otherWallPhoto.get(1) != null) {
@@ -943,7 +1028,7 @@ public class SetMyInfoActivity2 extends BaseActivity implements InfoScrollView.O
 				photoTask.add(task2);
 			}
 			else {
-				progressBarArray[1].setVisibility(View.INVISIBLE);
+				progressView[1].setVisibility(View.INVISIBLE);
 				iv_photo2.setVisibility(View.INVISIBLE);
 			}
 			
@@ -953,7 +1038,7 @@ public class SetMyInfoActivity2 extends BaseActivity implements InfoScrollView.O
 				photoTask.add(task3);
 			}
 			else {
-				progressBarArray[2].setVisibility(View.INVISIBLE);
+				progressView[2].setVisibility(View.INVISIBLE);
 				iv_photo3.setVisibility(View.INVISIBLE);
 			}
 		}
@@ -961,9 +1046,9 @@ public class SetMyInfoActivity2 extends BaseActivity implements InfoScrollView.O
 			iv_photo1.setVisibility(View.INVISIBLE);
 			iv_photo2.setVisibility(View.INVISIBLE);
 			iv_photo3.setVisibility(View.INVISIBLE);
-			progressBarArray[1].setVisibility(View.INVISIBLE);
-			progressBarArray[2].setVisibility(View.INVISIBLE);
-			progressBarArray[0].setVisibility(View.INVISIBLE);
+			progressView[1].setVisibility(View.INVISIBLE);
+			progressView[2].setVisibility(View.INVISIBLE);
+			progressView[0].setVisibility(View.INVISIBLE);
 		}
 	}
 	
@@ -980,7 +1065,7 @@ public class SetMyInfoActivity2 extends BaseActivity implements InfoScrollView.O
 				photoTask.add(task1);
 			}
 			else {
-				progressBarArray[0].setVisibility(View.INVISIBLE);
+				progressView[0].setVisibility(View.INVISIBLE);
 				iv_photo1.setVisibility(View.INVISIBLE);
 			}
 			if (CustomApplcation.myWallPhoto.size() >= 2 && !CustomApplcation.myWallPhoto.get(1).equals("") && CustomApplcation.myWallPhoto.get(1) != null) {
@@ -989,7 +1074,7 @@ public class SetMyInfoActivity2 extends BaseActivity implements InfoScrollView.O
 				photoTask.add(task2);
 			}
 			else {
-				progressBarArray[1].setVisibility(View.INVISIBLE);
+				progressView[1].setVisibility(View.INVISIBLE);
 				iv_photo2.setVisibility(View.INVISIBLE);
 			}
 			
@@ -999,7 +1084,7 @@ public class SetMyInfoActivity2 extends BaseActivity implements InfoScrollView.O
 				photoTask.add(task3);
 			}
 			else {
-				progressBarArray[2].setVisibility(View.INVISIBLE);
+				progressView[2].setVisibility(View.INVISIBLE);
 				iv_photo3.setVisibility(View.INVISIBLE);
 			}
 		}
@@ -1008,9 +1093,9 @@ public class SetMyInfoActivity2 extends BaseActivity implements InfoScrollView.O
 			iv_photo2.setVisibility(View.INVISIBLE);
 			iv_photo3.setVisibility(View.INVISIBLE);
 			
-			progressBarArray[1].setVisibility(View.INVISIBLE);
-			progressBarArray[2].setVisibility(View.INVISIBLE);
-			progressBarArray[0].setVisibility(View.INVISIBLE);
+			progressView[1].setVisibility(View.INVISIBLE);
+			progressView[2].setVisibility(View.INVISIBLE);
+			progressView[0].setVisibility(View.INVISIBLE);
 		}
 		
 	}
@@ -1315,14 +1400,14 @@ public class SetMyInfoActivity2 extends BaseActivity implements InfoScrollView.O
             
             switch (imageView.getId()) {
 			case R.id.info_photo_1:
-				progressBarArray[0].setVisibility(View.INVISIBLE);
+				progressView[0].setVisibility(View.INVISIBLE);
 				break;
 				
 			case R.id.info_photo_2:
-				progressBarArray[1].setVisibility(View.INVISIBLE);
+				progressView[1].setVisibility(View.INVISIBLE);
 				break;
 			case R.id.info_photo_3:
-				progressBarArray[2].setVisibility(View.INVISIBLE);
+				progressView[2].setVisibility(View.INVISIBLE);
 				break;
 			}
         }

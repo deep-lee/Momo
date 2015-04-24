@@ -1,20 +1,18 @@
 package com.bmob.im.demo.ui;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
-import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import cn.bmob.im.BmobChat;
@@ -26,7 +24,6 @@ import cn.bmob.im.config.BmobConfig;
 import cn.bmob.im.db.BmobDB;
 import cn.bmob.im.inteface.EventListener;
 
-import com.bmob.BmobProFile;
 import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.MyMessageReceiver;
 import com.bmob.im.demo.R;
@@ -35,14 +32,11 @@ import com.bmob.im.demo.ui.fragment.ContactFragment;
 import com.bmob.im.demo.ui.fragment.LeftFragment;
 import com.bmob.im.demo.ui.fragment.NearByFragment;
 import com.bmob.im.demo.ui.fragment.RecentFragment;
-import com.bmob.im.demo.ui.fragment.SettingsFragment;
-import com.bmob.im.demo.util.FontManager;
-import com.bmob.im.demo.util.ImageLoadOptions;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.CanvasTransformer;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnClosedListener;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenedListener;
-import com.nostra13.universalimageloader.core.ImageLoader;
+import com.yalantis.contextmenu.lib.interfaces.OnMenuItemClickListener;
+import com.yalantis.contextmenu.lib.interfaces.OnMenuItemLongClickListener;
 
 /**
  * 登陆
@@ -51,11 +45,11 @@ import com.nostra13.universalimageloader.core.ImageLoader;
  * @author smile
  * @date 2014-5-29 下午2:45:35
  */
-public class MainActivity extends ActivityBase implements EventListener{
+public class MainActivity extends ActivityBase implements EventListener, OnClickListener, OnMenuItemClickListener, OnMenuItemLongClickListener{
 
 	private ImageButton[] mTabs;
-	private ContactFragment contactFragment;
-	private RecentFragment recentFragment;
+	public ContactFragment contactFragment;
+	public RecentFragment recentFragment;
 	public NearByFragment nearByFragment;
 	private Fragment[] fragments;
 	private int index;
@@ -73,6 +67,11 @@ public class MainActivity extends ActivityBase implements EventListener{
 	
 	Boolean menuFlag;
 	
+	SharedPreferences sharedPreferences;
+	SharedPreferences.Editor editor;
+	
+	int nearsSex;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -86,6 +85,10 @@ public class MainActivity extends ActivityBase implements EventListener{
 		
 		initView();
 		initTab();
+		
+		sharedPreferences = getSharedPreferences("test", Activity.MODE_PRIVATE);
+		editor = sharedPreferences.edit();
+		nearsSex = sharedPreferences.getInt("nearsSex", 2);
 		
 	}
 
@@ -159,7 +162,7 @@ public class MainActivity extends ActivityBase implements EventListener{
 //        menu.setFadeDegree(0.35f);  
         
         // 配置背景图片  
-        menu.setBackgroundImage(R.drawable.img_frame_background);  
+        menu.setBackgroundImage(R.drawable.default_info_head_bg);  
         // 设置专场动画效果  
         menu.setBehindCanvasTransformer(new SlidingMenu.CanvasTransformer() {  
             @Override  
@@ -535,6 +538,47 @@ public class MainActivity extends ActivityBase implements EventListener{
 		//取消定时检测服务
 		BmobChat.getInstance(this).stopPollService();
 	}
+
+
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onMenuItemLongClick(View clickedView, int position) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onMenuItemClick(View clickedView, int position) {
+		
+		position--;
+		ShowToast("" + position);
+		// TODO Auto-generated method stub
+		if (position >= 0 && position <= 2) {
+			if (nearsSex == position) {
+				
+			}else {
+				editor.putInt("nearsSex", position);
+				nearsSex = position;
+				editor.commit();
+				
+				nearByFragment.nearBySexChanged(position);
+
+			}
+		}
+		
+		
+		// 清除地理位置信息
+		if (position == 3) {
+			
+		}
+	}
+
+	
 	
 	
 }

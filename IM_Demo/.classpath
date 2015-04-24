@@ -5,8 +5,10 @@
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry exported="true" kind="lib" path="libs/locSDK_4.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/android-support-v4.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/SMSSDK-1.1.5.jar"/>
+	<classpathentry kind="lib" path="libs/nineoldandroids-2.4.0.jar"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
-	<classpathentry exported="true" kind="lib" path="libs/SMSSDK-1.1.5.jar"/>
+	<classpathentry kind="lib" path="org.eclipse.jdt.annotation_1.1.0.v20140129-1625.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

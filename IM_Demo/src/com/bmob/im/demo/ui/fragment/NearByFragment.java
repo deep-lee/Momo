@@ -1,11 +1,19 @@
 package com.bmob.im.demo.ui.fragment;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +23,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.TranslateAnimation;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.ui.FragmentBase;
@@ -25,8 +34,15 @@ import com.bmob.im.demo.util.ShakeListener;
 import com.bmob.im.demo.util.ShakeListener.OnShakeListener;
 import com.bmob.im.demo.view.HeaderLayout.onRightImageButtonClickListener;
 import com.bmob.im.demo.view.TitlePopup;
+import com.yalantis.contextmenu.lib.ContextMenuDialogFragment;
+import com.yalantis.contextmenu.lib.MenuObject;
+import com.yalantis.contextmenu.lib.interfaces.OnMenuItemClickListener;
+import com.yalantis.contextmenu.lib.interfaces.OnMenuItemLongClickListener;
 
 public class NearByFragment extends FragmentBase implements OnClickListener{
+	
+	private FragmentManager fragmentManager;
+    private DialogFragment mMenuDialogFragment;
 	
 	public ShakeListener mShakeListener = null;
 	Vibrator mVibrator;
@@ -34,7 +50,7 @@ public class NearByFragment extends FragmentBase implements OnClickListener{
 	private RelativeLayout mImgDn;
 	
 	Context mContext;
-	TitlePopup titlePopup;
+//	TitlePopup titlePopup;
 	
 	public static Boolean flagShake = false;
 	
@@ -71,9 +87,58 @@ public class NearByFragment extends FragmentBase implements OnClickListener{
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		return inflater.inflate(R.layout.fragment_shake, container, false);
 		
+        return inflater.inflate(R.layout.fragment_shake, container, false);
 	}
+	
+    private List<MenuObject> getMenuObjects() {
+        // You can use any [resource, bitmap, drawable, color] as image:
+        // item.setResource(...)
+        // item.setBitmap(...)
+        // item.setDrawable(...)
+        // item.setColor(...)
+        // You can set image ScaleType:
+        // item.setScaleType(ScaleType.FIT_XY)
+        // You can use any [resource, drawable, color] as background:
+        // item.setBgResource(...)
+        // item.setBgDrawable(...)
+        // item.setBgColor(...)
+        // You can use any [color] as text color:
+        // item.setTextColor(...)
+        // You can set any [color] as divider color:
+        // item.setDividerColor(...)
+
+        List<MenuObject> menuObjects = new ArrayList<MenuObject>();
+
+        MenuObject close = new MenuObject();
+        close.setResource(R.drawable.icn_close);
+
+        MenuObject send = new MenuObject("只看女生");
+        send.setResource(R.drawable.icon_info_female);
+
+        MenuObject like = new MenuObject("只看男生");
+        Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.icon_info_male);
+        like.setBitmap(b);
+
+        MenuObject addFr = new MenuObject("查看全部");
+        BitmapDrawable bd = new BitmapDrawable(getResources(),
+                BitmapFactory.decodeResource(getResources(), R.drawable.ic_nears_all_people));
+        addFr.setDrawable(bd);
+  
+        MenuObject addFav = new MenuObject("清除地理位置信息");
+        addFav.setResource(R.drawable.ic_nears_clean_position_info);
+//
+//        MenuObject block = new MenuObject("Block user");
+//        block.setResource(R.drawable.icn_5);
+
+        menuObjects.add(close);
+        menuObjects.add(send);
+        menuObjects.add(like);
+        menuObjects.add(addFr);
+        menuObjects.add(addFav);
+//        menuObjects.add(block);
+        return menuObjects;
+    }
 
 	@Override
 	public void onClick(View v) {
@@ -116,11 +181,11 @@ public class NearByFragment extends FragmentBase implements OnClickListener{
 	private void initData(){
 		
 		flag = true;
-		titlePopup = new TitlePopup(mContext, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, this);
-		
-		titlePopup.addAction(new ActionItem(mContext, R.string.only_female));
-		titlePopup.addAction(new ActionItem(mContext, R.string.only_male));
-		titlePopup.addAction(new ActionItem(mContext, R.string.all_female_male));
+//		titlePopup = new TitlePopup(mContext, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, this);
+//		
+//		titlePopup.addAction(new ActionItem(mContext, R.string.only_female));
+//		titlePopup.addAction(new ActionItem(mContext, R.string.only_male));
+//		titlePopup.addAction(new ActionItem(mContext, R.string.all_female_male));
 	}
 	
 	
@@ -133,7 +198,11 @@ public class NearByFragment extends FragmentBase implements OnClickListener{
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				titlePopup.show(v);
+				// titlePopup.show(v);
+				
+				if (fragmentManager.findFragmentByTag(ContextMenuDialogFragment.TAG) == null) {
+                    mMenuDialogFragment.show(fragmentManager, ContextMenuDialogFragment.TAG);
+                }
 			}
 		});
 		
@@ -141,6 +210,11 @@ public class NearByFragment extends FragmentBase implements OnClickListener{
 		
 		mImgUp = (RelativeLayout) findViewById(R.id.fragment_shakeImgUp);
 		mImgDn = (RelativeLayout) findViewById(R.id.fragment_shakeImgDown);
+		
+		fragmentManager = ((MainActivity)mContext).getSupportFragmentManager();
+        // initToolbar();
+        mMenuDialogFragment = ContextMenuDialogFragment.newInstance((int) getResources().getDimension(R.dimen.tool_bar_height), getMenuObjects());
+		
 		
 		
 		mShakeListener = new ShakeListener((MainActivity)mContext);
@@ -210,5 +284,6 @@ public class NearByFragment extends FragmentBase implements OnClickListener{
 		mShakeListener.stop();
 		flag = false;
 	}
+
 	
 }
