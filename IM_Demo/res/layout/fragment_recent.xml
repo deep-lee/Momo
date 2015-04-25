@@ -11,25 +11,11 @@
         android:id="@+id/common_actionbar"
         layout="@layout/include_action_bar" />
 
-    <com.bmob.im.demo.view.ClearEditText
-        android:id="@+id/et_msg_search"
-        android:layout_width="fill_parent"
-        android:layout_height="@dimen/base_action_bar_height"
-        android:layout_margin="10dp"
-        android:background="@drawable/base_edit_input"
-        android:drawableLeft="@drawable/icon_msg_search"
-        android:drawablePadding="10dp"
-        android:hint="@string/message_search_hint"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:visibility="gone"
-        android:singleLine="true" />  
-        
     <com.deep.phoenix.PullToRefreshView
         android:id="@+id/pull_to_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
+        
         <com.baoyz.swipemenulistview.SwipeMenuListView
 	        android:dividerHeight="1dp"   
 	    	android:fadingEdgeLength="0dp"

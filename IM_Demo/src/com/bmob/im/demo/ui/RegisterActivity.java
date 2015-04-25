@@ -115,17 +115,12 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
 	
 	int time = 30;
 
-	
-	
-	
 	String birthday = "";
 	String initBirth = "";
 	DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	ProgressDialog progress;
 	
 	String gameType = "";
-	
-	
 	
 	ViewFlipper viewFlipper;
 	int currentPage = 0;

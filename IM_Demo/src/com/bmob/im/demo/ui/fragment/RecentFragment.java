@@ -47,7 +47,7 @@ import com.deep.phoenix.PullToRefreshView;
   */
 public class RecentFragment extends FragmentBase implements OnItemClickListener,OnItemLongClickListener{
 
-	ClearEditText mClearEditText;
+	 // ClearEditText mClearEditText;
 	
 	 public static final int REFRESH_DELAY = 2000;
 
@@ -205,25 +205,25 @@ public class RecentFragment extends FragmentBase implements OnItemClickListener,
 //					}
 //				});
 		
-		mClearEditText = (ClearEditText)findViewById(R.id.et_msg_search);
-		mClearEditText.addTextChangedListener(new TextWatcher() {
-
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before,
-					int count) {
-				adapter.getFilter().filter(s);
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
-
-			}
-
-			@Override
-			public void afterTextChanged(Editable s) {
-			}
-		});
+//		mClearEditText = (ClearEditText)findViewById(R.id.et_recent_msg_search);
+//		mClearEditText.addTextChangedListener(new TextWatcher() {
+//
+//			@Override
+//			public void onTextChanged(CharSequence s, int start, int before,
+//					int count) {
+//				adapter.getFilter().filter(s);
+//			}
+//
+//			@Override
+//			public void beforeTextChanged(CharSequence s, int start, int count,
+//					int after) {
+//
+//			}
+//
+//			@Override
+//			public void afterTextChanged(Editable s) {
+//			}
+//		});
 		
 	}
 	

@@ -108,78 +108,85 @@ public class EditMyInfoActivity extends BaseActivity implements OnClickListener{
 		tv_love_status = (TextView) findViewById(R.id.info_edit_love_status_details);
 		tv_hometown = (TextView) findViewById(R.id.info_edit_hometown_details);
 		
-		
-		et_nick.setText(currentUser.getNick());
-		tv_birthday.setText(currentUser.getBirthday());
-		
-		if (currentUser.getPersonalizedSignature().equals("Î´ÌîĞ´")) {
-			et_personalized_signature.setText("");
-		}
-		else {
-			et_personalized_signature.setText(currentUser.getPersonalizedSignature());
+		Boolean netAvaliable = CommonUtils.isNetworkAvailable(this);
+		if (!netAvaliable) {
+			ShowToast(R.string.network_tips);
 		}
 		
-		tv_game.setText(currentUser.getGameType());
-		tv_game_difficulty.setText(currentUser.getGameDifficulty());
-		tv_love_status.setText(currentUser.getLove());
-		
-		if (currentUser.getCareer().equals("Î´ÌîĞ´")) {
-			tv_career.setText("ÇëÑ¡ÔñËùÊôĞĞÒµ");
+		// Ã»ÍøµÄÇé¿öÏÂ»ñÈ¡²»µ½currentUser
+		if (currentUser != null) {
+			et_nick.setText(currentUser.getNick());
+			tv_birthday.setText(currentUser.getBirthday());
+			
+			if (currentUser.getPersonalizedSignature().equals("Î´ÌîĞ´")) {
+				et_personalized_signature.setText("");
+			}
+			else {
+				et_personalized_signature.setText(currentUser.getPersonalizedSignature());
+			}
+			
+			tv_game.setText(currentUser.getGameType());
+			tv_game_difficulty.setText(currentUser.getGameDifficulty());
+			tv_love_status.setText(currentUser.getLove());
+			
+			if (currentUser.getCareer().equals("Î´ÌîĞ´")) {
+				tv_career.setText("ÇëÑ¡ÔñËùÊôĞĞÒµ");
+			}else {
+				tv_career.setText(currentUser.getCareer());
+			}
+			
+			if (currentUser.getCompany().equals("Î´ÌîĞ´")) {
+				et_company.setText("");
+			}else {
+				et_company.setText(currentUser.getCompany());
+			}
+			
+			if (currentUser.getSchool().equals("Î´ÌîĞ´")) {
+				et_school.setText("");
+			}else {
+				et_school.setText(currentUser.getSchool());
+			}
+			
+			if (currentUser.getHometown().equals("Î´ÌîĞ´")) {
+				tv_hometown.setText("ÇëÑ¡ÔñÄãµÄ¼ÒÏç");
+			}else {
+				tv_hometown.setText(currentUser.getHometown());
+			}
+			
+			if (currentUser.getBook().equals("Î´ÌîĞ´")) {
+				et_book.setText("");
+			}else {
+				et_book.setText(currentUser.getBook());
+			}
+			
+			if (currentUser.getMovie().equals("Î´ÌîĞ´")) {
+				et_movie.setText("");
+			}else {
+				et_movie.setText(currentUser.getMovie());
+			}
+			
+			if (currentUser.getMusic().equals("Î´ÌîĞ´")) {
+				et_music.setText("");
+			}else {
+				et_music.setText(currentUser.getMusic());
+			}
+			
+			
+			if (currentUser.getInterests().equals("Î´ÌîĞ´")) {
+				et_interests.setText("");
+			}
+			else {
+				et_interests.setText(currentUser.getInterests());
+			}
+			
+			if (currentUser.getUsuallyAppear().equals("Î´ÌîĞ´")) {
+				et_usually_appear.setText("");
+			}else {
+				et_usually_appear.setText(currentUser.getUsuallyAppear());
+			}
 		}else {
-			tv_career.setText(currentUser.getCareer());
+			ShowToast("»ñÈ¡×ÊÁÏÊ§°Ü£¡");
 		}
-		
-		if (currentUser.getCompany().equals("Î´ÌîĞ´")) {
-			et_company.setText("");
-		}else {
-			et_company.setText(currentUser.getCompany());
-		}
-		
-		if (currentUser.getSchool().equals("Î´ÌîĞ´")) {
-			et_school.setText("");
-		}else {
-			et_school.setText(currentUser.getSchool());
-		}
-		
-		if (currentUser.getHometown().equals("Î´ÌîĞ´")) {
-			tv_hometown.setText("ÇëÑ¡ÔñÄãµÄ¼ÒÏç");
-		}else {
-			tv_hometown.setText(currentUser.getHometown());
-		}
-		
-		if (currentUser.getBook().equals("Î´ÌîĞ´")) {
-			et_book.setText("");
-		}else {
-			et_book.setText(currentUser.getBook());
-		}
-		
-		if (currentUser.getMovie().equals("Î´ÌîĞ´")) {
-			et_movie.setText("");
-		}else {
-			et_movie.setText(currentUser.getMovie());
-		}
-		
-		if (currentUser.getMusic().equals("Î´ÌîĞ´")) {
-			et_music.setText("");
-		}else {
-			et_music.setText(currentUser.getMusic());
-		}
-		
-		
-		if (currentUser.getInterests().equals("Î´ÌîĞ´")) {
-			et_interests.setText("");
-		}
-		else {
-			et_interests.setText(currentUser.getInterests());
-		}
-		
-		if (currentUser.getUsuallyAppear().equals("Î´ÌîĞ´")) {
-			et_usually_appear.setText("");
-		}else {
-			et_usually_appear.setText(currentUser.getUsuallyAppear());
-		}
-		
-		
 		
 	}
 	
