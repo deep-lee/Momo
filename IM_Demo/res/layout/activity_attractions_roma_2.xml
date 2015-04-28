@@ -1,0 +1,78 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fffcf8"
+    tools:context="${relativePackage}.${activityClass}" >
+    
+    <include
+        android:id="@+id/common_actionbar"
+        layout="@layout/include_action_bar" />
+    
+    <FrameLayout 
+        android:id="@+id/roma_sky_layout"
+        android:layout_below="@+id/common_actionbar"
+        android:layout_height="330dp"
+        android:layout_width="wrap_content">
+        
+        <ImageView 
+            android:id="@+id/roma_sky_round_bg"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/bg_roma_sky"/>
+        
+        <ImageView 
+            android:id="@+id/roma_sky_bg_plante"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/bg_roma_flowcity_1"/>
+        
+        <ImageView 
+            android:id="@+id/roma_sky_bg_plante2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:src="@drawable/bg_roma_flowcity_2"/>
+        
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/bg_roma_window" />
+        
+    </FrameLayout>
+    
+    <TextView 
+        android:id="@+id/roma_tips_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/roma_sky_layout"
+        android:textColor="#bc8f8f"
+        android:layout_centerHorizontal="true"
+        android:text="@string/roma_tips_1"/>
+    
+    <TextView 
+        android:id="@+id/roma_tips_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/roma_tips_1"
+        android:textColor="#bc8f8f"
+        android:layout_marginTop="10dp"
+        android:textSize="18sp"
+        android:layout_centerHorizontal="true"
+        android:text="@string/roma_tips_2"/>
+
+    
+    <Button 
+		android:id="@+id/roma_start_btn"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:text="开始漫游"
+		android:textColor="#ffffff"
+		android:layout_centerHorizontal="true"
+		android:layout_alignParentBottom="true"
+		android:layout_marginBottom="10dp"
+		android:layout_marginLeft="10dp"
+		android:layout_marginRight="10dp"
+		android:background="@drawable/base_roma_start_btn_selector"/>
+    
+</RelativeLayout>

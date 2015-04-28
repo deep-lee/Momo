@@ -57,22 +57,12 @@ public class CustomApplcation extends Application {
 	
 	public static int numOfPhoto = 0;
 	
-//	public static int []careerName = {
-//			R.string.career_list_item_IT,
-//			R.string.career_list_item_Gong,
-//			R.string.career_list_item_Shang,
-//			R.string.career_list_item_Jin,
-//			R.string.career_list_item_Wen,
-//			R.string.career_list_item_YiShu,
-//			R.string.career_list_item_YiLiao,
-//			R.string.career_list_item_Fa,
-//			R.string.career_list_item_Jiao,
-//			R.string.career_list_item_Zheng,
-//			R.string.career_list_item_Xue,
-//			R.string.career_list_item_No
-//	};
+	public static List<GameCard> gameCardList = new ArrayList<GameCard>();
 	
-	
+	public static ArrayList<Integer> gameName = new ArrayList<Integer>();
+	public static ArrayList<Integer> gameIcon = new ArrayList<Integer>();
+	public static ArrayList<Integer> gameRuleDetails = new ArrayList<Integer>();
+	public static ArrayList<Integer> gameWinMethod = new ArrayList<Integer>();
 	
 	@Override
 	public void onCreate() {
@@ -117,6 +107,26 @@ public class CustomApplcation extends Application {
 		careerList.add(getString(R.string.career_list_item_Xue));
 		careerList.add(getString(R.string.career_list_item_No));
 		
+		gameName.add(R.string.game_lianliankan_name);
+		gameName.add(R.string.game_guess_number_name);
+		gameName.add(R.string.game_mixed_color_name);
+		
+		gameIcon.add(R.drawable.game_icon);
+		gameIcon.add(R.drawable.game_icon);
+		gameIcon.add(R.drawable.game_icon);
+		
+		gameRuleDetails.add(R.string.game_lianliankan_rule_details);
+		gameRuleDetails.add(R.string.game_guess_number_rule_details);
+		gameRuleDetails.add(R.string.game_mixed_color_rule_details);
+		
+		gameWinMethod.add(R.string.game_lianliankan_win_method);
+		gameWinMethod.add(R.string.game_guess_number_win_method);
+		gameWinMethod.add(R.string.game_mixed_color_win_method);
+		
+		for (int i = 0; i < gameName.size(); i++) {
+			gameCardList.add(new GameCard(getResources().getString(gameName.get(i)), getResources().getString(gameRuleDetails.get(i)),
+					getResources().getString(gameWinMethod.get(i)), gameIcon.get(i)));
+		}
 		
 		// ³õÊ¼»¯ImageLoader
 		initImageLoader(getApplicationContext());

@@ -4,7 +4,7 @@
     android:versionCode="15"
     android:versionName="1.2.0" >
 
-       <uses-sdk
+    <uses-sdk
         android:minSdkVersion="16"
         android:targetSdkVersion="21" />
 
@@ -271,6 +271,14 @@
         <activity
             android:name=".ui.ProvinceListActivity"
             android:label="@string/title_activity_province_list" >
+        </activity>
+        <activity
+            android:name=".ui.GameCenterActivity"
+            android:label="@string/title_activity_game_center" >
+        </activity>
+        <activity
+            android:name="com.bmob.im.demo.ui.AttractionsRomaActivity2"
+            android:label="@string/title_activity_attractions_roma_activity2" >
         </activity>
     </application>
 

@@ -6,10 +6,15 @@
     android:id="@+id/info_layout_all"
     tools:context="${relativePackage}.${activityClass}" >
     
+    <include
+        android:id="@+id/common_actionbar"
+        layout="@layout/include_action_bar" />
+    
     <RelativeLayout 
         android:id="@+id/info_layout"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_below="@+id/common_actionbar"
         android:layout_width="wrap_content">
         
         <ImageView
@@ -20,8 +25,6 @@
 	        android:layout_alignParentTop="true"
 	        android:background="@drawable/default_info_head_bg" />
         
-        
-	
 	    <com.bmob.im.demo.view.InfoScrollView
 	        android:id="@+id/sv_profile"
 	        android:layout_width="match_parent"
@@ -45,8 +48,8 @@
 	                    android:layout_height="@dimen/image_profile_headbg_height"
 	                    android:layout_alignParentLeft="true"
 	                    android:layout_alignParentTop="true">
-	                    
-	                    <ImageButton
+
+	                    <!-- <ImageButton
         					android:id="@+id/info_show_back_btn"
         					android:layout_width="20dip"
         					android:layout_height="20dip"
@@ -69,7 +72,7 @@
 							android:layout_marginTop="10dip"
 				            android:text="编辑"
 				            android:textColor="#ffffff"
-				            android:textSize="15sp" />
+				            android:textSize="15sp" /> -->
 	                    
 	                </RelativeLayout>
 	
@@ -79,7 +82,6 @@
 	                    android:layout_height="@dimen/view_profile_headbottom_height"
 	                    android:layout_below="@+id/ll_profile_bg"
 	                    android:layout_centerHorizontal="true"
-	                    android:background="#FFFFFF"
 	                    />
 	
 	                <ImageView
@@ -95,8 +97,10 @@
 	                android:id="@+id/rl_profile2"
 	                android:layout_width="match_parent"
 	                android:layout_height="90dp"
-	                android:layout_below="@+id/rl_profile1"
-	                android:background="#ffffff" >
+	                android:background="@drawable/radius_bg"  
+    				android:layout_marginTop="15dp"
+
+	                android:layout_below="@+id/rl_profile1" >
 	
 	                <TextView 
 	                    android:id="@+id/info_photo_text"
@@ -202,19 +206,20 @@
 	                
 	            </RelativeLayout>
 	            
-	            <View
+	           <!--  <View
 	                android:id="@+id/line_view1"
 			        android:layout_width="match_parent"
 			        android:layout_height="@dimen/base_line_width_2"
 			        android:layout_below="@+id/rl_profile2"
 			        android:background="@drawable/base_horizontal_line" >
-	    		</View>
+	    		</View> -->
 	            
 	            <RelativeLayout 
 	                android:id="@+id/rl_profile3"
-	                android:layout_below="@+id/line_view1"
-	                android:background="#ffffff"
-	                android:layout_height="40dp"
+	                android:layout_below="@+id/rl_profile2"
+	                android:background="@drawable/radius_bg"  
+        			android:layout_marginTop="15dp"
+	                android:layout_height="60dp"
 	                
 	                android:layout_width="fill_parent">
 	                
@@ -287,31 +292,40 @@
 	                
 	            </RelativeLayout>
 	            
-	            <View
+	            <!-- <View
 	                android:id="@+id/line_view2"
 			        android:layout_width="match_parent"
 			        android:layout_height="@dimen/base_line_width_2"
 			        android:layout_below="@+id/rl_profile3"
 			        android:background="@drawable/base_horizontal_line" >
-	    		</View>
+	    		</View> -->
 	    		
 	            <include
 			        android:id="@+id/common_info_basic"
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
-			        android:layout_below="@+id/line_view2"
+			        android:paddingLeft="15dp"
+        			android:paddingRight="15dp"
+        			android:layout_marginTop="15dp"
+			        android:layout_below="@+id/rl_profile3"
 			        layout="@layout/include_info_basic" />
 	            
 	            <include
 			        android:id="@+id/common_info_hobbi"
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
+			         android:paddingLeft="15dp"
+        			android:paddingRight="15dp"
+        			android:layout_marginTop="15dp"
 			        android:layout_below="@+id/common_info_basic"
 			        layout="@layout/include_info_hobbi" />
 	            
 	            <include
 			        android:id="@+id/common_info_other"
 			        android:layout_width="wrap_content"
+			        android:paddingLeft="15dp"
+        			android:paddingRight="15dp"
+        			android:layout_marginTop="15dp"
 			        android:layout_height="wrap_content"
 			        android:layout_below="@+id/common_info_hobbi"
 			        layout="@layout/include_info_other" />
@@ -371,15 +385,11 @@
 					            android:text="@string/black_tips"
 					            android:textSize="14sp" />
 					    </RelativeLayout>
-					    
-			        	
-				</LinearLayout>
-	            
-	            
-	            
-	        </RelativeLayout>
 	
-	       
+				</LinearLayout>
+	             
+	        </RelativeLayout>
+ 
 	    </com.bmob.im.demo.view.InfoScrollView>
         
     </RelativeLayout>

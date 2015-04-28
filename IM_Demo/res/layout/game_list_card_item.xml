@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>  
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"  
+    android:layout_width="match_parent"  
+    android:layout_height="wrap_content"  
+    android:orientation="vertical"   
+    android:background="@drawable/radius_bg"  
+    android:padding="15dp">  
+    
+    <RelativeLayout 
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent">
+        
+        <ImageView 
+            android:id="@+id/card_item_icon"
+            android:layout_width="wrap_content"
+            android:src="@drawable/game_icon"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_height="wrap_content"/>
+        
+        <TextView  
+	        android:id="@+id/card_item_title"  
+	        android:layout_width="match_parent"  
+	        android:layout_height="wrap_content"   
+	        android:text="水果连连看"
+	        android:layout_marginLeft="10dp"
+	        android:layout_toRightOf="@+id/card_item_icon"
+	        android:layout_centerVertical="true"
+	        android:textIsSelectable="true"/> 
+	        
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/base_game_card_list_play_selector"
+            android:layout_centerVertical="true"
+            android:background="@color/transparent"
+            android:layout_alignParentRight="true"
+            android:id="@+id/card_item_play"/>
+    </RelativeLayout>
+    
+    <ImageView 
+        android:layout_height="1dp"
+        android:layout_width="fill_parent"
+        android:background="#dddddd"/>
+  
+   <RelativeLayout 
+       android:layout_height="wrap_content"
+       android:layout_width="fill_parent">
+        
+       <TextView 
+           android:id="@+id/card_item_game_rule"
+           android:layout_width="wrap_content"
+           android:text="游戏规则："
+           android:textColor="#ff0000"
+           android:textStyle="bold"
+           android:layout_height="wrap_content"/>
+       
+       <TextView 
+           android:id="@+id/card_item_game_rule_details"
+           android:layout_below="@+id/card_item_game_rule"
+           android:layout_height="wrap_content"
+           android:layout_marginLeft="15dp"
+           android:layout_width="fill_parent"/>
+       
+       <TextView 
+           android:id="@+id/card_item_game_win_method"
+           android:layout_width="wrap_content"
+           android:text="胜利条件："
+           android:textColor="#ff0000"
+           android:textStyle="bold"
+           android:layout_below="@+id/card_item_game_rule_details"
+           android:layout_height="wrap_content"/>
+       <TextView 
+           android:id="@+id/card_item_game_win_method_details"
+           android:layout_width="wrap_content"
+           android:layout_marginLeft="15dp"
+           android:layout_below="@+id/card_item_game_win_method"
+           android:layout_height="wrap_content"/>
+       
+   </RelativeLayout>
+  
+</LinearLayout>

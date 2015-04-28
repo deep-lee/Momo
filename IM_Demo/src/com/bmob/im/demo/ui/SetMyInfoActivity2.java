@@ -76,6 +76,7 @@ import com.bmob.im.demo.util.CommonUtils;
 import com.bmob.im.demo.util.ImageLoadOptions;
 import com.bmob.im.demo.view.CircularProgressView;
 import com.bmob.im.demo.view.InfoScrollView;
+import com.bmob.im.demo.view.HeaderLayout.onRightImageButtonClickListener;
 import com.bmob.im.demo.view.dialog.DialogTips;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.soundcloud.android.crop.Crop;
@@ -92,10 +93,10 @@ public class SetMyInfoActivity2 extends BaseActivity implements InfoScrollView.O
 			 tv_game_difficulty, tv_love_status, tv_career, tv_company, tv_school, tv_hometown, tv_book, 
 			 tv_movie, tv_music, tv_interests, tv_usually_appear, tv_register_time;
 	
-	ImageButton btn_back;
+	// ImageButton btn_back;
 	
 	// 编辑，添加好友，发起会话，添加到黑名单
-	Button btn_edit, btn_add, btn_chat, btn_black;
+	Button btn_add, btn_chat, btn_black;
 	
 	// 黑名单提示，照片墙
 	RelativeLayout black_list_tips, photoWallLayout;
@@ -168,11 +169,31 @@ public class SetMyInfoActivity2 extends BaseActivity implements InfoScrollView.O
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_set_my_info_2);
 		
+		
+		
 		// me 我的资料
 		// add 附近的人
 		// other 我的好友
 		from = getIntent().getStringExtra("from"); //me add other
 		username = getIntent().getStringExtra("username");
+		
+		if (from.equals("me")) {
+			initTopBarForBoth("个人资料", R.drawable.base_action_bar_send_selector, "编辑",
+					new onRightImageButtonClickListener() {
+
+						@Override
+						public void onClick(View v) {
+							// TODO Auto-generated method stub
+							Intent intent2 = new Intent();
+							intent2.setClass(SetMyInfoActivity2.this, EditMyInfoActivity.class);
+							startActivityForResult(intent2, ETIT_MY_INFO);
+						}
+			});
+		}else {
+			initTopBarForLeft("资料");
+		}
+		
+		
 		
 		initView();
 	}
@@ -233,8 +254,8 @@ public class SetMyInfoActivity2 extends BaseActivity implements InfoScrollView.O
 			});
 		}
 		
-		btn_back = (ImageButton) findViewById(R.id.info_show_back_btn);
-		btn_back.setOnClickListener(this);
+//		btn_back = (ImageButton) findViewById(R.id.info_show_back_btn);
+//		btn_back.setOnClickListener(this);
 		
 		tv_age = (TextView) findViewById(R.id.info_age_tv);
 		tv_distance = (TextView) findViewById(R.id.info_tv_last_location_distance);
@@ -258,15 +279,15 @@ public class SetMyInfoActivity2 extends BaseActivity implements InfoScrollView.O
 		tv_usually_appear = (TextView) findViewById(R.id.info_usually_appear_details);
 		tv_register_time = (TextView) findViewById(R.id.info_register_time_details);
 		
-		btn_edit = (Button) findViewById(R.id.btn_edit_info);
+//		btn_edit = (Button) findViewById(R.id.btn_edit_info);
 		btn_add = (Button) findViewById(R.id.info_btn_add_friend);
 		btn_chat = (Button) findViewById(R.id.info_btn_chat);
 		btn_black = (Button) findViewById(R.id.info_btn_black);
 		black_list_tips = (RelativeLayout) findViewById(R.id.info_layout_black_tips);
 		
-		if (from.equals("me")) {
-			btn_edit.setOnClickListener(this);
-		}
+//		if (from.equals("me")) {
+//			btn_edit.setOnClickListener(this);
+//		}
 		btn_add.setOnClickListener(this);
 		btn_chat.setOnClickListener(this);
 		btn_black.setOnClickListener(this);
@@ -289,14 +310,14 @@ public class SetMyInfoActivity2 extends BaseActivity implements InfoScrollView.O
 			btn_add.setVisibility(View.GONE);
 			btn_chat.setVisibility(View.GONE);
 			btn_black.setVisibility(View.GONE);
-			btn_edit.setVisibility(View.VISIBLE);
+//			btn_edit.setVisibility(View.VISIBLE);
 		}
 		else{
 			//不管对方是不是你的好友，均可以发送消息--BmobIM_V1.1.2修改
 			btn_chat.setEnabled(true);
 			btn_chat.setVisibility(View.VISIBLE);
 			btn_chat.setOnClickListener(this);
-			btn_edit.setVisibility(View.GONE);
+//			btn_edit.setVisibility(View.GONE);
 			
 			// 从附近的人列表添加好友--因为获取附近的人的方法里面有是否显示好友的情况，因此在这里需要判断下这个用户是否是自己的好友
 			
@@ -1193,12 +1214,12 @@ public class SetMyInfoActivity2 extends BaseActivity implements InfoScrollView.O
 			startActivity(intent1);
 			break;
 			
-		// 编辑资料
-		case R.id.btn_edit_info:
-			Intent intent2 = new Intent();
-			intent2.setClass(SetMyInfoActivity2.this, EditMyInfoActivity.class);
-			startActivityForResult(intent2, ETIT_MY_INFO);
-			break;
+//		// 编辑资料
+//		case R.id.btn_edit_info:
+//			Intent intent2 = new Intent();
+//			intent2.setClass(SetMyInfoActivity2.this, EditMyInfoActivity.class);
+//			startActivityForResult(intent2, ETIT_MY_INFO);
+			// break;
 		// 添加好友
 		case R.id.info_btn_add_friend:
 			addFriend();
@@ -1215,9 +1236,9 @@ public class SetMyInfoActivity2 extends BaseActivity implements InfoScrollView.O
 			showBlackDialog(user.getUsername());
 			break;
 			
-		case R.id.info_show_back_btn:
-			this.finish();
-			break;
+//		case R.id.info_show_back_btn:
+//			this.finish();
+//			break;
 		
 		default:
 			break;

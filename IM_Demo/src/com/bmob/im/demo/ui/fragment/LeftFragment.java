@@ -14,7 +14,9 @@ import com.bmob.im.demo.R;
 import com.bmob.im.demo.adapter.SlideAdapter;
 import com.bmob.im.demo.bean.User;
 import com.bmob.im.demo.ui.AttractionsRomaActivity;
+import com.bmob.im.demo.ui.AttractionsRomaActivity2;
 import com.bmob.im.demo.ui.FragmentBase;
+import com.bmob.im.demo.ui.GameCenterActivity;
 import com.bmob.im.demo.ui.LoginActivity;
 import com.bmob.im.demo.ui.MainActivity;
 import com.bmob.im.demo.ui.SetMyInfoActivity2;
@@ -119,7 +121,7 @@ public class LeftFragment extends Fragment {
 				// 我的游戏
 				case 0:
 					Intent gameIntent = new Intent();
-					gameIntent.setClass(context, MyGameActivity.class);
+					gameIntent.setClass(context, GameCenterActivity.class);
 					startActivity(gameIntent);
 					break;
 					
@@ -141,7 +143,7 @@ public class LeftFragment extends Fragment {
 					// 地点漫游
 				case 3:
 					Intent romaIntent = new Intent();
-					romaIntent.setClass(context, AttractionsRomaActivity.class);
+					romaIntent.setClass(context, AttractionsRomaActivity2.class);
 					startActivity(romaIntent);
 					
 					break;	
