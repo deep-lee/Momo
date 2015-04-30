@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -20,7 +21,13 @@ import com.bmob.im.demo.R;
 import com.bmob.im.demo.bean.User;
 import com.bmob.im.demo.config.BmobConstants;
 import com.bmob.im.demo.util.CommonUtils;
+import com.bmob.im.demo.view.dialog.CustomProgressDialog;
 import com.bmob.im.demo.view.dialog.DialogTips;
+import com.daimajia.androidanimations.library.YoYo;
+import com.daimajia.androidanimations.library.YoYo.AnimationComposer;
+import com.daimajia.androidanimations.library.attention.ShakeAnimator;
+import com.dd.library.CircularProgressButton;
+import com.nineoldandroids.animation.Animator;
 
 /**
  * @ClassName: LoginActivity
@@ -31,10 +38,13 @@ import com.bmob.im.demo.view.dialog.DialogTips;
 public class LoginActivity extends BaseActivity implements OnClickListener {
 
 	EditText et_username, et_password;
-	Button btn_login;
+	CircularProgressButton btn_login;
 	Button btn_register;
 
 	private MyBroadcastReceiver receiver = new MyBroadcastReceiver();
+	
+	YoYo.AnimationComposer shakeAnimation;
+	CustomProgressDialog progressDialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -65,10 +75,42 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 	private void init() {
 		et_username = (EditText) findViewById(R.id.et_username);
 		et_password = (EditText) findViewById(R.id.et_password);
-		btn_login = (Button) findViewById(R.id.btn_login);
+		btn_login = (CircularProgressButton) findViewById(R.id.btn_login);
 		btn_register = (Button) findViewById(R.id.btn_register);
 		btn_login.setOnClickListener(this);
+		btn_login.setIndeterminateProgressMode(true);
+		
 		btn_register.setOnClickListener(this);
+		
+		shakeAnimation = new AnimationComposer(new ShakeAnimator())
+		.duration(500)
+		.interpolate(new AccelerateDecelerateInterpolator())
+		.withListener(new Animator.AnimatorListener() {
+			
+			@Override
+			public void onAnimationStart(Animator arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onAnimationRepeat(Animator arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onAnimationEnd(Animator arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onAnimationCancel(Animator arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 	}
 
 	public class MyBroadcastReceiver extends BroadcastReceiver {
@@ -84,41 +126,66 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 	
 	@Override
 	public void onClick(View v) {
-		if (v == btn_register) {
+		switch (v.getId()) {
+		case R.id.btn_register:
+			
 			Intent intent = new Intent(LoginActivity.this,
 					RegisterActivity.class);
 			startActivity(intent);
-		} else {
 			
-			// 检查网络
-			boolean isNetConnected = CommonUtils.isNetworkAvailable(this);
-			if(!isNetConnected){
-				ShowToast(R.string.network_tips);
+			break;
+			
+		case R.id.btn_login:
+			// 如果当前是error，点击之后就恢复
+			if (btn_login.getProgress() == -1) {
+				btn_login.setProgress(0);
 				return;
 			}
-			login();
+			// 初始状态
+			else if (btn_login.getProgress() == 0) {
+				// 检查网络
+				boolean isNetConnected = CommonUtils.isNetworkAvailable(this);
+				if(!isNetConnected){
+					// 按钮显示error
+					btn_login.setProgress(-1);
+					ShowToast(R.string.network_tips);
+					return;
+				}		
+				
+				
+				login();
+			}
+
+			break;
 		}
+		
 	}
 	
 	private void login(){
+		
+		btn_login.setProgress(50);
+		
 		String name = et_username.getText().toString();
 		String password = et_password.getText().toString();
 
 		if (TextUtils.isEmpty(name)) {
+			shakeAnimation.playOn(et_username);
 			ShowToast(R.string.toast_error_username_null);
+			btn_login.setProgress(-1);
 			return;
 		}
 
 		if (TextUtils.isEmpty(password)) {
+			shakeAnimation.playOn(et_password);
 			ShowToast(R.string.toast_error_password_null);
+			btn_login.setProgress(-1);
 			return;
 		}
+		
+		progressDialog = new CustomProgressDialog(LoginActivity.this, "正在获取好友列表...");
+		progressDialog.setCancelable(false);
+		progressDialog.setCanceledOnTouchOutside(false);
 
-		final ProgressDialog progress = new ProgressDialog(
-				LoginActivity.this);
-		progress.setMessage("正在登陆...");
-		progress.setCanceledOnTouchOutside(false);
-		progress.show();
 		final User user = new User();
 		user.setUsername(name);
 		user.setPassword(password);
@@ -127,17 +194,16 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			@Override
 			public void onSuccess() {
 				// TODO Auto-generated method stub
-				runOnUiThread(new Runnable() {
-
-					@Override
-					public void run() {
-						// TODO Auto-generated method stub
-						progress.setMessage("正在获取好友列表...");
-					}
-				});
+				
+				progressDialog.show();
+				btn_login.setProgress(100);
+				
 				//更新用户的地理位置以及好友的资料
 				updateUserInfos();
-				progress.dismiss();
+				
+				progressDialog.dismiss();
+				progressDialog = null;
+				
 				Intent intent = new Intent(LoginActivity.this,MainActivity.class);
 				startActivity(intent);
 				ShowToast(user.getGameType() + "");
@@ -147,7 +213,12 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			@Override
 			public void onFailure(int errorcode, String arg0) {
 				// TODO Auto-generated method stub
-				progress.dismiss();
+				// progress.dismiss();
+				shakeAnimation.playOn(et_username);
+				shakeAnimation.playOn(et_password);
+				
+				// 登录失败
+				btn_login.setProgress(-1);
 				BmobLog.i(arg0);
 				ShowToast(arg0);
 			}

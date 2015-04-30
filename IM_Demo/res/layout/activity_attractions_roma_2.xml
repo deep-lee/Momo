@@ -13,6 +13,7 @@
         android:id="@+id/roma_sky_layout"
         android:layout_below="@+id/common_actionbar"
         android:layout_height="330dp"
+        android:layout_centerHorizontal="true"
         android:layout_width="wrap_content">
         
         <ImageView 

@@ -18,7 +18,7 @@ public class SlideAdapter extends BaseAdapter{
 	
 	private int iconId[] = {
 		R.drawable.slide_icon_game,	
-		R.drawable.slide_icon_set,
+		R.drawable.slide_icon_person,
 		R.drawable.slide_icon_set,
 		R.drawable.slide_icon_roma,
 		R.drawable.slide_icon_about,

@@ -58,6 +58,7 @@
     <string name="toast_error_password_null">密码不能为空</string>
     <string name="toast_error_username_null">手机号码不能为空</string>
     <string name="toast_error_confim_code_null">验证码不能为空</string>
+    <string name="toast_error_interest_null">爱好不能为空</string>
     <string name="toast_error_game_null">还未选择游戏</string>
     <string name="toast_error_love_null">还未选择情感状况</string>
     <string name="toast_error_nick_null">昵称不能为空</string>
@@ -138,7 +139,7 @@
     <string name="slide_set_emoj_store">表情商城</string>
     <string name="title_activity_set_message_notify">SetMessageNotifyActivity</string>
     <string name="title_activity_set_my_info_activity2">SetMyInfoActivity2</string>
-    <string name="info_ddetault_text">正在加载...</string>
+    <string name="info_ddetault_text">正在加载&#8230;</string>
     <string name="title_activity_edit_my_info">EditMyInfoActivity</string>
     <string name="info_edit_person_hint">有什么话想说给附近的朋友听？</string>
     <string name="info_edit_career_hint">请选择你的职业</string>
@@ -181,5 +182,6 @@
     <string name="title_activity_attractions_roma_activity2">AttractionsRomaActivity2</string>
     <string name="roma_tips_1">可以漫游到景点，认识那里的人和了解风景情况</string>
     <string name="roma_tips_2">按住按钮，开始漫游</string>
+    <string name="title_activity_edit_personalized_signature">EditPersonalizedSignatureActivity</string>
 
 </resources>

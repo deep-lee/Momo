@@ -109,6 +109,8 @@ public class AttractionsRomaActivity2 extends BaseActivity {
 		public void handleMessage(Message msg) {   
             switch (msg.what) {   
             	case 2:
+            		
+            		// 第二个plant进来
             		plant2.setVisibility(View.VISIBLE);
             		animationSlideInRight.playOn(plant2);
             		
@@ -129,6 +131,8 @@ public class AttractionsRomaActivity2 extends BaseActivity {
 			public void handleMessage(Message msg) {   
 	            switch (msg.what) {   
 	            	case 3:
+	            		
+	            		// 第二个plant出去
 	            		animationSlideOutLeft.playOn(plant2);
 	            		
 	            		////////////////

@@ -1,23 +1,14 @@
 package com.bmob.im.demo.ui;
 
-import static cn.smssdk.framework.utils.R.getStringRes;
 
 import java.io.File;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
-import android.R.integer;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources.NotFoundException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -29,14 +20,11 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -46,19 +34,17 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
-import android.widget.ArrayAdapter;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 import cn.bmob.im.bean.BmobChatUser;
 import cn.bmob.im.util.BmobLog;
-import cn.bmob.push.a.project;
 import cn.bmob.v3.BmobInstallation;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.datatype.BmobFile;
@@ -68,20 +54,22 @@ import cn.bmob.v3.listener.UpdateListener;
 import cn.bmob.v3.listener.UploadFileListener;
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
-
 import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.bean.User;
 import com.bmob.im.demo.config.BmobConstants;
 import com.bmob.im.demo.util.CommonUtils;
 import com.bmob.im.demo.util.ImageLoadOptions;
-import com.bmob.im.demo.util.JudgeDate;
 import com.bmob.im.demo.util.PhotoUtil;
-import com.bmob.im.demo.util.ScreenInfo;
-import com.bmob.im.demo.util.WheelMain;
+import com.bmob.im.demo.view.dialog.CustomProgressDialog;
 import com.bmob.im.demo.view.dialog.DateChooseDialog;
 import com.bmob.im.demo.view.dialog.DialogTips;
 import com.bmob.im.demo.view.dialog.SingleChoiceDialog;
+import com.daimajia.androidanimations.library.YoYo;
+import com.daimajia.androidanimations.library.YoYo.AnimationComposer;
+import com.daimajia.androidanimations.library.attention.ShakeAnimator;
+import com.dd.library.CircularProgressButton;
+import com.nineoldandroids.animation.Animator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.soundcloud.android.crop.Crop;
 
@@ -91,7 +79,7 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
 	
 	// 第一页
 	EditText et_username, et_confim_code;
-	Button getConfimCode;
+	CircularProgressButton getConfimCode;
 	
 	// 第二页
 	EditText  et_password, et_password_confim;
@@ -118,7 +106,7 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
 	String birthday = "";
 	String initBirth = "";
 	DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-	ProgressDialog progress;
+	CustomProgressDialog progress;
 	
 	String gameType = "";
 	
@@ -138,6 +126,8 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
 	File dir;
 	
 	private String mCurrentPhotoPath;
+	
+	YoYo.AnimationComposer shakeAnimation;
 	
 	Handler handler = new Handler(){
 		public void handleMessage(Message msg) {   
@@ -167,6 +157,7 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
             	case 1:
             		getConfimCode.setClickable(false);
             		getConfimCode.setText("剩余" + time + "秒");
+            		// getConfimCode.setIdleText("剩余" + time + "秒");
             		time--;
             		if (time != 0) {
 						Message message1 = new Message();
@@ -186,6 +177,12 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
             		break;
             	case 3:
             		gotoNextPage();
+            		break;
+            	case 4:
+            		progress.dismiss();
+            		progress = null;
+            		shakeAnimation.playOn(et_confim_code);
+            		ShowToast("验证码错误");
             		break;
             
             }   
@@ -223,13 +220,17 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
 	             } 
             }
             else
-            {                                                                 
-	              ((Throwable)data).printStackTrace(); 
-	              int resId = getStringRes(RegisterActivity.this, "smssdk_network_error");
-	              Toast.makeText(RegisterActivity.this, "验证码错误", Toast.LENGTH_SHORT).show();
-	              if (resId > 0) {
-	            	  Toast.makeText(RegisterActivity.this, resId, Toast.LENGTH_SHORT).show();
-	              }
+            {                  
+            	 Message message = new Message();
+            	 message.what = 4;
+            	 handlerGetVerfyCode.sendMessage(message);
+            	 
+//	             ((Throwable)data).printStackTrace(); 
+//	             int resId = getStringRes(RegisterActivity.this, "smssdk_network_error");
+//	             Toast.makeText(RegisterActivity.this, "验证码错误", Toast.LENGTH_SHORT).show();
+//	             if (resId > 0) {
+//	            	 Toast.makeText(RegisterActivity.this, resId, Toast.LENGTH_SHORT).show();
+//	             }
            	}
          } 
 	 }; 
@@ -260,7 +261,7 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
 		// 第一页
 		et_username = (EditText) findViewById(R.id.et_username);
 		et_confim_code = (EditText) findViewById(R.id.et_confim_code);
-		getConfimCode = (Button) findViewById(R.id.register_btn_get_verfy_code);
+		getConfimCode = (CircularProgressButton) findViewById(R.id.register_btn_get_verfy_code);
 		getConfimCode.setOnClickListener(this);
 		
 		// 第二页
@@ -303,6 +304,36 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
 		register_layout_all = (RelativeLayout) findViewById(R.id.register_layout_all);
 		
 		// checkUser();
+		
+		shakeAnimation = new AnimationComposer(new ShakeAnimator())
+		.duration(500)
+		.interpolate(new AccelerateDecelerateInterpolator())
+		.withListener(new Animator.AnimatorListener() {
+			
+			@Override
+			public void onAnimationStart(Animator arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onAnimationRepeat(Animator arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onAnimationEnd(Animator arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onAnimationCancel(Animator arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		
 	}
 	
@@ -632,10 +663,13 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
 			return;
 		}
 		
-		progress = new ProgressDialog(RegisterActivity.this);
-		progress.setMessage("正在注册...");
+		progress = new CustomProgressDialog(RegisterActivity.this, "正在注册...");
+		// progress = new ProgressDialog(RegisterActivity.this);
+		// progress.setMessage("正在注册...");
 		progress.setCanceledOnTouchOutside(false);
+		progress.setCancelable(false);
 		progress.show();
+		
 		//由于每个应用的注册所需的资料都不一样，故IM sdk未提供注册方法，用户可按照bmod SDK的注册方式进行注册。
 		//注册的时候需要注意两点：1、User表中绑定设备id和type，2、设备表中绑定username字段
 		final User bu = new User();
@@ -710,7 +744,14 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
 			
 		// 获取验证码
 		case R.id.register_btn_get_verfy_code:
-			getVerfyCode();
+			if (getConfimCode.getProgress() == -1) {
+				getConfimCode.setProgress(0);
+			}
+			else if (getConfimCode.getProgress() == 0) {
+				getVerfyCode();
+			}
+			
+			
 			break;
 			
 		// 设置头像
@@ -808,17 +849,23 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
 	
 	private void getVerfyCode() {
 		
+		getConfimCode.setProgress(50);
+		
 		if (TextUtils.isEmpty(et_username.getText().toString())) {
 			ShowToast(R.string.toast_error_username_null);
+			shakeAnimation.playOn(et_username);
+			getConfimCode.setProgress(-1);
 			return;
 		}
+		
+		
+//		if (!CommonUtils.isNetworkAvailable(RegisterActivity.this)) {
+//			ShowToast(R.string.network_tips);
+//			// shakeAnimation.playOn(et_username);
+//			return;
+//		}
 		
 		// 检查用户名是否已经存在
-		if (!CommonUtils.isNetworkAvailable(RegisterActivity.this)) {
-			ShowToast(R.string.network_tips);
-			return;
-		}
-		
 		BmobQuery<User> query = new BmobQuery<User>();
 		query.addWhereEqualTo("username", et_username.getText().toString());
 		query.findObjects(this, new FindListener<User>() {
@@ -834,6 +881,10 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
 				// TODO Auto-generated method stub
 				if (arg0 != null && arg0.size() > 0) {
 					ShowToast(R.string.username_has_exited);
+					
+					shakeAnimation.playOn(et_username);
+					getConfimCode.setProgress(-1);
+					
 					return;
 				}
 				
@@ -852,6 +903,9 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
 			public void onClick(DialogInterface dialog, int which) {
 				// TODO Auto-generated method stub
 				// 如果不为空，就请求发送验证码
+				
+				getConfimCode.setProgress(0);
+				
 				SMSSDK.getVerificationCode("86", et_username.getText().toString());
 				Message message = new Message();
 				message.what = 1;
@@ -863,6 +917,7 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				// TODO Auto-generated method stub
+				getConfimCode.setProgress(0);
 				
 			}
 		});
@@ -955,14 +1010,17 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
 
 			if (TextUtils.isEmpty(et_confim_code.getText().toString())) {
 				ShowToast(R.string.toast_error_confim_code_null);
+				
+				shakeAnimation.playOn(et_confim_code);
+				
 				return;
 			}
 			
 			SMSSDK.submitVerificationCode("86", et_username.getText().toString(), et_confim_code.getText().toString());
 			
-			progress = new ProgressDialog(RegisterActivity.this);
-			progress.setMessage("正在验证");
+			progress = new CustomProgressDialog(RegisterActivity.this, "正在验证...");
 			progress.setCanceledOnTouchOutside(false);
+			progress.setCancelable(false);
 			progress.show();
 			
 //			viewFlipper.showNext();
@@ -974,16 +1032,20 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
 		else if (currentPage == 1) {
 			if (TextUtils.isEmpty(et_password.getText().toString())) {
 				ShowToast(R.string.toast_error_password_null);
+				shakeAnimation.playOn(et_password);
 				return;
 			}
 			
 			if (et_password.getText().toString().length() < 6) {
 				ShowToast(R.string.login_password_number_error);
+				shakeAnimation.playOn(et_password_confim);
 				return;
 			}
 			
 			if (!et_password_confim.getText().toString().equals(et_password.getText().toString())) {
 				ShowToast(R.string.toast_error_comfirm_password);
+				shakeAnimation.playOn(et_password);
+				shakeAnimation.playOn(et_password_confim);
 				return;
 			}
 			
@@ -995,20 +1057,24 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
 		else if (currentPage == 2) {
 			if (!avator_changed) {
 				ShowToast(R.string.toast_error_change_avator);
+				shakeAnimation.playOn(setAvator);
 				return;
 			}
 			
 			if (TextUtils.isEmpty(et_nick.getText().toString())) {
 				ShowToast(R.string.toast_error_nick_null);
+				shakeAnimation.playOn(et_nick);
 				return;
 			}
 			
 			if (et_nick.getText().toString().length() > 6) {
 				ShowToast(R.string.register_nick_too_long_error);
+				shakeAnimation.playOn(et_nick);
 				return;
 			}
 			if (!hasChoseBirth) {
 				ShowToast(R.string.toast_error_birth_null);
+				shakeAnimation.playOn(et_birth);
 				return;
 			}
 			
@@ -1019,11 +1085,19 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
 		else if(currentPage == 3){
 			if (!hasChooseGame) {
 				ShowToast(R.string.toast_error_game_null);
+				shakeAnimation.playOn(et_game);
 				return;
 			}
 			
 			if (!hasChooseLove) {
 				ShowToast(R.string.toast_error_love_null);
+				shakeAnimation.playOn(et_love);
+				return;
+			}
+			
+			if (TextUtils.isEmpty(et_hobbi.getText().toString())) {
+				ShowToast(R.string.toast_error_interest_null);
+				shakeAnimation.playOn(et_hobbi);
 				return;
 			}
 			

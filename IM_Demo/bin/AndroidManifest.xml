@@ -277,8 +277,12 @@
             android:label="@string/title_activity_game_center" >
         </activity>
         <activity
-            android:name="com.bmob.im.demo.ui.AttractionsRomaActivity2"
+            android:name=".ui.AttractionsRomaActivity2"
             android:label="@string/title_activity_attractions_roma_activity2" >
+        </activity>
+        <activity
+            android:name="com.bmob.im.demo.ui.EditPersonalizedSignatureActivity"
+            android:label="@string/title_activity_edit_personalized_signature" >
         </activity>
     </application>
 

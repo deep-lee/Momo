@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/login_bg" >
@@ -10,11 +11,27 @@
         android:gravity="center"
         android:orientation="vertical" >
 
-        <ImageView  
+        <!-- <ImageView  
             android:id="@+id/iv_icon"
             android:layout_width="100dip"
             android:layout_height="100dip"
-            android:src="@drawable/login_avator" />
+            android:src="@drawable/login_avator" /> -->
+            
+            <RelativeLayout 
+		        android:id="@+id/login_set_avator_layout"
+		        android:layout_width="120dp"
+		        android:orientation="vertical"
+		        android:background="@drawable/register_set_avator_layout_bg"
+		        android:layout_gravity="center_horizontal"
+		        android:layout_height="120dp">
+		
+		        <ImageView
+		            android:id="@+id/login_iv_icon"
+		            android:layout_width="100dp"
+		            android:layout_height="100dp"
+		            android:layout_centerInParent="true"
+		            android:src="@drawable/register_set_avator_default" />
+		    </RelativeLayout>
      
         <LinearLayout
             android:layout_width="match_parent"
@@ -57,7 +74,7 @@
                 android:textColorHint="#ffdddddd" />
         </LinearLayout>
    
-        <Button
+        <!-- <Button
             android:id="@+id/btn_login"
             android:layout_width="match_parent"
             android:layout_height="@dimen/base_action_bar_height"
@@ -66,7 +83,21 @@
             android:gravity="center"
             android:text="@string/login"
             android:textColor="@color/base_color_text_white"
-            android:textSize="@dimen/text_size_large" />
+            android:textSize="@dimen/text_size_large" /> -->
+            
+            <com.dd.library.CircularProgressButton
+		        android:id="@+id/btn_login"
+		        android:layout_width="match_parent"
+		        android:layout_margin="@dimen/activity_vertical_margin"
+		        android:gravity="center"
+		        android:layout_height="48dp"
+		        android:textColor="@color/cpb_white"
+		        android:textSize="18sp"
+		        app:cpb_cornerRadius="48dp"
+		        app:cpb_iconComplete="@drawable/ic_action_accept"
+		        app:cpb_iconError="@drawable/ic_action_cancel"
+		        app:cpb_textIdle="@string/login" />
+            
     </LinearLayout>
             
     <RelativeLayout

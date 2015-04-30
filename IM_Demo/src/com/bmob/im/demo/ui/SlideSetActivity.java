@@ -70,6 +70,7 @@ public class SlideSetActivity extends BaseActivity implements View.OnClickListen
 		// 消息提醒
 		case R.id.slide_layout_message_notify:
 			intent.setClass(SlideSetActivity.this, SetMessageNotifyActivity.class);		
+			startActivity(intent);
 			break;
 		// 个性装扮
 		case R.id.slide_layout_person_dress:
@@ -81,6 +82,6 @@ public class SlideSetActivity extends BaseActivity implements View.OnClickListen
 			break;
 		}
 		
-		startActivity(intent);
+		
 	}
 }

@@ -217,7 +217,7 @@ public class SetMyInfoActivity2 extends BaseActivity implements InfoScrollView.O
 		progressView[2] = (CircularProgressView) findViewById(R.id.progress_view3);
 		
 		// Test loading animation
-        startAnimationThreadStuff(1000);
+        startAnimationThreadStuff(0);
 		
 		photoWallLayout = (RelativeLayout) findViewById(R.id.rl_profile2);
 		

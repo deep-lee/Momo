@@ -162,7 +162,7 @@ public class MainActivity extends ActivityBase implements EventListener, OnClick
 //        menu.setFadeDegree(0.35f);  
         
         // 配置背景图片  
-        menu.setBackgroundImage(R.drawable.default_info_head_bg);  
+        menu.setBackgroundImage(R.drawable.icon_bg1);  
         // 设置专场动画效果  
         menu.setBehindCanvasTransformer(new SlidingMenu.CanvasTransformer() {  
             @Override  

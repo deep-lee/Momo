@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -21,8 +22,14 @@ import cn.bmob.v3.listener.FindListener;
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.adapter.AddFriendAdapter;
 import com.bmob.im.demo.util.CollectionUtils;
+import com.bmob.im.demo.view.dialog.CustomProgressDialog;
 import com.bmob.im.demo.view.xlist.XListView;
 import com.bmob.im.demo.view.xlist.XListView.IXListViewListener;
+import com.daimajia.androidanimations.library.YoYo;
+import com.daimajia.androidanimations.library.YoYo.AnimationComposer;
+import com.daimajia.androidanimations.library.attention.ShakeAnimator;
+import com.dd.library.CircularProgressButton;
+import com.nineoldandroids.animation.Animator;
 
 /** 添加好友
   * @ClassName: AddFriendActivity
@@ -33,11 +40,13 @@ import com.bmob.im.demo.view.xlist.XListView.IXListViewListener;
 public class AddFriendActivity extends ActivityBase implements OnClickListener,IXListViewListener,OnItemClickListener{
 	
 	EditText et_find_name;
-	Button btn_search;
+	CircularProgressButton btn_search;
 	
 	List<BmobChatUser> users = new ArrayList<BmobChatUser>();
 	XListView mListView;
 	AddFriendAdapter adapter;
+	
+	YoYo.AnimationComposer shakeAnimation;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -49,8 +58,39 @@ public class AddFriendActivity extends ActivityBase implements OnClickListener,I
 	private void initView(){
 		initTopBarForLeft("查找好友");
 		et_find_name = (EditText)findViewById(R.id.et_find_name);
-		btn_search = (Button)findViewById(R.id.btn_search);
+		btn_search = (CircularProgressButton)findViewById(R.id.btn_search);
 		btn_search.setOnClickListener(this);
+		
+		shakeAnimation = new AnimationComposer(new ShakeAnimator())
+		.duration(500)
+		.interpolate(new AccelerateDecelerateInterpolator())
+		.withListener(new Animator.AnimatorListener() {
+			
+			@Override
+			public void onAnimationStart(Animator arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onAnimationRepeat(Animator arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onAnimationEnd(Animator arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onAnimationCancel(Animator arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
 		initXListView();
 	}
 
@@ -72,11 +112,10 @@ public class AddFriendActivity extends ActivityBase implements OnClickListener,I
 	}
 	
 	int curPage = 0;
-	ProgressDialog progress ;
+	CustomProgressDialog progress ;
 	private void initSearchList(final boolean isUpdate){
 		if(!isUpdate){
-			progress = new ProgressDialog(AddFriendActivity.this);
-			progress.setMessage("正在搜索...");
+			progress = new CustomProgressDialog(AddFriendActivity.this, "正在搜索...");
 			progress.setCanceledOnTouchOutside(true);
 			progress.show();
 		}
@@ -89,6 +128,7 @@ public class AddFriendActivity extends ActivityBase implements OnClickListener,I
 				if(users!=null){
 					users.clear();
 				}
+				btn_search.setProgress(-1);
 				ShowToast("用户不存在");
 				mListView.setPullLoadEnable(false);
 				refreshPull();
@@ -99,6 +139,8 @@ public class AddFriendActivity extends ActivityBase implements OnClickListener,I
 			@Override
 			public void onSuccess(List<BmobChatUser> arg0) {
 				// TODO Auto-generated method stub
+				btn_search.setProgress(0);
+				
 				if (CollectionUtils.isNotNull(arg0)) {
 					if(isUpdate){
 						users.clear();
@@ -175,13 +217,35 @@ public class AddFriendActivity extends ActivityBase implements OnClickListener,I
 		// TODO Auto-generated method stub
 		switch (arg0.getId()) {
 		case R.id.btn_search://搜索
-			users.clear();
-			searchName = et_find_name.getText().toString();
-			if(searchName!=null && !searchName.equals("")){
-				initSearchList(false);
-			}else{
-				ShowToast("请输入用户名");
+			
+			if (btn_search.getProgress() == -1) {
+				btn_search.setProgress(0);
+				return;
 			}
+			
+			if (!isNetAvailable()) {
+				ShowToast(R.string.network_tips);
+				btn_search.setProgress(-1);
+				return;
+			}
+			else {
+				
+				users.clear();
+				searchName = et_find_name.getText().toString();
+				if(searchName!=null && !searchName.equals("")){
+					
+					btn_search.setProgress(50);
+					
+					initSearchList(false);
+				}else{
+					ShowToast("请输入用户名");
+					shakeAnimation.playOn(et_find_name);
+					btn_search.setProgress(-1);
+				}
+				
+			}
+			
+			
 			break;
 
 		default:
