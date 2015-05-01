@@ -25,7 +25,7 @@ import android.widget.TextView;
  * 
  * @author guolin
  */
-public class ImageDetailsActivity extends Activity implements
+public class ImageDetailsActivity extends ActivityBase implements
 		OnPageChangeListener {
 
 	/**

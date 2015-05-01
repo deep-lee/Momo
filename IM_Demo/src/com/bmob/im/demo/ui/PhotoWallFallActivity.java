@@ -24,7 +24,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 
-public class PhotoWallFallActivity extends BaseActivity {
+public class PhotoWallFallActivity extends ActivityBase {
 
 	public static String from = "";
 	

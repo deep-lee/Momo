@@ -24,7 +24,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class AttractionsRomaActivity2 extends BaseActivity {
+public class AttractionsRomaActivity2 extends ActivityBase {
 	
 	ImageView plant, sky_bg, plant2;
 	TextView tv_tip1, tv_tips2;

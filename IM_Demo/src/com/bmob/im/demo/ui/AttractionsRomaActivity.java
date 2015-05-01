@@ -27,7 +27,7 @@ import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 
-public class AttractionsRomaActivity extends BaseActivity {
+public class AttractionsRomaActivity extends ActivityBase {
 	
 	ShakeListener mShakeListener = null;
 	Vibrator mVibrator;

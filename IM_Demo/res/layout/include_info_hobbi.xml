@@ -159,10 +159,54 @@
 	</RelativeLayout>
 	
 	<RelativeLayout
-	    android:id="@+id/rl_profile13"
+	    android:id="@+id/info_hobbi_recent_play_layout"
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
 	    android:layout_below="@+id/rl_profile12"
+	    android:background="#ffffff" >
+	
+	    <TextView 
+	        android:id="@+id/info_recent_play"
+	        android:layout_height="wrap_content"
+	        android:text="最近游戏"
+	        android:layout_marginLeft="10dp"
+	        android:textColor="#999999"
+	        android:layout_centerVertical="true"
+	        android:layout_width="wrap_content"/>
+	
+	    <LinearLayout 
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical"
+	        android:layout_marginRight="10dp"
+	        android:layout_centerInParent="true"
+	        android:layout_width="fill_parent">
+	                    
+	        <TextView 
+		        android:id="@+id/info_recent_play_details"
+		        android:layout_height="wrap_content"
+		        android:text="@string/info_ddetault_text"
+		        android:layout_gravity="center_vertical"
+		        android:layout_marginLeft="100dp"
+		        android:layout_marginTop="22dp"
+		        android:layout_width="wrap_content"/>
+	                    
+	         <View
+				android:layout_width="wrap_content"
+				android:layout_marginTop="20dp"
+				android:layout_marginLeft="100dp"
+				android:layout_height="@dimen/base_line_width_2"
+				android:background="@drawable/base_horizontal_line" >
+			 </View>
+	                    
+	     </LinearLayout>
+	                
+	</RelativeLayout>
+	
+	<RelativeLayout
+	    android:id="@+id/rl_profile13"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_below="@+id/info_hobbi_recent_play_layout"
 	    android:background="#ffffff" >
 	
 	    <TextView 

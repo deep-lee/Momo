@@ -13,12 +13,22 @@ import java.util.List;
 
 
 
+
+
+
+
+
+import cn.bmob.v3.listener.UpdateListener;
+
 import com.bmob.im.demo.GameCard;
 import com.bmob.im.demo.R;
+import com.bmob.im.demo.bean.User;
+import com.bmob.im.demo.ui.GameCenterActivity;
 import com.deep.momo.game.ui.GameFruitActivity;
 import com.deep.momo.game.ui.GuessNumberActivity;
 import com.deep.momo.game.ui.MixedColorMenuActivity;
 
+import android.R.integer;
 import android.app.Activity;
 import android.content.Context;  
 import android.content.Intent;
@@ -33,6 +43,8 @@ import android.widget.TextView;
       
 public class GameCardAdapter extends BaseAdapter   
 {  
+	int recentPlay = 0;
+	
     private List<GameCard> mCards;  
     private Context mContext; 
     
@@ -94,19 +106,40 @@ public class GameCardAdapter extends BaseAdapter
 				// 水果连连看
 				case 0:
 					intent.setClass(mContext, GameFruitActivity.class);
+					recentPlay = 1;
 					break;
 				// 猜数字
 				case 1:
 					intent.setClass(mContext, GuessNumberActivity.class);
+					recentPlay = 2;
 					break;
 				// Mixed color
 				case 2:
 					intent.setClass(mContext, MixedColorMenuActivity.class);
+					recentPlay = 3;
 					break;
 
 				default:
 					break;
 				}
+				
+				User user = new User();
+				user.setRecentPlayGame(recentPlay);
+				
+				((GameCenterActivity)mContext).updateUserData(user, new UpdateListener() {
+					
+					@Override
+					public void onSuccess() {
+						// TODO Auto-generated method stub
+						
+					}
+					
+					@Override
+					public void onFailure(int arg0, String arg1) {
+						// TODO Auto-generated method stub
+						
+					}
+				});
 				
 				mContext.startActivity(intent);
 			}

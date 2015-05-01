@@ -3,10 +3,12 @@ package com.deep.momo.game.ui;
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.R.layout;
 import com.bmob.im.demo.bean.User;
+import com.bmob.im.demo.ui.ActivityBase;
 import com.bmob.im.demo.ui.BaseActivity;
 import com.bmob.im.demo.ui.SetMyInfoActivity;
 import com.bmob.im.demo.util.SoundPlay;
 import com.bmob.im.demo.view.dialog.DialogTips;
+
 import android.R.integer;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -33,7 +35,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class GuessNumberActivity extends BaseActivity implements OnClickListener{
+public class GuessNumberActivity extends ActivityBase implements OnClickListener{
 	
 	EditText input;
 	Button[] numberBtn = new Button[10];

@@ -35,7 +35,7 @@ import android.view.View.OnClickListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class EditMyInfoActivity extends BaseActivity implements OnClickListener{
+public class EditMyInfoActivity extends ActivityBase implements OnClickListener{
 	
 	RelativeLayout rl_edit_birthday, rl_edit_game, rl_edit_game_difficulty, 
 				   rl_edit_love_status, rl_edit_hometown, rl_edit_career;

@@ -3,6 +3,7 @@ package com.deep.momo.game.ui;
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.R.layout;
 import com.bmob.im.demo.bean.User;
+import com.bmob.im.demo.ui.ActivityBase;
 import com.bmob.im.demo.ui.SetMyInfoActivity;
 import com.bmob.im.demo.view.BoardView;
 import com.bmob.im.demo.view.dialog.DialogTips;
@@ -38,7 +39,7 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-public class GameFruitActivity extends Activity implements OnClickListener, OnTimerListener,OnStateListener,OnToolsChangeListener{
+public class GameFruitActivity extends ActivityBase implements OnClickListener, OnTimerListener,OnStateListener,OnToolsChangeListener{
 	
 	private ImageButton btnPlay;
 	private ImageButton btnRefresh;

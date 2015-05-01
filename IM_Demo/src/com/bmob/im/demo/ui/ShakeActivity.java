@@ -19,7 +19,7 @@ import android.view.animation.TranslateAnimation;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-public class ShakeActivity extends BaseActivity {
+public class ShakeActivity extends ActivityBase {
 
 	
 	ShakeListener mShakeListener = null;

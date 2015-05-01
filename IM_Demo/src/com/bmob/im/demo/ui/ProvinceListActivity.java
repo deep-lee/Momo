@@ -18,7 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class ProvinceListActivity extends Activity {
+public class ProvinceListActivity extends ActivityBase {
 
 	ListView lv;
 	Context mcontext;

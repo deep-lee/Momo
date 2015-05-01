@@ -248,13 +248,16 @@ public class BaseActivity extends FragmentActivity {
 	  * @throws
 	  */
 	public void updateUserLocation(){
-		if(CustomApplcation.lastPoint!=null){
+		if(CustomApplcation.lastPoint != null){
+			
+			// ShowToast("更新地理位置信息");
+			
 			String saveLatitude  = mApplication.getLatitude();
 			String saveLongtitude = mApplication.getLongtitude();
 			String newLat = String.valueOf(CustomApplcation.lastPoint.getLatitude());
 			String newLong = String.valueOf(CustomApplcation.lastPoint.getLongitude());
-//			ShowLog("saveLatitude ="+saveLatitude+",saveLongtitude = "+saveLongtitude);
-//			ShowLog("newLat ="+newLat+",newLong = "+newLong);
+			ShowLog("saveLatitude ="+saveLatitude+",saveLongtitude = "+saveLongtitude);
+			ShowLog("newLat ="+newLat+",newLong = "+newLong);
 			if(!saveLatitude.equals(newLat)|| !saveLongtitude.equals(newLong)){//只有位置有变化就更新当前位置，达到实时更新的目的
 				User u = (User) userManager.getCurrentUser(User.class);
 				final User user = new User();
@@ -266,18 +269,19 @@ public class BaseActivity extends FragmentActivity {
 						// TODO Auto-generated method stub
 						CustomApplcation.getInstance().setLatitude(String.valueOf(user.getLocation().getLatitude()));
 						CustomApplcation.getInstance().setLongtitude(String.valueOf(user.getLocation().getLongitude()));
-//						ShowLog("经纬度更新成功");
+						ShowLog("经纬度更新成功");
 					}
 					@Override
 					public void onFailure(int code, String msg) {
 						// TODO Auto-generated method stub
-//						ShowLog("经纬度更新 失败:"+msg);
+						ShowLog("经纬度更新 失败:"+msg);
 					}
 				});
 			}else{
-//				ShowLog("用户位置未发生过变化");
+				ShowLog("用户位置未发生过变化");
 			}
 		}
+		
 	}
 	
 	public Boolean isNetAvailable() {

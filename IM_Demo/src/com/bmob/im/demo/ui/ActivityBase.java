@@ -1,7 +1,5 @@
 package com.bmob.im.demo.ui;
 
-import com.bmob.im.demo.R;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,15 +19,16 @@ public class ActivityBase extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		//自动登陆状态下检测是否在其他设备登陆
+		// 自动登陆状态下检测是否在其他设备登陆
 		checkLogin();
 		
 	}
+	
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		//锁屏状态下的检测
+		// 锁屏状态下的检测
 		checkLogin();
 	}
 	

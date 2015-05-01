@@ -36,7 +36,7 @@
     <color name="white">#ffffffff</color>
     <color name="guess_narmal">#9bcd9b</color>
     <color name="guess_pressed">#fff68f</color>
-    <color name="select_picture_btn_pressed">#EED5B7</color>
+    <color name="select_picture_btn_pressed">#C2C2C2</color>
     <color name="color_blue">#6776EC</color>
     <color name="color_press_blue">#004A80</color>
     

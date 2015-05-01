@@ -267,7 +267,7 @@ public class LeftFragment extends Fragment {
 		// TODO Auto-generated method stub
 		super.onResume();
 		
-		Toast.makeText(context, "更新界面", Toast.LENGTH_LONG).show();
+		// Toast.makeText(context, "更新界面", Toast.LENGTH_LONG).show();
 		
 		user = userManager.getCurrentUser(User.class);
 		

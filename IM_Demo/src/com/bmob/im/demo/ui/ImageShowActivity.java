@@ -18,7 +18,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.widget.ImageView;
 
-public class ImageShowActivity extends Activity {
+public class ImageShowActivity extends ActivityBase {
 	ImageView imageShow;
 	Bitmap bitmap;
 	

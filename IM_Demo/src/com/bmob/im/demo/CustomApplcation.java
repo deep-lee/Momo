@@ -83,7 +83,7 @@ public class CustomApplcation extends Application {
 		
 		gameList.add("水果连连看");
 		gameList.add("猜数字");
-		gameList.add("mixed color");
+		gameList.add("Mixed color");
 		
 		loveList.add("热恋");
 		loveList.add("单身");

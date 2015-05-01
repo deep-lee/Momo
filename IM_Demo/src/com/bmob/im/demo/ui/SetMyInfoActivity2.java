@@ -81,7 +81,7 @@ import com.bmob.im.demo.view.dialog.DialogTips;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.soundcloud.android.crop.Crop;
 
-public class SetMyInfoActivity2 extends BaseActivity implements InfoScrollView.OnScrollListener, OnClickListener{
+public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.OnScrollListener, OnClickListener{
 	
 	private InfoScrollView sv;
 	
@@ -91,7 +91,7 @@ public class SetMyInfoActivity2 extends BaseActivity implements InfoScrollView.O
 	// 对应布局文件各个item
 	TextView tv_age, tv_distance, tv_last_update_time, tv_nick, tv_account, tv_personalized_signature, tv_game, 
 			 tv_game_difficulty, tv_love_status, tv_career, tv_company, tv_school, tv_hometown, tv_book, 
-			 tv_movie, tv_music, tv_interests, tv_usually_appear, tv_register_time;
+			 tv_movie, tv_music, tv_interests, tv_usually_appear, tv_register_time, tv_recent_play;
 	
 	// ImageButton btn_back;
 	
@@ -104,8 +104,8 @@ public class SetMyInfoActivity2 extends BaseActivity implements InfoScrollView.O
 	RelativeLayout layout_all;
 	
 	// 
-	RelativeLayout rl_personalized_signature, rl_career, rl_company, rl_school, rl_hometown, rl_book, rl_movie, rl_music, rl_interests,
-					rl_usually_appear;
+	RelativeLayout rl_personalized_signature, rl_career, rl_company, rl_school, rl_hometown, rl_book, rl_movie, rl_music, 
+					rl_recent_play, rl_interests,rl_usually_appear;
 	
 	CircularProgressView []progressView;
 	
@@ -279,6 +279,8 @@ public class SetMyInfoActivity2 extends BaseActivity implements InfoScrollView.O
 		tv_usually_appear = (TextView) findViewById(R.id.info_usually_appear_details);
 		tv_register_time = (TextView) findViewById(R.id.info_register_time_details);
 		
+		tv_recent_play = (TextView) findViewById(R.id.info_recent_play_details);
+		
 //		btn_edit = (Button) findViewById(R.id.btn_edit_info);
 		btn_add = (Button) findViewById(R.id.info_btn_add_friend);
 		btn_chat = (Button) findViewById(R.id.info_btn_chat);
@@ -301,6 +303,7 @@ public class SetMyInfoActivity2 extends BaseActivity implements InfoScrollView.O
 		rl_book = (RelativeLayout) findViewById(R.id.rl_profile10);
 		rl_movie = (RelativeLayout) findViewById(R.id.rl_profile11);
 		rl_music = (RelativeLayout) findViewById(R.id.rl_profile12);
+		rl_recent_play = (RelativeLayout) findViewById(R.id.info_hobbi_recent_play_layout);
 		rl_interests = (RelativeLayout) findViewById(R.id.rl_profile13);
 		
 		rl_usually_appear = (RelativeLayout) findViewById(R.id.rl_profile14);
@@ -847,6 +850,14 @@ public class SetMyInfoActivity2 extends BaseActivity implements InfoScrollView.O
 		}
 		else {
 			tv_music.setText(user.getMusic());
+		}
+		
+		// 最近游戏
+		if (user.getRecentPlayGame() == 0) {
+			rl_recent_play.setVisibility(View.GONE);
+		}
+		else {
+			tv_recent_play.setText(CustomApplcation.gameList.get(user.getRecentPlayGame() - 1));
 		}
 		
 		// 兴趣爱好

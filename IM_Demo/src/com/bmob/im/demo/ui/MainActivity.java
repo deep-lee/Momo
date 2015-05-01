@@ -111,6 +111,9 @@ public class MainActivity extends ActivityBase implements EventListener, OnClick
 		initWallPhoto();
 		
 		menuFlag = false;
+		
+		// 更新用户地理位置信息
+        updateUserLocation();
 	}
 	
 	private void initWallPhoto() {
@@ -130,7 +133,7 @@ public class MainActivity extends ActivityBase implements EventListener, OnClick
 		    		
 		    		for (int i = 0; i < myPhotoOrigin.length; i++) {
 						CustomApplcation.myWallPhoto.add(myPhotoOrigin[i]);
-						ShowToast(myPhotoOrigin[i]);
+						// ShowToast(myPhotoOrigin[i]);
 					}
 		    		
 				}
@@ -202,7 +205,7 @@ public class MainActivity extends ActivityBase implements EventListener, OnClick
 					//trx = getSupportFragmentManager().beginTransaction();
 					//trx.hide(nearByFragment).commit();
 					nearByFragment.closeShakeListeber();
-					ShowToast("关闭附近的人监听器");
+					// ShowToast("关闭附近的人监听器");
 				}
 				
 			}
@@ -220,7 +223,7 @@ public class MainActivity extends ActivityBase implements EventListener, OnClick
 					//trx.show(nearByFragment).commit();
 					
 					nearByFragment.openShakeListener();
-					ShowToast("打开附近的人监听器");
+					// ShowToast("打开附近的人监听器");
 				}
 			}
 		});
@@ -241,6 +244,9 @@ public class MainActivity extends ActivityBase implements EventListener, OnClick
        // setBehindContentView(R.layout.left_menu_frame);  
         getFragmentManager().beginTransaction()  
                 .replace(R.id.left_fragment, leftMenuFragment).commit();   
+        
+        
+        
 	}
 	
 	
@@ -471,6 +477,7 @@ public class MainActivity extends ActivityBase implements EventListener, OnClick
 		refreshInvite(message);
 	}
 	
+	
 	/** 刷新好友请求
 	  * @Title: notifyAddUser
 	  * @Description: TODO
@@ -539,7 +546,6 @@ public class MainActivity extends ActivityBase implements EventListener, OnClick
 		BmobChat.getInstance(this).stopPollService();
 	}
 
-
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
@@ -556,7 +562,7 @@ public class MainActivity extends ActivityBase implements EventListener, OnClick
 	public void onMenuItemClick(View clickedView, int position) {
 		
 		position--;
-		ShowToast("" + position);
+		// ShowToast("" + position);
 		// TODO Auto-generated method stub
 		if (position >= 0 && position <= 2) {
 			if (nearsSex == position) {
@@ -571,14 +577,9 @@ public class MainActivity extends ActivityBase implements EventListener, OnClick
 			}
 		}
 		
-		
 		// 清除地理位置信息
 		if (position == 3) {
 			
 		}
 	}
-
-	
-	
-	
 }

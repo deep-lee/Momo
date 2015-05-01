@@ -84,13 +84,30 @@
 	                    android:layout_centerHorizontal="true"
 	                    />
 	
-	                <ImageView
+	                <!-- <ImageView
 	                    android:id="@+id/iv_profile_avartar"
 	                    android:layout_width="@dimen/image_profile_avatar_size"
 	                    android:layout_height="@dimen/image_profile_avatar_size"
 	                    android:layout_alignBottom="@+id/v_profile_hearbottom"
 	                    android:layout_centerHorizontal="true"
-	                    android:background="@drawable/default_head" />
+	                    android:background="@drawable/default_head" /> -->
+	                    
+	                    <RelativeLayout 
+					        android:id="@+id/login_set_avator_layout"
+					        android:layout_width="120dp"
+					        android:orientation="vertical"
+					        android:layout_alignBottom="@+id/v_profile_hearbottom"
+					        android:background="@drawable/register_set_avator_layout_bg"
+					        android:layout_centerHorizontal="true"
+					        android:layout_height="120dp">
+					
+					        <ImageView
+					            android:id="@+id/iv_profile_avartar"
+					            android:layout_width="115dp"
+					            android:layout_height="115dp"
+					            android:layout_centerInParent="true"
+					            android:src="@drawable/register_set_avator_default" />
+					    </RelativeLayout>
 	
 	            </RelativeLayout>
 	            <RelativeLayout

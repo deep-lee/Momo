@@ -9,7 +9,8 @@
         android:id="@+id/common_actionbar"
         layout="@layout/include_action_bar" />
     
-    <com.bmob.im.demo.view.MyScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    <com.bmob.im.demo.view.MyScrollView 
+        xmlns:android="http://schemas.android.com/apk/res/android"
 	    android:id="@+id/my_scroll_view"
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent" >

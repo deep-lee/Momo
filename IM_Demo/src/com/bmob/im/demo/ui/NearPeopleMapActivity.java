@@ -67,7 +67,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class NearPeopleMapActivity extends BaseActivity implements OnGetGeoCoderResultListener, onLeftImageButtonClickListener {
+public class NearPeopleMapActivity extends ActivityBase implements OnGetGeoCoderResultListener, onLeftImageButtonClickListener {
 	
 		// 附近的人列表
 		List<User> nears = new ArrayList<User>();

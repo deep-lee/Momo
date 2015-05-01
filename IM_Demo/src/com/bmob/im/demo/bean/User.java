@@ -75,6 +75,16 @@ public class User extends BmobChatUser {
 		
 	private String usuallyAppear;
 	
+	private int recentPlayGame;
+	
+	
+	
+	public int getRecentPlayGame() {
+		return recentPlayGame;
+	}
+	public void setRecentPlayGame(int recentPlayGame) {
+		this.recentPlayGame = recentPlayGame;
+	}
 	public String getPersonalizedSignature() {
 		return personalizedSignature;
 	}

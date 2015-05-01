@@ -2,6 +2,7 @@ package com.deep.momo.game.ui;
 
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.R.layout;
+import com.bmob.im.demo.ui.ActivityBase;
 import com.bmob.im.demo.ui.BaseActivity;
 
 import android.app.Activity;
@@ -12,7 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-public class MyGameActivity extends BaseActivity implements OnClickListener{
+public class MyGameActivity extends ActivityBase implements OnClickListener{
 	
 	View game1, game2, game3;
 

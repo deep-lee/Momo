@@ -15,7 +15,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class SetMessageNotifyActivity extends BaseActivity implements OnClickListener{
+public class SetMessageNotifyActivity extends ActivityBase implements OnClickListener{
 	
 	RelativeLayout rl_switch_notification, rl_switch_voice,
 	rl_switch_vibrate,layout_blacklist;

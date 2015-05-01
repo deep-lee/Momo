@@ -22,7 +22,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class EditPersonalizedSignatureActivity extends BaseActivity {
+public class EditPersonalizedSignatureActivity extends ActivityBase {
 	
 	CircularProgressButton btn_publish;
 	EditText et_personal;

@@ -12,7 +12,7 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 
-public class SlideSetActivity extends BaseActivity implements View.OnClickListener{
+public class SlideSetActivity extends ActivityBase implements View.OnClickListener{
 
 	RelativeLayout accountSafeLayout, accountBangdingLayout, hidingModeLayout, messageNitifyLayout, personDress, emojStoreLayout;
 	

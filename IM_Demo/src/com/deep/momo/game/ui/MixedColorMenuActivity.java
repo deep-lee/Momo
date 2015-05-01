@@ -3,6 +3,7 @@ package com.deep.momo.game.ui;
 
 
 import com.bmob.im.demo.R;
+import com.bmob.im.demo.ui.ActivityBase;
 import com.bmob.im.demo.view.dialog.DialogTips;
 
 import android.app.Activity;
@@ -24,7 +25,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 
 
-public class MixedColorMenuActivity extends Activity implements OnClickListener {
+public class MixedColorMenuActivity extends ActivityBase implements OnClickListener {
 
 
 

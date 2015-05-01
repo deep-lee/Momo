@@ -43,7 +43,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 
-public class PhotoWallActivity extends BaseActivity {
+public class PhotoWallActivity extends ActivityBase {
 	
 	/**
 	 * 用于展示照片墙的GridView

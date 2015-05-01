@@ -1,6 +1,6 @@
 package com.bmob.im.demo.ui;
 
-import android.app.ProgressDialog;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,7 +13,6 @@ import android.view.View.OnClickListener;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import cn.bmob.im.util.BmobLog;
 import cn.bmob.v3.listener.SaveListener;
 
@@ -52,6 +51,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
 		init();
+		
 		//注册退出广播
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(BmobConstants.ACTION_REGISTER_SUCCESS_FINISH);
@@ -67,6 +67,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 				
 			}
 		});
+		
 		// 显示确认对话框
 		dialog.show();
 		dialog = null;
@@ -152,7 +153,6 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 					return;
 				}		
 				
-				
 				login();
 			}
 
@@ -206,7 +206,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 				
 				Intent intent = new Intent(LoginActivity.this,MainActivity.class);
 				startActivity(intent);
-				ShowToast(user.getGameType() + "");
+				// ShowToast(user.getGameType() + "");
 				finish();
 			}
 
@@ -220,7 +220,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 				// 登录失败
 				btn_login.setProgress(-1);
 				BmobLog.i(arg0);
-				ShowToast(arg0);
+				// ShowToast(arg0);
 			}
 		});
 		
