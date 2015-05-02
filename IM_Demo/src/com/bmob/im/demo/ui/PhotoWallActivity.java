@@ -107,9 +107,16 @@ public class PhotoWallActivity extends ActivityBase {
 					startActivityForResult(intent, TO_SELECT_PHOTO);
 				}
 			});
+			
+			
 		}
 		else if(from.equals("other")){
 			initTopBarForLeft("照片墙");
+		}
+		
+		// 女性主题
+		if (!CustomApplcation.sex) {
+			setActionBgForFemale();
 		}
 		
 		mImageThumbSize = getResources().getDimensionPixelSize(

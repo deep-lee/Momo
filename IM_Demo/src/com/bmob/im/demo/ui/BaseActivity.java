@@ -58,7 +58,6 @@ public class BaseActivity extends FragmentActivity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		
-		
 		userManager = BmobUserManager.getInstance(this);
 		manager = BmobChatManager.getInstance(this);
 		mApplication = CustomApplcation.getInstance();
@@ -66,7 +65,6 @@ public class BaseActivity extends FragmentActivity {
 		getWindowManager().getDefaultDisplay().getMetrics(metric);
 		mScreenWidth = metric.widthPixels;
 		mScreenHeight = metric.heightPixels;
-		
 		
 	}
 
@@ -286,6 +284,14 @@ public class BaseActivity extends FragmentActivity {
 	
 	public Boolean isNetAvailable() {
 		return CommonUtils.isNetworkAvailable(this);
+	}
+	
+	public void setActionBgForFemale() {
+		mHeaderLayout.setActionBarBgForFemale();
+	}
+	
+	public void setActionBarRightBtnForFemale() {
+		mHeaderLayout.setActionBarRightBtnForFemale();
 	}
 	
 }

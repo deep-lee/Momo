@@ -66,6 +66,7 @@ import android.view.View;
 import android.view.View.MeasureSpec;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -78,6 +79,7 @@ public class NearPeopleMapActivity extends ActivityBase implements OnGetGeoCoder
 	
 		View layout_marker;
 		TextView markerText, distanceText;
+		ImageView marker_icon_iv;
 		
 		View markerView;
 		// 定位相关
@@ -117,6 +119,7 @@ public class NearPeopleMapActivity extends ActivityBase implements OnGetGeoCoder
 		layout_marker = LayoutInflater.from(this).inflate(R.layout.item_nears_map_marker, null);
 		markerText = (TextView) layout_marker.findViewById(R.id.marker_text);
 		distanceText = (TextView) layout_marker.findViewById(R.id.marker_distance);
+		marker_icon_iv = (ImageView) layout_marker.findViewById(R.id.marker_icon_iv);
 		
 		nearsSex = getIntent().getIntExtra("nearsSex", 2);
 		ShowToast("SEX:" + nearsSex);
@@ -137,6 +140,12 @@ public class NearPeopleMapActivity extends ActivityBase implements OnGetGeoCoder
 		randomGeoPoint = (BmobGeoPoint) getIntent().getSerializableExtra("randomGeoPoint");
 		
 		initTopBarForLeft("附近的人");
+		
+		// 女性主题
+		if (!CustomApplcation.sex) {
+			setActionBgForFemale();
+			marker_icon_iv.setImageResource(R.drawable.nears_map_marker_female);
+		}
 		initBaiduMap();
 		
 		mBaiduMap.setOnMarkerClickListener(new OnMarkerClickListener() {

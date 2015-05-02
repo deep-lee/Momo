@@ -30,6 +30,7 @@ import com.baidu.mapapi.search.geocode.GeoCoder;
 import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
+import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.view.HeaderLayout.onRightImageButtonClickListener;
 
@@ -97,10 +98,22 @@ public class LocationActivity extends ActivityBase implements
 							gotoChatPage();
 						}
 					});
+			
+			// 女性主题
+			if (!CustomApplcation.sex) {
+				setActionBgForFemale();
+				setActionBarRightBtnForFemale();
+			}
 			mHeaderLayout.getRightImageButton().setEnabled(false);
 			initLocClient();
 		} else {// 查看当前位置
 			initTopBarForLeft("位置");
+			
+			// 女性主题
+			if (!CustomApplcation.sex) {
+				setActionBgForFemale();
+				setActionBarRightBtnForFemale();
+			}
 			Bundle b = intent.getExtras();
 			LatLng latlng = new LatLng(b.getDouble("latitude"), b.getDouble("longtitude"));//维度在前，经度在后
 			mBaiduMap.setMapStatus(MapStatusUpdateFactory.newLatLng(latlng));

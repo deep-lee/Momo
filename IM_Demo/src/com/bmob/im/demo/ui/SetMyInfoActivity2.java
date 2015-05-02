@@ -6,14 +6,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
-
 import cn.bmob.im.BmobChatManager;
 import cn.bmob.im.config.BmobConfig;
 import cn.bmob.im.db.BmobDB;
@@ -24,12 +22,11 @@ import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.PushListener;
 import cn.bmob.v3.listener.UpdateListener;
 import cn.bmob.v3.listener.UploadFileListener;
-
 import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
-
 import C.From;
 import android.R.integer;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -67,7 +64,6 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
-
 import com.bmob.im.demo.R.id;
 import com.bmob.im.demo.bean.User;
 import com.bmob.im.demo.config.BmobConstants;
@@ -77,6 +73,7 @@ import com.bmob.im.demo.util.ImageLoadOptions;
 import com.bmob.im.demo.view.CircularProgressView;
 import com.bmob.im.demo.view.InfoScrollView;
 import com.bmob.im.demo.view.HeaderLayout.onRightImageButtonClickListener;
+import com.bmob.im.demo.view.dialog.CustomProgressDialog;
 import com.bmob.im.demo.view.dialog.DialogTips;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.soundcloud.android.crop.Crop;
@@ -137,12 +134,17 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 	
 	
 	Handler otherPhotoHandler = new Handler(){
+		@SuppressLint("HandlerLeak")
 		@Override
 		public void handleMessage(Message msg) {   
             switch (msg.what) {
             
             case 1:
+            	progressView[1].setVisibility(View.VISIBLE);
+				progressView[2].setVisibility(View.VISIBLE);
+				progressView[0].setVisibility(View.VISIBLE);
             	downLoadOtherPhoto();
+            	
             	break;
             }   
             super.handleMessage(msg);   
@@ -177,8 +179,10 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 		from = getIntent().getStringExtra("from"); //me add other
 		username = getIntent().getStringExtra("username");
 		
+		ShowToast(from);
+		
 		if (from.equals("me")) {
-			initTopBarForBoth("¸öÈË×ÊÁÏ", R.drawable.base_action_bar_send_selector, "±à¼­",
+			initTopBarForBoth("ÎÒµÄ×ÊÁÏ", R.drawable.base_action_bar_send_selector, "±à¼­",
 					new onRightImageButtonClickListener() {
 
 						@Override
@@ -190,7 +194,14 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 						}
 			});
 		}else {
-			initTopBarForLeft("×ÊÁÏ");
+			String nick = getIntent().getStringExtra("nick");
+			initTopBarForLeft(nick);
+		}
+		
+		// Å®ÐÔÖ÷Ìâ
+		if (!CustomApplcation.sex) {
+			setActionBgForFemale();
+			setActionBarRightBtnForFemale();
 		}
 		
 		
@@ -205,7 +216,8 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 		photoTask = new ArrayList<MYTask>();
 		
 		if (from.equals("other") || from.equals("add")) {
-			otherWallPhoto = getIntent().getStringArrayListExtra("photo");
+//			otherWallPhoto = getIntent().getStringArrayListExtra("photo");
+			otherWallPhoto = new ArrayList<String>();
 		}
 		
 		layout_all = (RelativeLayout) findViewById(R.id.info_layout_all);
@@ -229,6 +241,11 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 		sv.getView();
 		
 		iv_avatar = (ImageView) findViewById(R.id.iv_profile_avartar);
+		
+		if (!CustomApplcation.sex) {
+			iv_avatar.setImageResource(R.drawable.register_set_avator_default_female);
+		}
+		
 		iv_photo1 = (ImageView) findViewById(R.id.info_photo_1);
 		iv_photo2 = (ImageView) findViewById(R.id.info_photo_2);
 		iv_photo3 = (ImageView) findViewById(R.id.info_photo_3);
@@ -593,7 +610,7 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 	
 	String path = "";
 	
-	ProgressDialog updateAvatarprogressDialog;
+	CustomProgressDialog updateAvatarprogressDialog;
 	private void handleCrop(int resultCode, Intent result) {
         if (resultCode == Activity.RESULT_OK) {
             System.out.println(" handleCrop: Crop.getOutput(result) "+Crop.getOutput(result));
@@ -608,8 +625,7 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
     			return;
 			}else {
 				// ÉÏ´«Í·Ïñ
-	            updateAvatarprogressDialog = new ProgressDialog(SetMyInfoActivity2.this);
-	            updateAvatarprogressDialog.setMessage("ÕýÔÚ¸üÐÂÍ·Ïñ...");
+	            updateAvatarprogressDialog = new CustomProgressDialog(SetMyInfoActivity2.this, "ÕýÔÚ¸üÐÂÍ·Ïñ...");
 	            updateAvatarprogressDialog.setCanceledOnTouchOutside(false);
 	            updateAvatarprogressDialog.show();
 	            
@@ -780,7 +796,7 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 		tv_account.setText(user.getUsername());
 		
 		// ¸öÐÔÇ©Ãû
-		if (user.getPersonalizedSignature().equals("Î´ÌîÐ´")) {
+		if (user.getPersonalizedSignature() == null || user.getPersonalizedSignature().equals("Î´ÌîÐ´")) {
 			rl_personalized_signature.setVisibility(View.GONE);
 		}
 		else {
@@ -797,7 +813,7 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 		tv_love_status.setText(user.getLove());
 		
 		// Ö°Òµ
-		if (user.getCareer().equals("Î´ÌîÐ´")) {
+		if (user.getCareer() == null || user.getCareer().equals("Î´ÌîÐ´")) {
 			rl_career.setVisibility(View.GONE);
 		}else {
 			tv_career.setText(user.getCareer());
@@ -805,7 +821,7 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 		
 		
 		// ¹«Ë¾
-		if (user.getCompany().equals("Î´ÌîÐ´")) {
+		if (user.getCompany() == null || user.getCompany().equals("Î´ÌîÐ´")) {
 			rl_company.setVisibility(View.GONE);
 		}
 		else {
@@ -813,7 +829,7 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 		}
 		
 		// Ñ§Ð£
-		if (user.getSchool().equals("Î´ÌîÐ´")) {
+		if (user.getSchool() == null || user.getSchool().equals("Î´ÌîÐ´")) {
 			rl_school.setVisibility(View.GONE);
 		}
 		else {
@@ -821,7 +837,7 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 		}
 		
 		// ¼ÒÏç
-		if (user.getHometown().equals("Î´ÌîÐ´")) {
+		if (user.getHometown() == null || user.getHometown().equals("Î´ÌîÐ´")) {
 			rl_hometown.setVisibility(View.GONE);
 		}
 		else {
@@ -829,7 +845,7 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 		}
 		
 		// Êé¼®
-		if (user.getBook().equals("Î´ÌîÐ´")) {
+		if (user.getBook() == null || user.getBook().equals("Î´ÌîÐ´")) {
 			rl_book.setVisibility(View.GONE);
 		}
 		else {
@@ -837,7 +853,7 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 		}
 		
 		// µçÓ°
-		if (user.getMovie().equals("Î´ÌîÐ´")) {
+		if (user.getMovie() == null || user.getMovie().equals("Î´ÌîÐ´")) {
 			rl_movie.setVisibility(View.GONE);
 		}
 		else {
@@ -845,7 +861,7 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 		}
 		
 		// ÒôÀÖ
-		if (user.getMusic().equals("Î´ÌîÐ´")) {
+		if (user.getMusic() == null || user.getMusic().equals("Î´ÌîÐ´")) {
 			rl_music.setVisibility(View.GONE);
 		}
 		else {
@@ -861,7 +877,7 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 		}
 		
 		// ÐËÈ¤°®ºÃ
-		if (user.getInterests().equals("Î´ÌîÐ´")) {
+		if (user.getInterests() == null || user.getInterests().equals("Î´ÌîÐ´")) {
 			rl_interests.setVisibility(View.GONE);
 		}
 		else {
@@ -869,7 +885,7 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 		}
 		
 		// ³£³öÃ»µØ
-		if (user.getUsuallyAppear().equals("Î´ÌîÐ´")) {
+		if (user.getUsuallyAppear() == null || user.getUsuallyAppear().equals("Î´ÌîÐ´")) {
 			rl_usually_appear.setVisibility(View.GONE);
 		}
 		else {
@@ -909,7 +925,7 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 		tv_nick.setText(user.getNick());
 				
 		// ¸öÐÔÇ©Ãû
-		if (user.getPersonalizedSignature().equals("Î´ÌîÐ´")) {
+		if (user.getPersonalizedSignature() == null || user.getPersonalizedSignature().equals("Î´ÌîÐ´")) {
 			rl_personalized_signature.setVisibility(View.GONE);
 		}
 		else {
@@ -928,7 +944,7 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 				
 		// Ö°Òµ
 		
-		if (user.getCareer().equals("Î´ÌîÐ´")) {
+		if (user.getCareer() == null || user.getCareer().equals("Î´ÌîÐ´")) {
 			rl_career.setVisibility(View.GONE);
 		}else {
 			rl_career.setVisibility(View.VISIBLE);
@@ -937,7 +953,7 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 				
 				
 		// ¹«Ë¾
-		if (user.getCompany().equals("Î´ÌîÐ´")) {
+		if (user.getCompany() == null || user.getCompany().equals("Î´ÌîÐ´")) {
 			rl_company.setVisibility(View.GONE);
 		}
 		else {
@@ -946,7 +962,7 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 		}
 				
 		// Ñ§Ð£
-		if (user.getSchool().equals("Î´ÌîÐ´")) {
+		if (user.getSchool() == null || user.getSchool().equals("Î´ÌîÐ´")) {
 			rl_school.setVisibility(View.GONE);
 		}
 		else {
@@ -955,7 +971,7 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 		}
 				
 		// ¼ÒÏç
-		if (user.getHometown().equals("Î´ÌîÐ´")) {
+		if (user.getHometown() == null || user.getHometown().equals("Î´ÌîÐ´")) {
 			rl_hometown.setVisibility(View.GONE);
 		}
 		else {
@@ -964,7 +980,7 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 		}
 				
 		// Êé¼®
-		if (user.getBook().equals("Î´ÌîÐ´")) {
+		if (user.getBook() == null || user.getBook().equals("Î´ÌîÐ´")) {
 			rl_book.setVisibility(View.GONE);
 		}
 		else {
@@ -973,7 +989,7 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 		}
 				
 		// µçÓ°
-		if (user.getMovie().equals("Î´ÌîÐ´")) {
+		if (user.getMovie() == null || user.getMovie().equals("Î´ÌîÐ´")) {
 			rl_movie.setVisibility(View.GONE);
 		}
 		else {
@@ -982,7 +998,7 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 		}
 				
 		// ÒôÀÖ
-		if (user.getMusic().equals("Î´ÌîÐ´")) {
+		if (user.getMusic() == null || user.getMusic().equals("Î´ÌîÐ´")) {
 			rl_music.setVisibility(View.GONE);
 		}
 		else {
@@ -991,7 +1007,7 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 		}
 				
 		// ÐËÈ¤°®ºÃ
-		if (user.getInterests().equals("Î´ÌîÐ´")) {
+		if (user.getInterests() == null || user.getInterests().equals("Î´ÌîÐ´")) {
 			rl_interests.setVisibility(View.GONE);
 		}
 		else {
@@ -1000,7 +1016,7 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 		}
 				
 		// ³£³öÃ»µØ
-		if (user.getUsuallyAppear().equals("Î´ÌîÐ´")) {
+		if (user.getUsuallyAppear() == null || user.getUsuallyAppear().equals("Î´ÌîÐ´")) {
 			rl_usually_appear.setVisibility(View.GONE);
 		}
 		else {
@@ -1044,43 +1060,45 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 	 * author£ºdeeplee
 	 */
 	private void downLoadOtherPhoto() {
-		if (otherWallPhoto.size() > 0) {
-			if (otherWallPhoto.size() >= 1 && !otherWallPhoto.get(0).equals("") && otherWallPhoto.get(0) != null) {
-				MYTask task1 = new MYTask(iv_photo1);
-				task1.execute(otherWallPhoto.get(0));
-				photoTask.add(task1);
+		if (otherWallPhoto != null) {
+			if (otherWallPhoto.size() > 0) {
+				if (otherWallPhoto.size() >= 1 && !otherWallPhoto.get(0).equals("") && otherWallPhoto.get(0) != null) {
+					MYTask task1 = new MYTask(iv_photo1);
+					task1.execute(otherWallPhoto.get(0));
+					photoTask.add(task1);
+				}
+				else {
+					progressView[0].setVisibility(View.INVISIBLE);
+					iv_photo1.setVisibility(View.INVISIBLE);
+				}
+				if (otherWallPhoto.size() >= 2 && !otherWallPhoto.get(1).equals("") && otherWallPhoto.get(1) != null) {
+					MYTask task2 = new MYTask(iv_photo2);
+					task2.execute(otherWallPhoto.get(1));
+					photoTask.add(task2);
+				}
+				else {
+					progressView[1].setVisibility(View.INVISIBLE);
+					iv_photo2.setVisibility(View.INVISIBLE);
+				}
+				
+				if (otherWallPhoto.size() >= 3 && !otherWallPhoto.get(2).equals("") && otherWallPhoto.get(2) != null) {
+					MYTask task3 = new MYTask(iv_photo3);
+					task3.execute(otherWallPhoto.get(2));
+					photoTask.add(task3);
+				}
+				else {
+					progressView[2].setVisibility(View.INVISIBLE);
+					iv_photo3.setVisibility(View.INVISIBLE);
+				}
 			}
 			else {
-				progressView[0].setVisibility(View.INVISIBLE);
 				iv_photo1.setVisibility(View.INVISIBLE);
-			}
-			if (otherWallPhoto.size() >= 2 && !otherWallPhoto.get(1).equals("") && otherWallPhoto.get(1) != null) {
-				MYTask task2 = new MYTask(iv_photo2);
-				task2.execute(otherWallPhoto.get(1));
-				photoTask.add(task2);
-			}
-			else {
-				progressView[1].setVisibility(View.INVISIBLE);
 				iv_photo2.setVisibility(View.INVISIBLE);
-			}
-			
-			if (otherWallPhoto.size() >= 3 && !otherWallPhoto.get(2).equals("") && otherWallPhoto.get(2) != null) {
-				MYTask task3 = new MYTask(iv_photo3);
-				task3.execute(otherWallPhoto.get(2));
-				photoTask.add(task3);
-			}
-			else {
-				progressView[2].setVisibility(View.INVISIBLE);
 				iv_photo3.setVisibility(View.INVISIBLE);
+				progressView[1].setVisibility(View.INVISIBLE);
+				progressView[2].setVisibility(View.INVISIBLE);
+				progressView[0].setVisibility(View.INVISIBLE);
 			}
-		}
-		else {
-			iv_photo1.setVisibility(View.INVISIBLE);
-			iv_photo2.setVisibility(View.INVISIBLE);
-			iv_photo3.setVisibility(View.INVISIBLE);
-			progressView[1].setVisibility(View.INVISIBLE);
-			progressView[2].setVisibility(View.INVISIBLE);
-			progressView[0].setVisibility(View.INVISIBLE);
 		}
 	}
 	
@@ -1154,12 +1172,14 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 		// TODO Auto-generated method stub
 		super.onResume();
 		// Èç¹ûÊÇ¸öÈË×ÊÁÏµÄ»°
-		if (from.equals("me")) {
-			initMeData();
-			downLoadPhoto();
-		}
-		else {
-			downLoadOtherPhoto();
+		if (from != null) {
+			if (from.equals("me")) {
+				initMeData();
+				downLoadPhoto();
+			}
+			else {
+				downLoadOtherPhoto();
+			}
 		}
 		
 		if (update) {

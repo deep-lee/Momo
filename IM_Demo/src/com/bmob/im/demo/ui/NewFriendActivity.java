@@ -9,6 +9,7 @@ import android.widget.ListView;
 import cn.bmob.im.bean.BmobInvitation;
 import cn.bmob.im.db.BmobDB;
 
+import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.adapter.NewFriendAdapter;
 import com.bmob.im.demo.view.dialog.DialogTips;
@@ -38,6 +39,10 @@ public class NewFriendActivity extends ActivityBase implements OnItemLongClickLi
 	
 	private void initView(){
 		initTopBarForLeft("新朋友");
+		// 女性主题
+		if (!CustomApplcation.sex) {
+			setActionBgForFemale();
+		}
 		listview = (ListView)findViewById(R.id.list_newfriend);
 		listview.setOnItemLongClickListener(this);
 		adapter = new NewFriendAdapter(this,BmobDB.create(this).queryBmobInviteList());

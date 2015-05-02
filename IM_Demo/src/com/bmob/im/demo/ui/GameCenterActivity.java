@@ -31,12 +31,18 @@ public class GameCenterActivity extends ActivityBase {
 		setContentView(R.layout.activity_game_center);
 		
 		initTopBarForLeft("游戏中心");
+		// 女性主题
+		if (!CustomApplcation.sex) {
+			setActionBgForFemale();
+		}
 		
 		user = userManager.getCurrentUser(User.class);
 		
 		 mListView=(ListView) findViewById(R.id.game_list_view);  
 	     GameCardAdapter mAdapter=new GameCardAdapter(this, CustomApplcation.gameCardList);  
 	     mListView.setAdapter(mAdapter);  
+	     
+//	     setActionBgForFemale();;
 	}
 	
 	public void updateUserData(User user,UpdateListener listener){

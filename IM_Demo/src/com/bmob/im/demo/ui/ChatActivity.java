@@ -57,6 +57,7 @@ import cn.bmob.im.inteface.UploadListener;
 import cn.bmob.im.util.BmobLog;
 import cn.bmob.v3.listener.PushListener;
 
+import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.MyMessageReceiver;
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.adapter.EmoViewPagerAdapter;
@@ -198,6 +199,11 @@ public class ChatActivity extends ActivityBase implements OnClickListener,
 		mHeaderLayout = (HeaderLayout) findViewById(R.id.common_actionbar);
 		mListView = (XListView) findViewById(R.id.mListView);
 		initTopBarForLeft(targetUser.getNick());
+		
+		// 女性主题
+		if (!CustomApplcation.sex) {
+			setActionBgForFemale();
+		}
 		
 		// 初始化界面下方的控件
 		initBottomView();

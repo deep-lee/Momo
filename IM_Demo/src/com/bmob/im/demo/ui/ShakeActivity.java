@@ -1,5 +1,6 @@
 package com.bmob.im.demo.ui;
 
+import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.R.layout;
 import com.bmob.im.demo.util.ShakeListener;
@@ -33,6 +34,10 @@ public class ShakeActivity extends ActivityBase {
 		setContentView(R.layout.activity_shake);
 		
 		initTopBarForLeft("摇一摇");
+		// 女性主题
+		if (!CustomApplcation.sex) {
+			setActionBgForFemale();
+		}
 		
 		mVibrator = (Vibrator)getApplication().getSystemService(VIBRATOR_SERVICE);
 		

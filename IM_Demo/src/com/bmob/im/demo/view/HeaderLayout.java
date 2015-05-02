@@ -1,6 +1,7 @@
 package com.bmob.im.demo.view;
 
 import android.R.integer;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -9,8 +10,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.util.PixelUtil;
 
@@ -29,6 +30,8 @@ public class HeaderLayout extends LinearLayout {
 	private LinearLayout mLayoutRightImageButtonLayout;
 	private Button mRightImageButton;
 	private onRightImageButtonClickListener mRightImageButtonClickListener;
+	
+	private RelativeLayout root_layout;
 
 	private LinearLayout mLayoutLeftImageButtonLayout;
 	private ImageButton mLeftImageButton;
@@ -50,6 +53,7 @@ public class HeaderLayout extends LinearLayout {
 		init(context);
 	}
 
+	@SuppressLint("InflateParams")
 	public void init(Context context) {
 		mInflater = LayoutInflater.from(context);
 		mHeader = mInflater.inflate(R.layout.common_header, null);
@@ -58,6 +62,8 @@ public class HeaderLayout extends LinearLayout {
 	}
 
 	public void initViews() {
+		
+		root_layout = (RelativeLayout) findViewByHeaderId(R.id.header_root_layout);
 		mLayoutLeftContainer = (LinearLayout) findViewByHeaderId(R.id.header_layout_leftview_container);
 		// mLayoutMiddleContainer = (LinearLayout)
 		// findViewByHeaderId(R.id.header_layout_middleview_container);中间部分添加搜索或者其他按钮时可打开
@@ -234,6 +240,14 @@ public class HeaderLayout extends LinearLayout {
 
 	public interface onLeftImageButtonClickListener {
 		void onClick();
+	}
+	
+	public void setActionBarBgForFemale() {
+		root_layout.setBackgroundResource(R.drawable.common_action_bar_bg_female);
+	}
+	
+	public void setActionBarRightBtnForFemale() {
+		mRightImageButton.setBackgroundResource(R.drawable.base_action_bar_send_female_selector);
 	}
 
 }

@@ -41,6 +41,10 @@ public class BlackListActivity extends ActivityBase implements OnItemClickListen
 	private void initView() {
 		mHeaderLayout = (HeaderLayout) findViewById(R.id.common_actionbar);
 		initTopBarForLeft("黑名单");
+		// 女性主题
+		if (!CustomApplcation.sex) {
+			setActionBgForFemale();
+		}
 		adapter = new BlackListAdapter(this, BmobDB.create(this).getBlackList());
 		listview = (ListView) findViewById(R.id.list_blacklist);
 		listview.setOnItemClickListener(this);

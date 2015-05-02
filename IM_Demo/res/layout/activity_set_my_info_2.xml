@@ -351,8 +351,10 @@
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:layout_gravity="bottom"
+					android:background="@drawable/radius_bg"  
 					android:layout_alignParentBottom="true"
 					android:layout_below="@+id/common_info_other"
+					android:layout_marginTop="15dp"
 					android:orientation="vertical" >
 			        	
 			  

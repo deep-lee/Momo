@@ -57,6 +57,8 @@ public class CustomApplcation extends Application {
 	
 	public static int numOfPhoto = 0;
 	
+	public static Boolean sex = true;
+	
 	public static List<GameCard> gameCardList = new ArrayList<GameCard>();
 	
 	public static ArrayList<Integer> gameName = new ArrayList<Integer>();

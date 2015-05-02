@@ -16,6 +16,7 @@ import com.bmob.im.demo.config.BmobConstants;
 import com.bmob.im.demo.util.CommonUtils;
 import com.bmob.im.demo.view.EditTextWithDel;
 import com.bmob.im.demo.view.HeaderLayout;
+import com.bmob.im.demo.view.dialog.CustomProgressDialog;
 import com.bmob.im.demo.view.dialog.DateChooseDialog;
 import com.bmob.im.demo.view.dialog.SingleChoiceDialog;
 import com.soundcloud.android.crop.Crop;
@@ -50,7 +51,7 @@ public class EditMyInfoActivity extends ActivityBase implements OnClickListener{
 	
 	String gameType, gameDifficulty, lovtStatus;
 	
-	ProgressDialog updateDialog = null;
+	CustomProgressDialog updateDialog = null;
 	
 	public static int SELECT_CAREER = 10;
 	
@@ -74,6 +75,12 @@ public class EditMyInfoActivity extends ActivityBase implements OnClickListener{
 				checkAndUpdate();
 			}
 		});
+		
+		// ≈Æ–‘÷˜Ã‚
+		if (!CustomApplcation.sex) {
+			setActionBgForFemale();
+			setActionBarRightBtnForFemale();
+		}
 		
 		currentUser = userManager.getCurrentUser(User.class);
 		
@@ -118,7 +125,7 @@ public class EditMyInfoActivity extends ActivityBase implements OnClickListener{
 			et_nick.setText(currentUser.getNick());
 			tv_birthday.setText(currentUser.getBirthday());
 			
-			if (currentUser.getPersonalizedSignature().equals("Œ¥ÃÓ–¥")) {
+			if (currentUser.getPersonalizedSignature() == null || currentUser.getPersonalizedSignature().equals("Œ¥ÃÓ–¥")) {
 				et_personalized_signature.setText("");
 			}
 			else {
@@ -129,57 +136,57 @@ public class EditMyInfoActivity extends ActivityBase implements OnClickListener{
 			tv_game_difficulty.setText(currentUser.getGameDifficulty());
 			tv_love_status.setText(currentUser.getLove());
 			
-			if (currentUser.getCareer().equals("Œ¥ÃÓ–¥")) {
+			if (currentUser.getCareer() == null || currentUser.getCareer().equals("Œ¥ÃÓ–¥")) {
 				tv_career.setText("«Î—°‘ÒÀ˘ Ù––“µ");
 			}else {
 				tv_career.setText(currentUser.getCareer());
 			}
 			
-			if (currentUser.getCompany().equals("Œ¥ÃÓ–¥")) {
+			if (currentUser.getCompany() == null || currentUser.getCompany().equals("Œ¥ÃÓ–¥")) {
 				et_company.setText("");
 			}else {
 				et_company.setText(currentUser.getCompany());
 			}
 			
-			if (currentUser.getSchool().equals("Œ¥ÃÓ–¥")) {
+			if (currentUser.getSchool() == null || currentUser.getSchool().equals("Œ¥ÃÓ–¥")) {
 				et_school.setText("");
 			}else {
 				et_school.setText(currentUser.getSchool());
 			}
 			
-			if (currentUser.getHometown().equals("Œ¥ÃÓ–¥")) {
+			if (currentUser.getHometown() == null || currentUser.getHometown().equals("Œ¥ÃÓ–¥")) {
 				tv_hometown.setText("«Î—°‘Òƒ„µƒº“œÁ");
 			}else {
 				tv_hometown.setText(currentUser.getHometown());
 			}
 			
-			if (currentUser.getBook().equals("Œ¥ÃÓ–¥")) {
+			if (currentUser.getBook() == null || currentUser.getBook().equals("Œ¥ÃÓ–¥")) {
 				et_book.setText("");
 			}else {
 				et_book.setText(currentUser.getBook());
 			}
 			
-			if (currentUser.getMovie().equals("Œ¥ÃÓ–¥")) {
+			if (currentUser.getMovie() == null || currentUser.getMovie().equals("Œ¥ÃÓ–¥")) {
 				et_movie.setText("");
 			}else {
 				et_movie.setText(currentUser.getMovie());
 			}
 			
-			if (currentUser.getMusic().equals("Œ¥ÃÓ–¥")) {
+			if (currentUser.getMusic() == null || currentUser.getMusic().equals("Œ¥ÃÓ–¥")) {
 				et_music.setText("");
 			}else {
 				et_music.setText(currentUser.getMusic());
 			}
 			
 			
-			if (currentUser.getInterests().equals("Œ¥ÃÓ–¥")) {
+			if (currentUser.getInterests() == null || currentUser.getInterests().equals("Œ¥ÃÓ–¥")) {
 				et_interests.setText("");
 			}
 			else {
 				et_interests.setText(currentUser.getInterests());
 			}
 			
-			if (currentUser.getUsuallyAppear().equals("Œ¥ÃÓ–¥")) {
+			if (currentUser.getUsuallyAppear() == null || currentUser.getUsuallyAppear().equals("Œ¥ÃÓ–¥")) {
 				et_usually_appear.setText("");
 			}else {
 				et_usually_appear.setText(currentUser.getUsuallyAppear());
@@ -280,9 +287,9 @@ public class EditMyInfoActivity extends ActivityBase implements OnClickListener{
 			user.setUsuallyAppear(et_usually_appear.getText().toString());
 		}
 		
-		updateDialog = new ProgressDialog(EditMyInfoActivity.this);
-		updateDialog.setMessage("’˝‘⁄∏¸–¬◊ ¡œ...");
+		updateDialog = new CustomProgressDialog(EditMyInfoActivity.this, "’˝‘⁄∏¸–¬◊ ¡œ...");
 		updateDialog.setCanceledOnTouchOutside(false);
+		updateDialog.setCancelable(false);
 		updateDialog.show();
 		
 		updateUserData(user, new UpdateListener() {

@@ -2,6 +2,7 @@ package com.bmob.im.demo.ui;
 
 import cn.bmob.v3.listener.UpdateListener;
 
+import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.R.layout;
 import com.bmob.im.demo.bean.User;
@@ -51,6 +52,11 @@ public class EditPersonalizedSignatureActivity extends ActivityBase {
 		setContentView(R.layout.activity_edit_personalized_signature);
 		
 		initTopBarForLeft("我的签名");
+		
+		// 女性主题
+		if (!CustomApplcation.sex) {
+			setActionBgForFemale();
+		}
 		
 		user = userManager.getCurrentUser(User.class); 
 		

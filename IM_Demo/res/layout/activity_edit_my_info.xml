@@ -24,12 +24,14 @@
 				 	android:id="@+id/common_info_edit_basic"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
+					android:layout_marginTop="15dp"
 					layout="@layout/include_edit_info_basic" />
 		         
 		         <include
 				 	android:id="@+id/common_info_edit_hobbi"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
+					android:layout_marginTop="15dp"
 					android:layout_below="@+id/common_info_edit_basic"
 					layout="@layout/include_edit_info_hobbi" />
 		         
@@ -37,6 +39,7 @@
 				 	android:id="@+id/common_info_edit_other"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
+					android:layout_marginTop="15dp"
 					android:layout_below="@+id/common_info_edit_hobbi"
 					layout="@layout/include_edit_info_other" />
 		        

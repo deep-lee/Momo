@@ -27,6 +27,7 @@ import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.baoyz.swipemenulistview.SwipeMenuListView.OnMenuItemClickListener;
 import com.baoyz.swipemenulistview.SwipeMenuListView.OnSwipeListener;
+import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.adapter.MessageRecentAdapter;
 import com.bmob.im.demo.ui.ChatActivity;
@@ -78,6 +79,13 @@ public class RecentFragment extends FragmentBase implements OnItemClickListener,
 				MainActivity.showLeft();
 			}
 		});
+		
+		
+		// 女性主题
+		if (!CustomApplcation.sex) {
+			setActionBgForFemale();
+		}
+		
 		mListView = (SwipeMenuListView)findViewById(R.id.list);
 		mListView.setOnItemClickListener(this);
 		mListView.setOnItemLongClickListener(this);		

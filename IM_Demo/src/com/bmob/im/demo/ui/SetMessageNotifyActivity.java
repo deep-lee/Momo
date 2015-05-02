@@ -1,5 +1,6 @@
 package com.bmob.im.demo.ui;
 
+import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.R.layout;
 import com.bmob.im.demo.util.SharePreferenceUtil;
@@ -36,6 +37,11 @@ public class SetMessageNotifyActivity extends ActivityBase implements OnClickLis
 		mSharedUtil = mApplication.getSpUtil();
 		
 		initTopBarForLeft("新消息提醒");
+		
+		// 女性主题
+		if (!CustomApplcation.sex) {
+			setActionBgForFemale();
+		}
 		
 		
 		rl_switch_notification = (RelativeLayout) findViewById(R.id.slide_rl_switch_notification);

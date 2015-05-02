@@ -18,8 +18,10 @@ import java.util.List;
 
 
 
+
 import cn.bmob.v3.listener.UpdateListener;
 
+import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.GameCard;
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.bean.User;
@@ -79,13 +81,16 @@ public class GameCardAdapter extends BaseAdapter
         if (convertView == null) {
 			convertView = LayoutInflater.from(mContext).inflate(R.layout.game_list_card_item, null);
 		}
-        
+          
         mHolder.gameName = (TextView)convertView.findViewById(R.id.card_item_title);  
         mHolder.game_icon=(ImageView)convertView.findViewById(R.id.card_item_icon);  
         mHolder.gameRuleDetails = (TextView) convertView.findViewById(R.id.card_item_game_rule_details);
         mHolder.gameWinMethod = (TextView) convertView.findViewById(R.id.card_item_game_win_method_details);
         mHolder.play_game = (ImageButton) convertView.findViewById(R.id.card_item_play);
         
+        if (!CustomApplcation.sex) {
+			mHolder.play_game.setImageResource(R.drawable.base_game_card_list_play_female_selector);
+		}
         
         //记住啊，这里是setImageResource()方法，不是setBackgroundResource(),否则图像会变形啊  
         mHolder.game_icon.setImageResource(mCards.get(Index).getDrawable()); 

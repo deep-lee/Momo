@@ -119,7 +119,7 @@ public class LeftFragment extends Fragment {
             slideNick.setText(user.getNick());
             
             // ¸öĞÔÇ©Ãû
-            if (user.getPersonalizedSignature().equals("Î´ÌîĞ´")) {
+            if (user.getPersonalizedSignature() == null || user.getPersonalizedSignature().equals("Î´ÌîĞ´")) {
     			slide_personalized_signature.setText("ËµµãÊ²Ã´°É...");
     		}else {
     			slide_personalized_signature.setText(user.getPersonalizedSignature());
@@ -276,7 +276,7 @@ public class LeftFragment extends Fragment {
 			refreshAvatar(user.getAvatar());
 		}
 		
-		if (user.getPersonalizedSignature().equals("Î´ÌîĞ´")) {
+		if (user.getPersonalizedSignature() == null || user.getPersonalizedSignature().equals("Î´ÌîĞ´")) {
 			slide_personalized_signature.setText("ËµµãÊ²Ã´°É...");
 		}else {
 			slide_personalized_signature.setText(user.getPersonalizedSignature());

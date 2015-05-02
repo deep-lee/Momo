@@ -43,6 +43,7 @@ import com.bmob.im.demo.ui.BlackListActivity;
 import com.bmob.im.demo.ui.FragmentBase;
 import com.bmob.im.demo.ui.NewFriendActivity;
 import com.bmob.im.demo.ui.SetMyInfoActivity;
+import com.bmob.im.demo.ui.SetMyInfoActivity2;
 import com.bmob.im.demo.util.CharacterParser;
 import com.bmob.im.demo.util.CollectionUtils;
 import com.bmob.im.demo.util.PinyinComparator;
@@ -113,6 +114,12 @@ public class ContactFragment extends FragmentBase implements OnItemClickListener
 						startAnimActivity(AddFriendActivity.class);
 					}
 				});
+		
+		// 女性主题
+		if (!CustomApplcation.sex) {
+			setActionBgForFemale();
+		}
+		
 		// 初始化好友列表
 		initListView();
 		// 初始化字母索引
@@ -383,9 +390,10 @@ public class ContactFragment extends FragmentBase implements OnItemClickListener
 		// TODO Auto-generated method stub
 		User user = (User) userAdapter.getItem(position-1);
 		//先进入好友的详细资料页面
-		Intent intent =new Intent(getActivity(),SetMyInfoActivity.class);
+		Intent intent =new Intent(getActivity(),SetMyInfoActivity2.class);
 		intent.putExtra("from", "other");
 		intent.putExtra("username", user.getUsername());
+		intent.putExtra("nick", user.getNick());
 		startAnimActivity(intent);
 		
 	}

@@ -215,6 +215,11 @@ public class SetMyInfoActivity extends ActivityBase implements OnClickListener {
 			}
 			initOtherData(username);
 		}
+		
+		// 女性主题
+		if (!CustomApplcation.sex) {
+			setActionBgForFemale();
+		}
 	}
 
 	private void initMeData() {

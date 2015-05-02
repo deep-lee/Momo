@@ -46,11 +46,13 @@ public class PhotoWallFallActivity extends ActivityBase {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_photo_wall_fall);
 		
-		otherPhotoWall = new ArrayList<String>();
+//		otherPhotoWall = new ArrayList<String>();
 		
 		photoWallView = (MyScrollView) findViewById(R.id.my_scroll_view);
 		
 		from = getIntent().getStringExtra("from");
+		
+		
 		
 		if (from.equals("me")) {
 			initTopBarForBoth("照片墙", R.drawable.base_action_bar_upload_selector, new onRightImageButtonClickListener() {
@@ -65,6 +67,13 @@ public class PhotoWallFallActivity extends ActivityBase {
 		}
 		else if(from.equals("other")){
 			initTopBarForLeft("照片墙");
+			
+			otherPhotoWall = getIntent().getStringArrayListExtra("photo");
+		}
+		
+		// 女性主题
+		if (!CustomApplcation.sex) {
+			setActionBgForFemale();
 		}
 	}
 	

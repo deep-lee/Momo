@@ -16,6 +16,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import cn.bmob.im.BmobChat;
 import cn.bmob.im.BmobChatManager;
 import cn.bmob.im.BmobNotifyManager;
@@ -28,6 +29,7 @@ import cn.bmob.im.inteface.EventListener;
 import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.MyMessageReceiver;
 import com.bmob.im.demo.R;
+import com.bmob.im.demo.R.id;
 import com.bmob.im.demo.bean.User;
 import com.bmob.im.demo.ui.fragment.ContactFragment;
 import com.bmob.im.demo.ui.fragment.LeftFragment;
@@ -80,6 +82,8 @@ public class MainActivity extends ActivityBase implements EventListener, OnClick
 	
 	int nearsSex;
 	
+	RelativeLayout main_bottom_layout;
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +112,9 @@ public class MainActivity extends ActivityBase implements EventListener, OnClick
 		mTabs[2] = (ImageButton) findViewById(R.id.btn_nears);
 		iv_recent_tips = (ImageView)findViewById(R.id.iv_recent_tips);
 		iv_contact_tips = (ImageView)findViewById(R.id.iv_contact_tips);
+		
+		main_bottom_layout = (RelativeLayout) findViewById(R.id.main_bottom_layout);
+		
 		//把第一个tab设为选中状态
 		mTabs[0].setSelected(true);
 		
@@ -122,6 +129,13 @@ public class MainActivity extends ActivityBase implements EventListener, OnClick
 		
 		// 更新用户地理位置信息
         updateUserLocation();
+        
+        User user = userManager.getCurrentUser(User.class);
+        CustomApplcation.sex = user.getSex();
+        
+        if (!CustomApplcation.sex) {
+			main_bottom_layout.setBackgroundResource(R.drawable.common_main_bottom_bg_female);
+		}
 	}
 	
 	private void initWallPhoto() {

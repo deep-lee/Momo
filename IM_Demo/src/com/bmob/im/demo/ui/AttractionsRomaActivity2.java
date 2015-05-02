@@ -2,6 +2,7 @@ package com.bmob.im.demo.ui;
 
 import cn.bmob.v3.datatype.BmobGeoPoint;
 
+import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.config.Attractions;
 import com.bmob.im.demo.config.BmobConstants;
@@ -196,6 +197,11 @@ public class AttractionsRomaActivity2 extends ActivityBase {
 	private void initView() {
 		
 		initTopBarForLeft("景点漫游");
+		
+		// 女性主题
+		if (!CustomApplcation.sex) {
+			setActionBgForFemale();
+		}
 		attractions = new Attractions();
 		
 		plant = (ImageView) findViewById(R.id.roma_sky_bg_plante);

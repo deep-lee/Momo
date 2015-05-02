@@ -31,8 +31,9 @@
         </LinearLayout>
 
         <ImageView
-            android:layout_width="75dip"
-            android:layout_height="150dip"
+            android:id="@+id/marker_icon_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/marker_text_layout"
             android:layout_centerInParent="true"
             android:src="@drawable/nears_map_marker" />

@@ -19,6 +19,7 @@ import cn.bmob.im.util.BmobLog;
 import cn.bmob.v3.listener.CountListener;
 import cn.bmob.v3.listener.FindListener;
 
+import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.adapter.AddFriendAdapter;
 import com.bmob.im.demo.util.CollectionUtils;
@@ -57,6 +58,12 @@ public class AddFriendActivity extends ActivityBase implements OnClickListener,I
 	
 	private void initView(){
 		initTopBarForLeft("查找好友");
+		
+		// 女性主题
+		if (!CustomApplcation.sex) {
+			setActionBgForFemale();
+		}
+				
 		et_find_name = (EditText)findViewById(R.id.et_find_name);
 		btn_search = (CircularProgressButton)findViewById(R.id.btn_search);
 		btn_search.setOnClickListener(this);

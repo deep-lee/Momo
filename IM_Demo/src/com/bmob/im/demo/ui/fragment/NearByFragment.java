@@ -27,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.ui.FragmentBase;
 import com.bmob.im.demo.ui.MainActivity;
@@ -102,7 +103,7 @@ public class NearByFragment extends FragmentBase implements OnClickListener{
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		
-        return inflater.inflate(R.layout.fragment_shake_male, container, false);
+        return inflater.inflate(R.layout.fragment_shake_2, container, false);
 	}
 	
     private List<MenuObject> getMenuObjects() {
@@ -125,22 +126,19 @@ public class NearByFragment extends FragmentBase implements OnClickListener{
         List<MenuObject> menuObjects = new ArrayList<MenuObject>();
 
         MenuObject close = new MenuObject();
-        close.setResource(R.drawable.icn_close);
+        close.setResource(CustomApplcation.sex? R.drawable.icn_close : R.drawable.icn_close_female);
 
         MenuObject send = new MenuObject("只看女生");
-        send.setResource(R.drawable.icon_info_female);
+        send.setResource(CustomApplcation.sex? R.drawable.icon_info_female : R.drawable.icon_info_female_female);
 
         MenuObject like = new MenuObject("只看男生");
-        Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.icon_info_male);
-        like.setBitmap(b);
+        like.setResource(CustomApplcation.sex? R.drawable.icon_info_male : R.drawable.icon_info_male_female);
 
         MenuObject addFr = new MenuObject("查看全部");
-        BitmapDrawable bd = new BitmapDrawable(getResources(),
-                BitmapFactory.decodeResource(getResources(), R.drawable.ic_nears_all_people));
-        addFr.setDrawable(bd);
+        addFr.setResource(CustomApplcation.sex? R.drawable.ic_nears_all_people : R.drawable.ic_nears_all_people_female);
   
         MenuObject addFav = new MenuObject("清除地理位置信息");
-        addFav.setResource(R.drawable.ic_nears_clean_position_info);
+        addFav.setResource(CustomApplcation.sex? R.drawable.ic_nears_clean_position_info : R.drawable.ic_nears_clean_position_info_female);
 //
 //        MenuObject block = new MenuObject("Block user");
 //        block.setResource(R.drawable.icn_5);
@@ -220,6 +218,11 @@ public class NearByFragment extends FragmentBase implements OnClickListener{
 			}
 		});
 		
+		// 女性主题
+		if (!CustomApplcation.sex) {
+			setActionBgForFemale();
+		}
+		
 		
 		setNearsSex(nearsSex);
 		
@@ -232,6 +235,12 @@ public class NearByFragment extends FragmentBase implements OnClickListener{
 		iv_nears_people1 = (ImageView) findViewById(R.id.iv_icon_nears_people_1);
 		iv_nears_people2 = (ImageView) findViewById(R.id.iv_icon_nears_people_2);
 		iv_nears_people3 = (ImageView) findViewById(R.id.iv_icon_nears_people_3);
+		
+		if (!CustomApplcation.sex) {
+			iv_nears_people1.setImageResource(R.drawable.icon_near_people1_female);
+			iv_nears_people2.setImageResource(R.drawable.icon_near_people2_female);
+			iv_nears_people3.setImageResource(R.drawable.icon_near_people3_female);
+		}
 		
 		rotateOutRight = new YoYo.AnimationComposer(new RotateOutUpRightAnimator())
 		.duration(1000)

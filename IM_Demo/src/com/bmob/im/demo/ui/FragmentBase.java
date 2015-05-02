@@ -223,4 +223,8 @@ public abstract class FragmentBase extends Fragment {
 		getActivity().startActivity(new Intent(getActivity(), cla));
 	}
 	
+	public void setActionBgForFemale() {
+		mHeaderLayout.setActionBarBgForFemale();
+	}
+	
 }
