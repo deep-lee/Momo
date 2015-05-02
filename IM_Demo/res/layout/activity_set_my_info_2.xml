@@ -237,14 +237,13 @@
 	                android:background="@drawable/radius_bg"  
         			android:layout_marginTop="15dp"
 	                android:layout_height="60dp"
-	                
 	                android:layout_width="fill_parent">
 	                
 	                <LinearLayout 
 	                    android:layout_height="20dp"
 	                    android:orientation="horizontal"
 	                    android:layout_centerVertical="true"
-	                    android:background="#C1D2F0"
+	                    
 	                    android:layout_marginLeft="10dp"
 	                    android:layout_width="50dp">
 	                    
@@ -252,15 +251,16 @@
 		                    android:id="@+id/info_sex_iv" 
 		                    android:layout_height="20dp"
 		                    android:layout_marginLeft="7dp"
-		                    android:src="@drawable/icon_info_female"
+		                    android:src="@drawable/set_my_info_male"
 		                    android:layout_width="20dp"/>
-		                <TextView 
-		                    android:id="@+id/info_age_tv"
-		                    android:text="20"
-		                    android:textColor="#ffffff"
-		                    android:layout_gravity="center"
-		                    android:layout_height="wrap_content"
-		                    android:layout_width="wrap_content"/>
+
+	                    <TextView
+	                        android:id="@+id/info_age_tv"
+	                        android:layout_width="wrap_content"
+	                        android:layout_height="wrap_content"
+	                        android:text="20"
+	                        android:textColor="#999999" />
+
 	                </LinearLayout>
 	                
 	                <LinearLayout 

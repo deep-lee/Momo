@@ -19,9 +19,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.TranslateAnimation;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -34,6 +36,14 @@ import com.bmob.im.demo.util.ShakeListener;
 import com.bmob.im.demo.util.ShakeListener.OnShakeListener;
 import com.bmob.im.demo.view.HeaderLayout.onRightImageButtonClickListener;
 import com.bmob.im.demo.view.TitlePopup;
+import com.daimajia.androidanimations.library.YoYo;
+import com.daimajia.androidanimations.library.rotating_entrances.RotateInAnimator;
+import com.daimajia.androidanimations.library.rotating_entrances.RotateInUpLeftAnimator;
+import com.daimajia.androidanimations.library.rotating_entrances.RotateInUpRightAnimator;
+import com.daimajia.androidanimations.library.rotating_exits.RotateOutAnimator;
+import com.daimajia.androidanimations.library.rotating_exits.RotateOutUpLeftAnimator;
+import com.daimajia.androidanimations.library.rotating_exits.RotateOutUpRightAnimator;
+import com.nineoldandroids.animation.Animator;
 import com.yalantis.contextmenu.lib.ContextMenuDialogFragment;
 import com.yalantis.contextmenu.lib.MenuObject;
 import com.yalantis.contextmenu.lib.interfaces.OnMenuItemClickListener;
@@ -46,15 +56,19 @@ public class NearByFragment extends FragmentBase implements OnClickListener{
 	
 	public ShakeListener mShakeListener = null;
 	Vibrator mVibrator;
-	private RelativeLayout mImgUp;
-	private RelativeLayout mImgDn;
+//	private RelativeLayout mImgUp;
+//	private RelativeLayout mImgDn;
+	
+	ImageView iv_nears_people1, iv_nears_people2, iv_nears_people3;
+	
+	YoYo.AnimationComposer rotateOutRight, rotateOutLeft, rotateOut;
+	
+	YoYo.AnimationComposer rotateInRight, rotateInLeft, rotateIn;
 	
 	Context mContext;
 //	TitlePopup titlePopup;
 	
 	public static Boolean flagShake = false;
-	
-	public int nearsSex;
 	
 	public Boolean flag = false;
 	
@@ -88,7 +102,7 @@ public class NearByFragment extends FragmentBase implements OnClickListener{
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		
-        return inflater.inflate(R.layout.fragment_shake, container, false);
+        return inflater.inflate(R.layout.fragment_shake_male, container, false);
 	}
 	
     private List<MenuObject> getMenuObjects() {
@@ -206,10 +220,42 @@ public class NearByFragment extends FragmentBase implements OnClickListener{
 			}
 		});
 		
+		
+		setNearsSex(nearsSex);
+		
+		
 		mVibrator = (Vibrator)((MainActivity)mContext).getApplication().getSystemService(Context.VIBRATOR_SERVICE);
 		
-		mImgUp = (RelativeLayout) findViewById(R.id.fragment_shakeImgUp);
-		mImgDn = (RelativeLayout) findViewById(R.id.fragment_shakeImgDown);
+//		mImgUp = (RelativeLayout) findViewById(R.id.fragment_shakeImgUp);
+//		mImgDn = (RelativeLayout) findViewById(R.id.fragment_shakeImgDown);
+		
+		iv_nears_people1 = (ImageView) findViewById(R.id.iv_icon_nears_people_1);
+		iv_nears_people2 = (ImageView) findViewById(R.id.iv_icon_nears_people_2);
+		iv_nears_people3 = (ImageView) findViewById(R.id.iv_icon_nears_people_3);
+		
+		rotateOutRight = new YoYo.AnimationComposer(new RotateOutUpRightAnimator())
+		.duration(1000)
+		.interpolate(new AccelerateDecelerateInterpolator());
+		
+		rotateOutLeft = new YoYo.AnimationComposer(new RotateOutUpLeftAnimator())
+		.duration(1000)
+		.interpolate(new AccelerateDecelerateInterpolator());
+		
+		rotateOut = new YoYo.AnimationComposer(new RotateOutAnimator())
+		.duration(1000)
+		.interpolate(new AccelerateDecelerateInterpolator());
+		
+		rotateInRight = new YoYo.AnimationComposer(new RotateInUpRightAnimator())
+		.duration(1000)
+		.interpolate(new AccelerateDecelerateInterpolator());
+		
+		rotateInLeft = new YoYo.AnimationComposer(new RotateInUpLeftAnimator())
+		.duration(1000)
+		.interpolate(new AccelerateDecelerateInterpolator());
+		
+		rotateIn = new YoYo.AnimationComposer(new RotateInAnimator())
+		.duration(1000)
+		.interpolate(new AccelerateDecelerateInterpolator());
 		
 		fragmentManager = ((MainActivity)mContext).getSupportFragmentManager();
         // initToolbar();
@@ -225,8 +271,7 @@ public class NearByFragment extends FragmentBase implements OnClickListener{
 				startAnim();
 				closeShakeListeber();
 				
-				
-				ShowToast("现在是附近的人，不是景点漫游");
+				// ShowToast("现在是附近的人，不是景点漫游");
 				
 				startVibrato();
 				new Handler().postDelayed(new Runnable(){
@@ -241,31 +286,36 @@ public class NearByFragment extends FragmentBase implements OnClickListener{
 					mContext.startActivity(intent);
 					
 					}
-				},2000);
+				},1500);
 			}
 		});
 	}
 
 	public void startAnim () {
-		AnimationSet animup = new AnimationSet(true);
-		TranslateAnimation mytranslateanimup0 = new TranslateAnimation(Animation.RELATIVE_TO_SELF,0f,Animation.RELATIVE_TO_SELF,0f,Animation.RELATIVE_TO_SELF,0f,Animation.RELATIVE_TO_SELF,-0.5f);
-		mytranslateanimup0.setDuration(500);
-		TranslateAnimation mytranslateanimup1 = new TranslateAnimation(Animation.RELATIVE_TO_SELF,0f,Animation.RELATIVE_TO_SELF,0f,Animation.RELATIVE_TO_SELF,0f,Animation.RELATIVE_TO_SELF,+0.5f);
-		mytranslateanimup1.setDuration(500);
-		mytranslateanimup1.setStartOffset(500);
-		animup.addAnimation(mytranslateanimup0);
-		animup.addAnimation(mytranslateanimup1);
-		mImgUp.startAnimation(animup);
+//		AnimationSet animup = new AnimationSet(true);
+//		TranslateAnimation mytranslateanimup0 = new TranslateAnimation(Animation.RELATIVE_TO_SELF,0f,Animation.RELATIVE_TO_SELF,0f,Animation.RELATIVE_TO_SELF,0f,Animation.RELATIVE_TO_SELF,-0.5f);
+//		mytranslateanimup0.setDuration(500);
+//		TranslateAnimation mytranslateanimup1 = new TranslateAnimation(Animation.RELATIVE_TO_SELF,0f,Animation.RELATIVE_TO_SELF,0f,Animation.RELATIVE_TO_SELF,0f,Animation.RELATIVE_TO_SELF,+0.5f);
+//		mytranslateanimup1.setDuration(500);
+//		mytranslateanimup1.setStartOffset(500);
+//		animup.addAnimation(mytranslateanimup0);
+//		animup.addAnimation(mytranslateanimup1);
+//		//mImgUp.startAnimation(animup);
+//		
+//		AnimationSet animdn = new AnimationSet(true);
+//		TranslateAnimation mytranslateanimdn0 = new TranslateAnimation(Animation.RELATIVE_TO_SELF,0f,Animation.RELATIVE_TO_SELF,0f,Animation.RELATIVE_TO_SELF,0f,Animation.RELATIVE_TO_SELF,+0.5f);
+//		mytranslateanimdn0.setDuration(500);
+//		TranslateAnimation mytranslateanimdn1 = new TranslateAnimation(Animation.RELATIVE_TO_SELF,0f,Animation.RELATIVE_TO_SELF,0f,Animation.RELATIVE_TO_SELF,0f,Animation.RELATIVE_TO_SELF,-0.5f);
+//		mytranslateanimdn1.setDuration(500);
+//		mytranslateanimdn1.setStartOffset(500);
+//		animdn.addAnimation(mytranslateanimdn0);
+//		animdn.addAnimation(mytranslateanimdn1);
+//		//mImgDn.startAnimation(animdn);	
 		
-		AnimationSet animdn = new AnimationSet(true);
-		TranslateAnimation mytranslateanimdn0 = new TranslateAnimation(Animation.RELATIVE_TO_SELF,0f,Animation.RELATIVE_TO_SELF,0f,Animation.RELATIVE_TO_SELF,0f,Animation.RELATIVE_TO_SELF,+0.5f);
-		mytranslateanimdn0.setDuration(500);
-		TranslateAnimation mytranslateanimdn1 = new TranslateAnimation(Animation.RELATIVE_TO_SELF,0f,Animation.RELATIVE_TO_SELF,0f,Animation.RELATIVE_TO_SELF,0f,Animation.RELATIVE_TO_SELF,-0.5f);
-		mytranslateanimdn1.setDuration(500);
-		mytranslateanimdn1.setStartOffset(500);
-		animdn.addAnimation(mytranslateanimdn0);
-		animdn.addAnimation(mytranslateanimdn1);
-		mImgDn.startAnimation(animdn);	
+		rotateOutRight.playOn(iv_nears_people3);
+		rotateOutLeft.playOn(iv_nears_people1);
+		rotateOut.playOn(iv_nears_people2);
+		
 	}
 	public void startVibrato(){	
 		MediaPlayer player;
@@ -284,6 +334,16 @@ public class NearByFragment extends FragmentBase implements OnClickListener{
 		mShakeListener.stop();
 		flag = false;
 	}
-
-	
+  
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		
+		if (iv_nears_people1 != null && iv_nears_people2 != null && iv_nears_people3 != null) {
+			rotateInLeft.playOn(iv_nears_people1);
+			rotateInRight.playOn(iv_nears_people3);
+			rotateIn.playOn(iv_nears_people2);
+		}
+	}
 }

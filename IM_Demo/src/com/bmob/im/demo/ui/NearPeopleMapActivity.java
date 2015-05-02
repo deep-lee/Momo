@@ -57,12 +57,14 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.MeasureSpec;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -273,6 +275,8 @@ public class NearPeopleMapActivity extends ActivityBase implements OnGetGeoCoder
 		    layout_marker.layout(0, 0, layout_marker.getMeasuredWidth(), layout_marker.getMeasuredHeight());
 		    //获得绘图缓存中的Bitmap
 		    layout_marker.buildDrawingCache();
+		    
+		    
 		    Bitmap markerBitmap = layout_marker.getDrawingCache();
 			
 			ShowLog("+++++++++++++++" + markerBitmap.getWidth() + "  " + markerBitmap.getHeight());

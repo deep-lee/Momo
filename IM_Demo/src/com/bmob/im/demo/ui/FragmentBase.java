@@ -45,7 +45,7 @@ public abstract class FragmentBase extends Fragment {
 	SharedPreferences sharedPreferences;
 	SharedPreferences.Editor editor;
 	
-	int nearsSex = 2;
+	public int nearsSex = 2;
 	
 	public Boolean flag = false;
 	

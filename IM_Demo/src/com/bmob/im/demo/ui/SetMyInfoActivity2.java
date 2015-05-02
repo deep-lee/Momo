@@ -736,10 +736,10 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 		// ÉèÖÃÐÔ±ð
 		// ÄÐ
 		if (user.getSex()) {
-			iv_sex.setImageDrawable(getResources().getDrawable(R.drawable.icon_info_male));
+			iv_sex.setImageDrawable(getResources().getDrawable(R.drawable.set_my_info_male));
 		}
 		else {
-			iv_sex.setImageDrawable(getResources().getDrawable(R.drawable.icon_info_female));
+			iv_sex.setImageDrawable(getResources().getDrawable(R.drawable.set_my_info_female));
 		}
 		
 		Calendar calendar = Calendar.getInstance();
