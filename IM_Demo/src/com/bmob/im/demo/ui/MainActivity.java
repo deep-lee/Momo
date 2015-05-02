@@ -13,6 +13,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import cn.bmob.im.BmobChat;
@@ -32,9 +33,16 @@ import com.bmob.im.demo.ui.fragment.ContactFragment;
 import com.bmob.im.demo.ui.fragment.LeftFragment;
 import com.bmob.im.demo.ui.fragment.NearByFragment;
 import com.bmob.im.demo.ui.fragment.RecentFragment;
+import com.daimajia.androidanimations.library.YoYo;
+import com.daimajia.androidanimations.library.YoYo.AnimationComposer;
+import com.daimajia.androidanimations.library.attention.ShakeAnimator;
+import com.daimajia.androidanimations.library.fading_exits.FadeOutRightAnimator;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnClosedListener;
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenedListener;
+import com.nineoldandroids.animation.Animator;
 import com.yalantis.contextmenu.lib.interfaces.OnMenuItemClickListener;
 import com.yalantis.contextmenu.lib.interfaces.OnMenuItemLongClickListener;
 
@@ -72,6 +80,7 @@ public class MainActivity extends ActivityBase implements EventListener, OnClick
 	
 	int nearsSex;
 	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -103,7 +112,6 @@ public class MainActivity extends ActivityBase implements EventListener, OnClick
 		mTabs[0].setSelected(true);
 		
 		mTabs[0].setImageDrawable(getResources().getDrawable(R.drawable.comon_main_bottom_recents_p));
-		
 		
 		initLeftView();
 		
@@ -206,6 +214,7 @@ public class MainActivity extends ActivityBase implements EventListener, OnClick
 					//trx.hide(nearByFragment).commit();
 					nearByFragment.closeShakeListeber();
 					// ShowToast("关闭附近的人监听器");
+					
 				}
 				
 			}
@@ -225,6 +234,24 @@ public class MainActivity extends ActivityBase implements EventListener, OnClick
 					nearByFragment.openShakeListener();
 					// ShowToast("打开附近的人监听器");
 				}
+			}
+		});
+           
+        menu.setOnOpenListener(new OnOpenListener() {
+			
+			@Override
+			public void onOpen() {
+				// TODO Auto-generated method stub
+				// ShowToast("" + menu.mViewAbove.getDestScrollX(1));
+			}
+		});
+        
+        menu.setOnCloseListener(new OnCloseListener() {
+			
+			@Override
+			public void onClose() {
+				// TODO Auto-generated method stub
+				
 			}
 		});
         
