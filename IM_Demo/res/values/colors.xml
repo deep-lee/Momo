@@ -57,7 +57,7 @@
     <color name="divider_color">#b5b5b5</color>
     
     <color name="material_blue_500">#2196F3</color>
-    <color name="slide_list_item_pressed">#282828</color>
+    <color name="slide_list_item_pressed">#23292e</color>
     
     <color name="slide_list_item_normal">#1a1f25</color>
     
@@ -71,4 +71,7 @@
     <color name="cpb_white">@android:color/white</color>
     
     <color name="set_item_bg_grey">#cccccc</color>
+    
+    <color name="common_list_item_normal">#ffffff</color>
+    <color name="common_list_item_pressed">#e5e6e7</color>
 </resources>

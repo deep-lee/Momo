@@ -6,12 +6,14 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
+
 import cn.bmob.im.BmobChatManager;
 import cn.bmob.im.config.BmobConfig;
 import cn.bmob.im.db.BmobDB;
@@ -22,8 +24,10 @@ import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.PushListener;
 import cn.bmob.v3.listener.UpdateListener;
 import cn.bmob.v3.listener.UploadFileListener;
+
 import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
+
 import C.From;
 import android.R.integer;
 import android.annotation.SuppressLint;
@@ -64,6 +68,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
+
 import com.bmob.im.demo.R.id;
 import com.bmob.im.demo.bean.User;
 import com.bmob.im.demo.config.BmobConstants;
@@ -75,6 +80,7 @@ import com.bmob.im.demo.view.InfoScrollView;
 import com.bmob.im.demo.view.HeaderLayout.onRightImageButtonClickListener;
 import com.bmob.im.demo.view.dialog.CustomProgressDialog;
 import com.bmob.im.demo.view.dialog.DialogTips;
+import com.dd.library.CircularProgressButton;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.soundcloud.android.crop.Crop;
 
@@ -93,7 +99,7 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 	// ImageButton btn_back;
 	
 	// 编辑，添加好友，发起会话，添加到黑名单
-	Button btn_add, btn_chat, btn_black;
+	CircularProgressButton btn_add, btn_chat, btn_black;
 	
 	// 黑名单提示，照片墙
 	RelativeLayout black_list_tips, photoWallLayout;
@@ -299,9 +305,9 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 		tv_recent_play = (TextView) findViewById(R.id.info_recent_play_details);
 		
 //		btn_edit = (Button) findViewById(R.id.btn_edit_info);
-		btn_add = (Button) findViewById(R.id.info_btn_add_friend);
-		btn_chat = (Button) findViewById(R.id.info_btn_chat);
-		btn_black = (Button) findViewById(R.id.info_btn_black);
+		btn_add = (CircularProgressButton) findViewById(R.id.info_btn_add_friend);
+		btn_chat = (CircularProgressButton) findViewById(R.id.info_btn_chat);
+		btn_black = (CircularProgressButton) findViewById(R.id.info_btn_black);
 		black_list_tips = (RelativeLayout) findViewById(R.id.info_layout_black_tips);
 		
 //		if (from.equals("me")) {
@@ -742,6 +748,7 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 				iv_photo3.setVisibility(View.GONE);
 			}
 		}
+		
 		// 如果是我的还有或者附近的人
 		else if (from.equals("other") || from.equals("add")) {
 			initOtherWallPhoto();
@@ -1264,6 +1271,12 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 			break;
 		// 添加到黑名单
 		case R.id.info_btn_black:
+			
+			if (btn_black.getProgress() == -1 || btn_black.getProgress() == 100) {
+				btn_black.setProgress(0);
+				return;
+			}
+			
 			showBlackDialog(user.getUsername());
 			break;
 			
@@ -1298,6 +1311,9 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 					public void onSuccess() {
 						// TODO Auto-generated method stub
 						ShowToast("黑名单添加成功!");
+						
+						btn_black.setProgress(100);
+						
 						btn_black.setVisibility(View.GONE);
 						black_list_tips.setVisibility(View.VISIBLE);
 						// 重新设置下内存中保存的好友列表
@@ -1307,6 +1323,7 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 					@Override
 					public void onFailure(int arg0, String arg1) {
 						// TODO Auto-generated method stub
+						btn_black.setProgress(-1);
 						ShowToast("黑名单添加失败:" + arg1);
 					}
 				});
@@ -1328,8 +1345,14 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 	 */
 	private void addFriend() {
 		
-		final ProgressDialog progress = new ProgressDialog(this);
-		progress.setMessage("正在添加...");
+		if (btn_add.getProgress() == -1 || btn_add.getProgress() == 100) {
+			btn_add.setProgress(0);
+			return;
+		}
+		
+		btn_add.setProgress(50);
+		
+		final CustomProgressDialog progress = new CustomProgressDialog(SetMyInfoActivity2.this, "正在添加...");
 		progress.setCanceledOnTouchOutside(false);
 		progress.show();
 		// 发送tag请求，TAG_ADD_CONTACT表示添加好友
@@ -1349,6 +1372,9 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 					public void onSuccess() {
 						// TODO Auto-generated method stub
 						progress.dismiss();
+						
+						btn_add.setProgress(100);
+						
 						ShowToast("发送请求成功，等待对方验证！");
 					}
 
@@ -1356,6 +1382,9 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 					public void onFailure(int arg0, final String arg1) {
 						// TODO Auto-generated method stub
 						progress.dismiss();
+						
+						btn_add.setProgress(-1);
+						
 						ShowToast("发送请求失败！");
 						ShowLog("发送请求失败:" + arg1);
 					}

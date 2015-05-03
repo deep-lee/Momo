@@ -23,6 +23,7 @@ import com.bmob.im.demo.adapter.base.BaseListAdapter;
 import com.bmob.im.demo.adapter.base.ViewHolder;
 import com.bmob.im.demo.util.CollectionUtils;
 import com.bmob.im.demo.util.ImageLoadOptions;
+import com.bmob.im.demo.view.dialog.CustomProgressDialog;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 /** 新的好友请求
@@ -98,14 +99,14 @@ public class NewFriendAdapter extends BaseListAdapter<BmobInvitation> {
 	  * @throws
 	  */
 	private void agressAdd(final Button btn_add,final BmobInvitation msg){
-		final ProgressDialog progress = new ProgressDialog(mContext);
-		progress.setMessage("正在添加...");
+		final CustomProgressDialog progress = new CustomProgressDialog(mContext, "正在添加...");
 		progress.setCanceledOnTouchOutside(false);
 		progress.show();
 		try {
 			//同意添加好友
 			BmobUserManager.getInstance(mContext).agreeAddContact(msg, new UpdateListener() {
 				
+				@SuppressWarnings("deprecation")
 				@Override
 				public void onSuccess() {
 					// TODO Auto-generated method stub

@@ -3,8 +3,6 @@ package com.bmob.im.demo.ui;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.bmob.im.BmobUserManager;
-import cn.bmob.im.bean.BmobChatUser;
 import cn.bmob.im.task.BRequest;
 import cn.bmob.im.util.BmobLog;
 import cn.bmob.v3.datatype.BmobGeoPoint;
@@ -27,7 +25,6 @@ import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationConfigeration;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
-import com.baidu.mapapi.map.TextOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.search.geocode.GeoCodeResult;
 import com.baidu.mapapi.search.geocode.GeoCoder;
@@ -36,18 +33,15 @@ import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
-import com.bmob.im.demo.R.layout;
 import com.bmob.im.demo.bean.User;
-import com.bmob.im.demo.ui.LocationActivity.BaiduReceiver;
-import com.bmob.im.demo.ui.LocationActivity.MyLocationListenner;
 import com.bmob.im.demo.util.CollectionUtils;
 import com.bmob.im.demo.view.HeaderLayout.onLeftImageButtonClickListener;
 import com.bmob.im.demo.view.HeaderLayout.onRightImageButtonClickListener;
+import com.bmob.im.demo.view.dialog.CustomProgressDialog;
 import com.deep.momo.game.ui.GameFruitActivity;
 import com.deep.momo.game.ui.GuessNumberActivity;
 import com.deep.momo.game.ui.MixedColorMenuActivity;
 
-import android.R.integer;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -55,20 +49,14 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Matrix;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.MeasureSpec;
-import android.view.ViewGroup.LayoutParams;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class NearPeopleMapActivity extends ActivityBase implements OnGetGeoCoderResultListener, onLeftImageButtonClickListener {
 	
@@ -106,8 +94,13 @@ public class NearPeopleMapActivity extends ActivityBase implements OnGetGeoCoder
 		int nearsSex = 2;
 		Boolean sexValue = null;
 		
+		String equalProperty = null;
+		
 		BmobGeoPoint currentGeoPoint = null;
 		BmobGeoPoint randomGeoPoint = null;
+		
+		SharedPreferences sharedPreferences;
+		SharedPreferences.Editor editor;
 	
 	
 	@SuppressLint("InflateParams")
@@ -121,30 +114,56 @@ public class NearPeopleMapActivity extends ActivityBase implements OnGetGeoCoder
 		distanceText = (TextView) layout_marker.findViewById(R.id.marker_distance);
 		marker_icon_iv = (ImageView) layout_marker.findViewById(R.id.marker_icon_iv);
 		
-		nearsSex = getIntent().getIntExtra("nearsSex", 2);
-		ShowToast("SEX:" + nearsSex);
+		sharedPreferences = getSharedPreferences("test", Activity.MODE_PRIVATE);
+		editor = sharedPreferences.edit();
+		nearsSex = sharedPreferences.getInt("nearsSex", 2);
+		
+		
+		
+//		nearsSex = getIntent().getIntExtra("nearsSex", 2);
+		// ShowToast("SEX:" + nearsSex);
 		switch (nearsSex) {
 		case 0:
 			sexValue = false;
+			equalProperty = "sex";
 			break;
 		case 1:
 			sexValue = true;
+			equalProperty = "sex";
+			break;
 		case 2:
 			sexValue = null;
+			equalProperty = null;
+			break;
 
 		default:
 			break;
 		}
 		
+		// ShowToast(equalProperty + ": " + nearsSex);
+		
 		currentGeoPoint = (BmobGeoPoint) getIntent().getSerializableExtra("currentGeoPoint");
 		randomGeoPoint = (BmobGeoPoint) getIntent().getSerializableExtra("randomGeoPoint");
 		
-		initTopBarForLeft("附近的人");
+		// initTopBarForLeft("附近的人");
+		initTopBarForBoth("附近的人", R.drawable.base_action_bar_send_selector, "刷新", 
+				new onRightImageButtonClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						nears.clear();
+						mBaiduMap.clear();
+						initNearByList(false);
+						initNearsOnMap();
+					}
+				});
 		
 		// 女性主题
 		if (!CustomApplcation.sex) {
 			setActionBgForFemale();
 			marker_icon_iv.setImageResource(R.drawable.nears_map_marker_female);
+			setActionBarRightBtnForFemale();
 		}
 		initBaiduMap();
 		
@@ -155,7 +174,6 @@ public class NearPeopleMapActivity extends ActivityBase implements OnGetGeoCoder
 				// TODO Auto-generated method stub
 				
 				Bundle data = arg0.getExtraInfo();
-				final String objectId = data.getString("ObjectId");
 				final String username = data.getString("username");
 				
 				userManager.queryUser(username, new FindListener<User>() {
@@ -231,7 +249,6 @@ public class NearPeopleMapActivity extends ActivityBase implements OnGetGeoCoder
 		
 		// 显示附近的人地图
 		
-
 		initLocClient();
 		
 		mSearch = GeoCoder.newInstance();
@@ -281,7 +298,7 @@ public class NearPeopleMapActivity extends ActivityBase implements OnGetGeoCoder
 		    layout_marker.measure(MeasureSpec.makeMeasureSpec(150, MeasureSpec.EXACTLY),
 		        MeasureSpec.makeMeasureSpec(60, MeasureSpec.EXACTLY));
 		    //这个方法也非常重要，设置布局的尺寸和位置
-		    layout_marker.layout(0, 0, layout_marker.getMeasuredWidth(), layout_marker.getMeasuredHeight());
+		    layout_marker.layout(0, 0, layout_marker.getMeasuredWidth() * 2, layout_marker.getMeasuredHeight() * 2);
 		    //获得绘图缓存中的Bitmap
 		    layout_marker.buildDrawingCache();
 		    
@@ -317,11 +334,10 @@ public class NearPeopleMapActivity extends ActivityBase implements OnGetGeoCoder
 	
 
 	
-	ProgressDialog progress ;
+	CustomProgressDialog progress ;
 	private void initNearByList(final boolean isUpdate){
 		if(!isUpdate){
-			progress = new ProgressDialog(NearPeopleMapActivity.this);
-			progress.setMessage("正在查询附近的人...");
+			progress = new CustomProgressDialog(NearPeopleMapActivity.this, "正在刷新...");
 			progress.setCanceledOnTouchOutside(true);
 			progress.show();
 		}
@@ -336,7 +352,7 @@ public class NearPeopleMapActivity extends ActivityBase implements OnGetGeoCoder
 				longtitude = randomGeoPoint.getLongitude();
 				QUERY_KILOMETERS = 10;
 			}
-			BRequest.QUERY_LIMIT_COUNT = 50;
+			BRequest.QUERY_LIMIT_COUNT = 100;
 			//封装的查询方法，当进入此页面时 isUpdate为false，当下拉刷新的时候设置为true就行。
 			//此方法默认每页查询10条数据,若想查询多于10条，可在查询之前设置BRequest.QUERY_LIMIT_COUNT，如：BRequest.QUERY_LIMIT_COUNT=20
 			// 此方法是新增的查询指定1公里内的性别为女性的用户列表，默认包含好友列表
@@ -355,7 +371,9 @@ public class NearPeopleMapActivity extends ActivityBase implements OnGetGeoCoder
 //		        equalProperty：自己定义的其他属性：使用方法AddWhereEqualTo对应的属性名称 - 
 //		        equalObj：查询equalProperty属性对应的属性值 - 
 //		        findCallback - ：回调 
-			userManager.queryKiloMetersListByPage(isUpdate,0,"location", longtitude, latitude, true, QUERY_KILOMETERS,"sex", sexValue, new FindListener<User>() {
+			// ShowToast(equalProperty + ": " + sexValue);
+			userManager.queryKiloMetersListByPage(isUpdate,0,"location", longtitude, latitude, false, QUERY_KILOMETERS, equalProperty,
+					sexValue, new FindListener<User>() {
 			
 				
 //			    分页加载全部的用户列表：排除自己，是否排除好友由开发者决定，可以添加额外查询条件

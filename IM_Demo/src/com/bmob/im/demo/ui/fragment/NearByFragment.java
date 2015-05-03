@@ -5,9 +5,6 @@ import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,25 +15,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup.LayoutParams;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
-
 import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.ui.FragmentBase;
 import com.bmob.im.demo.ui.MainActivity;
 import com.bmob.im.demo.ui.NearPeopleMapActivity;
-import com.bmob.im.demo.util.ActionItem;
 import com.bmob.im.demo.util.ShakeListener;
 import com.bmob.im.demo.util.ShakeListener.OnShakeListener;
 import com.bmob.im.demo.view.HeaderLayout.onRightImageButtonClickListener;
-import com.bmob.im.demo.view.TitlePopup;
 import com.daimajia.androidanimations.library.YoYo;
 import com.daimajia.androidanimations.library.rotating_entrances.RotateInAnimator;
 import com.daimajia.androidanimations.library.rotating_entrances.RotateInUpLeftAnimator;
@@ -44,11 +32,8 @@ import com.daimajia.androidanimations.library.rotating_entrances.RotateInUpRight
 import com.daimajia.androidanimations.library.rotating_exits.RotateOutAnimator;
 import com.daimajia.androidanimations.library.rotating_exits.RotateOutUpLeftAnimator;
 import com.daimajia.androidanimations.library.rotating_exits.RotateOutUpRightAnimator;
-import com.nineoldandroids.animation.Animator;
 import com.yalantis.contextmenu.lib.ContextMenuDialogFragment;
 import com.yalantis.contextmenu.lib.MenuObject;
-import com.yalantis.contextmenu.lib.interfaces.OnMenuItemClickListener;
-import com.yalantis.contextmenu.lib.interfaces.OnMenuItemLongClickListener;
 
 public class NearByFragment extends FragmentBase implements OnClickListener{
 	

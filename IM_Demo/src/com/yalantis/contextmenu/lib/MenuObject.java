@@ -186,7 +186,8 @@ public class MenuObject implements Parcelable {
         dest.writeInt(this.mMenuTextAppearenseStyle);
     }
 
-    private MenuObject(Parcel in) {
+    @SuppressWarnings("deprecation")
+	private MenuObject(Parcel in) {
         this.mTitle = in.readString();
         this.mBgDrawable = new BitmapDrawable((Bitmap) in.readParcelable(getClass().getClassLoader()));
         this.mBgColor = in.readInt();

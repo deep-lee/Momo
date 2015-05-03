@@ -42,7 +42,6 @@ import com.bmob.im.demo.ui.AddFriendActivity;
 import com.bmob.im.demo.ui.BlackListActivity;
 import com.bmob.im.demo.ui.FragmentBase;
 import com.bmob.im.demo.ui.NewFriendActivity;
-import com.bmob.im.demo.ui.SetMyInfoActivity;
 import com.bmob.im.demo.ui.SetMyInfoActivity2;
 import com.bmob.im.demo.util.CharacterParser;
 import com.bmob.im.demo.util.CollectionUtils;
@@ -227,6 +226,7 @@ public class ContactFragment extends FragmentBase implements OnItemClickListener
 	// LinearLayout layout_near;//附近的人
 	LinearLayout layout_black;// 黑名单
 	
+	@SuppressLint("InflateParams")
 	private void initListView() {
 		list_friends= (ListView)findViewById(R.id.list_friends);
 		RelativeLayout headView = (RelativeLayout) mInflater.inflate(R.layout.include_new_friend, null);
@@ -282,6 +282,7 @@ public class ContactFragment extends FragmentBase implements OnItemClickListener
 		// 当触摸好友的时候，隐藏软键盘
 		list_friends.setOnTouchListener(new OnTouchListener() {
 
+			@SuppressLint("ClickableViewAccessibility")
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				// 隐藏软键盘
