@@ -20,7 +20,6 @@ import com.bmob.im.demo.util.CommonUtils;
 import com.bmob.im.demo.view.HeaderLayout.onRightImageButtonClickListener;
 import com.bmob.im.demo.view.dialog.DialogTips;
 
-import C.From;
 import android.R.integer;
 import android.app.Activity;
 import android.content.DialogInterface;

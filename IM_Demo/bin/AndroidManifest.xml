@@ -274,7 +274,8 @@
         </activity>
         <activity
             android:name=".ui.GameCenterActivity"
-            android:label="@string/title_activity_game_center" >
+            android:label="@string/title_activity_game_center" 
+            android:windowSoftInputMode="stateHidden">
         </activity>
         <activity
             android:name=".ui.AttractionsRomaActivity2"

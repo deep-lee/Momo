@@ -284,8 +284,4 @@ public class LeftFragment extends Fragment {
 		slideNick.setText(user.getNick());
 		
 	} 
-    
-    
-    
-    
 }

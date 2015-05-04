@@ -8,6 +8,30 @@
     <include
         android:id="@+id/common_actionbar"
         layout="@layout/include_action_bar" />
+      
+    <RelativeLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="60dp"
+
+        android:id="@+id/et_msg_search_bg_layout">
+        
+        <com.bmob.im.demo.view.ClearEditText
+	        android:id="@+id/et_game_search"
+	        android:layout_width="match_parent"
+	        android:layout_height="40dp"  
+	        android:background="@drawable/rounded_editview"
+	        android:layout_centerInParent="true"
+	        android:layout_marginLeft="15dp"
+	        android:layout_marginRight="15dp"
+	        android:drawableLeft="@drawable/icon_msg_search"
+	        android:drawablePadding="10dp"
+	        android:hint="@string/message_search_hint"
+	        android:paddingLeft="10dp"
+	        android:paddingRight="10dp"
+	        android:singleLine="true" />
+            
+    </RelativeLayout>
+    
 
     <ListView
         android:id="@+id/game_list_view"
@@ -17,7 +41,6 @@
         android:dividerHeight="15dp"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
-        android:layout_marginTop="15dp"
         android:scrollbarStyle="outsideOverlay" >
   
     </ListView>  

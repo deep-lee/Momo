@@ -19,6 +19,7 @@ import java.util.List;
 
 
 
+
 import cn.bmob.v3.listener.UpdateListener;
 
 import com.bmob.im.demo.CustomApplcation;
@@ -26,6 +27,7 @@ import com.bmob.im.demo.GameCard;
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.bean.User;
 import com.bmob.im.demo.ui.GameCenterActivity;
+import com.deep.animation.ExpandAnimation;
 import com.deep.momo.game.ui.GameFruitActivity;
 import com.deep.momo.game.ui.GuessNumberActivity;
 import com.deep.momo.game.ui.MixedColorMenuActivity;
@@ -56,6 +58,19 @@ public class GameCardAdapter extends BaseAdapter
          this.mContext = mContext;  
          this.mCards = mCards; 
     }  
+    
+    /** 当ListView数据发生变化时,调用此方法来更新ListView
+	  * @Title: updateListView
+	  * @Description: TODO
+	  * @param @param list 
+	  * @return void
+	  * @throws
+	  */
+	public void updateListView(List<GameCard> list) {
+		this.mCards = list;
+		notifyDataSetChanged();
+	}
+    
     @Override  
     public int getCount()   
     {  
@@ -77,7 +92,7 @@ public class GameCardAdapter extends BaseAdapter
     @Override  
     public View getView(final int Index, View convertView, ViewGroup mParent)   
     {  
-        ViewHolder mHolder = new ViewHolder();  
+        final ViewHolder mHolder = new ViewHolder();  
         if (convertView == null) {
 			convertView = LayoutInflater.from(mContext).inflate(R.layout.game_list_card_item, null);
 		}
@@ -88,6 +103,8 @@ public class GameCardAdapter extends BaseAdapter
         mHolder.gameWinMethod = (TextView) convertView.findViewById(R.id.card_item_game_win_method_details);
         mHolder.play_game = (ImageButton) convertView.findViewById(R.id.card_item_play);
         
+        mHolder.toolbar = convertView.findViewById(R.id.game_item_details_layout);
+        
         if (!CustomApplcation.sex) {
 			mHolder.play_game.setImageResource(R.drawable.base_game_card_list_play_female_selector);
 		}
@@ -97,6 +114,23 @@ public class GameCardAdapter extends BaseAdapter
         mHolder.gameName.setText(mCards.get(Index).getGameName());
         mHolder.gameRuleDetails.setText(mCards.get(Index).getGameRuleDetails());
         mHolder.gameWinMethod.setText(mCards.get(Index).getGameWinMethod());
+        
+        convertView.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				
+				
+
+				// Creating the expand animation for the item
+				ExpandAnimation expandAni = new ExpandAnimation(mHolder.toolbar, 500);
+
+				// Start the animation on the toolbar
+				mHolder.toolbar.startAnimation(expandAni);
+				
+			}
+		});
         
         mHolder.play_game.setOnClickListener(new View.OnClickListener() {
 			
@@ -160,5 +194,6 @@ public class GameCardAdapter extends BaseAdapter
         TextView gameRuleDetails;
         TextView gameWinMethod;
         ImageButton play_game;
+        View toolbar;
     }  
 }  

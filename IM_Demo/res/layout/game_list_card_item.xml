@@ -39,19 +39,27 @@
             android:id="@+id/card_item_play"/>
     </RelativeLayout>
     
-    <ImageView 
-        android:layout_height="1dp"
-        android:layout_width="fill_parent"
-        android:background="#dddddd"/>
+    
   
    <RelativeLayout 
+       android:id="@+id/game_item_details_layout"
+       android:layout_marginTop="10dp"
        android:layout_height="wrap_content"
+       android:visibility="gone"
        android:layout_width="fill_parent">
         
+       <ImageView 
+           android:id="@+id/line"
+	        android:layout_height="1dp"
+	        android:layout_width="fill_parent"
+	        android:background="#dddddd"/>
+        
        <TextView 
+           android:layout_below="@+id/line"
            android:id="@+id/card_item_game_rule"
            android:layout_width="wrap_content"
            android:text="游戏规则："
+           android:layout_marginTop="10dp"
            android:textColor="#ff0000"
            android:textStyle="bold"
            android:layout_height="wrap_content"/>
