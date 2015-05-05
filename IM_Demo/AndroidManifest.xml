@@ -173,6 +173,11 @@
                 <action android:name="cn.bmob.im.service.BmobPollService" />
             </intent-filter>
         </service>
+        
+        <service 
+            android:name="com.bmob.im.demo.util.DownloadService"
+            android:label="DownloadService">
+        </service>
 
         <activity
             android:name=".ui.NearPeopleMapActivity"

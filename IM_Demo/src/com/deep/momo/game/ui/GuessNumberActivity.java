@@ -6,6 +6,7 @@ import com.bmob.im.demo.bean.User;
 import com.bmob.im.demo.ui.ActivityBase;
 import com.bmob.im.demo.ui.BaseActivity;
 import com.bmob.im.demo.ui.SetMyInfoActivity;
+import com.bmob.im.demo.ui.SetMyInfoActivity2;
 import com.bmob.im.demo.util.SoundPlay;
 import com.bmob.im.demo.view.dialog.DialogTips;
 
@@ -415,7 +416,7 @@ public class GuessNumberActivity extends ActivityBase implements OnClickListener
 						public void onClick(DialogInterface dialog, int which) {
 							// TODO Auto-generated method stub
 							Intent intent = new Intent();
-							intent.setClass(GuessNumberActivity.this, SetMyInfoActivity.class);
+							intent.setClass(GuessNumberActivity.this, SetMyInfoActivity2.class);
 							intent.putExtra("from", "add");
 							intent.putExtra("username", username);
 							
@@ -484,7 +485,7 @@ public class GuessNumberActivity extends ActivityBase implements OnClickListener
 						public void onClick(DialogInterface dialog, int which) {
 							// TODO Auto-generated method stub
 							Intent intent = new Intent();
-							intent.setClass(GuessNumberActivity.this, SetMyInfoActivity.class);
+							intent.setClass(GuessNumberActivity.this, SetMyInfoActivity2.class);
 							intent.putExtra("from", "add");
 							intent.putExtra("username", username);
 							

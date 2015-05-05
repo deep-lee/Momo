@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>  
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"  
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"  
     android:layout_height="wrap_content"  
     android:orientation="vertical"   
@@ -28,7 +29,7 @@
 	        android:layout_centerVertical="true"
 	        android:textIsSelectable="true"/> 
 	        
-        <ImageButton
+		<ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -37,6 +38,31 @@
             android:background="@color/transparent"
             android:layout_alignParentRight="true"
             android:id="@+id/card_item_play"/>
+		
+		<TextView 
+		    android:id="@+id/card_item_download_progress_tv"
+		    android:layout_height="wrap_content"
+		    android:layout_width="wrap_content"
+		    android:text="Test"
+		    android:layout_alignParentRight="true"
+		    android:layout_marginTop="10dp"
+		    android:visibility="gone"
+		    android:layout_below="@+id/card_item_play"/>
+            
+<!--         <com.dd.library.CircularProgressButton
+	        android:id="@+id/card_item_play"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="10dp"
+	        android:layout_centerVertical="true"
+	        android:textColor="@color/cpb_white"
+	        android:textSize="18sp"
+	        app:cpb_cornerRadius="36dp"
+	        android:layout_alignParentRight="true"
+	        app:cpb_textComplete="安装"
+	        app:cpb_textError="错误"
+	        app:cpb_textIdle="Play" /> -->
+            
     </RelativeLayout>
     
     

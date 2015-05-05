@@ -1,8 +1,8 @@
 package com.bmob.im.demo.ui;
 
 
+import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import cn.bmob.v3.listener.UpdateListener;
@@ -17,7 +17,11 @@ import com.bmob.im.demo.util.PinyinComparator;
 import com.bmob.im.demo.view.ClearEditText;
 import com.bmob.im.demo.view.dialog.CustomProgressDialog;
 
+import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -57,6 +61,7 @@ public class GameCenterActivity extends ActivityBase {
 		
 		initTopBarForLeft("游戏中心");
 		
+		
 		characterParser = CharacterParser.getInstance();
 		pinyinComparator = new PinyinComparator();
 		
@@ -94,7 +99,7 @@ public class GameCenterActivity extends ActivityBase {
 		});
 		
 		 mListView=(ListView) findViewById(R.id.game_list_view);  
-	     mAdapter = new GameCardAdapter(this, CustomApplcation.gameCardList);  
+	     mAdapter = new GameCardAdapter(this);  
 	     mListView.setAdapter(mAdapter);  
 	     
 	}
@@ -132,4 +137,78 @@ public class GameCenterActivity extends ActivityBase {
 		user.setObjectId(current.getObjectId());
 		user.update(this, listener);
 	}
+
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		
+		// ShowToast("OnResume");
+		
+		if (isAppInstalled(GameCenterActivity.this, "com.nsu.ttgame.ohmyeggs")) {
+			CustomApplcation.gameCardList.get(3).setGameStatus(2);
+			
+			ShowToast("Installed");
+		}else {
+			if (isApkDownloaded(CustomApplcation.gameList.get(3) + "_" + CustomApplcation.notificationId.get(3))) {
+				CustomApplcation.gameCardList.get(3).setGameStatus(1);
+			}
+			else {
+				CustomApplcation.gameCardList.get(3).setGameStatus(0);
+			}
+		}
+		
+		// mAdapter.updateListView(CustomApplcation.gameCardList);
+		mAdapter.notifyDataSetChanged();
+		
+	}
+	
+	
+	// 判断应用是否安装
+		public boolean isAppInstalled(Context context,String packagename)
+	    {
+	    	PackageInfo packageInfo; 
+	    	
+	    	try {
+	                
+	    		packageInfo = context.getPackageManager().getPackageInfo(packagename, 0);
+	             
+	    	}catch (NameNotFoundException e) {
+	    		
+	    		packageInfo = null;
+	    		
+	    		e.printStackTrace();
+	    		
+	    	}
+	             
+	    	if(packageInfo ==null){
+	    		
+	    		return false;
+	    		
+	    	}else{
+	    		
+	    		return true;
+	    		
+	    	}
+	    }
+	    
+		public Boolean isApkDownloaded(String fileName) {
+			
+			String apkDir = Environment.getExternalStorageDirectory().getPath() + "/Bmob_IM_test/GameAPK/";
+			File rootFile = new File(apkDir);
+			
+			if (!rootFile.exists()) {
+				return false;
+			}
+			
+			File tempFile = new File(apkDir + fileName + ".apk");
+			if (tempFile.exists()){
+				return true;
+			}else {
+				return false;
+			}
+			
+		}
+	
+	
 }

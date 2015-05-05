@@ -142,7 +142,7 @@ public class MixedColorView extends SurfaceView implements
 							public void onClick(DialogInterface dialog, int which) {
 								// TODO Auto-generated method stub
 								Intent intent = new Intent();
-								intent.setClass(mContext, SetMyInfoActivity.class);
+								intent.setClass(mContext, SetMyInfoActivity2.class);
 								
 								intent.putExtra("from", "add");
 								intent.putExtra("username", username);

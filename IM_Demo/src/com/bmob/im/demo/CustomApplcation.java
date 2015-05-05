@@ -10,7 +10,10 @@ import android.app.Application;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.media.MediaPlayer;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import cn.bmob.im.BmobChat;
 import cn.bmob.im.BmobUserManager;
@@ -55,6 +58,8 @@ public class CustomApplcation extends Application {
 	public static List<String> gameDifficultyList = new ArrayList<String>();
 	public static List<String> careerList = new ArrayList<String>();
 	
+	public static List<Integer> notificationId = new ArrayList<Integer>();
+	
 	public static int numOfPhoto = 0;
 	
 	public static Boolean sex = true;
@@ -65,6 +70,8 @@ public class CustomApplcation extends Application {
 	public static ArrayList<Integer> gameIcon = new ArrayList<Integer>();
 	public static ArrayList<Integer> gameRuleDetails = new ArrayList<Integer>();
 	public static ArrayList<Integer> gameWinMethod = new ArrayList<Integer>();
+	
+	public static ArrayList<String> gamePackageName = new ArrayList<String>();
 	
 	@Override
 	public void onCreate() {
@@ -86,6 +93,7 @@ public class CustomApplcation extends Application {
 		gameList.add("水果连连看");
 		gameList.add("猜数字");
 		gameList.add("Mixed color");
+		gameList.add("Oh my egg");
 		
 		loveList.add("热恋");
 		loveList.add("单身");
@@ -112,22 +120,84 @@ public class CustomApplcation extends Application {
 		gameName.add(R.string.game_lianliankan_name);
 		gameName.add(R.string.game_guess_number_name);
 		gameName.add(R.string.game_mixed_color_name);
+		gameName.add(R.string.game_oh_my_egg_name);
+		
+		gamePackageName.add("com.deep.lianliankan");
+		gamePackageName.add("com.deeo.caishuzi");
+		gamePackageName.add("com.deep.mixedcoloe");
+		gamePackageName.add("com.nsu.ttgame.ohmyeggs");
+		
+		notificationId.add(0000);
+		notificationId.add(0001);
+		notificationId.add(0002);
+		notificationId.add(0003);
 		
 		gameIcon.add(R.drawable.game_icon);
 		gameIcon.add(R.drawable.game_icon);
 		gameIcon.add(R.drawable.game_icon);
+		gameIcon.add(R.drawable.icon_oh_my_egg);
 		
 		gameRuleDetails.add(R.string.game_lianliankan_rule_details);
 		gameRuleDetails.add(R.string.game_guess_number_rule_details);
 		gameRuleDetails.add(R.string.game_mixed_color_rule_details);
+		gameRuleDetails.add(R.string.game_oh_my_egg_rule_details);
 		
 		gameWinMethod.add(R.string.game_lianliankan_win_method);
 		gameWinMethod.add(R.string.game_guess_number_win_method);
 		gameWinMethod.add(R.string.game_mixed_color_win_method);
+		gameWinMethod.add(R.string.game_oh_my_egg_win_method);
+		
+		/*
+		 * 0 未下载，未安装
+		 * 1 已下载，未安装
+		 * 2 已下载，已安装
+		 */
 		
 		for (int i = 0; i < gameName.size(); i++) {
-			gameCardList.add(new GameCard(getResources().getString(gameName.get(i)), getResources().getString(gameRuleDetails.get(i)),
-					getResources().getString(gameWinMethod.get(i)), gameIcon.get(i)));
+			
+			switch (i) {
+			case 0:
+				gameCardList.add(new GameCard(getResources().getString(gameName.get(i)), getResources().getString(gameRuleDetails.get(i)),
+						getResources().getString(gameWinMethod.get(i)), gameIcon.get(i), 2));
+				break;
+				
+			case 1:
+				gameCardList.add(new GameCard(getResources().getString(gameName.get(i)), getResources().getString(gameRuleDetails.get(i)),
+						getResources().getString(gameWinMethod.get(i)), gameIcon.get(i), 2));
+				break;
+				
+			case 2:
+				gameCardList.add(new GameCard(getResources().getString(gameName.get(i)), getResources().getString(gameRuleDetails.get(i)),
+						getResources().getString(gameWinMethod.get(i)), gameIcon.get(i), 2));
+				break;
+				
+			// Oh my egg
+			case 3:
+				
+				int gameStatus = 0;
+				Boolean hasInstalled = isAppInstalled(getApplicationContext(), "com.nsu.ttgame.ohmyeggs");
+				
+				if (hasInstalled) {
+					gameStatus = 2;
+				}else {
+					Boolean hasDownloaded = isApkDownloaded(gameList.get(i) + "_" + notificationId.get(i));
+					if (hasDownloaded) {
+						gameStatus = 1;
+					}
+					else {
+						gameStatus = 0;
+					}
+				}
+				
+				gameCardList.add(new GameCard(getResources().getString(gameName.get(i)), getResources().getString(gameRuleDetails.get(i)),
+						getResources().getString(gameWinMethod.get(i)), gameIcon.get(i), gameStatus));
+				break;
+
+			default:
+				break;
+			}
+			
+			
 		}
 		
 		// 初始化ImageLoader
@@ -342,6 +412,52 @@ public class CustomApplcation extends Application {
 		setContactList(null);
 		setLatitude(null);
 		setLongtitude(null);
+	}
+	
+	// 判断应用是否安装
+	public boolean isAppInstalled(Context context,String packagename)
+    {
+    	PackageInfo packageInfo; 
+    	
+    	try {
+                
+    		packageInfo = context.getPackageManager().getPackageInfo(packagename, 0);
+             
+    	}catch (NameNotFoundException e) {
+    		
+    		packageInfo = null;
+    		
+    		e.printStackTrace();
+    		
+    	}
+             
+    	if(packageInfo ==null){
+    		
+    		return false;
+    		
+    	}else{
+    		
+    		return true;
+    		
+    	}
+    }
+    
+	public Boolean isApkDownloaded(String fileName) {
+		
+		String apkDir = Environment.getExternalStorageDirectory().getPath() + "/Bmob_IM_test/GameAPK/";
+		File rootFile = new File(apkDir);
+		
+		if (!rootFile.exists()) {
+			return false;
+		}
+		
+		File tempFile = new File(apkDir + fileName + ".apk");
+		if (tempFile.exists()){
+			return true;
+		}else {
+			return false;
+		}
+		
 	}
 
 }

@@ -20,8 +20,7 @@
             android:scaleType="centerCrop"
             imagecontrol:border_inside_color="#fff7f2e9"
             imagecontrol:border_outside_color="#ffd5d1c8"
-            imagecontrol:border_thickness="0.5dp" 
-            android:src="@drawable/icon"/>
+            imagecontrol:border_thickness="0.5dp" />
         
         <TextView 
             android:id="@+id/slide_nick"

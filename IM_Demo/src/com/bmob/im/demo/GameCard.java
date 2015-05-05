@@ -7,21 +7,35 @@ public class GameCard
    private String gameRuleDetails;  
    private String gameWinMethod;
    private int mDrawable;  
+   private int gameStatus;
    
    
      
    public GameCard(String gameName, String gameRuleDetails, String gameWinMethod,
-		int mDrawable) {
+		int mDrawable, int gameStatus) {
 	   super();
 	   this.gameName = gameName;
 	   this.gameRuleDetails = gameRuleDetails;
 	   this.gameWinMethod = gameWinMethod;
 	   this.mDrawable = mDrawable;
+	   this.gameStatus = gameStatus;
    }
 
    
    
-   public String getGameRuleDetails() {
+   public int getGameStatus() {
+	   return gameStatus;
+   }
+
+
+
+   public void setGameStatus(int gameStatus) {
+	   this.gameStatus = gameStatus;
+	}
+
+
+
+public String getGameRuleDetails() {
 	   return gameRuleDetails;
    }
 

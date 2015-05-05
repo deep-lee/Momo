@@ -2,7 +2,7 @@ package com.bmob.im.demo.adapter;
 
 import java.util.List;
 
-import android.app.ProgressDialog;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -39,6 +39,8 @@ public class NewFriendAdapter extends BaseListAdapter<BmobInvitation> {
 		// TODO Auto-generated constructor stub
 	}
 
+	@SuppressWarnings("deprecation")
+	@SuppressLint("InflateParams")
 	@Override
 	public View bindView(int arg0, View convertView, ViewGroup arg2) {
 		// TODO Auto-generated method stub

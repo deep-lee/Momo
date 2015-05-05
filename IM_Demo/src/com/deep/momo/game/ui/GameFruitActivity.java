@@ -5,6 +5,7 @@ import com.bmob.im.demo.R.layout;
 import com.bmob.im.demo.bean.User;
 import com.bmob.im.demo.ui.ActivityBase;
 import com.bmob.im.demo.ui.SetMyInfoActivity;
+import com.bmob.im.demo.ui.SetMyInfoActivity2;
 import com.bmob.im.demo.view.BoardView;
 import com.bmob.im.demo.view.dialog.DialogTips;
 import com.deep.momo.game.view.GameView;
@@ -260,7 +261,7 @@ public class GameFruitActivity extends ActivityBase implements OnClickListener, 
 	
 	private void gotoMomo() {
 		Intent intent = new Intent();
-		intent.setClass(GameFruitActivity.this, SetMyInfoActivity.class);
+		intent.setClass(GameFruitActivity.this, SetMyInfoActivity2.class);
 		
 		intent.putExtra("from", "add");
 		intent.putExtra("username", username);
