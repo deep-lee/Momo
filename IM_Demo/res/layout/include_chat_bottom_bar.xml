@@ -17,16 +17,16 @@
 
         <Button
             android:id="@+id/btn_chat_add"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:background="@drawable/btn_chat_add_selector"
             android:gravity="center"
             android:onClick="toAction" />
 
         <Button
             android:id="@+id/btn_chat_emo"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_marginLeft="6dp"
             android:background="@drawable/btn_chat_emo_selector"
             android:gravity="center"
@@ -41,9 +41,8 @@
             android:layout_marginTop="3dp"
             android:layout_weight="1.0"
             android:layout_marginBottom="3dp"
-            android:background="@drawable/rounded_editview"
+            android:background="@drawable/add_friends_search_bg"
             android:imeOptions="flagNoExtractUi"
-            
             android:padding="5dp" />
 
         <Button
@@ -62,8 +61,8 @@
 
         <Button
             android:id="@+id/btn_chat_voice"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:background="@drawable/btn_chat_voice_selector"
             android:gravity="center"
             android:textColor="@color/base_color_text_black" >

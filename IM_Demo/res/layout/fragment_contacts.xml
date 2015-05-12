@@ -2,12 +2,93 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff"
     android:orientation="vertical" >
 
-    <include
-        android:id="@+id/common_actionbar"
-        layout="@layout/include_action_bar" />
+    <RelativeLayout
+	        android:id="@+id/title"
+	        android:layout_width="match_parent"
+	        android:layout_height="@dimen/height_top_bar"
+	        android:background="@color/common_action_bar_bg_color" >
+	        
+            <FrameLayout 
+                android:id="@+id/search_back_layout_and_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+	            android:layout_centerVertical="true">
+	            
+                <LinearLayout
+                    android:id="@+id/search_back_layout"
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:visibility="invisible"
+                    android:layout_height="wrap_content" >
+                    
+                    <ImageView
+			            android:id="@+id/iv_back"
+			            android:layout_width="40dp"
+			            android:layout_height="match_parent"
+			            android:paddingBottom="5dp"
+			            android:paddingLeft="5dp"
+			            android:paddingRight="5dp"
+			            android:paddingTop="5dp"
+			            android:scaleType="centerInside"
+			            android:src="@drawable/base_action_bar_back_bg_selector" />
+			
+			        <View
+			            android:id="@+id/view_temp"
+			            android:layout_width="1dp"
+			            android:layout_height="match_parent"
+			            android:layout_marginBottom="8dp"
+			            android:layout_marginTop="8dp"
+			            android:background="#14191A" />
+
+				</LinearLayout>
+                
+                <TextView
+                    android:id="@+id/fragment_app_name"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:text="摇摇"
+		            android:layout_marginLeft="10dp"
+		            android:layout_gravity="center_vertical"
+		            android:textColor="#ffffff"
+		            android:textSize="18sp" />
+                
+            </FrameLayout>
+	
+	        
+	        
+	        <ImageView
+	            android:id="@+id/iv_add"
+	            android:layout_width="56dp"
+	            android:layout_height="match_parent"
+	            android:layout_alignParentRight="true"
+	            android:clickable="true"
+	            android:src="@drawable/base_action_bar_add_bg_selector" />
+	
+	        <ImageView
+	            android:id="@+id/iv_search"
+	            android:layout_width="56dp"
+	            android:layout_height="match_parent"
+	            android:layout_toLeftOf="@id/iv_add"
+	            android:clickable="true"
+	            android:src="@drawable/base_action_bar_search_bg_selector" />
+	           
+	        <EditText 
+	            android:id="@+id/fragment_search_et"
+	            android:layout_width="fill_parent"
+	            android:layout_height="45dp"
+	            android:layout_toRightOf="@+id/search_back_layout_and_text"
+	            android:layout_marginRight="10dp"
+	            android:layout_centerVertical="true"
+	            android:textColor="#ffffff"
+	            android:hint="搜索"
+	            android:visibility="invisible"
+	            android:drawableLeft="@drawable/icon_fragment_searchview_search"
+	            android:background="@drawable/common_fragment_search_bg"/>
+	           
+	    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/layout_list"
@@ -16,36 +97,11 @@
         android:background="#ffffff"
         android:orientation="vertical" >
         
-        <RelativeLayout 
-            android:layout_width="fill_parent"
-            android:layout_height="60dp"
-            android:background="@drawable/base_comment_emo_bar"
-            android:id="@+id/et_msg_search_bg_layout">
-            
-            <com.bmob.im.demo.view.ClearEditText
-	            android:id="@+id/et_msg_search"
-	            android:layout_width="match_parent"
-	            android:layout_height="40dp"  
-	            android:background="@drawable/rounded_editview"
-	            android:layout_centerInParent="true"
-	            android:layout_marginLeft="10dp"
-	            android:layout_marginRight="30dp"
-	            android:drawableLeft="@drawable/icon_msg_search"
-	            android:drawablePadding="10dp"
-	            android:hint="@string/message_search_hint"
-	            android:paddingLeft="10dp"
-	            android:paddingRight="10dp"
-	            android:singleLine="true" />
-            
-        </RelativeLayout>
-        
         
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/et_msg_search_bg_layout"
             android:layout_gravity="top"
-            android:layout_marginLeft="10dp"
             android:layout_marginRight="20dip"
             android:background="@drawable/user_add_top_bg"
             android:orientation="horizontal" >

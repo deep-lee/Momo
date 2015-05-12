@@ -1,38 +1,25 @@
 package com.deep.momo.game.ui;
 
 import com.bmob.im.demo.R;
-import com.bmob.im.demo.R.layout;
-import com.bmob.im.demo.bean.User;
 import com.bmob.im.demo.ui.ActivityBase;
-import com.bmob.im.demo.ui.BaseActivity;
-import com.bmob.im.demo.ui.SetMyInfoActivity;
 import com.bmob.im.demo.ui.SetMyInfoActivity2;
 import com.bmob.im.demo.util.SoundPlay;
 import com.bmob.im.demo.view.dialog.DialogTips;
 
-import android.R.integer;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.inputmethod.InputBinding;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 

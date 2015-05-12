@@ -27,6 +27,7 @@ import cn.bmob.v3.listener.UploadFileListener;
 
 import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -81,6 +82,9 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 	TextView tv_age, tv_distance, tv_last_update_time, tv_nick, tv_account, tv_personalized_signature, tv_game, 
 			 tv_game_difficulty, tv_love_status, tv_career, tv_company, tv_school, tv_hometown, tv_book, 
 			 tv_movie, tv_music, tv_interests, tv_usually_appear, tv_register_time, tv_recent_play;
+	
+	TextView tv_edit_info;
+	View edit_line;
 	
 	// ImageButton btn_back;
 	
@@ -171,32 +175,24 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 		from = getIntent().getStringExtra("from"); //me add other
 		username = getIntent().getStringExtra("username");
 		
-		ShowToast(from);
+		// ShowToast(from);
 		
 		if (from.equals("me")) {
-			initTopBarForBoth("我的资料", R.drawable.base_action_bar_send_selector, "编辑",
-					new onRightImageButtonClickListener() {
-
-						@Override
-						public void onClick(View v) {
-							// TODO Auto-generated method stub
-							Intent intent2 = new Intent();
-							intent2.setClass(SetMyInfoActivity2.this, EditMyInfoActivity.class);
-							startActivityForResult(intent2, ETIT_MY_INFO);
-						}
-			});
+//			initTopBarForBoth("我的资料", R.drawable.base_action_bar_send_selector, "编辑",
+//					new onRightImageButtonClickListener() {
+//
+//						@Override
+//						public void onClick(View v) {
+//							// TODO Auto-generated method stub
+//							Intent intent2 = new Intent();
+//							intent2.setClass(SetMyInfoActivity2.this, EditMyInfoActivity.class);
+//							startActivityForResult(intent2, ETIT_MY_INFO);
+//						}
+//			});
 		}else {
 			String nick = getIntent().getStringExtra("nick");
-			initTopBarForLeft(nick);
+//			initTopBarForLeft(nick);
 		}
-		
-		// 女性主题
-		if (!CustomApplcation.sex) {
-			setActionBgForFemale();
-			setActionBarRightBtnForFemale();
-		}
-		
-		
 		
 		initView();
 	}
@@ -290,6 +286,9 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 		
 		tv_recent_play = (TextView) findViewById(R.id.info_recent_play_details);
 		
+		tv_edit_info = (TextView) findViewById(R.id.tv_edit_info);
+		edit_line = findViewById(R.id.view_temp2);
+		
 //		btn_edit = (Button) findViewById(R.id.btn_edit_info);
 		btn_add = (CircularProgressButton) findViewById(R.id.info_btn_add_friend);
 		btn_chat = (CircularProgressButton) findViewById(R.id.info_btn_chat);
@@ -330,6 +329,9 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 			btn_chat.setVisibility(View.VISIBLE);
 			btn_chat.setOnClickListener(this);
 //			btn_edit.setVisibility(View.GONE);
+			
+			tv_edit_info.setVisibility(View.INVISIBLE);
+			edit_line.setVisibility(View.INVISIBLE);
 			
 			// 从附近的人列表添加好友--因为获取附近的人的方法里面有是否显示好友的情况，因此在这里需要判断下这个用户是否是自己的好友
 			
@@ -491,6 +493,7 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 
 	public String filePath = "";
 	
+	@SuppressWarnings("deprecation")
 	private void showAvatarPop() {
 		View view = LayoutInflater.from(this).inflate(R.layout.pop_showavator,
 				null);
@@ -745,10 +748,10 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 		// 设置性别
 		// 男
 		if (user.getSex()) {
-			iv_sex.setImageDrawable(getResources().getDrawable(R.drawable.set_my_info_male));
+			iv_sex.setImageDrawable(getResources().getDrawable(R.drawable.icon_nears_sex_male));
 		}
 		else {
-			iv_sex.setImageDrawable(getResources().getDrawable(R.drawable.set_my_info_female));
+			iv_sex.setImageDrawable(getResources().getDrawable(R.drawable.icon_nears_sex_female));
 		}
 		
 		Calendar calendar = Calendar.getInstance();
@@ -1274,6 +1277,12 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 			break;
 		}
 		
+	}
+	
+	public void editMyInfo(View view) {
+		Intent intent2 = new Intent();
+		intent2.setClass(SetMyInfoActivity2.this, EditMyInfoActivity.class);
+		startActivityForResult(intent2, ETIT_MY_INFO);
 	}
 	
 	/**

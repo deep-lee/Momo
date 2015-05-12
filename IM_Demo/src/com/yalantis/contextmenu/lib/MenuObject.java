@@ -107,7 +107,7 @@ public class MenuObject implements Parcelable {
     public void setBitmap(Bitmap mBitmap) {
         this.mBitmap = mBitmap;
         mColor = 0;
-        mResource = 0;
+        mResource = -10;
         mDrawable = null;
     }
 

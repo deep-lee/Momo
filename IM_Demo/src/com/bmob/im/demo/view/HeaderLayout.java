@@ -242,12 +242,12 @@ public class HeaderLayout extends LinearLayout {
 		void onClick();
 	}
 	
-	public void setActionBarBgForFemale() {
-		root_layout.setBackgroundResource(R.drawable.common_action_bar_bg_female);
-	}
-	
-	public void setActionBarRightBtnForFemale() {
-		mRightImageButton.setBackgroundResource(R.drawable.base_action_bar_send_female_selector);
-	}
+//	public void setActionBarBgForFemale() {
+//		root_layout.setBackgroundResource(R.drawable.common_action_bar_bg_female);
+//	}
+//	
+//	public void setActionBarRightBtnForFemale() {
+//		mRightImageButton.setBackgroundResource(R.drawable.base_action_bar_send_female_selector);
+//	}
 
 }

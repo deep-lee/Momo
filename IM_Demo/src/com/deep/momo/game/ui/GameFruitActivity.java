@@ -1,34 +1,22 @@
 package com.deep.momo.game.ui;
 
 import com.bmob.im.demo.R;
-import com.bmob.im.demo.R.layout;
-import com.bmob.im.demo.bean.User;
 import com.bmob.im.demo.ui.ActivityBase;
-import com.bmob.im.demo.ui.SetMyInfoActivity;
 import com.bmob.im.demo.ui.SetMyInfoActivity2;
-import com.bmob.im.demo.view.BoardView;
 import com.bmob.im.demo.view.dialog.DialogTips;
 import com.deep.momo.game.view.GameView;
 import com.deep.momo.game.view.OnStateListener;
 import com.deep.momo.game.view.OnTimerListener;
 import com.deep.momo.game.view.OnToolsChangeListener;
-
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.Context;
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -61,6 +49,7 @@ public class GameFruitActivity extends ActivityBase implements OnClickListener, 
 	String gamedifficulty = "¼òµ¥";
 	
 	
+	@SuppressLint("HandlerLeak")
 	private Handler handler = new Handler(){
 		@Override
 		public void handleMessage(Message msg) {

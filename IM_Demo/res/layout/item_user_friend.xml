@@ -8,9 +8,9 @@
         android:id="@+id/alpha"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/base_comment_emo_bar"
+        android:background="@color/base_common_contact_list_suoyin_bg"
         android:padding="2dp"
-        android:textSize="18sp"
+        android:textSize="13sp"
         android:textColor="@color/guide_color" 
         />
     
@@ -31,10 +31,11 @@
         android:layout_alignTop="@id/img_friend_avatar"
         android:layout_below="@id/alpha"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="6.0dip"
+        android:layout_marginTop="10.0dip"
+        android:layout_centerVertical="true"
         android:layout_toRightOf="@id/img_friend_avatar"
         android:padding="5dp"
         android:singleLine="true"
-        android:textSize="20sp" />
+        android:textSize="15sp" />
 
 </RelativeLayout>

@@ -38,11 +38,8 @@ public class NewFriendActivity extends ActivityBase implements OnItemLongClickLi
 	}
 	
 	private void initView(){
-		initTopBarForLeft("新朋友");
-		// 女性主题
-		if (!CustomApplcation.sex) {
-			setActionBgForFemale();
-		}
+//		initTopBarForLeft("新朋友");
+		
 		listview = (ListView)findViewById(R.id.list_newfriend);
 		listview.setOnItemLongClickListener(this);
 		adapter = new NewFriendAdapter(this,BmobDB.create(this).queryBmobInviteList());

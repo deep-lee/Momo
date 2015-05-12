@@ -47,7 +47,7 @@
             android:padding="5dp"
             android:singleLine="true"
             android:text="@string/new_friends"
-            android:textSize="20sp" />
+            android:textSize="15sp" />
     </LinearLayout>
 
     <View
@@ -121,7 +121,7 @@
             android:padding="5dp"
             android:singleLine="true"
             android:text="@string/black_list"
-            android:textSize="20sp" />
+            android:textSize="15sp" />
     </LinearLayout>
 
 </RelativeLayout>

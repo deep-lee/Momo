@@ -4,13 +4,79 @@
     android:layout_height="match_parent"
     tools:context="${relativePackage}.${activityClass}" >
     
-    <include
+<!--     <include
         android:id="@+id/common_actionbar"
-        layout="@layout/include_action_bar" />  
+        layout="@layout/include_action_bar" />  -->
+        
+        
+    <RelativeLayout
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_top_bar"
+        android:background="@color/common_action_bar_bg_color" >
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:onClick="back"
+            android:paddingBottom="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="5dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/base_action_bar_back_bg_selector" />
+
+        <View
+            android:id="@+id/view_temp"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_toRightOf="@id/iv_back"
+            android:background="#14191A" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/view_temp"
+            android:text="新的朋友"
+            android:textColor="#ffffff"
+            android:textSize="18sp" />
+ 
+        <TextView
+            android:id="@+id/tv_add"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="8dp"
+            android:gravity="center"
+            android:text="保存"
+            android:clickable="true"
+            android:onClick="saveMyInfo"
+            android:textColor="#fff"
+            android:textSize="16sp" />
+
+        <View
+            android:id="@+id/view_temp2"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="8dp"
+            android:layout_toLeftOf="@id/tv_add"
+            android:background="#14191A" />
+    </RelativeLayout>
     
     <com.bmob.im.demo.view.InfoScrollView
 	        android:id="@+id/sv_profile"
-	        android:layout_below="@+id/common_actionbar"
+	        android:layout_below="@+id/title"
 	        android:layout_width="match_parent"
 	        android:layout_height="match_parent"
 	        android:fadingEdge="none"

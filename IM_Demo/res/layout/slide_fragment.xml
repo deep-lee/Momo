@@ -29,13 +29,13 @@
             android:layout_marginLeft="20dp"
             android:textColor="#ffffff"
             android:layout_gravity="center"
-            android:textSize="20sp"/>
+            android:textSize="15sp"/>
         
     </LinearLayout>
     
     <RelativeLayout 
         android:layout_width="fill_parent"
-        android:layout_marginTop="130dp"
+        android:layout_marginTop="150dp"
         android:layout_marginLeft="30dp"
         android:background="@drawable/slide_personal_layout_bg_selector"
         android:id="@+id/slide_personal_layout"
@@ -75,7 +75,7 @@
     
     <ListView 
         android:id="@+id/slide_listview"
-        android:layout_marginTop="190dp"
+        android:layout_marginTop="220dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginLeft="20dp"
         android:divider="#00000000"  

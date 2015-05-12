@@ -93,7 +93,7 @@ public class CustomApplcation extends Application {
 		gameList.add("水果连连看");
 		gameList.add("猜数字");
 		gameList.add("Mixed color");
-		gameList.add("Oh my egg");
+		gameList.add("oh my egg");
 		
 		loveList.add("热恋");
 		loveList.add("单身");
@@ -415,7 +415,7 @@ public class CustomApplcation extends Application {
 	}
 	
 	// 判断应用是否安装
-	public boolean isAppInstalled(Context context,String packagename)
+	public static boolean isAppInstalled(Context context,String packagename)
     {
     	PackageInfo packageInfo; 
     	
@@ -442,7 +442,7 @@ public class CustomApplcation extends Application {
     	}
     }
     
-	public Boolean isApkDownloaded(String fileName) {
+	public static Boolean isApkDownloaded(String fileName) {
 		
 		String apkDir = Environment.getExternalStorageDirectory().getPath() + "/Bmob_IM_test/GameAPK/";
 		File rootFile = new File(apkDir);

@@ -3,13 +3,108 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff"
     android:orientation="vertical" 
     tools:context="${relativePackage}.${activityClass}">
   
-    <include
+    <!-- <include
         android:id="@+id/common_actionbar"
-        layout="@layout/include_action_bar" />
+        layout="@layout/include_action_bar" /> -->
+        
+        
+    <RelativeLayout
+	        android:id="@+id/title"
+	        android:layout_width="match_parent"
+	        android:layout_height="@dimen/height_top_bar"
+	        android:background="@color/common_action_bar_bg_color" >
+	        
+            <FrameLayout 
+                android:id="@+id/search_back_layout_and_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+	            android:layout_centerVertical="true">
+	            
+                <LinearLayout
+                    android:id="@+id/search_back_layout"
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:visibility="invisible"
+                    android:layout_height="wrap_content" >
+                    
+                    <ImageView
+			            android:id="@+id/iv_back"
+			            android:layout_width="40dp"
+			            android:layout_height="match_parent"
+			            android:paddingBottom="5dp"
+			            android:paddingLeft="5dp"
+			            android:paddingRight="5dp"
+			            android:paddingTop="5dp"
+			            android:scaleType="centerInside"
+			            android:src="@drawable/base_action_bar_back_bg_selector" />
+			
+			        <View
+			            android:id="@+id/view_temp"
+			            android:layout_width="1dp"
+			            android:layout_height="match_parent"
+			            android:layout_marginBottom="8dp"
+			            android:layout_marginTop="8dp"
+			            android:background="#14191A" />
+
+				</LinearLayout>
+                
+                <LinearLayout 
+		            android:layout_width="40dp"
+		            android:layout_height="40dp"
+		            android:orientation="vertical"
+		            android:layout_gravity="center_vertical"
+		            android:layout_marginLeft="10dp">
+		            
+		            <ImageView 
+		                android:id="@+id/fragment_find_action_bar_user_avatar"
+		                android:layout_width="34dp"
+		                android:layout_height="34dp"
+		                android:layout_gravity="center"
+		                android:layout_marginTop="4dp"
+		                android:clickable="true"
+		                android:src="@drawable/ic_nears_all_people_female"/>
+	            
+	        	</LinearLayout>
+                
+            </FrameLayout>
+	
+	        
+	        
+	        <ImageView
+	            android:id="@+id/iv_add"
+	            android:layout_width="56dp"
+	            android:layout_height="match_parent"
+	            android:layout_alignParentRight="true"
+	            android:clickable="true"
+	            android:src="@drawable/base_action_bar_add_bg_selector" />
+	
+	        <ImageView
+	            android:id="@+id/iv_search"
+	            android:layout_width="56dp"
+	            android:layout_height="match_parent"
+	            android:layout_toLeftOf="@id/iv_add"
+	            android:clickable="true"
+	            android:src="@drawable/base_action_bar_search_bg_selector" />
+	           
+	        <EditText 
+	            android:id="@+id/fragment_search_et"
+	            android:layout_width="fill_parent"
+	            android:layout_height="45dp"
+	            android:layout_toRightOf="@+id/search_back_layout_and_text"
+	            android:layout_marginRight="10dp"
+	            android:layout_centerVertical="true"
+	            android:textColor="#ffffff"
+	            android:hint="搜索"
+	            android:visibility="invisible"
+	            android:drawableLeft="@drawable/icon_fragment_searchview_search"
+	            android:background="@drawable/common_fragment_search_bg"/>
+	           
+	    </RelativeLayout>      
+       
 
     <com.deep.phoenix.PullToRefreshView
         android:id="@+id/pull_to_refresh"
@@ -22,7 +117,7 @@
 	        android:fastScrollEnabled="true"
 	        android:id="@+id/list"
 	        android:background="#ffffff"
-	        android:divider="#dddbdb"
+	        android:divider="#d9d9d9"
 	        android:listSelector="@android:color/transparent"
 	        android:layout_width="match_parent"
 	        android:layout_height="match_parent"

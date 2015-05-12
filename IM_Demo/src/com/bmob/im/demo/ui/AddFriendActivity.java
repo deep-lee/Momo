@@ -14,6 +14,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import cn.bmob.im.bean.BmobChatUser;
 import cn.bmob.im.task.BRequest;
 import cn.bmob.im.util.BmobLog;
@@ -23,6 +24,7 @@ import cn.bmob.v3.listener.FindListener;
 import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.adapter.AddFriendAdapter;
+import com.bmob.im.demo.bean.User;
 import com.bmob.im.demo.util.CollectionUtils;
 import com.bmob.im.demo.view.dialog.CustomProgressDialog;
 import com.bmob.im.demo.view.xlist.XListView;
@@ -31,6 +33,9 @@ import com.daimajia.androidanimations.library.YoYo;
 import com.daimajia.androidanimations.library.YoYo.AnimationComposer;
 import com.daimajia.androidanimations.library.attention.ShakeAnimator;
 import com.dd.library.CircularProgressButton;
+import com.deep.momo.game.ui.GameFruitActivity;
+import com.deep.momo.game.ui.GuessNumberActivity;
+import com.deep.momo.game.ui.MixedColorMenuActivity;
 import com.nineoldandroids.animation.Animator;
 
 /** 添加好友
@@ -48,6 +53,10 @@ public class AddFriendActivity extends ActivityBase implements OnClickListener, 
 	ListView mListView;
 	AddFriendAdapter adapter;
 	
+	TextView tv_add_from_tongxunlu;
+	
+	public static Boolean flag = false;
+	
 	YoYo.AnimationComposer shakeAnimation;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -58,16 +67,13 @@ public class AddFriendActivity extends ActivityBase implements OnClickListener, 
 	}
 	
 	private void initView(){
-		initTopBarForLeft("查找好友");
-		
-		// 女性主题
-		if (!CustomApplcation.sex) {
-			setActionBgForFemale();
-		}
+//		initTopBarForLeft("查找好友");
 				
 		et_find_name = (EditText)findViewById(R.id.et_find_name);
 		btn_search = (CircularProgressButton)findViewById(R.id.btn_search);
 		btn_search.setOnClickListener(this);
+		    
+		tv_add_from_tongxunlu = (TextView) findViewById(R.id.tv_add_from_tongxunlu);
 		
 		shakeAnimation = new AnimationComposer(new ShakeAnimator())
 		.duration(500)
@@ -101,7 +107,59 @@ public class AddFriendActivity extends ActivityBase implements OnClickListener, 
 			progress.setCanceledOnTouchOutside(true);
 			progress.show();
 		}
-		userManager.queryUserByPage(isUpdate, 0, searchName, new FindListener<BmobChatUser>() {
+		
+//		userManager.queryUserByPage(isUpdate, 0, searchName, new FindListener<BmobChatUser>() {
+//
+//			@Override
+//			public void onError(int arg0, String arg1) {
+//				// TODO Auto-generated method stub
+//				BmobLog.i("查询错误:"+arg1);
+//				if(users!=null){
+//					users.clear();
+//				}
+//				btn_search.setProgress(-1);
+//				ShowToast("查询错误，用户不存在");
+////				mListView.setPullLoadEnable(false);
+////				refreshPull();
+//				//这样能保证每次查询都是从头开始
+//				curPage = 0;
+//			}
+//
+//			@Override
+//			public void onSuccess(List<BmobChatUser> arg0) {
+//				// TODO Auto-generated method stub
+//				btn_search.setProgress(0);
+//				
+//				if (CollectionUtils.isNotNull(arg0)) {
+//					if(isUpdate){
+//						users.clear();
+//					}
+//					adapter.addAll(arg0);
+//					if(arg0.size()<BRequest.QUERY_LIMIT_COUNT){
+////						mListView.setPullLoadEnable(false);
+//						ShowToast("用户搜索完成!");
+//					}else{
+////						mListView.setPullLoadEnable(true);
+//					}
+//				}else{
+//					BmobLog.i("查询成功:无返回值");
+//					if(users!=null){
+//						users.clear();
+//					}
+//					ShowToast("查询成功:无返回值，用户不存在");
+//				}
+//				if(!isUpdate){
+//					progress.dismiss();
+//				}else{
+////					refreshPull();
+//				}
+//				//这样能保证每次查询都是从头开始
+//				curPage = 0;
+//			}
+//		});
+		
+		// 可以通过昵称或者用户名查找
+		userManager.queryUser(searchName, new FindListener<BmobChatUser>() {
 
 			@Override
 			public void onError(int arg0, String arg1) {
@@ -111,11 +169,12 @@ public class AddFriendActivity extends ActivityBase implements OnClickListener, 
 					users.clear();
 				}
 				btn_search.setProgress(-1);
-				ShowToast("用户不存在");
+				ShowToast("查询错误，用户不存在");
+				shakeAnimation.playOn(et_find_name);
 //				mListView.setPullLoadEnable(false);
 //				refreshPull();
 				//这样能保证每次查询都是从头开始
-				curPage = 0;
+				// curPage = 0;
 			}
 
 			@Override
@@ -135,11 +194,13 @@ public class AddFriendActivity extends ActivityBase implements OnClickListener, 
 //						mListView.setPullLoadEnable(true);
 					}
 				}else{
-					BmobLog.i("查询成功:无返回值");
+					BmobLog.i("无返回值");
 					if(users!=null){
 						users.clear();
 					}
 					ShowToast("用户不存在");
+					
+					shakeAnimation.playOn(et_find_name);
 				}
 				if(!isUpdate){
 					progress.dismiss();
@@ -147,7 +208,7 @@ public class AddFriendActivity extends ActivityBase implements OnClickListener, 
 //					refreshPull();
 				}
 				//这样能保证每次查询都是从头开始
-				curPage = 0;
+				// curPage = 0;
 			}
 		});
 		
@@ -186,11 +247,70 @@ public class AddFriendActivity extends ActivityBase implements OnClickListener, 
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
 		// TODO Auto-generated method stub
-		BmobChatUser user = (BmobChatUser) adapter.getItem(position);
-		Intent intent =new Intent(this,SetMyInfoActivity2.class);
-		intent.putExtra("from", "add");
-		intent.putExtra("username", user.getUsername());
-		startAnimActivity(intent);		
+//		BmobChatUser user = (BmobChatUser) adapter.getItem(position);
+//		Intent intent =new Intent(this,SetMyInfoActivity2.class);
+//		intent.putExtra("from", "add");
+//		intent.putExtra("username", user.getUsername());
+//		startAnimActivity(intent);		
+		
+		 // 玩游戏
+		
+		// 已经是好友了就可以看资料了
+		if (flag) {
+			ShowToast("FRIEND");
+			BmobChatUser user = (BmobChatUser) adapter.getItem(position);
+			Intent intent =new Intent(this,SetMyInfoActivity2.class);
+			intent.putExtra("from", "add");
+			intent.putExtra("username", user.getUsername());
+			startAnimActivity(intent);	
+		}
+		// 还不是好友，此时不能看资料，要先玩游戏
+		else {
+			
+			ShowToast("NOT FRIEND");
+			BmobChatUser user = (BmobChatUser) adapter.getItem(position);
+			userManager.queryUser(user.getUsername(), new FindListener<User>() {
+
+				@Override
+				public void onError(int arg0, String arg1) {
+					// TODO Auto-generated method stub
+					ShowToast(R.string.network_tips);
+					return;
+				}
+
+				@Override
+				public void onSuccess(List<User> arg0) {
+					// TODO Auto-generated method stub
+//					ShowToast(arg0.get(0).getBirthday());
+					User user = arg0.get(0);
+					Intent intent = new Intent();
+					
+					String gameType = user.getGameType();
+					
+					if (gameType.equals("水果连连看")) {
+						intent.setClass(AddFriendActivity.this, GameFruitActivity.class);
+					}
+					else if (gameType.equals("猜数字")) {
+						intent.setClass(AddFriendActivity.this, GuessNumberActivity.class);
+					}
+					else if (gameType.equals("mixed color")) {
+						intent.setClass(AddFriendActivity.this, MixedColorMenuActivity.class);
+					}
+
+					
+					Bundle data = new Bundle();
+					data.putString("from", "other");
+					data.putString("username", user.getUsername());
+					data.putString("gamedifficulty", user.getGameDifficulty());
+					
+					intent.putExtras(data);
+					
+					ShowToast(user.getGameType() + "");
+					startActivity(intent);
+					
+				}
+			});
+		}
 	}
 	
 	String searchName ="";
@@ -229,10 +349,23 @@ public class AddFriendActivity extends ActivityBase implements OnClickListener, 
 			
 			
 			break;
+			
+//		// 添加通讯录好友
+//		case R.id.tv_add_from_tongxunlu:
+//			
+//			
+//			break;
 
 		default:
 			break;
 		}
+	}
+	
+	public void addFromSystemCOntact(View view) {
+		// ShowToast("clicked");
+		Intent intent = new Intent();
+		intent.setClass(AddFriendActivity.this, AddFriendsFromAddressBookActivity.class);
+		startAnimActivity(intent);
 	}
 
 //	@Override

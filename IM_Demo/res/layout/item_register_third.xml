@@ -15,10 +15,10 @@
 
         <ImageView
             android:id="@+id/register_set_avator"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="135dp"
+            android:layout_height="135dp"
             android:layout_centerInParent="true"
-            android:src="@drawable/register_set_avator_default" />
+            android:src="@drawable/default_avatar" />
     </RelativeLayout>
     
       <TextView 

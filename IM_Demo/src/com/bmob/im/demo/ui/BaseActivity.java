@@ -286,12 +286,17 @@ public class BaseActivity extends FragmentActivity {
 		return CommonUtils.isNetworkAvailable(this);
 	}
 	
-	public void setActionBgForFemale() {
-		mHeaderLayout.setActionBarBgForFemale();
-	}
+//	public void setActionBgForFemale() {
+//		mHeaderLayout.setActionBarBgForFemale();
+//	}
+//	
+//	public void setActionBarRightBtnForFemale() {
+//		mHeaderLayout.setActionBarRightBtnForFemale();
+//	}
 	
-	public void setActionBarRightBtnForFemale() {
-		mHeaderLayout.setActionBarRightBtnForFemale();
-	}
+	public void back(View view){
+        
+        finish();
+    }
 	
 }

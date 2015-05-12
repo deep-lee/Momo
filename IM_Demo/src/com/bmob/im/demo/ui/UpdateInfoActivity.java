@@ -46,10 +46,7 @@ public class UpdateInfoActivity extends ActivityBase {
 					}
 				});
 		
-		// 女性主题
-		if (!CustomApplcation.sex) {
-			setActionBgForFemale();
-		}
+
 		edit_nick = (EditText) findViewById(R.id.edit_nick);
 	}
 

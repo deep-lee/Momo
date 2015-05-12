@@ -51,12 +51,7 @@ public class EditPersonalizedSignatureActivity extends ActivityBase {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_edit_personalized_signature);
 		
-		initTopBarForLeft("我的签名");
-		
-		// 女性主题
-		if (!CustomApplcation.sex) {
-			setActionBgForFemale();
-		}
+//		initTopBarForLeft("我的签名");
 		
 		user = userManager.getCurrentUser(User.class); 
 		

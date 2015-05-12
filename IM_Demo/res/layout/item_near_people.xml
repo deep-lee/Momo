@@ -2,16 +2,19 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
+    android:background="@drawable/common_list_item_bg_selector"
     android:orientation="horizontal"
     android:padding="10dp" >
 
     <ImageView
         android:id="@+id/iv_avatar"
         style="@style/Smile.ImageView.Photo_Middle"
+        android:layout_gravity="center_vertical"
         android:src="@drawable/default_head" />
 
     <RelativeLayout
         android:layout_width="0dp"
+        android:layout_gravity="center_vertical"
         android:layout_height="match_parent"
         android:layout_marginLeft="5dp"
         android:layout_weight="1.0" >
@@ -21,8 +24,7 @@
             style="@style/Smile.TextView._Black"
             android:paddingLeft="5dp"
             android:textSize="20sp"
-            android:text="你好"
-            android:textStyle="bold" />
+            android:text="你好"/>
 
         <TextView
             android:id="@+id/tv_distance"

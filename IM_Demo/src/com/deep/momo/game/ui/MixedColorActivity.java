@@ -3,20 +3,12 @@ package com.deep.momo.game.ui;
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.ui.ActivityBase;
 import com.bmob.im.demo.view.dialog.DialogTips;
-import com.deep.momo.game.view.MixedColorView;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.KeyEvent;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.ImageButton;
 
 public class MixedColorActivity extends ActivityBase {
 

@@ -141,7 +141,9 @@ public class ChatActivity extends ActivityBase implements OnClickListener,
 		
 		// 组装聊天对象
 		targetUser = (BmobChatUser) getIntent().getSerializableExtra("user");
-		targetId = targetUser.getObjectId();
+		if (targetUser != null) {
+			targetId = targetUser.getObjectId();
+		}
 //		BmobLog.i("聊天对象：" + targetUser.getUsername() + ",targetId = "
 //				+ targetId);
 		
@@ -198,12 +200,7 @@ public class ChatActivity extends ActivityBase implements OnClickListener,
 	private void initView() {
 		mHeaderLayout = (HeaderLayout) findViewById(R.id.common_actionbar);
 		mListView = (XListView) findViewById(R.id.mListView);
-		initTopBarForLeft(targetUser.getNick());
-		
-		// 女性主题
-		if (!CustomApplcation.sex) {
-			setActionBgForFemale();
-		}
+//		initTopBarForLeft(targetUser.getNick());
 		
 		// 初始化界面下方的控件
 		initBottomView();
@@ -785,7 +782,7 @@ public class ChatActivity extends ActivityBase implements OnClickListener,
 				return;
 			}
 			boolean isNetConnected = CommonUtils.isNetworkAvailable(this);
-			if (!isNetConnected) {
+			if (!isNetConnected || targetId == null) {
 				ShowToast(R.string.network_tips);
 				// return;
 			}
@@ -960,29 +957,33 @@ public class ChatActivity extends ActivityBase implements OnClickListener,
 			layout_add.setVisibility(View.GONE);
 			layout_emo.setVisibility(View.GONE);
 		}
-		manager.sendImageMessage(targetUser, local, new UploadListener() {
+		
+		if (isNetAvailable() && targetId != null) {
+			manager.sendImageMessage(targetUser, local, new UploadListener() {
 
-			@Override
-			public void onStart(BmobMsg msg) {
-				// TODO Auto-generated method stub
-				ShowLog("开始上传onStart：" + msg.getContent() + ",状态："
-						+ msg.getStatus());
-				refreshMessage(msg);
-			}
+				@Override
+				public void onStart(BmobMsg msg) {
+					// TODO Auto-generated method stub
+					ShowLog("开始上传onStart：" + msg.getContent() + ",状态："
+							+ msg.getStatus());
+					refreshMessage(msg);
+				}
 
-			@Override
-			public void onSuccess() {
-				// TODO Auto-generated method stub
-				mAdapter.notifyDataSetChanged();
-			}
+				@Override
+				public void onSuccess() {
+					// TODO Auto-generated method stub
+					mAdapter.notifyDataSetChanged();
+				}
 
-			@Override
-			public void onFailure(int error, String arg1) {
-				// TODO Auto-generated method stub
-				ShowLog("上传失败 -->arg1：" + arg1);
-				mAdapter.notifyDataSetChanged();
-			}
-		});
+				@Override
+				public void onFailure(int error, String arg1) {
+					// TODO Auto-generated method stub
+					ShowLog("上传失败 -->arg1：" + arg1);
+					mAdapter.notifyDataSetChanged();
+				}
+			});
+		}
+		
 	}
 
 	/**

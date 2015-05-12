@@ -2,7 +2,6 @@ package com.bmob.im.demo.config;
 
 import java.util.ArrayList;
 
-import com.baidu.platform.comapi.map.v;
 
 import cn.bmob.v3.datatype.BmobGeoPoint;
 

@@ -67,7 +67,7 @@ public class NearPeopleAdapter extends BaseListAdapter<User> {
 		}else{
 			tv_distance.setText("未知");
 		}
-		tv_name.setText(contract.getUsername());
+		tv_name.setText(contract.getNick());
 		
 		// getUpdatedAt获取该对象的最后更新时间
 		tv_logintime.setText("最近登录时间:"+contract.getUpdatedAt());

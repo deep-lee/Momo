@@ -1,178 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/mainLayout"
-    android:background="#ffffff"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
     
-    <RelativeLayout
-        android:id="@+id/fragment_container"
+    <LinearLayout 
+        android:id="@+id/main_bottom"
         android:layout_width="match_parent"
-        android:layout_marginBottom="43dp"
-        android:layout_height="match_parent"/>
-    
-	<LinearLayout 
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:layout_gravity="bottom"
-	    android:id="@+id/main_bottom"
-	    android:orientation="vertical">
-	    
-	    <RelativeLayout
-	        android:id="@+id/main_bottom_layout"
+        android:layout_height="wrap_content"
+        android:background="#fcfcfc"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+        
+        <ImageView
+	        android:id="@+id/common_bottom_bar_line"
+	        android:layout_width="fill_parent"
+	        android:background="#d7d7d7"
+	        android:layout_height="1dp"/>
+        
+        <LinearLayout
 	        android:layout_width="match_parent"
-	        android:layout_height="60dp"  
-	        android:layout_gravity="bottom"
-	        android:background="@drawable/common_main_bottom_bg"
+	        android:layout_marginTop="5dp"
+	        android:layout_height="wrap_content"
 	        android:orientation="horizontal" >
-              
-	        <RelativeLayout
-	            android:layout_width="wrap_content"
-	            
-	            android:layout_alignParentLeft="true"
-	            android:layout_alignParentBottom="true"
-	            android:layout_height="wrap_content">
 	
-	            <RelativeLayout 
-	                android:id="@+id/btn_message_layout"
+	        <RelativeLayout
+	            android:layout_width="0dp"
+	            android:layout_height="wrap_content"
+	            android:layout_gravity="bottom"
+	            android:layout_weight="1" >
+	
+	            <Button
+	                android:id="@+id/btn_message"
 	                android:layout_width="wrap_content"
-	                android:orientation="vertical"
-	                android:layout_marginLeft="20dp"
-	                android:layout_height="wrap_content">
-	                
-	                <!-- 
-	                <TextView 
-	                    android:layout_height="wrap_content"
-	                    android:text="@string/main_tab_recent"
-	                	android:textColor="#000000"
-	                	android:textSize="12sp"
-	                	android:layout_centerInParent="true"
-	                	android:layout_below="@id/btn_message"
-	                    android:layout_width="wrap_content"/>
-	                 -->
-  
-	                <ImageButton
-	                    android:id="@+id/btn_message"
-	                    android:layout_width="wrap_content"
-	                    android:layout_height="wrap_content"
-	                    android:layout_alignParentLeft="true"
-	                    android:layout_alignParentTop="true"
-	                    android:background="#00000000"
-	                    android:onClick="onTabSelect"
-	                    android:paddingBottom="2dip"
-	                    android:paddingTop="7dip"
-	                    android:scaleType="fitXY"
-	                    android:src="@drawable/comon_main_bottom_recents_n" />
-
-	            </RelativeLayout>
+	                android:layout_height="wrap_content"
+	                android:background="@color/transparent"
+	                android:drawableTop="@drawable/tab_message_btn"
+	                android:onClick="onTabSelect"
+	                android:paddingBottom="2dip"
+	                android:layout_centerHorizontal="true"
+	                android:scaleType="matrix"
+	                android:text="@string/main_tab_recent"
+	                android:textColor="@drawable/tab_textcolor"
+	                android:textSize="13sp" />
 	
 	            <ImageView
 	                android:id="@+id/iv_recent_tips"
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
-	                android:layout_alignRight="@id/btn_message_layout"
-	                android:layout_alignTop="@id/btn_message_layout"
-	                android:layout_marginTop="7dp"
+	                android:layout_alignRight="@+id/btn_message"
+	                android:layout_alignTop="@+id/btn_message"
 	                android:background="@drawable/msg_tips"
 	                android:contentDescription="@string/action_settings"
 	                android:gravity="center"
 	                android:textColor="@android:color/white"
-	                android:textSize="12sp"
+	                android:textSize="13sp"
 	                android:visibility="visible" />
 	        </RelativeLayout>
 	
 	        <RelativeLayout
-	            android:layout_width="wrap_content"
-	            android:layout_centerInParent="true"
-	            android:layout_alignParentBottom="true"
-	            android:layout_height="wrap_content">
-	            
-	            <RelativeLayout 
-	                android:id="@+id/btn_contract_layout"
-	                android:layout_width="wrap_content"
-	                android:orientation="vertical"
-	                android:layout_height="wrap_content">
-	                
-	                <ImageButton
-		                android:id="@+id/btn_contract"
-		                android:layout_width="wrap_content"
-		                android:layout_height="wrap_content"
-		                android:src="@drawable/comon_main_bottom_contacts_n"
-		                android:onClick="onTabSelect"
-		                android:paddingBottom="2dip"
-		                android:paddingTop="7dip"
-		                android:layout_centerVertical="true"
-		                android:background="#00000000"
-		                android:scaleType="fitXY"/>
-	                   
-	                <!-- 
-	                <TextView 
-	                    android:layout_height="wrap_content"
-	                    android:text="@string/main_tab_contact"
-	                	android:textColor="#000000"
-	                	android:textSize="12sp"
-	                	android:layout_centerVertical="true"
-	                	android:layout_below="@id/btn_contract"
-	                    android:layout_width="wrap_content"/>
-	                 -->
-	            </RelativeLayout>
+	            android:layout_width="0dp"
+	            android:layout_height="wrap_content"
+	            android:layout_gravity="bottom"
+	            android:layout_weight="1" >
 	
-	            
-	        
+	            <Button
+	                android:id="@+id/btn_contract"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:background="@color/transparent"
+	                android:drawableTop="@drawable/tab_contact_btn"
+	                android:onClick="onTabSelect"
+	                android:paddingBottom="2dip"
+	                android:layout_centerHorizontal="true"
+	                android:scaleType="matrix"
+	                android:text="@string/main_tab_contact"
+	                android:textColor="@drawable/tab_textcolor"
+	                android:textSize="13sp" />
+	
 	            <ImageView
 	                android:id="@+id/iv_contact_tips"
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
-	                android:layout_alignRight="@id/btn_contract_layout"
-	                android:layout_alignTop="@id/btn_contract_layout"
-	                android:layout_marginTop="7dp"
+	                android:layout_alignRight="@+id/btn_contract"
+	                android:layout_alignTop="@+id/btn_contract"
 	                android:background="@drawable/msg_tips"
 	                android:contentDescription="@string/action_settings"
 	                android:gravity="center"
 	                android:textColor="@android:color/white"
-	                android:textSize="12sp"
+	                android:textSize="13sp"
 	                android:visibility="visible" />
 	        </RelativeLayout>
-	          
-	        <RelativeLayout
-	            android:layout_width="wrap_content"
-	            android:layout_alignParentRight="true"
-	            android:layout_alignParentBottom="true"
-	            android:layout_marginRight="20dp"
-	            android:layout_height="wrap_content">
-	            
-	            <RelativeLayout 
-	                android:id="@+id/btn_nears_layout"
-	                android:layout_width="wrap_content"
-	                android:orientation="vertical"
-	                android:layout_height="wrap_content">
-	                
-	                <ImageButton
-		                android:id="@+id/btn_nears"
-		                android:layout_width="wrap_content"
-		                android:layout_height="wrap_content"
-		                android:src="@drawable/comon_main_bottom_nears_n"
-		                android:onClick="onTabSelect"
-		                android:paddingBottom="2dip"
-		                android:paddingTop="7dip"
-		                android:background="#00000000"
-		                android:scaleType="fitXY"/>
-	                     
-	                <!-- 
-	                <TextView 
-	                    android:layout_height="wrap_content"
-	                    android:text="@string/main_tab_nears"
-	                	android:textColor="#000000"
-	                	android:textSize="12sp"
-	                	android:layout_centerInParent="true"
-	                	android:layout_below="@id/btn_nears"
-	                    android:layout_width="wrap_content"/>
-	                -->
-	            </RelativeLayout>
-	
-	        </RelativeLayout>
-    	</RelativeLayout>
-	    	    
-	</LinearLayout>
+	  
+	        <Button
+	            android:id="@+id/btn_find"
+	            android:layout_width="0dp"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="1"
+	            android:background="@color/transparent"
+	            android:drawableTop="@drawable/tab_find_btn"
+	            android:onClick="onTabSelect"
+	            android:paddingBottom="2dip"
+	            android:layout_gravity="center_horizontal|bottom"
+	            android:scaleType="matrix"
+	            android:text="@string/mian_tab_find"
+	            android:textColor="@drawable/tab_textcolor"
+	            android:textSize="13sp" />
+	    </LinearLayout>
+        
+    </LinearLayout>
+    
+    <RelativeLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/main_bottom" />
 
-</FrameLayout>
+</RelativeLayout>

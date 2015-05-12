@@ -113,10 +113,6 @@ public class PhotoWallActivity extends ActivityBase {
 			initTopBarForLeft("照片墙");
 		}
 		
-		// 女性主题
-		if (!CustomApplcation.sex) {
-			setActionBgForFemale();
-		}
 		
 		mImageThumbSize = getResources().getDimensionPixelSize(
 				R.dimen.image_thumbnail_size);

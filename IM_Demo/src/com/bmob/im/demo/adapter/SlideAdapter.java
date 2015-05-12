@@ -20,14 +20,13 @@ public class SlideAdapter extends BaseAdapter{
 		R.drawable.slide_icon_game,	
 		R.drawable.slide_icon_person,
 		R.drawable.slide_icon_set,
-		R.drawable.slide_icon_roma,
 		R.drawable.slide_icon_about,
 		R.drawable.slide_icon_exit
 	};
 	
 	
 	private List<String> mDatas = Arrays  
-            .asList("游戏中心", "个人", "设置", "景点漫游","关于", "退出登陆");  
+            .asList("游戏中心", "个人", "设置", "关于", "退出登陆");  
 	
 	
 	private Context context;
@@ -47,14 +46,14 @@ public class SlideAdapter extends BaseAdapter{
     public int getCount() 
     {
         // TODO Auto-generated method stub
-        return 6;
+        return mDatas.size();
     }
 
     //根据ListView位置返回View
     public Object getItem(int position)
     {
         // TODO Auto-generated method stub
-        return null;
+        return mDatas.get(position);
     }
 
     //根据ListView位置得到List中的ID

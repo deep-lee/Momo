@@ -13,10 +13,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.widget.ImageButton;
+import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import cn.bmob.im.BmobChat;
 import cn.bmob.im.BmobChatManager;
 import cn.bmob.im.BmobNotifyManager;
@@ -29,24 +27,16 @@ import cn.bmob.im.inteface.EventListener;
 import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.MyMessageReceiver;
 import com.bmob.im.demo.R;
-import com.bmob.im.demo.R.id;
 import com.bmob.im.demo.bean.User;
 import com.bmob.im.demo.ui.fragment.ContactFragment;
+import com.bmob.im.demo.ui.fragment.FindFragment;
 import com.bmob.im.demo.ui.fragment.LeftFragment;
-import com.bmob.im.demo.ui.fragment.NearByFragment;
 import com.bmob.im.demo.ui.fragment.RecentFragment;
-import com.daimajia.androidanimations.library.YoYo;
-import com.daimajia.androidanimations.library.YoYo.AnimationComposer;
-import com.daimajia.androidanimations.library.attention.ShakeAnimator;
-import com.daimajia.androidanimations.library.fading_exits.FadeOutRightAnimator;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnClosedListener;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenedListener;
-import com.nineoldandroids.animation.Animator;
-import com.yalantis.contextmenu.lib.interfaces.OnMenuItemClickListener;
-import com.yalantis.contextmenu.lib.interfaces.OnMenuItemLongClickListener;
 
 /**
  * 登陆
@@ -55,12 +45,14 @@ import com.yalantis.contextmenu.lib.interfaces.OnMenuItemLongClickListener;
  * @author smile
  * @date 2014-5-29 下午2:45:35
  */
-public class MainActivity extends ActivityBase implements EventListener, OnClickListener, OnMenuItemClickListener, OnMenuItemLongClickListener{
+public class MainActivity extends ActivityBase implements EventListener, OnClickListener{
 
-	private ImageButton[] mTabs;
+	private Button[] mTabs;
 	public ContactFragment contactFragment;
 	public RecentFragment recentFragment;
-	public NearByFragment nearByFragment;
+//	public NearByFragment nearByFragment;
+	public FindFragment findFragemnt;
+	
 	private Fragment[] fragments;
 	private int index;
 	private int currentTabIndex;
@@ -82,7 +74,7 @@ public class MainActivity extends ActivityBase implements EventListener, OnClick
 	
 	int nearsSex;
 	
-	RelativeLayout main_bottom_layout;
+//	RelativeLayout main_bottom_layout;
 	
 	
 	@Override
@@ -106,19 +98,23 @@ public class MainActivity extends ActivityBase implements EventListener, OnClick
 	}
 
 	private void initView(){
-		mTabs = new ImageButton[3];
-		mTabs[0] = (ImageButton) findViewById(R.id.btn_message);
-		mTabs[1] = (ImageButton) findViewById(R.id.btn_contract);
-		mTabs[2] = (ImageButton) findViewById(R.id.btn_nears);
+		mTabs = new Button[3];
+		mTabs[0] = (Button) findViewById(R.id.btn_message);
+		mTabs[1] = (Button) findViewById(R.id.btn_contract);
+		mTabs[2] = (Button) findViewById(R.id.btn_find);
+		
+//		for (int i = 0; i < 3; i++) {
+//			mTabs[i].setScaleX((float) 0.8);
+//			mTabs[i].setScaleY((float) 0.8);
+//		}
+		
 		iv_recent_tips = (ImageView)findViewById(R.id.iv_recent_tips);
 		iv_contact_tips = (ImageView)findViewById(R.id.iv_contact_tips);
 		
-		main_bottom_layout = (RelativeLayout) findViewById(R.id.main_bottom_layout);
+//		main_bottom_layout = (RelativeLayout) findViewById(R.id.main_bottom_layout);
 		
 		//把第一个tab设为选中状态
 		mTabs[0].setSelected(true);
-		
-		mTabs[0].setImageDrawable(getResources().getDrawable(R.drawable.comon_main_bottom_recents_p));
 		
 		initLeftView();
 		
@@ -132,10 +128,7 @@ public class MainActivity extends ActivityBase implements EventListener, OnClick
         
         User user = userManager.getCurrentUser(User.class);
         CustomApplcation.sex = user.getSex();
-        
-        if (!CustomApplcation.sex) {
-			main_bottom_layout.setBackgroundResource(R.drawable.common_main_bottom_bg_female);
-		}
+
 	}
 	
 	private void initWallPhoto() {
@@ -221,15 +214,6 @@ public class MainActivity extends ActivityBase implements EventListener, OnClick
 			@Override
 			public void onOpened() {
 				// TODO Auto-generated method stub
-				if(currentTabIndex == 2)
-				{
-					menuFlag = true;
-					//trx = getSupportFragmentManager().beginTransaction();
-					//trx.hide(nearByFragment).commit();
-					nearByFragment.closeShakeListeber();
-					// ShowToast("关闭附近的人监听器");
-					
-				}
 				
 			}
 		});
@@ -239,15 +223,8 @@ public class MainActivity extends ActivityBase implements EventListener, OnClick
 			@Override
 			public void onClosed() {
 				// TODO Auto-generated method stub
-				if(currentTabIndex == 2)
-				{
-					menuFlag = false;
-					//trx = getSupportFragmentManager().beginTransaction();
-					//trx.show(nearByFragment).commit();
-					
-					nearByFragment.openShakeListener();
-					// ShowToast("打开附近的人监听器");
-				}
+
+				recentFragment.startAvatarIn();
 			}
 		});
            
@@ -257,6 +234,8 @@ public class MainActivity extends ActivityBase implements EventListener, OnClick
 			public void onOpen() {
 				// TODO Auto-generated method stub
 				// ShowToast("" + menu.mViewAbove.getDestScrollX(1));
+				// ShowToast("Opened");
+				recentFragment.startAvatarOut();	
 			}
 		});
         
@@ -302,9 +281,10 @@ public class MainActivity extends ActivityBase implements EventListener, OnClick
 	private void initTab(){
 		contactFragment = new ContactFragment();
 		recentFragment = new RecentFragment();
-		nearByFragment = new NearByFragment(MainActivity.this);
+//		nearByFragment = new NearByFragment(MainActivity.this);
+		findFragemnt = new FindFragment(MainActivity.this);
 		
-		fragments = new Fragment[] {recentFragment, contactFragment, nearByFragment };
+		fragments = new Fragment[] {recentFragment, contactFragment, findFragemnt };
 		// 添加显示第一个fragment
 		getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, recentFragment).
 			add(R.id.fragment_container, contactFragment).hide(contactFragment).show(recentFragment).commit();
@@ -324,7 +304,7 @@ public class MainActivity extends ActivityBase implements EventListener, OnClick
 		case R.id.btn_contract:
 			index = 1;
 			break;
-		case R.id.btn_nears:
+		case R.id.btn_find:
 			index = 2;
 			break;
 		}
@@ -338,40 +318,42 @@ public class MainActivity extends ActivityBase implements EventListener, OnClick
 			
 			
 			
-			switch (index) {
-			case 0:
-				if (currentTabIndex == 1) {
-					mTabs[1].setImageDrawable(getResources().getDrawable(R.drawable.comon_main_bottom_contacts_n));
-				}
-				else if (currentTabIndex == 2) {
-					mTabs[2].setImageDrawable(getResources().getDrawable(R.drawable.comon_main_bottom_nears_n));
-				}
-				mTabs[index].setImageDrawable(getResources().getDrawable(R.drawable.comon_main_bottom_recents_p));
-				break;
-				
-			case 1:
-				if (currentTabIndex == 0) {
-					mTabs[0].setImageDrawable(getResources().getDrawable(R.drawable.comon_main_bottom_recents_n));
-				}
-				else if (currentTabIndex == 2) {
-					mTabs[2].setImageDrawable(getResources().getDrawable(R.drawable.comon_main_bottom_nears_n));
-				}
-				mTabs[index].setImageDrawable(getResources().getDrawable(R.drawable.comon_main_bottom_contacts_p));
-				break;
-				
-			case 2:
-				if (currentTabIndex == 1) {
-					mTabs[1].setImageDrawable(getResources().getDrawable(R.drawable.comon_main_bottom_contacts_n));
-				}
-				else if (currentTabIndex == 0) {
-					mTabs[0].setImageDrawable(getResources().getDrawable(R.drawable.comon_main_bottom_recents_n));
-				}
-				mTabs[index].setImageDrawable(getResources().getDrawable(R.drawable.comon_main_bottom_nears_p));
-				break;
-
-			default:
-				break;
-			}		
+//			switch (index) {
+//			case 0:
+//				if (currentTabIndex == 1) {
+//					mTabs[1].setImageDrawable(getResources().getDrawable(R.drawable.comon_main_bottom_contacts_n));
+//				}
+//				else if (currentTabIndex == 2) {
+//					mTabs[2].setImageDrawable(getResources().getDrawable(R.drawable.comon_main_bottom_nears_n));
+//				}
+//				mTabs[index].setImageDrawable(getResources().getDrawable(R.drawable.comon_main_bottom_recents_p));
+//				break;
+//				
+//			case 1:
+//				if (currentTabIndex == 0) {
+//					mTabs[0].setImageDrawable(getResources().getDrawable(R.drawable.comon_main_bottom_recents_n));
+//				}
+//				else if (currentTabIndex == 2) {
+//					mTabs[2].setImageDrawable(getResources().getDrawable(R.drawable.comon_main_bottom_nears_n));
+//				}
+//				mTabs[index].setImageDrawable(getResources().getDrawable(R.drawable.comon_main_bottom_contacts_p));
+//				break;
+//				
+//			case 2:
+//				if (currentTabIndex == 1) {
+//					mTabs[1].setImageDrawable(getResources().getDrawable(R.drawable.comon_main_bottom_contacts_n));
+//				}
+//				else if (currentTabIndex == 0) {
+//					mTabs[0].setImageDrawable(getResources().getDrawable(R.drawable.comon_main_bottom_recents_n));
+//				}
+//				mTabs[index].setImageDrawable(getResources().getDrawable(R.drawable.comon_main_bottom_nears_p));
+//				break;
+//
+//			default:
+//				break;
+//			}		
+			
+			
 		}
 		mTabs[currentTabIndex].setSelected(false);
 		//把当前tab设为选中状态
@@ -401,12 +383,12 @@ public class MainActivity extends ActivityBase implements EventListener, OnClick
 		//清空
 		MyMessageReceiver.mNewNum=0;
 		
-		if (currentTabIndex == 2 && nearByFragment != null && nearByFragment.mShakeListener != null) {
-			
-			if (!nearByFragment.getFlag() && menuFlag == false) {
-				nearByFragment.openShakeListener();
-			}	
-		}
+//		if (currentTabIndex == 2 && nearByFragment != null && nearByFragment.mShakeListener != null) {
+//			
+//			if (!nearByFragment.getFlag() && menuFlag == false) {
+//				nearByFragment.openShakeListener();
+//			}	
+//		}
 		
 	}
 	
@@ -416,9 +398,9 @@ public class MainActivity extends ActivityBase implements EventListener, OnClick
 		super.onPause();
 		MyMessageReceiver.ehList.remove(this);// 取消监听推送的消息
 		
-		if (nearByFragment != null && nearByFragment.mShakeListener != null) {
-			nearByFragment.mShakeListener.stop();
-		}
+//		if (nearByFragment != null && nearByFragment.mShakeListener != null) {
+//			nearByFragment.mShakeListener.stop();
+//		}
 	}
 	
 	@Override
@@ -593,34 +575,34 @@ public class MainActivity extends ActivityBase implements EventListener, OnClick
 		
 	}
 
-	@Override
-	public void onMenuItemLongClick(View clickedView, int position) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onMenuItemClick(View clickedView, int position) {
-		
-		position--;
-		// ShowToast("" + position);
-		// TODO Auto-generated method stub
-		if (position >= 0 && position <= 2) {
-			if (nearsSex == position) {
-				
-			}else {
-				editor.putInt("nearsSex", position);
-				nearsSex = position;
-				editor.commit();
-				
-				nearByFragment.nearBySexChanged(position);
-
-			}
-		}
-		
-		// 清除地理位置信息
-		if (position == 3) {
-			
-		}
-	}
+//	@Override
+//	public void onMenuItemLongClick(View clickedView, int position) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//
+//	@Override
+//	public void onMenuItemClick(View clickedView, int position) {
+//		
+//		position--;
+//		// ShowToast("" + position);
+//		// TODO Auto-generated method stub
+//		if (position >= 0 && position <= 2) {
+//			if (nearsSex == position) {
+//				
+//			}else {
+//				editor.putInt("nearsSex", position);
+//				nearsSex = position;
+//				editor.commit();
+//				
+//				nearByFragment.nearBySexChanged(position);
+//
+//			}
+//		}
+//		
+//		// 清除地理位置信息
+//		if (position == 3) {
+//			
+//		}
+//	}
 }

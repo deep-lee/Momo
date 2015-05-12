@@ -25,6 +25,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -38,7 +39,7 @@ import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.adapter.UserFriendAdapter;
 import com.bmob.im.demo.bean.User;
-import com.bmob.im.demo.ui.AddFriendActivity;
+import com.bmob.im.demo.ui.AddPopWindow;
 import com.bmob.im.demo.ui.BlackListActivity;
 import com.bmob.im.demo.ui.FragmentBase;
 import com.bmob.im.demo.ui.NewFriendActivity;
@@ -46,8 +47,6 @@ import com.bmob.im.demo.ui.SetMyInfoActivity2;
 import com.bmob.im.demo.util.CharacterParser;
 import com.bmob.im.demo.util.CollectionUtils;
 import com.bmob.im.demo.util.PinyinComparator;
-import com.bmob.im.demo.view.ClearEditText;
-import com.bmob.im.demo.view.HeaderLayout.onRightImageButtonClickListener;
 import com.bmob.im.demo.view.MyLetterView;
 import com.bmob.im.demo.view.MyLetterView.OnTouchingLetterChangedListener;
 import com.bmob.im.demo.view.dialog.DialogTips;
@@ -62,7 +61,13 @@ import com.bmob.im.demo.view.dialog.DialogTips;
 @SuppressLint("DefaultLocale")
 public class ContactFragment extends FragmentBase implements OnItemClickListener,OnItemLongClickListener{
 
-	ClearEditText mClearEditText;
+//	ClearEditText mClearEditText;
+	
+	LinearLayout search_back_layout;
+	ImageView iv_back;
+	TextView app_name;
+	EditText et_search;
+	ImageView iv_search, iv_add;
 
 	TextView dialog;
 
@@ -104,20 +109,16 @@ public class ContactFragment extends FragmentBase implements OnItemClickListener
 	private void init() {
 		characterParser = CharacterParser.getInstance();
 		pinyinComparator = new PinyinComparator();
-		initTopBarForRight("联系人", R.drawable.base_action_bar_add_bg_selector,
-				new onRightImageButtonClickListener() {
-
-					@Override
-					public void onClick(View v) {
-						// TODO Auto-generated method stub
-						startAnimActivity(AddFriendActivity.class);
-					}
-				});
+//		initTopBarForRight("联系人", R.drawable.base_action_bar_add_bg_selector,
+//				new onRightImageButtonClickListener() {
+//
+//					@Override
+//					public void onClick(View v) {
+//						// TODO Auto-generated method stub
+//						startAnimActivity(AddFriendActivity.class);
+//					}
+//				});
 		
-		// 女性主题
-		if (!CustomApplcation.sex) {
-			setActionBgForFemale();
-		}
 		
 		// 初始化好友列表
 		initListView();
@@ -129,10 +130,66 @@ public class ContactFragment extends FragmentBase implements OnItemClickListener
 	}
 
 	private void initEditText() {
-		mClearEditText = (ClearEditText)findViewById(R.id.et_msg_search);
-		// 根据输入框输入值的改变来过滤搜索
-		mClearEditText.addTextChangedListener(new TextWatcher() {
+//		mClearEditText = (ClearEditText)findViewById(R.id.et_msg_search);
+		
+		search_back_layout = (LinearLayout) findViewById(R.id.search_back_layout);
+		iv_back = (ImageView) findViewById(R.id.iv_back);
+		app_name = (TextView) findViewById(R.id.fragment_app_name);
+		et_search = (EditText) findViewById(R.id.fragment_search_et);
+		iv_search = (ImageView) findViewById(R.id.iv_search);
+		iv_add = (ImageView) findViewById(R.id.iv_add);
+		
+        iv_add.setOnClickListener(new OnClickListener() {
 
+            @Override
+            public void onClick(View v) {
+                AddPopWindow addPopWindow = new AddPopWindow(getActivity());
+                addPopWindow.showPopupWindow(iv_add);
+            }
+
+        });
+		
+		
+		
+		iv_search.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				iv_search.setVisibility(View.INVISIBLE);
+				iv_add.setVisibility(View.INVISIBLE);
+				app_name.setVisibility(View.INVISIBLE);
+				search_back_layout.setVisibility(View.VISIBLE);
+				et_search.setVisibility(View.VISIBLE);
+				
+				et_search.requestFocus();
+				
+				inputMethodManager.showSoftInput(et_search, InputMethodManager.SHOW_FORCED);
+			}
+		});
+		
+		iv_back.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				iv_search.setVisibility(View.VISIBLE);
+				iv_add.setVisibility(View.VISIBLE);
+				app_name.setVisibility(View.VISIBLE);
+				search_back_layout.setVisibility(View.INVISIBLE);
+				et_search.setVisibility(View.INVISIBLE);
+				et_search.setText("");
+				filterData("");
+				
+				et_search.clearFocus(); 
+				
+				inputMethodManager.hideSoftInputFromWindow(et_search.getWindowToken(), 0);
+			}
+		});
+		
+		
+		et_search.addTextChangedListener(new TextWatcher() {
+			
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before,
 					int count) {
@@ -152,6 +209,29 @@ public class ContactFragment extends FragmentBase implements OnItemClickListener
 				
 			}
 		});
+		
+//		// 根据输入框输入值的改变来过滤搜索
+//		mClearEditText.addTextChangedListener(new TextWatcher() {
+//
+//			@Override
+//			public void onTextChanged(CharSequence s, int start, int before,
+//					int count) {
+//				// 当输入框里面的值为空，更新为原来的列表，否则为过滤数据列表
+//				// 根据输入框中的值来过滤数据并更新ListView
+//				filterData(s.toString());
+//			}
+//
+//			@Override
+//			public void beforeTextChanged(CharSequence s, int start, int count,
+//					int after) {
+//
+//			}
+//
+//			@Override
+//			public void afterTextChanged(Editable s) {
+//				
+//			}
+//		});
 	}
 
 	/**

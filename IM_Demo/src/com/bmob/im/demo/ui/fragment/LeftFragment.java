@@ -11,7 +11,6 @@ import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.adapter.SlideAdapter;
 import com.bmob.im.demo.bean.User;
-import com.bmob.im.demo.ui.AttractionsRomaActivity2;
 import com.bmob.im.demo.ui.EditPersonalizedSignatureActivity;
 import com.bmob.im.demo.ui.GameCenterActivity;
 import com.bmob.im.demo.ui.LoginActivity;
@@ -163,20 +162,20 @@ public class LeftFragment extends Fragment {
 					startActivity(intent);
 					break;
 					
-					// 地点漫游
-				case 3:
-					Intent romaIntent = new Intent();
-					romaIntent.setClass(context, AttractionsRomaActivity2.class);
-					startActivity(romaIntent);
-					
-					break;	
+//					// 地点漫游
+//				case 3:
+//					Intent romaIntent = new Intent();
+//					romaIntent.setClass(context, AttractionsRomaActivity2.class);
+//					startActivity(romaIntent);
+//					
+//					break;	
 					
 					// 关于
-				case 4:
+				case 3:
 					
 					break;
 					// 退出登录
-				case 5:
+				case 4:
 					showLogoutDialog();
 					break;
 				}

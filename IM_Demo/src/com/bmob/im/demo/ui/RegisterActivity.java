@@ -245,7 +245,7 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
 		 SMSSDK.registerEventHandler(eh); //注册短信回调
 		 
 		// 只有左边有按钮以及标题
-		initTopBarForLeft("注册");
+//		initTopBarForLeft("注册");
 		viewFlipper = (ViewFlipper) findViewById(R.id.reg_vf_viewflipper);
 		
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日");       
@@ -947,6 +947,9 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
 				case 2:
 					gameType = "mixed color";
 					break;
+				case 3:
+					gameType = "oh my egg";
+					break;
 				default:
 					break;
 				}
@@ -1005,6 +1008,7 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
 		if (currentPage == 0) {
 			
 			if (TextUtils.isEmpty(et_username.getText().toString())) {
+				shakeAnimation.playOn(et_username);
 				ShowToast(R.string.toast_error_username_null);
 				return;
 			}

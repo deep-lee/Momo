@@ -55,26 +55,29 @@ public class PhotoWallFallActivity extends ActivityBase {
 		
 		
 		if (from.equals("me")) {
-			initTopBarForBoth("’’∆¨«Ω", R.drawable.base_action_bar_upload_selector, new onRightImageButtonClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					Intent intent = new Intent(PhotoWallFallActivity.this,SelectPictureActivity.class);
-					startActivityForResult(intent, TO_SELECT_PHOTO);
-				}
-			});
+//			initTopBarForBoth("’’∆¨«Ω", R.drawable.base_action_bar_upload_selector, new onRightImageButtonClickListener() {
+//				
+//				@Override
+//				public void onClick(View v) {
+//					// TODO Auto-generated method stub
+//					Intent intent = new Intent(PhotoWallFallActivity.this,SelectPictureActivity.class);
+//					startActivityForResult(intent, TO_SELECT_PHOTO);
+//				}
+//			});
 		}
 		else if(from.equals("other")){
-			initTopBarForLeft("’’∆¨«Ω");
+//			initTopBarForLeft("’’∆¨«Ω");
 			
 			otherPhotoWall = getIntent().getStringArrayListExtra("photo");
 		}
 		
-		// ≈Æ–‘÷˜Ã‚
-		if (!CustomApplcation.sex) {
-			setActionBgForFemale();
-		}
+	}
+	
+	public void uploadPhoto(View view) {
+		
+		Intent intent = new Intent(PhotoWallFallActivity.this,SelectPictureActivity.class);
+		startActivityForResult(intent, TO_SELECT_PHOTO);
+		
 	}
 	
 	@Override
@@ -86,7 +89,6 @@ public class PhotoWallFallActivity extends ActivityBase {
 			Bitmap bm = BitmapFactory.decodeFile(picPath);
 			
 			uploadPhoto(picPath);
-			
 			
 		}
 		super.onActivityResult(requestCode, resultCode, data);

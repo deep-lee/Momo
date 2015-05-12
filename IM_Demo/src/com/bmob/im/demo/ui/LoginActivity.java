@@ -13,10 +13,12 @@ import android.view.View.OnClickListener;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import cn.bmob.im.util.BmobLog;
 import cn.bmob.v3.listener.SaveListener;
 
 import com.bmob.im.demo.R;
+import com.bmob.im.demo.R.id;
 import com.bmob.im.demo.bean.User;
 import com.bmob.im.demo.config.BmobConstants;
 import com.bmob.im.demo.util.CommonUtils;
@@ -38,7 +40,8 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 
 	EditText et_username, et_password;
 	CircularProgressButton btn_login;
-	Button btn_register;
+	
+	TextView tv_register, tv_forget_password;
 
 	private MyBroadcastReceiver receiver = new MyBroadcastReceiver();
 	
@@ -77,11 +80,13 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		et_username = (EditText) findViewById(R.id.et_username);
 		et_password = (EditText) findViewById(R.id.et_password);
 		btn_login = (CircularProgressButton) findViewById(R.id.btn_login);
-		btn_register = (Button) findViewById(R.id.btn_register);
+		tv_register = (TextView) findViewById(R.id.login_go_to_register);
+		tv_forget_password = (TextView) findViewById(R.id.login_forget_password);
 		btn_login.setOnClickListener(this);
 		btn_login.setIndeterminateProgressMode(true);
 		
-		btn_register.setOnClickListener(this);
+		tv_register.setOnClickListener(this);
+		tv_forget_password.setOnClickListener(this);
 		
 		shakeAnimation = new AnimationComposer(new ShakeAnimator())
 		.duration(500)
@@ -128,12 +133,18 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.btn_register:
+		case R.id.login_go_to_register:
 			
 			Intent intent = new Intent(LoginActivity.this,
 					RegisterActivity.class);
 			startActivity(intent);
 			
+			break;
+			
+		case R.id.login_forget_password:
+			Intent intent2 = new Intent(LoginActivity.this,
+					ForgetPasswordActivity.class);
+			startActivity(intent2);
 			break;
 			
 		case R.id.btn_login:

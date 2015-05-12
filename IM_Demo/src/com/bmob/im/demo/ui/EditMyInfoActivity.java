@@ -66,21 +66,15 @@ public class EditMyInfoActivity extends ActivityBase implements OnClickListener{
 	
 	private void initView() {
 		
-		initTopBarForBoth("编辑资料", R.drawable.base_action_bar_send_selector, "保存", new HeaderLayout.onRightImageButtonClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				// 检查哪些有更改，并检查网络连接，以及更改资料
-				checkAndUpdate();
-			}
-		});
-		
-		// 女性主题
-		if (!CustomApplcation.sex) {
-			setActionBgForFemale();
-			setActionBarRightBtnForFemale();
-		}
+//		initTopBarForBoth("编辑资料", R.drawable.base_action_bar_send_selector, "保存", new HeaderLayout.onRightImageButtonClickListener() {
+//			
+//			@Override
+//			public void onClick(View v) {
+//				// TODO Auto-generated method stub
+//				// 检查哪些有更改，并检查网络连接，以及更改资料
+//				checkAndUpdate();
+//			}
+//		});
 		
 		currentUser = userManager.getCurrentUser(User.class);
 		
@@ -195,6 +189,10 @@ public class EditMyInfoActivity extends ActivityBase implements OnClickListener{
 			ShowToast("获取资料失败！");
 		}
 		
+	}
+	
+	public void saveMyInfo(View view) {
+		checkAndUpdate();
 	}
 	
 	/*
@@ -473,6 +471,9 @@ public class EditMyInfoActivity extends ActivityBase implements OnClickListener{
 					break;
 				case 2:
 					gameType = "mixed color";
+					break;
+				case 3:
+					gameType = "oh my egg";
 					break;
 				default:
 					break;

@@ -28,12 +28,8 @@ public class SlideSetActivity extends ActivityBase implements View.OnClickListen
 	
 	private void initView() {
 		
-		initTopBarForLeft("设置");
+		// initTopBarForLeft("设置");
 		
-		// 女性主题
-		if (!CustomApplcation.sex) {
-			setActionBgForFemale();
-		}
 		
 		accountSafeLayout = (RelativeLayout) findViewById(R.id.slide_layout_account_safe);
 		accountBangdingLayout = (RelativeLayout) findViewById(R.id.slide_layout_account_bangding);

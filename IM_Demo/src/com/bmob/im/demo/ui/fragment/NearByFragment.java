@@ -203,12 +203,6 @@ public class NearByFragment extends FragmentBase implements OnClickListener{
 			}
 		});
 		
-		// 女性主题
-		if (!CustomApplcation.sex) {
-			setActionBgForFemale();
-		}
-		
-		
 		setNearsSex(nearsSex);
 		
 		
@@ -220,12 +214,6 @@ public class NearByFragment extends FragmentBase implements OnClickListener{
 		iv_nears_people1 = (ImageView) findViewById(R.id.iv_icon_nears_people_1);
 		iv_nears_people2 = (ImageView) findViewById(R.id.iv_icon_nears_people_2);
 		iv_nears_people3 = (ImageView) findViewById(R.id.iv_icon_nears_people_3);
-		
-		if (!CustomApplcation.sex) {
-			iv_nears_people1.setImageResource(R.drawable.icon_near_people1_female);
-			iv_nears_people2.setImageResource(R.drawable.icon_near_people2_female);
-			iv_nears_people3.setImageResource(R.drawable.icon_near_people3_female);
-		}
 		
 		rotateOutRight = new YoYo.AnimationComposer(new RotateOutUpRightAnimator())
 		.duration(1000)

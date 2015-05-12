@@ -89,31 +89,21 @@ public class LocationActivity extends ActivityBase implements
 		Intent intent = getIntent();
 		String type = intent.getStringExtra("type");
 		if (type.equals("select")) {// 选择发送位置
-			initTopBarForBoth("位置", R.drawable.base_action_bar_send_selector, "发送",
-					new onRightImageButtonClickListener() {
-
-						@Override
-						public void onClick(View v) {
-							// TODO Auto-generated method stub
-							gotoChatPage();
-						}
-					});
+//			initTopBarForBoth("位置", R.drawable.base_action_bar_send_selector, "发送",
+//					new onRightImageButtonClickListener() {
+//
+//						@Override
+//						public void onClick(View v) {
+//							// TODO Auto-generated method stub
+//							gotoChatPage();
+//						}
+//					});
 			
-			// 女性主题
-			if (!CustomApplcation.sex) {
-				setActionBgForFemale();
-				setActionBarRightBtnForFemale();
-			}
-			mHeaderLayout.getRightImageButton().setEnabled(false);
+//			mHeaderLayout.getRightImageButton().setEnabled(false);
 			initLocClient();
 		} else {// 查看当前位置
-			initTopBarForLeft("位置");
+//			initTopBarForLeft("位置");
 			
-			// 女性主题
-			if (!CustomApplcation.sex) {
-				setActionBgForFemale();
-				setActionBarRightBtnForFemale();
-			}
 			Bundle b = intent.getExtras();
 			LatLng latlng = new LatLng(b.getDouble("latitude"), b.getDouble("longtitude"));//维度在前，经度在后
 			mBaiduMap.setMapStatus(MapStatusUpdateFactory.newLatLng(latlng));

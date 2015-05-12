@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,6 +19,7 @@ import cn.bmob.im.db.BmobDB;
 
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.adapter.base.ViewHolder;
+import com.bmob.im.demo.bean.User;
 import com.bmob.im.demo.util.FaceTextUtils;
 import com.bmob.im.demo.util.ImageLoadOptions;
 import com.bmob.im.demo.util.TimeUtil;
@@ -28,14 +31,14 @@ import com.nostra13.universalimageloader.core.ImageLoader;
   * @author smile
   * @date 2014-6-7 下午2:34:10
   */
-public class MessageRecentAdapter extends ArrayAdapter<BmobRecent> implements Filterable{
+public class MessageRecentAdapter extends BaseAdapter implements Filterable{
 	
 	private LayoutInflater inflater;
 	private List<BmobRecent> mData;
 	private Context mContext;
 	
 	public MessageRecentAdapter(Context context, int textViewResourceId, List<BmobRecent> objects) {
-		super(context, textViewResourceId, objects);
+		
 		inflater = LayoutInflater.from(context);
 		this.mContext = context;
 		mData = objects;
@@ -88,6 +91,48 @@ public class MessageRecentAdapter extends ArrayAdapter<BmobRecent> implements Fi
 			tv_recent_unread.setVisibility(View.GONE);
 		}
 		return convertView;
+	}
+	
+	/** 当ListView数据发生变化时,调用此方法来更新ListView
+	  * @Title: updateListView
+	  * @Description: TODO
+	  * @param @param list 
+	  * @return void
+	  * @throws
+	  */
+	public void updateListView(List<BmobRecent> list) {
+		this.mData = list;
+		notifyDataSetChanged();
+	}
+
+	@Override
+	public int getCount() {
+		// TODO Auto-generated method stub
+		return mData.size();
+	}
+
+	@Override
+	public Object getItem(int position) {
+		// TODO Auto-generated method stub
+		return mData.get(position);
+	}
+
+	@Override
+	public long getItemId(int position) {
+		// TODO Auto-generated method stub
+		return position;
+	}
+
+	@Override
+	public Filter getFilter() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void remove(int position) {
+		// TODO Auto-generated method stub
+		mData.remove(position);
+		notifyDataSetChanged();
 	}
 
 }

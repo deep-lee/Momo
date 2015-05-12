@@ -5,16 +5,81 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <include
+    <!-- <include
         android:id="@+id/common_actionbar"
-        layout="@layout/include_action_bar" />
+        layout="@layout/include_action_bar" /> -->
+        
+    <RelativeLayout
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_top_bar"
+        android:background="@color/common_action_bar_bg_color" >
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:onClick="back"
+            android:paddingBottom="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="5dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/base_action_bar_back_bg_selector" />
+
+        <View
+            android:id="@+id/view_temp"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_toRightOf="@id/iv_back"
+            android:background="#14191A" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/view_temp"
+            android:text="添加好友"
+            android:textColor="#ffffff"
+            android:textSize="18sp" />
+ 
+        <TextView
+            android:id="@+id/tv_add_from_tongxunlu"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="8dp"
+            android:gravity="center"
+            android:text="通讯录好友"
+            android:onClick="addFromSystemCOntact"
+            android:clickable="true"
+            android:textColor="#fff"
+            android:textSize="16sp" />
+
+        <View
+            android:id="@+id/view_temp2"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="8dp"
+            android:layout_toLeftOf="@id/tv_add_from_tongxunlu"
+            android:background="#14191A" />
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal" >
 
-        <EditText
+        <!-- <EditText
             android:id="@+id/et_find_name"
             android:layout_width="0dp"
             android:layout_height="39dp"
@@ -26,7 +91,25 @@
             android:paddingLeft="5dp"
             android:singleLine="true"
             android:textColorHint="#b3b3b3"
-            android:textSize="18sp" />
+            android:textSize="18sp" /> -->
+        
+         <EditText 
+              android:id="@+id/et_find_name"
+	          android:layout_width="0dp"
+	          android:layout_height="45dp"
+	          android:hint="@string/username"
+	          android:layout_marginTop="10dp"
+	          android:layout_marginBottom="10dp"
+	          android:layout_marginLeft="10dp"
+	          android:layout_weight="1.0"
+	          android:paddingLeft="5dp"
+              android:singleLine="true"
+              android:textColorHint="#C5C5C5"
+              android:textSize="14sp"
+              android:textColor="#666666"
+	          android:layout_gravity="center_vertical"
+	          android:drawableLeft="@drawable/add_friends_search_icon"
+	          android:background="@drawable/add_friends_search_bg"/>
 
         <!-- <Button
             android:id="@+id/btn_search"
@@ -46,9 +129,9 @@
 			android:layout_margin="@dimen/activity_vertical_margin"
 			android:gravity="center"
 			android:layout_gravity="center"
-			android:layout_height="45dp"
+			android:layout_height="36dp"
 			android:textColor="@color/cpb_white"
-			android:textSize="18sp"
+			android:textSize="15sp"
 			app:cpb_cornerRadius="48dp"
 			app:cpb_iconComplete="@drawable/ic_action_accept"
 			app:cpb_iconError="@drawable/ic_action_cancel"
@@ -58,7 +141,6 @@
 
     <ListView
         android:id="@+id/list_search"
-        android:paddingLeft="5dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:cacheColorHint="@android:color/transparent"

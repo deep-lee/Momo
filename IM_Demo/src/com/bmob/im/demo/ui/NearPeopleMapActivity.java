@@ -14,9 +14,13 @@ import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.BaiduMap.OnMapClickListener;
 import com.baidu.mapapi.map.BaiduMap.OnMarkerClickListener;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
+import com.baidu.mapapi.map.InfoWindow;
+import com.baidu.mapapi.map.MapPoi;
+import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
@@ -26,50 +30,96 @@ import com.baidu.mapapi.map.MyLocationConfigeration;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.search.core.SearchResult;
 import com.baidu.mapapi.search.geocode.GeoCodeResult;
 import com.baidu.mapapi.search.geocode.GeoCoder;
 import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
+import com.baidu.mapapi.utils.CoordinateConverter;
 import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
+import com.bmob.im.demo.adapter.NearPeopleAdapter;
 import com.bmob.im.demo.bean.User;
 import com.bmob.im.demo.util.CollectionUtils;
 import com.bmob.im.demo.view.HeaderLayout.onLeftImageButtonClickListener;
 import com.bmob.im.demo.view.HeaderLayout.onRightImageButtonClickListener;
 import com.bmob.im.demo.view.dialog.CustomProgressDialog;
+import com.bmob.im.demo.view.dialog.DialogTips;
+import com.bmob.im.demo.view.xlist.XListView;
+import com.bmob.im.demo.view.xlist.XListView.IXListViewListener;
 import com.deep.momo.game.ui.GameFruitActivity;
 import com.deep.momo.game.ui.GuessNumberActivity;
 import com.deep.momo.game.ui.MixedColorMenuActivity;
+import com.yalantis.contextmenu.lib.ContextMenuDialogFragment;
+import com.yalantis.contextmenu.lib.MenuObject;
+import com.yalantis.contextmenu.lib.interfaces.OnMenuItemClickListener;
+import com.yalantis.contextmenu.lib.interfaces.OnMenuItemLongClickListener;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.Point;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
+import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.MeasureSpec;
+import android.view.View.OnTouchListener;
+import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemClickListener;
 
-public class NearPeopleMapActivity extends ActivityBase implements OnGetGeoCoderResultListener, onLeftImageButtonClickListener {
+public class NearPeopleMapActivity extends ActivityBase implements OnGetGeoCoderResultListener, onLeftImageButtonClickListener,
+		OnMenuItemClickListener, OnMenuItemLongClickListener, IXListViewListener,OnItemClickListener {
 	
+		private FragmentManager fragmentManager;
+		private DialogFragment mMenuDialogFragment;
+		
+		protected int mScreenWidth;
+		protected int mScreenHeight;
+		
+		PopupWindow popupWindow;
+		
+		NearPeopleAdapter adapter;
+		private View layout_all;
+		
+		TextView tv_address_name;
+	
+		public static int clickedUser = 0;
+		
 		// 附近的人列表
 		List<User> nears = new ArrayList<User>();
 		// 默认查询1公里范围内的人
 		private double QUERY_KILOMETERS = 1;
 	
 		View layout_marker;
-		TextView markerText, distanceText;
-		ImageView marker_icon_iv;
+		TextView markerNumber;
+
+		ImageView iv_more;
 		
-		View markerView;
+		View layout_nears_info;
+		TextView tv_nick, tv_distance;
+		
 		// 定位相关
 		LocationClient mLocClient;
 		public MyLocationListenner myListener = new MyLocationListenner();
@@ -109,19 +159,41 @@ public class NearPeopleMapActivity extends ActivityBase implements OnGetGeoCoder
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_near_people_map);
 		
-		layout_marker = LayoutInflater.from(this).inflate(R.layout.item_nears_map_marker, null);
-		markerText = (TextView) layout_marker.findViewById(R.id.marker_text);
-		distanceText = (TextView) layout_marker.findViewById(R.id.marker_distance);
-		marker_icon_iv = (ImageView) layout_marker.findViewById(R.id.marker_icon_iv);
+		DisplayMetrics metric = new DisplayMetrics();
+		getWindowManager().getDefaultDisplay().getMetrics(metric);
+		mScreenWidth = metric.widthPixels;
+		mScreenHeight = metric.heightPixels;
+		
+		layout_all = findViewById(R.id.nears_layout_all);
+		
+		layout_marker = LayoutInflater.from(this).inflate(R.layout.item_nears_marker, null);
+		layout_nears_info = LayoutInflater.from(this).inflate(R.layout.item_nears_map_marker_2, null);
+		markerNumber = (TextView) layout_marker.findViewById(R.id.item_nears_marker_number_tv);
+		  
+		tv_nick = (TextView) layout_nears_info.findViewById(R.id.nears_marker_nick_tv);
+		tv_distance = (TextView) layout_nears_info.findViewById(R.id.nears_marker_distance_tv);
+		
+		iv_more = (ImageView) findViewById(R.id.iv_nears_selector_show);
+		
+		fragmentManager = getSupportFragmentManager();
+        mMenuDialogFragment = ContextMenuDialogFragment.newInstance((int) getResources().getDimension(R.dimen.tool_bar_height), 
+        		getMenuObjects());
+        
+        iv_more.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				if (fragmentManager.findFragmentByTag(ContextMenuDialogFragment.TAG) == null) {
+                    mMenuDialogFragment.show(fragmentManager, ContextMenuDialogFragment.TAG);
+                }
+			}
+		});
 		
 		sharedPreferences = getSharedPreferences("test", Activity.MODE_PRIVATE);
 		editor = sharedPreferences.edit();
 		nearsSex = sharedPreferences.getInt("nearsSex", 2);
 		
-		
-		
-//		nearsSex = getIntent().getIntExtra("nearsSex", 2);
-		// ShowToast("SEX:" + nearsSex);
 		switch (nearsSex) {
 		case 0:
 			sexValue = false;
@@ -140,58 +212,73 @@ public class NearPeopleMapActivity extends ActivityBase implements OnGetGeoCoder
 			break;
 		}
 		
-		// ShowToast(equalProperty + ": " + nearsSex);
-		
 		currentGeoPoint = (BmobGeoPoint) getIntent().getSerializableExtra("currentGeoPoint");
 		randomGeoPoint = (BmobGeoPoint) getIntent().getSerializableExtra("randomGeoPoint");
 		
-		// initTopBarForLeft("附近的人");
-		initTopBarForBoth("附近的人", R.drawable.base_action_bar_send_selector, "刷新", 
-				new onRightImageButtonClickListener() {
-
-					@Override
-					public void onClick(View v) {
-						// TODO Auto-generated method stub
-						nears.clear();
-						mBaiduMap.clear();
-						initNearByList(false);
-						initNearsOnMap();
-					}
-				});
-		
-		// 女性主题
-		if (!CustomApplcation.sex) {
-			setActionBgForFemale();
-			marker_icon_iv.setImageResource(R.drawable.nears_map_marker_female);
-			setActionBarRightBtnForFemale();
-		}
 		initBaiduMap();
+		
+		mBaiduMap.setOnMapClickListener(new OnMapClickListener() {
+			
+			@Override
+			public boolean onMapPoiClick(MapPoi arg0) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+			
+			@Override
+			public void onMapClick(LatLng arg0) {
+				// TODO Auto-generated method stub
+				mBaiduMap.hideInfoWindow();
+			}
+		});
 		
 		mBaiduMap.setOnMarkerClickListener(new OnMarkerClickListener() {
 			
 			@Override
-			public boolean onMarkerClick(Marker arg0) {
+			public boolean onMarkerClick(Marker marker) {
 				// TODO Auto-generated method stub
 				
-				Bundle data = arg0.getExtraInfo();
-				final String username = data.getString("username");
+				int position = marker.getZIndex();
 				
-				userManager.queryUser(username, new FindListener<User>() {
-
+				ShowToast("" + position);
+				
+				clickedUser = position;
+				
+				final User user = nears.get(position);
+				
+				tv_nick.setText(user.getNick());
+				Double distance = getDistance(new BmobGeoPoint(Double.parseDouble(CustomApplcation.getInstance().getLongtitude()), 
+						Double.parseDouble(CustomApplcation.getInstance().getLatitude())), user.getLocation());
+				
+				tv_distance.setText(distance.intValue() + "米");
+				
+				final LatLng ll = marker.getPosition();
+				Point p = mBaiduMap.getProjection().toScreenLocation(ll);
+				p.y -= 47;
+				LatLng llInfo = mBaiduMap.getProjection().fromScreenLocation(p);
+				//创建InfoWindow , 传入 view， 地理坐标， click监听器
+//				
+				Bitmap markerBitmap = getBitmapFromView(layout_nears_info);
+				
+				BitmapDescriptor bitmap = BitmapDescriptorFactory.fromBitmap(markerBitmap);
+				
+				InfoWindow mInfoWindow = new InfoWindow(bitmap, llInfo, new InfoWindow.OnInfoWindowClickListener() {
+					
 					@Override
-					public void onError(int arg0, String arg1) {
+					public void onInfoWindowClick() {
 						// TODO Auto-generated method stub
-						
-					}
-
-					@Override
-					public void onSuccess(List<User> arg0) {
-						// TODO Auto-generated method stub
-//						ShowToast(arg0.get(0).getBirthday());
-						User user = arg0.get(0);
 						Intent intent = new Intent();
 						
 						String gameType = user.getGameType();
+						
+						int gamedifficultNum = 0;
+						if (user.getGameDifficulty().equals("简单")) {
+							gamedifficultNum = 0;
+						}else if (user.getGameDifficulty().equals("一般")) {
+							gamedifficultNum = 1;
+						}else if (user.getGameDifficulty().equals("困难")) {
+							gamedifficultNum = 2;
+						}
 						
 						if (gameType.equals("水果连连看")) {
 							intent.setClass(NearPeopleMapActivity.this, GameFruitActivity.class);
@@ -201,6 +288,42 @@ public class NearPeopleMapActivity extends ActivityBase implements OnGetGeoCoder
 						}
 						else if (gameType.equals("mixed color")) {
 							intent.setClass(NearPeopleMapActivity.this, MixedColorMenuActivity.class);
+						}
+						else if (gameType.equals("oh my egg")) {
+							// 先判断有没有安装这个游戏
+							Boolean flag = CustomApplcation.isAppInstalled(NearPeopleMapActivity.this,"com.nsu.ttgame.ohmyeggs");
+							
+							if (flag) {
+								intent = new  Intent("com.nsu.ttgame.ohmyeggs.MYACTION" , Uri  
+								        .parse("info://调用其他应用程序的Activity" ));  
+								//  传递数据   
+								intent.putExtra("value", gamedifficultNum);  
+							}
+							else {
+								
+								DialogTips dialogTips = new DialogTips(NearPeopleMapActivity.this, 
+										"对方设置的游戏是：" + gameType + "，您还没有安装该游戏！请到游戏中心进行安装！", "确认");
+								dialogTips.SetOnSuccessListener(new OnClickListener() {
+									
+									@Override
+									public void onClick(DialogInterface dialog, int which) {
+										// TODO Auto-generated method stub
+										
+									}
+								});
+								dialogTips.SetOnCancelListener(new OnClickListener() {
+									
+									@Override
+									public void onClick(DialogInterface dialog, int which) {
+										// TODO Auto-generated method stub
+										
+									}
+								});
+								
+								dialogTips.show();
+								
+								return;
+							} 
 						}
 
 						
@@ -212,20 +335,49 @@ public class NearPeopleMapActivity extends ActivityBase implements OnGetGeoCoder
 						intent.putExtras(data);
 						
 						ShowToast(user.getGameType() + "");
-						startActivity(intent);
-						
+						if (gameType.equals("oh my egg")) {
+							startActivityForResult(intent, 1); 
+						}else {
+							startActivity(intent);
+						}
 					}
-				});
+				} );
+				
+				MapStatusUpdate m = MapStatusUpdateFactory.newLatLng(ll);
+				mBaiduMap.setMapStatus(m);
+				mBaiduMap.showInfoWindow(mInfoWindow);
+				
+				layout_nears_info.setDrawingCacheEnabled(false);
+				layout_nears_info.destroyDrawingCache();
 			    			
 				return false;
-				
-				
-				
 			}
 		});
-		
-		
 	}
+	
+	private List<MenuObject> getMenuObjects() {
+
+        List<MenuObject> menuObjects = new ArrayList<MenuObject>();
+
+        MenuObject close = new MenuObject();
+        close.setResource(CustomApplcation.sex? R.drawable.icn_close : R.drawable.icn_close_female);
+        close.setBgResource(R.drawable.menu_object_bg);
+
+        MenuObject send = new MenuObject("刷新");
+        send.setResource(CustomApplcation.sex? R.drawable.icon_nears_refresh : R.drawable.icon_info_female_female);
+        send.setBgResource(R.drawable.menu_object_bg);
+
+        MenuObject like = new MenuObject("切换视图");
+        like.setResource(CustomApplcation.sex? R.drawable.icon_nears_change_show : R.drawable.icon_info_male_female);
+        like.setBgResource(R.drawable.menu_object_bg);
+
+
+        menuObjects.add(close);
+        menuObjects.add(send);
+        menuObjects.add(like);
+        
+        return menuObjects;
+    }
 
 	
 	private void initBaiduMap() {
@@ -233,10 +385,7 @@ public class NearPeopleMapActivity extends ActivityBase implements OnGetGeoCoder
 		mMapView = (MapView) findViewById(R.id.location_bmapView);
 		mBaiduMap = mMapView.getMap();
 		
-		
-		//设置缩放级别
-		mBaiduMap.setMaxAndMinZoomLevel(19, 3);
-		
+		mBaiduMap.setMapStatus(MapStatusUpdateFactory.newMapStatus(new MapStatus.Builder().zoom(19).build()));
 		
 		// 注册 SDK 广播监听者
 		IntentFilter iFilter = new IntentFilter();
@@ -259,10 +408,6 @@ public class NearPeopleMapActivity extends ActivityBase implements OnGetGeoCoder
 	}
 	
 	LatLng point;
-	OverlayOptions textOption;
-	// Bitmap markerBitmap;
-	Bundle markerData = new Bundle();
-	
 	
 	// 在地图上显示附近的人的信息
 	private void initNearsOnMap() {
@@ -271,44 +416,22 @@ public class NearPeopleMapActivity extends ActivityBase implements OnGetGeoCoder
 		Marker marker;
 		
 		// 通过循环将附近的人的昵称显示在地图上
-		for (User nearUser : nears) {
+		for (int i = 0; i < nears.size(); i++) {
 			
 			// ShowToast(nearUser.getNick());
 			
-			markerText.setText(nearUser.getNick());
-			// Toast.makeText(NearPeopleMapActivity.this, nearUser.getNick(), Toast.LENGTH_SHORT).show();
+			User nearUser = nears.get(i);
+			
+			markerNumber.setText(String.valueOf(i + 1));
+			
+			ShowToast("" + "当前i："  + markerNumber.getText());
+			
 			
 			// 获取联系人的地理位置信息
 			BmobGeoPoint location = nearUser.getLocation();
-			String currentLat = CustomApplcation.getInstance().getLatitude();
-			String currentLong = CustomApplcation.getInstance().getLongtitude();
-			if(location!=null && !currentLat.equals("") && !currentLong.equals("")){
-				
-				// 算与附近的人之间的距离
-				double distance = DistanceOfTwoPoints(Double.parseDouble(currentLat),Double.parseDouble(currentLong),nearUser.getLocation().getLatitude(), 
-						nearUser.getLocation().getLongitude());
-				distanceText.setText(String.valueOf(distance)+"米");
-			}else{
-				distanceText.setText("未知");
-			}
 			
-			//启用绘图缓存
-		    layout_marker.setDrawingCacheEnabled(true);		
-		    //调用下面这个方法非常重要，如果没有调用这个方法，得到的bitmap为null
-		    layout_marker.measure(MeasureSpec.makeMeasureSpec(150, MeasureSpec.EXACTLY),
-		        MeasureSpec.makeMeasureSpec(60, MeasureSpec.EXACTLY));
-		    //这个方法也非常重要，设置布局的尺寸和位置
-		    layout_marker.layout(0, 0, layout_marker.getMeasuredWidth() * 2, layout_marker.getMeasuredHeight() * 2);
-		    //获得绘图缓存中的Bitmap
-		    layout_marker.buildDrawingCache();
-		    
-		    
-		    Bitmap markerBitmap = layout_marker.getDrawingCache();
+			Bitmap markerBitmap = getBitmapFromView(layout_marker);
 			
-			ShowLog("+++++++++++++++" + markerBitmap.getWidth() + "  " + markerBitmap.getHeight());
-			
-			// 获取附近的人的地理位置信息
-			// BmobGeoPoint location = nearUser.getLocation();
 			point = new LatLng(location.getLatitude(), location.getLongitude());
 			
 			BitmapDescriptor bitmap = BitmapDescriptorFactory.fromBitmap(markerBitmap);
@@ -320,15 +443,10 @@ public class NearPeopleMapActivity extends ActivityBase implements OnGetGeoCoder
 			
 			//在地图上添加Marker，并显示  
 			marker = (Marker)mBaiduMap.addOverlay(option);
+			marker.setZIndex(i);
 			
-			markerData.putString("ObjectId", nearUser.getObjectId());
-			markerData.putString("username", nearUser.getUsername());
-			marker.setExtraInfo(markerData);
-			
+			layout_marker.setDrawingCacheEnabled(false);
 			layout_marker.destroyDrawingCache();
-			
-			// ShowToast(nearUser.getNick());
-			// ShowToast(nearUser.getGameType() + "");
 		}
 	}
 	
@@ -555,7 +673,7 @@ public class NearPeopleMapActivity extends ActivityBase implements OnGetGeoCoder
 			MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
 			mBaiduMap.animateMapStatus(u);
 			//设置按钮可点击
-			mHeaderLayout.getRightImageButton().setEnabled(true);
+//			mHeaderLayout.getRightImageButton().setEnabled(true);
 		}
 
 	}
@@ -654,4 +772,275 @@ public class NearPeopleMapActivity extends ActivityBase implements OnGetGeoCoder
 		s = Math.round(s * 10000) / 10000;
 		return s;
 	}
+	
+	/**
+	 * 
+	 * @param view
+	 * @return
+	 */
+	public static Bitmap getBitmapFromView(View view) {
+		view.setDrawingCacheEnabled(true);	
+		view.measure(MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED), MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
+        view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
+        view.buildDrawingCache();
+        Bitmap bitmap = view.getDrawingCache();
+        return bitmap;
+	}
+	
+	public Double getDistance(BmobGeoPoint point1, BmobGeoPoint point2) {
+		
+		double distance;
+		if (point1 != null && point2 != null) {
+			// 算与附近的人之间的距离
+			distance = DistanceOfTwoPoints(
+					point1.getLatitude(),
+					point1.getLongitude(),
+					point2.getLatitude(), 
+					point2.getLongitude());
+		}
+		else {
+			distance = 0;
+		}
+		
+		
+		return distance;
+		
+	}
+	
+	
+	
+	@SuppressLint("InflateParams")
+	@SuppressWarnings("deprecation")
+	public void showPopUpWindow() {
+		View view = LayoutInflater.from(this).inflate(R.layout.pop_up_nears_layout,
+				null);
+		
+		ListView mListView = (ListView) view.findViewById(R.id.list_near);
+		
+		mListView.setOnItemClickListener(this);
+		
+		adapter = new NearPeopleAdapter(this, nears);
+		mListView.setAdapter(adapter);
+		
+		mListView.setOnItemClickListener(this);
+		
+		tv_address_name = (TextView) view.findViewById(R.id.tv_position_name);
+		
+		// 创建地理编码检索实例  
+        GeoCoder geoCoder = GeoCoder.newInstance(); 
+        
+        // 设置地理编码检索监听者  
+        geoCoder.setOnGetGeoCodeResultListener(listener);  
+        //  
+        geoCoder.reverseGeoCode(new ReverseGeoCodeOption().location(new LatLng(Double.parseDouble(CustomApplcation.getInstance().getLatitude()),
+        		Double.parseDouble(CustomApplcation.getInstance().getLongtitude()))));  
+        // 释放地理编码检索实例  
+//        geoCoder.destroy(); 
+        
+        
+		
+		popupWindow = new PopupWindow(view, mScreenWidth, 800);
+		
+		popupWindow.setTouchInterceptor(new OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
+					popupWindow.dismiss();
+					return true;
+				}
+				return false;
+			}
+		});
+
+		popupWindow.setWidth(WindowManager.LayoutParams.MATCH_PARENT);
+		popupWindow.setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
+		popupWindow.setTouchable(true);
+		popupWindow.setFocusable(true);
+		popupWindow.setOutsideTouchable(true);
+		popupWindow.setBackgroundDrawable(new BitmapDrawable());
+		// 动画效果 从底部弹起
+		popupWindow.setAnimationStyle(R.style.PopupAnimation);
+		popupWindow.showAtLocation(layout_all, Gravity.BOTTOM, 0, 0);
+	}
+
+	@Override
+	public void onMenuItemLongClick(View clickedView, int position) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onMenuItemClick(View clickedView, int position) {
+		// TODO Auto-generated method stub
+		switch (position) {
+		// 刷新
+		case 1:
+			nears.clear();
+			mBaiduMap.clear();
+			initNearByList(false);
+			initNearsOnMap();
+			break;
+			
+		// 切换视图，弹出窗口
+		case 2:
+			showPopUpWindow();
+			break;
+
+		default:
+			break;
+		}
+		
+		ShowToast("" + position);
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+			long id) {
+		// TODO Auto-generated method stub
+		Intent intent = new Intent();
+		
+		User user = nears.get(position);
+		
+		clickedUser = position;
+		
+		String gameType = user.getGameType();
+		
+		int gamedifficultNum = 0;
+		if (user.getGameDifficulty().equals("简单")) {
+			gamedifficultNum = 0;
+		}else if (user.getGameDifficulty().equals("一般")) {
+			gamedifficultNum = 1;
+		}else if (user.getGameDifficulty().equals("困难")) {
+			gamedifficultNum = 2;
+		}
+		
+		if (gameType.equals("水果连连看")) {
+			intent.setClass(NearPeopleMapActivity.this, GameFruitActivity.class);
+		}
+		else if (gameType.equals("猜数字")) {
+			intent.setClass(NearPeopleMapActivity.this, GuessNumberActivity.class);
+		}
+		else if (gameType.equals("mixed color")) {
+			intent.setClass(NearPeopleMapActivity.this, MixedColorMenuActivity.class);
+		}
+		else if (gameType.equals("oh my egg")) {
+			
+			// 先判断有没有安装这个游戏
+			Boolean flag = CustomApplcation.isAppInstalled(NearPeopleMapActivity.this,"com.nsu.ttgame.ohmyeggs");
+			
+			if (flag) {
+				intent = new  Intent("com.nsu.ttgame.ohmyeggs.MYACTION" , Uri  
+				        .parse("info://调用其他应用程序的Activity" ));  
+				//  传递数据   
+				intent.putExtra("value", gamedifficultNum);  
+			}
+			else {
+				
+				DialogTips dialogTips = new DialogTips(NearPeopleMapActivity.this, 
+						"对方设置的游戏是：" + gameType + "，您还没有安装该游戏！请到游戏中心进行安装！", "确认");
+				dialogTips.SetOnSuccessListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+						
+					}
+				});
+				dialogTips.SetOnCancelListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+						
+					}
+				});
+				
+				dialogTips.show();
+				
+				return;
+			}
+			
+			
+		}
+
+		
+		Bundle data = new Bundle();
+		data.putString("from", "other");
+		data.putString("username", user.getUsername());
+		data.putString("gamedifficulty", user.getGameDifficulty());
+		
+		intent.putExtras(data);
+		
+		ShowToast(user.getGameType() + "");
+		if (gameType.equals("oh my egg")) {
+			startActivityForResult(intent, 1); 
+		}else {
+			startActivity(intent);
+		}
+	}
+	
+	@Override   
+	protected  void  onActivityResult(int  requestCode, int  resultCode, Intent data)  {  
+		
+		switch (requestCode) {
+		case 1:
+			
+			int gameResult = data.getExtras().getInt("result");
+			
+			// 赢了
+			if (gameResult == 1) {
+				User user = nears.get(clickedUser);
+				Intent intent = new Intent();
+				intent.setClass(NearPeopleMapActivity.this, SetMyInfoActivity2.class);
+				intent.putExtra("from", "add");
+				intent.putExtra("username", user.getUsername());
+				startActivity(intent);
+			}
+			// 输了
+			else if(gameResult == 0){
+				
+			}
+			
+			break;
+
+		default:
+			break;
+		}
+	      
+	} 
+
+	@Override
+	public void onRefresh() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onLoadMore() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	 OnGetGeoCoderResultListener listener = new OnGetGeoCoderResultListener() {  
+         // 反地理编码查询结果回调函数  
+         @Override  
+         public void onGetReverseGeoCodeResult(ReverseGeoCodeResult result) {  
+             if (result == null  
+                     || result.error != SearchResult.ERRORNO.NO_ERROR) {  
+                 // 没有检测到结果  
+ 
+             }  
+             // ShowToast("位置：" + result.getAddress());
+             tv_address_name.setText(result.getAddress());
+             
+         }  
+
+         // 地理编码查询结果回调函数  
+         @Override  
+         public void onGetGeoCodeResult(GeoCodeResult result) {  
+             if (result == null || result.error != SearchResult.ERRORNO.NO_ERROR) {  
+                 // 没有检测到结果  
+             }  
+         }  
+     };  
 }

@@ -79,6 +79,11 @@ public class User extends BmobChatUser {
 	
 	
 	
+	public User() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	
 	public int getRecentPlayGame() {
 		return recentPlayGame;
 	}

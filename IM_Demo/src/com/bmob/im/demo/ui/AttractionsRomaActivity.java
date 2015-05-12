@@ -56,12 +56,8 @@ public class AttractionsRomaActivity extends ActivityBase {
 		
 		attractions = new Attractions();
 		
-		initTopBarForLeft("景点漫游");
+//		initTopBarForLeft("景点漫游");
 		
-		// 女性主题
-		if (!CustomApplcation.sex) {
-			setActionBgForFemale();
-		}
 		tips = (ImageView) findViewById(R.id.attractions_roma_tips);
 		
 		mVibrator = (Vibrator)getApplication().getSystemService(VIBRATOR_SERVICE);

@@ -34,10 +34,6 @@ public class ShakeActivity extends ActivityBase {
 		setContentView(R.layout.activity_shake);
 		
 		initTopBarForLeft("摇一摇");
-		// 女性主题
-		if (!CustomApplcation.sex) {
-			setActionBgForFemale();
-		}
 		
 		mVibrator = (Vibrator)getApplication().getSystemService(VIBRATOR_SERVICE);
 		

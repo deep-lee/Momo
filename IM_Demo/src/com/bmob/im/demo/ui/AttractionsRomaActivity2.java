@@ -1,7 +1,6 @@
 package com.bmob.im.demo.ui;
 
 import cn.bmob.v3.datatype.BmobGeoPoint;
-
 import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.config.Attractions;
@@ -13,8 +12,8 @@ import com.daimajia.androidanimations.library.sliders.SlideInUpAnimator;
 import com.daimajia.androidanimations.library.sliders.SlideOutLeftAnimator;
 import com.daimajia.androidanimations.library.sliders.SlideOutUpAnimator;
 import com.nineoldandroids.animation.Animator;
-
 import android.R.integer;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -40,6 +39,8 @@ public class AttractionsRomaActivity2 extends ActivityBase {
 	
 	Boolean flag2 = true;
 	
+	Boolean isOver = false;
+	
 	int finalRandom;
 	
 	int times = 15;
@@ -48,32 +49,35 @@ public class AttractionsRomaActivity2 extends ActivityBase {
 	
 	BmobGeoPoint randomGeoPoint;
 	BmobGeoPoint currentGeoPoint;
-	
+	  
+	@SuppressLint("HandlerLeak")
 	Handler tipsHandler1 = new Handler(){
 		public void handleMessage(Message msg) {   
             switch (msg.what) {   
             	case 0:
-            		if (times > 0) {
-            			// tv_tip1.setText(Attractions.attractionsName.get(Attractions.getRandom()));
-                		animationSlideOutUp.playOn(tv_tip1);
-                		
-                		Message msg1 = new Message();
-                		msg1.what = 1;
-                		tipsHandler2.sendMessageDelayed(msg1, 300);
-                		
-                		times--;
-					}
-            		else {
-						// 进入附近的人查看界面，改变地理位置信息
-            			randomGeoPoint = Attractions.attarctionsSet.get(finalRandom);
-         			    mApplication.setLongtitude(randomGeoPoint.getLongitude() + "");
-         			    mApplication.setLatitude(randomGeoPoint.getLatitude() + "");
-         			    
-         			    Intent intent = new Intent();
-	   					intent.setClass(AttractionsRomaActivity2.this, NearPeopleMapActivity.class);
-	   					intent.putExtra("currentGeoPoint", currentGeoPoint);
-	   					intent.putExtra("randomGeoPoint", randomGeoPoint);
-	   					startActivity(intent);
+            		if (!isOver) {
+            			if (times > 0) {
+                			// tv_tip1.setText(Attractions.attractionsName.get(Attractions.getRandom()));
+                    		animationSlideOutUp.playOn(tv_tip1);
+                    		
+                    		Message msg1 = new Message();
+                    		msg1.what = 1;
+                    		tipsHandler2.sendMessageDelayed(msg1, 300);
+                    		
+                    		times--;
+    					}
+                		else {
+    						// 进入附近的人查看界面，改变地理位置信息
+                			randomGeoPoint = Attractions.attarctionsSet.get(finalRandom);
+             			    mApplication.setLongtitude(randomGeoPoint.getLongitude() + "");
+             			    mApplication.setLatitude(randomGeoPoint.getLatitude() + "");
+             			    
+             			    Intent intent = new Intent();
+    	   					intent.setClass(AttractionsRomaActivity2.this, NearPeopleMapActivity.class);
+    	   					intent.putExtra("currentGeoPoint", currentGeoPoint);
+    	   					intent.putExtra("randomGeoPoint", randomGeoPoint);
+    	   					startActivity(intent);
+    					}
 					}
             		
             		break;
@@ -83,6 +87,7 @@ public class AttractionsRomaActivity2 extends ActivityBase {
 		}
 	};
 	
+	@SuppressLint("HandlerLeak")
 	Handler tipsHandler2 = new Handler(){
 		public void handleMessage(Message msg) {   
             switch (msg.what) {   
@@ -196,12 +201,8 @@ public class AttractionsRomaActivity2 extends ActivityBase {
 	
 	private void initView() {
 		
-		initTopBarForLeft("景点漫游");
+//		initTopBarForLeft("景点漫游");
 		
-		// 女性主题
-		if (!CustomApplcation.sex) {
-			setActionBgForFemale();
-		}
 		attractions = new Attractions();
 		
 		plant = (ImageView) findViewById(R.id.roma_sky_bg_plante);
@@ -382,5 +383,15 @@ public class AttractionsRomaActivity2 extends ActivityBase {
 		flag2 = false;
 		
 	}
+
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		isOver = true;
+	}
+
+	
+	
 	
 }

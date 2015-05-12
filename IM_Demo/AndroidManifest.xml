@@ -173,10 +173,9 @@
                 <action android:name="cn.bmob.im.service.BmobPollService" />
             </intent-filter>
         </service>
-        
-        <service 
-            android:name="com.bmob.im.demo.util.DownloadService"
-            android:label="DownloadService">
+        <service
+            android:name=".util.DownloadService"
+            android:label="DownloadService" >
         </service>
 
         <activity
@@ -279,16 +278,28 @@
         </activity>
         <activity
             android:name=".ui.GameCenterActivity"
-            android:label="@string/title_activity_game_center" 
-            android:windowSoftInputMode="stateHidden">
+            android:label="@string/title_activity_game_center"
+            android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
             android:name=".ui.AttractionsRomaActivity2"
             android:label="@string/title_activity_attractions_roma_activity2" >
         </activity>
         <activity
-            android:name="com.bmob.im.demo.ui.EditPersonalizedSignatureActivity"
+            android:name=".ui.EditPersonalizedSignatureActivity"
             android:label="@string/title_activity_edit_personalized_signature" >
+        </activity>
+        <activity
+            android:name=".ui.ShakeForNearPeopleActivity"
+            android:label="@string/title_activity_shake_for_near_people" >
+        </activity>
+        <activity
+            android:name=".ui.ForgetPasswordActivity"
+            android:label="@string/title_activity_forget_password" >
+        </activity>
+        <activity
+            android:name="com.bmob.im.demo.ui.AddFriendsFromAddressBookActivity"
+            android:label="@string/title_activity_add_friends_from_address_book" >
         </activity>
     </application>
 

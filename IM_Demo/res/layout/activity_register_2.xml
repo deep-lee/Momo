@@ -6,9 +6,50 @@
     android:id="@+id/register_layout_all"
     tools:context="${relativePackage}.${activityClass}" >
     
-    <include
+<!--     <include
        	android:id="@+id/common_actionbar"
-        layout="@layout/include_action_bar" />
+        layout="@layout/include_action_bar" /> -->
+        
+        <RelativeLayout
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_top_bar"
+        android:background="@color/common_action_bar_bg_color" >
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:onClick="back"
+            android:paddingBottom="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="5dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/base_action_bar_back_bg_selector" />
+
+        <View
+            android:id="@+id/view_temp"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_toRightOf="@id/iv_back"
+            android:background="#14191A" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/view_temp"
+            android:text="注册"
+            android:textColor="#ffffff"
+            android:textSize="18sp" />
+    </RelativeLayout>
     
     <LinearLayout 
         android:layout_width="fill_parent"
@@ -56,7 +97,7 @@
 
 		<LinearLayout
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
+			android:layout_height="0dp"
 			android:layout_gravity="bottom"
 			android:layout_weight="0.1"
 			android:gravity="bottom"
@@ -68,7 +109,7 @@
             	android:gravity="center"
             	android:orientation="horizontal"
             	android:paddingLeft="8dip"
-            	android:background="@drawable/base_register_bottom_bar_bg"
+            	android:background="@color/common_action_bar_bg_color"
             	android:paddingRight="8dip" >
   
             	<Button
@@ -78,7 +119,7 @@
 	                android:layout_marginRight="9dip"
 	                android:layout_weight="1"
 	                android:gravity="center"
-	                android:background="@drawable/btn_login_selector"
+	                android:background="@drawable/btn_register_bottom_bg_selector"
 	                android:textColor="#ffffff"
 	                android:text="上一步"
 	                android:textSize="14sp" />
@@ -89,7 +130,7 @@
 	                android:layout_height="42dip"
 	                android:layout_marginLeft="9dip"
 	                android:layout_weight="1"
-	                android:background="@drawable/btn_login_selector"
+	                android:background="@drawable/btn_register_bottom_bg_selector"
 	                android:textColor="#ffffff"
 	                android:text="下一步"
 	                android:gravity="center"

@@ -13,8 +13,6 @@ import com.bmob.im.demo.R;
 import com.bmob.im.demo.adapter.GameCardAdapter;
 import com.bmob.im.demo.bean.User;
 import com.bmob.im.demo.util.CharacterParser;
-import com.bmob.im.demo.util.PinyinComparator;
-import com.bmob.im.demo.view.ClearEditText;
 import com.bmob.im.demo.view.dialog.CustomProgressDialog;
 
 import android.content.Context;
@@ -25,15 +23,20 @@ import android.os.Environment;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 
 public class GameCenterActivity extends ActivityBase {
 	
 	private ListView mListView;  
 	
-	private ClearEditText mClearEditText;
+//	private ClearEditText mClearEditText;
 	
 	public static User user;
 	
@@ -42,14 +45,21 @@ public class GameCenterActivity extends ActivityBase {
 	GameCardAdapter mAdapter;
 	CustomProgressDialog dialog;
 	
+	public ImageView iv_search;
+	
+	Boolean flag = false;
+	
+	ImageView iv_back;
+	
+	public EditText et_search;
+	public TextView title;
+	
+	private InputMethodManager inputMethodManager;
+	
 	/**
 	 * 汉字转换成拼音的类
 	 */
 	private CharacterParser characterParser;
-	/**
-	 * 根据拼音来排列ListView里面的数据类
-	 */
-	private PinyinComparator pinyinComparator;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -59,25 +69,63 @@ public class GameCenterActivity extends ActivityBase {
 		
 		setContentView(R.layout.activity_game_center);
 		
-		initTopBarForLeft("游戏中心");
+		inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+		
+//		initTopBarForLeft("游戏中心");
 		
 		
 		characterParser = CharacterParser.getInstance();
-		pinyinComparator = new PinyinComparator();
 		
-		// 女性主题
-		if (!CustomApplcation.sex) {
-			setActionBgForFemale();
-			setActionBarRightBtnForFemale();
-		}
 		
 		user = userManager.getCurrentUser(User.class);
 		
-		mClearEditText = (ClearEditText) findViewById(R.id.et_game_search);
+		iv_back = (ImageView) findViewById(R.id.iv_back);
+		iv_search = (ImageView) findViewById(R.id.iv_search);
+		et_search = (EditText) findViewById(R.id.game_center_search_et);
+		title = (TextView) findViewById(R.id.tv_title);
 		
-		// 根据输入框输入值的改变来过滤搜索
-		mClearEditText.addTextChangedListener(new TextWatcher() {
-
+		iv_search.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				iv_search.setVisibility(View.INVISIBLE);
+				title.setVisibility(View.INVISIBLE);
+				et_search.setVisibility(View.VISIBLE);
+				
+				et_search.requestFocus();
+				
+				inputMethodManager.showSoftInput(et_search, InputMethodManager.SHOW_FORCED);
+				
+				flag = true;
+			}
+		});
+		
+		iv_back.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				if (flag) {
+					iv_search.setVisibility(View.VISIBLE);
+					title.setVisibility(View.VISIBLE);
+					et_search.setVisibility(View.INVISIBLE);
+					et_search.setText("");
+					filterData("");
+					
+					et_search.clearFocus(); 
+					
+					inputMethodManager.hideSoftInputFromWindow(et_search.getWindowToken(), 0);
+					
+					flag = false;
+				}else {
+					finish();
+				}
+			}
+		});
+		
+		et_search.addTextChangedListener(new TextWatcher() {
+			
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before,
 					int count) {
@@ -97,6 +145,32 @@ public class GameCenterActivity extends ActivityBase {
 						
 			}
 		});
+		
+//		mClearEditText = (ClearEditText) findViewById(R.id.et_game_search);
+//		
+//		
+//		// 根据输入框输入值的改变来过滤搜索
+//		mClearEditText.addTextChangedListener(new TextWatcher() {
+//
+//			@Override
+//			public void onTextChanged(CharSequence s, int start, int before,
+//					int count) {
+//				// 当输入框里面的值为空，更新为原来的列表，否则为过滤数据列表
+//				// 根据输入框中的值来过滤数据并更新ListView
+//				filterData(s.toString());
+//			}
+//
+//			@Override
+//			public void beforeTextChanged(CharSequence s, int start, int count,
+//					int after) {
+//
+//			}
+//
+//			@Override
+//			public void afterTextChanged(Editable s) {
+//						
+//			}
+//		});
 		
 		 mListView=(ListView) findViewById(R.id.game_list_view);  
 	     mAdapter = new GameCardAdapter(this);  
