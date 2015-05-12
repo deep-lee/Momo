@@ -25,9 +25,11 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
+import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -37,7 +39,10 @@ public class AddFriendsFromAddressBookActivity extends BaseActivity implements O
 	ListView lv_syatem_contact;
 	ListView lv_invite_contact;
 	
+	LinearLayout invite_layout;
+	
 	GetContactsInfo get_contact_info;
+	
 	
 	List<ContactsInfo> system_contacts;
 	List<ContactsInfo> add_able_contacts;
@@ -82,8 +87,8 @@ public class AddFriendsFromAddressBookActivity extends BaseActivity implements O
 	}
 	
 	public void initView() {
+		
 		lv_syatem_contact = (ListView) findViewById(R.id.add_friends_from_contact_listview);
-		lv_invite_contact = (ListView) findViewById(R.id.invite_friends_from_contact_listview);
 		
 		get_contact_info = new GetContactsInfo(AddFriendsFromAddressBookActivity.this);
 		
@@ -97,6 +102,7 @@ public class AddFriendsFromAddressBookActivity extends BaseActivity implements O
 	
 	@SuppressLint("InflateParams")
 	public void initListView() {
+		
 		ContactFriendAdapter adapter1 = new ContactFriendAdapter(AddFriendsFromAddressBookActivity.this, add_able_contacts);
 		InviteFriendAtapter adapter2 = new InviteFriendAtapter(AddFriendsFromAddressBookActivity.this, not_registed_contacts);
 		
@@ -108,19 +114,49 @@ public class AddFriendsFromAddressBookActivity extends BaseActivity implements O
 		tv_num1 = (TextView) headView1.findViewById(R.id.add_friends_from_system_head_view_tv);
 		tv_num2 = (TextView) headView2.findViewById(R.id.add_friends_from_system_head_view_tv);
 		
-		
 		tv_num1.setText(add_able_contacts.size() + " 位好友可添加");
 		tv_num2.setText(not_registed_contacts.size() + "位好友可邀请注册");
 		
-		ShowToast("NUM:" + not_registed_contacts.size());
+		invite_layout = (LinearLayout) mInflater.inflate(R.layout.invite_friends_list_layout, null);
 		
-		lv_syatem_contact.addHeaderView(headView1);
+		lv_invite_contact = (ListView) invite_layout.findViewById(R.id.invite_friends_from_contact_listview);
+		
 		lv_invite_contact.addHeaderView(headView2);
 		
-		lv_syatem_contact.setAdapter(adapter1);
 		lv_invite_contact.setAdapter(adapter2);
 		
+		// 如果不动态设置作为Footer的ListView的高度的话，ListView只会显示一项
+		setListViewHeightBasedOnChildren(lv_invite_contact);
+
+		// ShowToast("NUM:" + not_registed_contacts.size());
 		
+		lv_syatem_contact.addHeaderView(headView1);
+		
+		lv_syatem_contact.addFooterView(invite_layout);
+		
+		lv_syatem_contact.setAdapter(adapter1);
+		
+	}
+	
+	/**
+	 * 动态设置listview的高度
+	 * @param listView
+	 */
+	public void setListViewHeightBasedOnChildren(ListView listView) {
+		ListAdapter adapter = listView.getAdapter();
+		if(adapter != null) {
+			int totalHeight = 0;
+			for(int i=0; i<adapter.getCount(); i++) {
+				View listItem = adapter.getView(i, null, listView);
+				listItem.measure(0, 0);
+				totalHeight += listItem.getMeasuredHeight();
+			}
+			ViewGroup.LayoutParams params = listView.getLayoutParams();
+			params.height = totalHeight + (listView.getDividerHeight() * (adapter.getCount() - 1));
+			((MarginLayoutParams) params).setMargins(0, 0, 0, 0);
+			listView.setLayoutParams(params);
+			System.out.println(params.height + "===" + adapter.getCount());
+		}
 	}
 	
 	// 判断是否是好友
@@ -134,7 +170,7 @@ public class AddFriendsFromAddressBookActivity extends BaseActivity implements O
 				
 				system_contacts = get_contact_info.getLocalContactsInfos();
 				
-				ShowToast("SYSTEM NUM:" + system_contacts.size());
+				// ShowToast("SYSTEM NUM:" + system_contacts.size());
 				
 				add_able_contacts = new ArrayList<ContactsInfo>();
 				has_registed_contacts = new ArrayList<ContactsInfo>();
@@ -168,6 +204,10 @@ public class AddFriendsFromAddressBookActivity extends BaseActivity implements O
 							// 数据库里有这个人
 							else {
 								contact.setContactNick(arg0.get(0).getNick());
+								
+								String avatar_url = arg0.get(0).getAvatar();
+								contact.setAvatar_url(avatar_url);
+								
 								has_registed_contacts.add(contact);
 							}
 						}
@@ -213,7 +253,7 @@ public class AddFriendsFromAddressBookActivity extends BaseActivity implements O
 		//组装新的User
 		friends = CollectionUtils.map2list(users);
 		
-		ShowToast("TEST:" + friends.size());
+		// ShowToast("TEST:" + friends.size());
 
 	}
 
@@ -223,4 +263,5 @@ public class AddFriendsFromAddressBookActivity extends BaseActivity implements O
 		// TODO Auto-generated method stub
 		
 	}
+
 }

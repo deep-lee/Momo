@@ -61,7 +61,7 @@
     
     <color name="slide_list_item_normal">#1a1f25</color>
     
-    <color name="cpb_grey">#ffdedede</color>
+    <color name="cpb_grey">#dedede</color>
     <color name="cpb_blue">#30c37d</color>
     <color name="cpb_blue_dark">#ff00719b</color>
     <color name="cpb_red">#ffff4444</color>

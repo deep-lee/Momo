@@ -297,6 +297,8 @@ public class BaseActivity extends FragmentActivity {
 	public void back(View view){
         
         finish();
+      //设置切换动画，从右边进入，左边退出
+		overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
     }
 	
 }

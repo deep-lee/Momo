@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/common_list_item_bg_selector"
+    android:padding="5dp"
     android:orientation="vertical" >
     
     <RelativeLayout 
@@ -12,11 +13,11 @@
     	
         <ImageView 
             android:id="@+id/system_contact_avatar"
-            android:layout_height="wrap_content"
+            android:layout_height="70dp"
             android:src="@drawable/default_avatar"
             android:layout_marginLeft="5dp"
             android:layout_gravity="center_vertical"
-            android:layout_width="wrap_content"/>
+            android:layout_width="70dp"/>
         
         <LinearLayout 
             android:id="@+id/system_contact_name_layout"
@@ -45,7 +46,7 @@
             android:padding="10dp"
             android:textColor="@color/guide_color"
             android:layout_centerVertical="true"
-            android:background="@color/cpb_grey"
+            android:background="@drawable/btn_add_from_contact_bg_selector"
             android:layout_alignParentRight="true"
             android:layout_height="wrap_content"/>
         
