@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    
+    android:background="@color/theme_bg_color"
     android:layout_height="match_parent" >
     
     <RelativeLayout
@@ -55,13 +55,13 @@
             android:layout_marginLeft="15dp"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/icon_find_life_clrcle"/>
+            android:src="@drawable/icon_time_line"/>
         
         <LinearLayout 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/find_life_circle_icon"
-	        android:layout_marginStart="20dp"
+	        android:layout_marginLeft="20dp"
 	        android:layout_centerVertical="true"
             android:orientation="vertical">
             
@@ -106,12 +106,12 @@
             android:layout_marginLeft="15dp"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/icon_find_nears_friends"/>
+            android:src="@drawable/icon_find_nears_people"/>
 
         <TextView
             style="@style/Smile.TextView._Black"
             android:layout_toRightOf="@+id/find_nears_friends_icon"
-            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
             android:layout_centerVertical="true"
             android:textSize="15sp"
             android:text="@string/fragment_find_nears_friends" />
@@ -147,12 +147,12 @@
             android:layout_marginLeft="15dp"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/icon_find_nears_friends"/>
+            android:src="@drawable/icon_find_attractions_roma"/>
 
         <TextView
             style="@style/Smile.TextView._Black"
             android:layout_toRightOf="@+id/find_attractions_roma_icon"
-            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
             android:layout_centerVertical="true"
             android:textSize="15sp"
             android:text="@string/fragment_find_attractions_roma" />
@@ -182,12 +182,12 @@
             android:layout_marginLeft="15dp"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/icon_find_life_clrcle"/>
+            android:src="@drawable/icon_find_sign_in"/>
 
         <TextView
             style="@style/Smile.TextView._Black"
             android:layout_toRightOf="@+id/find_sign_in_icon"
-            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
             android:layout_centerVertical="true"
             android:textSize="15sp"
             android:text="@string/fragment_find_sign_in" />
@@ -217,12 +217,12 @@
             android:layout_marginLeft="15dp"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/icon_find_life_clrcle"/>
+            android:src="@drawable/icon_find_game_community"/>
 
         <TextView
             style="@style/Smile.TextView._Black"
             android:layout_toRightOf="@+id/find_game_community_icon"
-            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
             android:layout_centerVertical="true"
             android:textSize="15sp"
             android:text="@string/fragment_find_community_icon" />
@@ -258,12 +258,12 @@
             android:layout_marginLeft="15dp"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/icon_find_life_clrcle"/>
+            android:src="@drawable/icon_find_eat_drink_play_happy"/>
 
         <TextView
             style="@style/Smile.TextView._Black"
             android:layout_toRightOf="@+id/find_eat_drink_play_happy_icon"
-            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
             android:layout_centerVertical="true"
             android:textSize="15sp"
             android:text="@string/fragment_find_eat_drink_play_happy" />

@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/theme_bg_color"
     android:id="@+id/register_layout_all"
     tools:context="${relativePackage}.${activityClass}" >
     

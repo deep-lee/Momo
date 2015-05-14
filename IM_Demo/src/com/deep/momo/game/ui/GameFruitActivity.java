@@ -8,7 +8,9 @@ import com.deep.momo.game.view.GameView;
 import com.deep.momo.game.view.OnStateListener;
 import com.deep.momo.game.view.OnTimerListener;
 import com.deep.momo.game.view.OnToolsChangeListener;
+
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
@@ -28,7 +30,7 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-public class GameFruitActivity extends ActivityBase implements OnClickListener, OnTimerListener,OnStateListener,OnToolsChangeListener{
+public class GameFruitActivity extends Activity implements OnClickListener, OnTimerListener,OnStateListener,OnToolsChangeListener{
 	
 	private ImageButton btnPlay;
 	private ImageButton btnRefresh;

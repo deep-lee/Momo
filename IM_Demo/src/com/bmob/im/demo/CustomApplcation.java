@@ -13,6 +13,8 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.media.MediaPlayer;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import cn.bmob.im.BmobChat;
@@ -134,7 +136,7 @@ public class CustomApplcation extends Application {
 		
 		gameIcon.add(R.drawable.game_icon);
 		gameIcon.add(R.drawable.game_icon);
-		gameIcon.add(R.drawable.game_icon);
+		gameIcon.add(R.drawable.icon_mixed_color);
 		gameIcon.add(R.drawable.icon_oh_my_egg);
 		
 		gameRuleDetails.add(R.string.game_lianliankan_rule_details);
@@ -459,5 +461,7 @@ public class CustomApplcation extends Application {
 		}
 		
 	}
+	
+	
 
 }

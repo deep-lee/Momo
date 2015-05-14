@@ -775,7 +775,16 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 				// 算与附近的人之间的距离
 				double distance = DistanceOfTwoPoints(Double.parseDouble(currentLat),Double.parseDouble(currentLong),user.getLocation().getLatitude(), 
 						user.getLocation().getLongitude());
-				tv_distance.setText(String.valueOf(distance)+"米");
+				
+				if (distance <= 1000) {
+					tv_distance.setText(String.valueOf(distance)+"m");
+				}
+				else {
+					double distance_by_kilometer = Math.round(distance / 1000);
+					tv_distance.setText(String.valueOf(distance_by_kilometer) + "Km");
+				}
+				
+				
 			}else{
 				tv_distance.setText("未知");
 			}

@@ -24,12 +24,14 @@ import com.bmob.im.demo.ui.ShakeForNearPeopleActivity;
  * 
  */
 
-public class FindFragment extends FragmentBase implements OnClickListener{
+public class FindFragment extends FragmentBase implements OnClickListener {
 	
 	
 	Context mContext;
 	
 	ImageView iv_add;
+	
+	ImageView icon_life_circle;
 	
 	RelativeLayout rl_life_circle, rl_nears_people, rl_attractions_roma, rl_sign_in,
 					rl_game_community, rl_eat_drink_play_happy;
@@ -67,7 +69,7 @@ public class FindFragment extends FragmentBase implements OnClickListener{
 		initView();
 	}
 	
-	private void initView() {
+	private void initView(){
 		// TODO Auto-generated method stub
 		
 //		initTopBarForOnlyTitle("·¢ÏÖ");
@@ -97,6 +99,9 @@ public class FindFragment extends FragmentBase implements OnClickListener{
 		rl_sign_in.setOnClickListener(this);
 		rl_game_community.setOnClickListener(this);
 		rl_eat_drink_play_happy.setOnClickListener(this);
+		
+		icon_life_circle = (ImageView) findViewById(R.id.find_life_circle_icon);
+		
 	}
 
 	

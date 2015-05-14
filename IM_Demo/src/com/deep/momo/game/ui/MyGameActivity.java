@@ -2,12 +2,14 @@ package com.deep.momo.game.ui;
 
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.ui.ActivityBase;
+
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-public class MyGameActivity extends ActivityBase implements OnClickListener{
+public class MyGameActivity extends Activity implements OnClickListener{
 	
 	View game1, game2, game3;
 
@@ -20,7 +22,6 @@ public class MyGameActivity extends ActivityBase implements OnClickListener{
 	}
 	
 	private void initView() {
-		initTopBarForLeft("Œ“µƒ”Œœ∑");
 		game1 = findViewById(R.id.layout_game_1);
 		game2 = findViewById(R.id.layout_game_2);
 		game3 = findViewById(R.id.layout_game_3);

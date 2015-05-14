@@ -4,13 +4,14 @@ import com.bmob.im.demo.R;
 import com.bmob.im.demo.ui.ActivityBase;
 import com.bmob.im.demo.view.dialog.DialogTips;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Window;
 import android.view.WindowManager;
 
-public class MixedColorActivity extends ActivityBase {
+public class MixedColorActivity extends Activity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

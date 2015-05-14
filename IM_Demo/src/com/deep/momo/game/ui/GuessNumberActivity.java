@@ -6,6 +6,7 @@ import com.bmob.im.demo.ui.SetMyInfoActivity2;
 import com.bmob.im.demo.util.SoundPlay;
 import com.bmob.im.demo.view.dialog.DialogTips;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -23,7 +24,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class GuessNumberActivity extends ActivityBase implements OnClickListener{
+public class GuessNumberActivity extends Activity implements OnClickListener{
 	
 	EditText input;
 	Button[] numberBtn = new Button[10];

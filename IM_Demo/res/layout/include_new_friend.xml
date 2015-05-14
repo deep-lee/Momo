@@ -35,7 +35,7 @@
                 android:layout_marginTop="6.0dip"
                 android:contentDescription="@string/action_settings"
                 android:padding="5dp"
-                android:src="@drawable/new_friends_icon" />
+                android:src="@drawable/icon_contact_new_friends" />
         </FrameLayout>
 
         <TextView
@@ -44,8 +44,9 @@
             android:layout_width="0dp"
             android:layout_gravity="center_vertical"
             android:layout_weight="1.0"
-            android:padding="5dp"
+            
             android:singleLine="true"
+            android:layout_marginLeft="10dp"
             android:text="@string/new_friends"
             android:textSize="15sp" />
     </LinearLayout>
@@ -111,14 +112,14 @@
             android:layout_marginTop="6.0dip"
             android:contentDescription="@string/action_settings"
             android:padding="5dp"
-            android:src="@drawable/black_list_icon" />
+            android:src="@drawable/icon_contact_black_list" />
 
         <TextView
             style="@style/Smile.TextView._Black"
             android:layout_width="0dp"
             android:layout_gravity="center_vertical"
             android:layout_weight="1.0"
-            android:padding="5dp"
+            android:layout_marginLeft="10dp"
             android:singleLine="true"
             android:text="@string/black_list"
             android:textSize="15sp" />

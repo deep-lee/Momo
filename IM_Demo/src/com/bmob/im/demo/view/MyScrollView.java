@@ -11,22 +11,15 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-
-
-
 import cn.bmob.v3.listener.UpdateListener;
-
 import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.bean.User;
 import com.bmob.im.demo.ui.ImageDetailsActivity;
-import com.bmob.im.demo.ui.PhotoWallActivity;
 import com.bmob.im.demo.ui.PhotoWallFallActivity;
+import com.bmob.im.demo.util.CommonUtils;
 import com.bmob.im.demo.util.ImageLoader;
 import com.bmob.im.demo.view.dialog.DialogTips;
-
-import android.R.integer;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -190,7 +183,15 @@ public class MyScrollView extends ScrollView implements OnTouchListener {
 			thirdColumn = (LinearLayout) findViewById(R.id.third_column);
 			columnWidth = firstColumn.getWidth();
 			loadOnce = true;
-			loadMoreImages();
+			
+			// 判断网络情况，如果没有网络
+			if (CommonUtils.isNetworkAvailable(mContext)) {
+				loadMoreImages();
+			}
+			else {
+				ShowToast("当前网络不可用,请检查您的网络!");
+			}
+			
 		}
 	}
 
@@ -380,23 +381,30 @@ public class MyScrollView extends ScrollView implements OnTouchListener {
 				imageView.setScaleType(ScaleType.FIT_XY);
 				imageView.setPadding(5, 5, 5, 5);
 				imageView.setTag(R.string.image_url, mImageUrl);
-				if (PhotoWallFallActivity.from.equals("me")) {
-					imageView.setOnClickListener(new OnClickListener() {
-						@Override
-						public void onClick(View v) {
-							Intent intent = new Intent(getContext(), ImageDetailsActivity.class);
-							intent.putExtra("image_position", mItemPosition);
-							getContext().startActivity(intent);
+				
+				imageView.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						Intent intent = new Intent(getContext(), ImageDetailsActivity.class);
+						intent.putExtra("image_position", mItemPosition);
+						
+						if (PhotoWallFallActivity.from.equals("me")) {
+							intent.putStringArrayListExtra("PhotoWallFall", CustomApplcation.myWallPhoto);
+						}else if (PhotoWallFallActivity.from.equals("add") || PhotoWallFallActivity.from.equals("other")){
+							intent.putStringArrayListExtra("PhotoWallFall", PhotoWallFallActivity.otherPhotoWall);
 						}
-					});
+						
+						getContext().startActivity(intent);
+					}
+				});
+				
+				if (PhotoWallFallActivity.from.equals("me")) {
 					
 					imageView.setOnLongClickListener(new OnLongClickListener() {
 						
 						@Override
 						public boolean onLongClick(View v) {
 							// TODO Auto-generated method stub
-							
-							
 							showDeleteDialog(mItemPosition, imageViewList.size());
 							return false;
 						}

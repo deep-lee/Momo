@@ -96,6 +96,7 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".ui.SplashActivity"
+            
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -105,20 +106,37 @@
         </activity>
         <activity
             android:name=".ui.MainActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:launchMode="singleTask"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
-        <activity android:name=".ui.LoginActivity" />
-        <activity android:name=".ui.LocationActivity" />
-        <activity android:name=".ui.BlackListActivity" />
-        <activity android:name=".ui.ImageBrowserActivity" />
+        <activity 
+            android:name=".ui.LoginActivity" 
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+        <activity 
+            android:name=".ui.LocationActivity" 
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+        <activity 
+            android:name=".ui.BlackListActivity" 
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+        <activity 
+            android:name=".ui.ImageBrowserActivity" 
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
         <activity
             android:name=".ui.AddFriendActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity android:name=".ui.NewFriendActivity" />
-        <activity android:name=".ui.NearPeopleActivity" />
-        <activity android:name=".ui.UpdateInfoActivity" />
+        <activity 
+            android:name=".ui.NewFriendActivity" 
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+        <activity 
+            android:name=".ui.NearPeopleActivity" 
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+        <activity 
+            android:name=".ui.UpdateInfoActivity" 
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
         <activity
             android:name=".ui.ChatActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <activity android:name=".ui.SetMyInfoActivity" />
 
@@ -181,10 +199,12 @@
 
         <activity
             android:name=".ui.NearPeopleMapActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:label="@string/title_activity_near_people_map" >
         </activity>
         <activity
             android:name=".ui.ShakeActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:label="@string/title_activity_shake" >
         </activity>
         <activity
@@ -205,47 +225,57 @@
         </activity>
         <activity
             android:name=".ui.RegisterActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:label="@string/title_activity_register_activity2" >
         </activity>
         <activity
             android:name=".ui.SlideSetActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:label="@string/title_activity_slide_set_my_info" >
         </activity>
         <activity
             android:name="com.deep.momo.game.ui.MyGameActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:label="@string/title_activity_my_game" >
         </activity>
         <activity
             android:name=".ui.PositionRoamActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:label="@string/title_activity_position_roam" >
         </activity>
         <activity
             android:name=".ui.AttractionsRomaActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:label="@string/title_activity_attractions_roma" >
         </activity>
         <activity
             android:name=".ui.AttractionsRomaMapActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:label="@string/title_activity_attractions_roma_map" >
         </activity>
         <activity
             android:name=".ui.PhotoWallActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:label="@string/title_activity_photo_wall" >
         </activity>
         <activity
             android:name=".ui.SelectPictureActivity"
             android:label="@string/title_activity_select_picture"
-            android:theme="@style/DialogStyleBottom" >
+             android:theme="@style/DialogStyleBottom">
         </activity>
         <activity
             android:name=".ui.ImageShowActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:label="@string/title_activity_image_show" >
         </activity>
         <activity
             android:name=".ui.PhotoWallFallActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:label="@string/title_activity_photo_wall_fall" >
         </activity>
         <activity
             android:name=".ui.ImageDetailsActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:label="@string/title_activity_image_details" >
         </activity>
         <activity
@@ -255,51 +285,63 @@
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
             android:name="com.soundcloud.android.crop.CropImageActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:label="@string/title_activity_crop_image" >
         </activity>
         <activity
             android:name=".ui.SetMessageNotifyActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:label="@string/title_activity_set_message_notify" >
         </activity>
         <activity
             android:name=".ui.SetMyInfoActivity2"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:label="@string/title_activity_set_my_info_activity2" >
         </activity>
         <activity
             android:name=".ui.EditMyInfoActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:label="@string/title_activity_edit_my_info" >
         </activity>
         <activity
             android:name=".ui.CitiListActivity"
+            
             android:label="@string/title_activity_citi_list" >
         </activity>
         <activity
             android:name=".ui.ProvinceListActivity"
+           
             android:label="@string/title_activity_province_list" >
         </activity>
         <activity
             android:name=".ui.GameCenterActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:label="@string/title_activity_game_center"
             android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
             android:name=".ui.AttractionsRomaActivity2"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:label="@string/title_activity_attractions_roma_activity2" >
         </activity>
         <activity
             android:name=".ui.EditPersonalizedSignatureActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:label="@string/title_activity_edit_personalized_signature" >
         </activity>
         <activity
             android:name=".ui.ShakeForNearPeopleActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:label="@string/title_activity_shake_for_near_people" >
         </activity>
         <activity
             android:name=".ui.ForgetPasswordActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:label="@string/title_activity_forget_password" >
         </activity>
         <activity
             android:name="com.bmob.im.demo.ui.AddFriendsFromAddressBookActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:label="@string/title_activity_add_friends_from_address_book" >
         </activity>
     </application>

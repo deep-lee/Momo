@@ -499,8 +499,6 @@ public class ForgetPasswordActivity extends BaseActivity implements OnClickListe
 			//当滑动的距离大于我们设定的最小距离且滑动的瞬间速度大于我们设定的速度时，返回到上一个activity
 			if(distanceX > XDISTANCE_MIN && xSpeed > XSPEED_MIN) {
 				finish();
-				//设置切换动画，从右边进入，左边退出
-				overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
 			}
 			break;
 		case MotionEvent.ACTION_UP:

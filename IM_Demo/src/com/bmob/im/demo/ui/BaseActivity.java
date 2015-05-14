@@ -2,20 +2,17 @@ package com.bmob.im.demo.ui;
 
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 import cn.bmob.im.BmobChatManager;
 import cn.bmob.im.BmobUserManager;
@@ -29,11 +26,11 @@ import com.bmob.im.demo.R;
 import com.bmob.im.demo.bean.User;
 import com.bmob.im.demo.util.CollectionUtils;
 import com.bmob.im.demo.util.CommonUtils;
-import com.bmob.im.demo.util.FontManager;
 import com.bmob.im.demo.view.HeaderLayout;
 import com.bmob.im.demo.view.HeaderLayout.HeaderStyle;
 import com.bmob.im.demo.view.HeaderLayout.onLeftImageButtonClickListener;
 import com.bmob.im.demo.view.HeaderLayout.onRightImageButtonClickListener;
+import com.bmob.im.demo.view.SwipeBackLayout;
 import com.bmob.im.demo.view.dialog.DialogTips;
 
 /** 基类
@@ -43,6 +40,8 @@ import com.bmob.im.demo.view.dialog.DialogTips;
   * @date 2014-6-13 下午5:05:38
   */
 public class BaseActivity extends FragmentActivity {
+	
+	protected SwipeBackLayout layout;
 
 	BmobUserManager userManager;
 	BmobChatManager manager;
@@ -53,6 +52,7 @@ public class BaseActivity extends FragmentActivity {
 	protected int mScreenWidth;
 	protected int mScreenHeight;
 	
+	@SuppressLint("InflateParams")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -65,6 +65,10 @@ public class BaseActivity extends FragmentActivity {
 		getWindowManager().getDefaultDisplay().getMetrics(metric);
 		mScreenWidth = metric.widthPixels;
 		mScreenHeight = metric.heightPixels;
+		
+		layout = (SwipeBackLayout) LayoutInflater.from(this).inflate(
+				R.layout.base, null);
+		layout.attachToActivity(this);
 		
 	}
 
@@ -297,8 +301,23 @@ public class BaseActivity extends FragmentActivity {
 	public void back(View view){
         
         finish();
-      //设置切换动画，从右边进入，左边退出
-		overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
+        overridePendingTransition(0, R.anim.base_slide_right_out);
     }
+	
+	@Override
+	public void startActivity(Intent intent) {
+		super.startActivity(intent);
+		overridePendingTransition(R.anim.base_slide_right_in, R.anim.base_slide_remain);
+	}
+
+
+	// Press the back button in mobile phone
+	@Override
+	public void onBackPressed() {
+		super.onBackPressed();
+		overridePendingTransition(0, R.anim.base_slide_right_out);
+	}
+	
+	
 	
 }

@@ -23,6 +23,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.widget.TextView;
 
 public class PhotoWallFallActivity extends ActivityBase {
 
@@ -31,6 +32,9 @@ public class PhotoWallFallActivity extends ActivityBase {
 	private String picPath = null;
 	private static final String TAG = "uploadImage";
 	
+	TextView tv_add;
+	View line_1;
+	
 	/**
 	 * Ñ¡ÔñÎÄ¼þ
 	 */
@@ -38,12 +42,12 @@ public class PhotoWallFallActivity extends ActivityBase {
 	
 	public MyScrollView photoWallView;
 	
-	public static List<String> otherPhotoWall;
+	public static ArrayList<String> otherPhotoWall;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		// requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_photo_wall_fall);
 		
 //		otherPhotoWall = new ArrayList<String>();
@@ -51,6 +55,9 @@ public class PhotoWallFallActivity extends ActivityBase {
 		photoWallView = (MyScrollView) findViewById(R.id.my_scroll_view);
 		
 		from = getIntent().getStringExtra("from");
+		
+		tv_add = (TextView) findViewById(R.id.tv_add);
+		line_1 = findViewById(R.id.view_temp2);
 		
 		
 		
@@ -68,6 +75,8 @@ public class PhotoWallFallActivity extends ActivityBase {
 		else if(from.equals("other")){
 //			initTopBarForLeft("ÕÕÆ¬Ç½");
 			
+			tv_add.setVisibility(View.INVISIBLE);
+			line_1.setVisibility(View.INVISIBLE);
 			otherPhotoWall = getIntent().getStringArrayListExtra("photo");
 		}
 		

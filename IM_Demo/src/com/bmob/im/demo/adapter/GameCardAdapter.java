@@ -1,12 +1,6 @@
 package com.bmob.im.demo.adapter;  
       
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.List;  
 
 import cn.bmob.v3.BmobQuery;
@@ -17,12 +11,11 @@ import cn.bmob.v3.listener.UpdateListener;
 import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.GameCard;
 import com.bmob.im.demo.R;
-import com.bmob.im.demo.R.id;
 import com.bmob.im.demo.bean.GameFile;
 import com.bmob.im.demo.bean.User;
 import com.bmob.im.demo.ui.GameCenterActivity;
 import com.bmob.im.demo.util.DownloadService;
-import com.dd.library.CircularProgressButton;
+import com.bmob.im.demo.view.dialog.DialogTips;
 import com.deep.animation.ExpandAnimation;
 import com.deep.momo.game.ui.GameFruitActivity;
 import com.deep.momo.game.ui.GuessNumberActivity;
@@ -30,13 +23,14 @@ import com.deep.momo.game.ui.MixedColorMenuActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Context;  
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
-import android.os.Message;
 import android.view.LayoutInflater;  
 import android.view.View;  
 import android.view.ViewGroup;  
@@ -48,6 +42,10 @@ import android.widget.Toast;
       
 public class GameCardAdapter extends BaseAdapter   
 {  
+	public static int NET_NOT_AVAIABLE = 0;
+	public static int NET_MOBILE = 1;
+	public static int NET_WIFI = 2;
+	
 	int recentPlay = 0;
 	
     private List<GameCard> mCards;  
@@ -136,7 +134,6 @@ public class GameCardAdapter extends BaseAdapter
         mHolder.gameRuleDetails = (TextView) convertView.findViewById(R.id.card_item_game_rule_details);
         mHolder.gameWinMethod = (TextView) convertView.findViewById(R.id.card_item_game_win_method_details);
         mHolder.play_game = (ImageButton) convertView.findViewById(R.id.card_item_play);
-        mHolder.download_progress_tv = (TextView) convertView.findViewById(R.id.card_item_download_progress_tv);
         mHolder.toolbar = convertView.findViewById(R.id.game_item_details_layout);
         
         
@@ -286,7 +283,43 @@ public class GameCardAdapter extends BaseAdapter
 				case 0:
 					
 					// 下载apk
-					downLoadFile(mHolder, Index);
+					// 判断当前是WI-FI还是移动网络
+					int netType =getNetWorkState();
+					switch (netType) {
+					case 0:
+						((GameCenterActivity)mContext).ShowToast(R.string.network_tips);
+						break;
+						
+					case 1:
+						DialogTips dialogTips = new DialogTips(mContext, "移动网络", "当前非WI-FI连接，是否继续下载？", "确认", true, true);
+						dialogTips.SetOnSuccessListener(new OnClickListener() {
+							
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								// TODO Auto-generated method stub
+								downLoadFile(mHolder, Index);
+							}
+						});
+						
+						dialogTips.SetOnCancelListener(new OnClickListener() {
+							
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								// TODO Auto-generated method stub
+								
+							}
+						});
+						
+						dialogTips.show();
+						break;
+						
+					case 2:
+						downLoadFile(mHolder, Index);
+						break;
+
+					default:
+						break;
+					}
 					
 					break;
 					
@@ -319,7 +352,6 @@ public class GameCardAdapter extends BaseAdapter
         TextView gameRuleDetails;
         TextView gameWinMethod;
         ImageButton play_game;
-        TextView download_progress_tv;
         View toolbar;
     }  
     
@@ -368,6 +400,32 @@ public class GameCardAdapter extends BaseAdapter
  		intent.setDataAndType(Uri.fromFile(file),"application/vnd.android.package-archive");
  		context.startActivity(intent);
  	}
+ 	
+ 	@SuppressWarnings("null")
+	public int getNetWorkState() {
+		ConnectivityManager connectivityManager = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+		
+		if (networkInfo != null || !networkInfo.isAvailable()) {
+			return NET_NOT_AVAIABLE;
+		}
+		else {
+			int netType = networkInfo.getType();
+			
+			switch (netType) {
+			case ConnectivityManager.TYPE_WIFI:
+				return NET_WIFI;
+				
+			case ConnectivityManager.TYPE_MOBILE:
+				return NET_MOBILE;
+				
+			default:
+				break;
+			}
+		}
+		
+		return NET_NOT_AVAIABLE;
+	}
     
 
 }  

@@ -45,7 +45,7 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenedListener;
  * @author smile
  * @date 2014-5-29 обнГ2:45:35
  */
-public class MainActivity extends ActivityBase implements EventListener, OnClickListener{
+public class MainActivity extends BaseMainActivity implements EventListener, OnClickListener{
 
 	private Button[] mTabs;
 	public ContactFragment contactFragment;

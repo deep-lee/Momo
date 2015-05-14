@@ -19,7 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 
-public class SelectPictureActivity extends ActivityBase implements OnClickListener{
+public class SelectPictureActivity extends Activity implements OnClickListener{
 
 	/***
 	 * 使用照相机拍照获取图片

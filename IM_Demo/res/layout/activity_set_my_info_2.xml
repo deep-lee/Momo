@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/info_layout_all"
+    android:background="@color/theme_bg_color"
     tools:context="${relativePackage}.${activityClass}" >
     
 <!--     <include
@@ -71,7 +72,7 @@
             android:layout_marginBottom="8dp"
             android:layout_marginRight="5dp"
             android:layout_marginTop="8dp"
-            android:layout_toLeftOf="@id/tv_add"
+            android:layout_toLeftOf="@id/tv_edit_info"
             android:background="#14191A" />
     </RelativeLayout>
     

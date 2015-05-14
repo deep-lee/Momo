@@ -1,6 +1,7 @@
 package com.bmob.im.demo.ui;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
@@ -25,13 +26,15 @@ import android.widget.TextView;
  * 
  * @author guolin
  */
-public class ImageDetailsActivity extends ActivityBase implements
+public class ImageDetailsActivity extends Activity implements
 		OnPageChangeListener {
 
 	/**
 	 * 用于管理图片的滑动
 	 */
 	private ViewPager viewPager;
+	
+	public ArrayList<String> photoWallFall;
 
 	/**
 	 * 显示当前图片的页数
@@ -44,6 +47,7 @@ public class ImageDetailsActivity extends ActivityBase implements
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_image_details);
 		int imagePosition = getIntent().getIntExtra("image_position", 0);
+		photoWallFall = getIntent().getStringArrayListExtra("PhotoWallFall");
 		pageText = (TextView) findViewById(R.id.page_text);
 		viewPager = (ViewPager) findViewById(R.id.view_pager);
 		ViewPagerAdapter adapter = new ViewPagerAdapter();
@@ -53,7 +57,7 @@ public class ImageDetailsActivity extends ActivityBase implements
 		viewPager.setEnabled(false);
 		// 设定当前的页数和总页数
 //		pageText.setText((imagePosition + 1) + "/" + Images.imageUrls.length);
-		pageText.setText((imagePosition + 1) + "/" + CustomApplcation.myWallPhoto.size());
+		pageText.setText((imagePosition + 1) + "/" + photoWallFall.size());
 	}
 
 	/**
@@ -66,7 +70,7 @@ public class ImageDetailsActivity extends ActivityBase implements
 		@Override
 		public Object instantiateItem(ViewGroup container, int position) {
 //			String imagePath = getImagePath(Images.imageUrls[position]);
-			String imagePath = getImagePath(CustomApplcation.myWallPhoto.get(position));
+			String imagePath = getImagePath(photoWallFall.get(position));
 			Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
 			if (bitmap == null) {
 				bitmap = BitmapFactory.decodeResource(getResources(),
@@ -84,7 +88,7 @@ public class ImageDetailsActivity extends ActivityBase implements
 		@Override
 		public int getCount() {
 //			return Images.imageUrls.length;
-			return CustomApplcation.myWallPhoto.size();
+			return photoWallFall.size();
 		}
 
 		@Override
@@ -133,7 +137,7 @@ public class ImageDetailsActivity extends ActivityBase implements
 	@Override
 	public void onPageSelected(int currentPage) {
 		// 每当页数发生改变时重新设定一遍当前的页数和总页数
-		pageText.setText((currentPage + 1) + "/" + CustomApplcation.myWallPhoto.size());
+		pageText.setText((currentPage + 1) + "/" + photoWallFall.size());
 	}
 
 }

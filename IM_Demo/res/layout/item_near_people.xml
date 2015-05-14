@@ -10,7 +10,7 @@
         android:id="@+id/iv_avatar"
         style="@style/Smile.ImageView.Photo_Middle"
         android:layout_gravity="center_vertical"
-        android:src="@drawable/default_head" />
+        android:src="@drawable/default_avatar" />
 
     <RelativeLayout
         android:layout_width="0dp"

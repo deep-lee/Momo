@@ -138,8 +138,6 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			Intent intent = new Intent(LoginActivity.this,
 					RegisterActivity.class);
 			startActivity(intent);
-			//设置切换动画，从右边进入，左边退出
-			overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			
 			break;
 			
@@ -147,8 +145,6 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			Intent intent2 = new Intent(LoginActivity.this,
 					ForgetPasswordActivity.class);
 			startActivity(intent2);
-			//设置切换动画，从右边进入，左边退出
-			overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			break;
 			
 		case R.id.btn_login:
