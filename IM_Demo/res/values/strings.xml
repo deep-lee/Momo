@@ -201,5 +201,6 @@
     <string name="title_activity_forget_password">ForgetPasswordActivity</string>
     <string name="title_activity_add_friends_from_address_book">AddFriendsFromAddressBookActivity</string>
     <string name="title_activity_game_details">GameDetailsActivity</string>
+    <string name="slide_set_clear_cache">清除缓存</string>
 
 </resources>
