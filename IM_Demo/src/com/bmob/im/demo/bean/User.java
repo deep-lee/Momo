@@ -77,13 +77,22 @@ public class User extends BmobChatUser {
 	
 	private int recentPlayGame;
 	
-	
+	// �ղص�״̬
+	private BmobRelation favorite;
 	
 	public User() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 	
+	public BmobRelation getFavorite() {
+		return favorite;
+	}
+
+	public void setFavorite(BmobRelation favorite) {
+		this.favorite = favorite;
+	}
+
 	public int getRecentPlayGame() {
 		return recentPlayGame;
 	}

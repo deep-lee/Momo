@@ -340,9 +340,24 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
         <activity
-            android:name="com.bmob.im.demo.ui.GameDetailsActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:label="@string/title_activity_game_details" >
+            android:name=".ui.GameDetailsActivity"
+            android:label="@string/title_activity_game_details"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
+        <activity
+            android:name=".ui.LifeCircleActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" 
+            android:label="@string/title_activity_life_circle" >
+        </activity>
+        <activity
+            android:name=".ui.WriteStateActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" 
+            android:label="@string/title_activity_write_state" >
+        </activity>
+        <activity
+            android:name="com.bmob.im.demo.ui.CommentActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" 
+            android:label="@string/title_activity_comment" >
         </activity>
     </application>
 

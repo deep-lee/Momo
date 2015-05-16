@@ -81,4 +81,6 @@
     <color name="common_action_bar_bg_color">#22292c</color>
     
     <color name="register_bottom_bar_btn_p">#141414</color>
+    <color name="theme_color">#D95555</color>
+    <color name="second_color">#888888</color>
 </resources>

@@ -7,12 +7,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import android.app.Activity;
 import android.app.Application;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.graphics.Bitmap;
 import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -26,6 +28,7 @@ import cn.bmob.im.BmobUserManager;
 import cn.bmob.im.bean.BmobChatUser;
 import cn.bmob.im.db.BmobDB;
 import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobGeoPoint;
 import cn.bmob.v3.listener.FindListener;
 
@@ -34,14 +37,18 @@ import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.mapapi.SDKInitializer;
 import com.bmob.im.demo.bean.GameFile;
+import com.bmob.im.demo.bean.QiangYu;
+import com.bmob.im.demo.bean.User;
+import com.bmob.im.demo.util.ActivityManagerUtils;
 import com.bmob.im.demo.util.CollectionUtils;
 import com.bmob.im.demo.util.SharePreferenceUtil;
-import com.deep.db.GameDatabaseUtil;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.utils.StorageUtils;
 
@@ -57,8 +64,6 @@ public class CustomApplcation extends Application {
 	public static CustomApplcation mInstance;
 	public LocationClient mLocationClient;
 	public MyLocationListener mMyLocationListener;
-
-	GameDatabaseUtil databaseUtil;
 	
 	// 上一次定位到的经纬度
 	public static BmobGeoPoint lastPoint = null;
@@ -74,6 +79,8 @@ public class CustomApplcation extends Application {
 	public static int numOfPhoto = 0;
 	
 	public static Boolean sex = true;
+	
+	private QiangYu currentQiangYu = null;
 	
 	
 	
@@ -92,9 +99,6 @@ public class CustomApplcation extends Application {
 		mMediaPlayer = MediaPlayer.create(this, R.raw.notify);
 		mNotificationManager = (NotificationManager) getSystemService(android.content.Context.NOTIFICATION_SERVICE);
 		myWallPhoto = new ArrayList<String>();
-		
-		databaseUtil = GameDatabaseUtil.getInstance(getApplicationContext());
-		
 		
 		loveList.add("热恋");
 		loveList.add("单身");
@@ -631,5 +635,39 @@ public class CustomApplcation extends Application {
 		}
 		return state;
 	}
+	
+	public DisplayImageOptions getOptions(int drawableId){
+		return new DisplayImageOptions.Builder()
+		.showImageOnLoading(drawableId)
+		.showImageForEmptyUri(drawableId)
+		.showImageOnFail(drawableId)
+		.resetViewBeforeLoading(true)
+		.cacheInMemory(true)
+		.cacheOnDisc(true)
+		.imageScaleType(ImageScaleType.EXACTLY)
+		.bitmapConfig(Bitmap.Config.RGB_565)
+		.build();
+	}
+	
+	public User getCurrentUser() {
+		User user = BmobUser.getCurrentUser(this, User.class);
+		if(user != null){
+			return user;
+		}
+		return null;
+	}
+	
+	public Activity getTopActivity(){
+		return ActivityManagerUtils.getInstance().getTopActivity();
+	}
+
+	public QiangYu getCurrentQiangYu() {
+		return currentQiangYu;
+	}
+
+	public void setCurrentQiangYu(QiangYu currentQiangYu) {
+		this.currentQiangYu = currentQiangYu;
+	}
+	
 
 }

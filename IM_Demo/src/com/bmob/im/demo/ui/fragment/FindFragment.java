@@ -15,6 +15,7 @@ import com.bmob.im.demo.R;
 import com.bmob.im.demo.ui.AddPopWindow;
 import com.bmob.im.demo.ui.AttractionsRomaActivity2;
 import com.bmob.im.demo.ui.FragmentBase;
+import com.bmob.im.demo.ui.LifeCircleActivity;
 import com.bmob.im.demo.ui.ShakeForNearPeopleActivity;
 
 
@@ -120,7 +121,9 @@ public class FindFragment extends FragmentBase implements OnClickListener {
 		
 		// Éú»îÈ¦
 		case R.id.fragment_find_life_circle:
-			
+			Intent lifeCircleIntent = new Intent();
+			lifeCircleIntent.setClass(mContext, LifeCircleActivity.class);
+			mContext.startActivity(lifeCircleIntent);
 			break;
 			
 		case R.id.fragment_find_life_nears_friends:

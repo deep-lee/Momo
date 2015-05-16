@@ -202,5 +202,8 @@
     <string name="title_activity_add_friends_from_address_book">AddFriendsFromAddressBookActivity</string>
     <string name="title_activity_game_details">GameDetailsActivity</string>
     <string name="slide_set_clear_cache">清除缓存</string>
+    <string name="title_activity_life_circle">LifeCircleActivity</string>
+    <string name="title_activity_write_state">WriteStateActivity</string>
+    <string name="title_activity_comment">CommentActivity</string>
 
 </resources>

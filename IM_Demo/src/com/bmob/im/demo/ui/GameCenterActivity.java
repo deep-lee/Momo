@@ -73,6 +73,8 @@ public class GameCenterActivity extends BaseMainActivity {
 	public TextView footer_tv;
 	public ListView uninstalled_list_view;
 	
+	public View line_2;
+	
 	public List<GameInfo> hasInstalledGameData;
 	public List<GameInfo> unInstalledGameData;
 	
@@ -165,6 +167,8 @@ public class GameCenterActivity extends BaseMainActivity {
 		et_search = (EditText) findViewById(R.id.game_center_search_et);
 		title = (TextView) findViewById(R.id.tv_title);
 		
+		line_2 = findViewById(R.id.view_temp2);
+		
 		iv_search.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
@@ -173,7 +177,7 @@ public class GameCenterActivity extends BaseMainActivity {
 				iv_search.setVisibility(View.INVISIBLE);
 				title.setVisibility(View.INVISIBLE);
 				et_search.setVisibility(View.VISIBLE);
-				
+				line_2.setVisibility(View.INVISIBLE);
 				et_search.requestFocus();
 				
 				inputMethodManager.showSoftInput(et_search, InputMethodManager.SHOW_FORCED);
@@ -190,6 +194,7 @@ public class GameCenterActivity extends BaseMainActivity {
 				if (flag) {
 					iv_search.setVisibility(View.VISIBLE);
 					title.setVisibility(View.VISIBLE);
+					line_2.setVisibility(View.VISIBLE);
 					et_search.setVisibility(View.INVISIBLE);
 					et_search.setText("");
 					filterData("");
