@@ -1,6 +1,8 @@
 package com.bmob.im.demo.adapter;  
       
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;  
 
 import cn.bmob.v3.BmobQuery;
@@ -9,7 +11,7 @@ import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.UpdateListener;
 
 import com.bmob.im.demo.CustomApplcation;
-import com.bmob.im.demo.GameCard;
+import com.bmob.im.demo.GameInfo;
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.bean.GameFile;
 import com.bmob.im.demo.bean.User;
@@ -25,12 +27,16 @@ import android.annotation.SuppressLint;
 import android.content.Context;  
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.content.res.AssetManager;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.LayoutInflater;  
 import android.view.View;  
 import android.view.ViewGroup;  
@@ -48,41 +54,18 @@ public class GameCardAdapter extends BaseAdapter
 	
 	int recentPlay = 0;
 	
-    private List<GameCard> mCards;  
+    private List<GameInfo> mData;  
     private Context mContext; 
     
     private BmobQuery<GameFile> query;
-    
-    
-    
-//    @SuppressLint("HandlerLeak")
-//	public Handler updateHandler = new Handler(){
-//    	
-//    	@Override
-//		public void handleMessage(Message msg) {   
-//            switch (msg.what) {
-//            
-//            case 1:
-//
-//            	Bundle data = msg.getData();
-//            	float progress = data.getFloat("progress");
-//            	
-//            	mHolder.download_progress_tv.setText(progress + "%");
-//            	
-//            	break;
-//            }   
-//            super.handleMessage(msg);   
-//       }
-//    	
-//    };
     
           
     public GameCardAdapter(Context mContext)  
     {   
          this.mContext = mContext;  
-         this.mCards = CustomApplcation.gameCardList; 
+         this.mData = CustomApplcation.gameList; 
          
-         query = new BmobQuery<GameFile>("GameFile");
+         query = new BmobQuery<GameFile>();
          
          Intent intent  = new Intent(mContext,DownloadService.class);
          mContext.startService(intent);
@@ -96,21 +79,21 @@ public class GameCardAdapter extends BaseAdapter
 	  * @return void
 	  * @throws
 	  */
-	public void updateListView(List<GameCard> list) {
-		this.mCards = list;
+	public void updateListView(List<GameInfo> list) {
+		this.mData = list;
 		notifyDataSetChanged();
 	}
     
     @Override  
     public int getCount()   
     {  
-        return mCards.size();  
+        return mData.size();  
     }  
       
     @Override  
     public Object getItem(int Index)   
     {  
-        return mCards.get(Index);  
+        return mData.get(Index);  
     }  
       
     @Override  
@@ -138,55 +121,38 @@ public class GameCardAdapter extends BaseAdapter
         
         
         // 已下载，已安装
-        if (mCards.get(Index).getGameStatus() == 2) {
-        	if (!CustomApplcation.sex) {
-    			mHolder.play_game.setImageResource(R.drawable.base_game_card_list_play_female_selector);
-    		}else {
-    			mHolder.play_game.setImageResource(R.drawable.base_game_card_list_play_selector);
-			}
+        if (mData.get(Index).getGame_status() == 2) {
+    		mHolder.play_game.setImageResource(R.drawable.base_game_card_list_play_selector);
         	
         	 mHolder.play_game.setTag(2);
 		}
 
         // 未下载，未安装游戏
-        if (mCards.get(Index).getGameStatus() == 0) {
+        if (mData.get(Index).getGame_status() == 0) {
         	
-        	// 女的
-			if (!CustomApplcation.sex) {
-				mHolder.play_game.setImageResource(R.drawable.base_game_card_list_download_female_selector);
-			}
-			else {
-				mHolder.play_game.setImageResource(R.drawable.base_game_card_list_download_selector);
-			}
-        	
-			
+			mHolder.play_game.setImageResource(R.drawable.base_game_card_list_download_selector);
+        				
 			mHolder.play_game.setTag(0);
 			
 			// Toast.makeText(mContext, "未安装", Toast.LENGTH_LONG).show();
 		}
         
         // 已下载，未安装
-        else if(mCards.get(Index).getGameStatus() == 1){
+        else if(mData.get(Index).getGame_status() == 1){
 			
-        	// 女的
-        	if (!CustomApplcation.sex) {
-        		mHolder.play_game.setImageResource(R.drawable.base_game_card_list_install_female_selector);
-        	}
-        	else {
-        		mHolder.play_game.setImageResource(R.drawable.base_game_card_list_install_selector);
-        	}
+        	mHolder.play_game.setImageResource(R.drawable.base_game_card_list_install_selector);
         	        	
-        			
         	mHolder.play_game.setTag(1);
         	
 		}
         
+        Bitmap bitmap = getBitmapFromAsset(mContext, mData.get(Index).getGame_icon());
         
         //记住啊，这里是setImageResource()方法，不是setBackgroundResource(),否则图像会变形啊  
-        mHolder.game_icon.setImageResource(mCards.get(Index).getDrawable()); 
-        mHolder.gameName.setText(mCards.get(Index).getGameName());
-        mHolder.gameRuleDetails.setText(mCards.get(Index).getGameRuleDetails());
-        mHolder.gameWinMethod.setText(mCards.get(Index).getGameWinMethod());
+        mHolder.game_icon.setImageBitmap(bitmap);
+        mHolder.gameName.setText(mData.get(Index).getGame_name());
+        mHolder.gameRuleDetails.setText(mData.get(Index).getGame_rule());
+        mHolder.gameWinMethod.setText(mData.get(Index).getGame_win_method());
         
         convertView.setOnClickListener(new View.OnClickListener() {
 			
@@ -247,6 +213,16 @@ public class GameCardAdapter extends BaseAdapter
 //						startActivityForResult(intent, 1);  
 
 						break;
+						
+					case 4:
+						
+						intent = new  Intent("com.jk.fingerGame.MYACTION" , Uri  
+						        .parse("info://调用其他应用程序的Activity" ));  
+						//  传递数据   
+						intent.putExtra("value" , -1);  
+//						startActivityForResult(intent, 1);  
+
+						break;
 
 					default:
 						break;
@@ -270,7 +246,7 @@ public class GameCardAdapter extends BaseAdapter
 						}
 					});
 					
-					if (Index == 3) {
+					if (Index == 3 || Index == 4) {
 						mContext.startActivity(intent);
 					}else {
 						mContext.startActivity(intent);
@@ -282,11 +258,19 @@ public class GameCardAdapter extends BaseAdapter
 				// 未下载
 				case 0:
 					
+//					Toast.makeText(mContext, "点击了下载按钮！", Toast.LENGTH_LONG).show();
+					
+					Log.i("LLLLLLLLLLLLLLLL", "点击了下载按钮！");
+					
 					// 下载apk
 					// 判断当前是WI-FI还是移动网络
-					int netType =getNetWorkState();
+					int netType = CustomApplcation.getInstance().getCurrentNetType();
+					
+					Toast.makeText(mContext, "网络类型：" + netType, Toast.LENGTH_LONG).show();
+					
 					switch (netType) {
 					case 0:
+						
 						((GameCenterActivity)mContext).ShowToast(R.string.network_tips);
 						break;
 						
@@ -329,7 +313,7 @@ public class GameCardAdapter extends BaseAdapter
 					String apkDir = Environment.getExternalStorageDirectory().getPath() + "/Bmob_IM_test/GameAPK/";
 					
 					File tempFile = new File(apkDir + CustomApplcation.gameList.get(Index) + "_" 
-							+ CustomApplcation.notificationId.get(Index) + ".apk");
+							+ mData.get(Index).getNotificationId() + ".apk");
 					
 					Instanll(tempFile, mContext);
 							
@@ -357,7 +341,7 @@ public class GameCardAdapter extends BaseAdapter
     
     private void downLoadFile(final ViewHolder mHolder, final int index) {
     	
-    	String packageName = CustomApplcation.gamePackageName.get(index);
+    	String packageName = mData.get(index).getPackage_name();
     	
 		query.addWhereEqualTo("packageName", packageName);
 		
@@ -374,18 +358,11 @@ public class GameCardAdapter extends BaseAdapter
 			public void onSuccess(List<GameFile> arg0) {
 				// TODO Auto-generated method stub
 				
-				// Toast.makeText(mContext, "共有：" + arg0.size() + "条数据", Toast.LENGTH_LONG).show();
-				
-				// String fileUrl = arg0.get(0).getFileUrl(mContext);
-				
 				BmobFile file = arg0.get(0).getFile();
 				
-				// Toast.makeText(mContext, file.getFileUrl(mContext), Toast.LENGTH_LONG).show();
-				
 				// 开启线程，下载文件		
-				
-				DownloadService.downNewFile(file.getFileUrl(mContext), CustomApplcation.notificationId.get(index), CustomApplcation.gameList.get(index));
-				
+				Toast.makeText(mContext, "sousuodaole", Toast.LENGTH_LONG).show();
+				DownloadService.downNewFile(file.getFileUrl(mContext), mData.get(index).getNotificationId(), mData.get(index).getGame_name());
 				
 			}
 		});
@@ -401,31 +378,18 @@ public class GameCardAdapter extends BaseAdapter
  		context.startActivity(intent);
  	}
  	
- 	@SuppressWarnings("null")
-	public int getNetWorkState() {
-		ConnectivityManager connectivityManager = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-		
-		if (networkInfo != null || !networkInfo.isAvailable()) {
-			return NET_NOT_AVAIABLE;
-		}
-		else {
-			int netType = networkInfo.getType();
-			
-			switch (netType) {
-			case ConnectivityManager.TYPE_WIFI:
-				return NET_WIFI;
-				
-			case ConnectivityManager.TYPE_MOBILE:
-				return NET_MOBILE;
-				
-			default:
-				break;
-			}
-		}
-		
-		return NET_NOT_AVAIABLE;
-	}
+ 	private Bitmap getBitmapFromAsset(Context context, String strName) {
+        AssetManager assetManager = context.getAssets();
+        InputStream is=null;
+        Bitmap bitmap = null;
+        try {
+            is = assetManager.open(strName);
+            bitmap = BitmapFactory.decodeStream(is);
+        } catch (IOException e) {
+            return null;
+        }
+        return bitmap;
+    }
     
 
 }  

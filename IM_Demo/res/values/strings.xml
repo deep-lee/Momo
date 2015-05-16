@@ -175,14 +175,17 @@
     <string name="game_guess_number_name">猜数字</string>
     <string name="game_mixed_color_name">Mixed color</string>
     <string name="game_oh_my_egg_name">Oh my egg</string>
+    <string name="game_finger_game">猜拳大比拼</string>
     <string name="game_lianliankan_rule_details">与传统连看一致</string>
     <string name="game_guess_number_rule_details">游戏产生0至99之间的随机数，用户进行猜测</string>
     <string name="game_mixed_color_rule_details">根据上方的文字描述的颜色，选出与下方对应文字颜色一致即可</string>
     <string name="game_oh_my_egg_rule_details">通过重力感应控制小鸟躲避坏鸟碰到鸡蛋</string>
+    <string name="game_finger_game_rule_details">在30秒时间内，选择每次猜拳的结果，纪录分数</string>
     <string name="game_lianliankan_win_method">在规定的时间内将所有图标消灭</string>
     <string name="game_guess_number_win_method">在规定的次数内猜中数字</string>
     <string name="game_mixed_color_win_method">在规定的时间选出颜色，选中次数达到规定数目</string>
     <string name="game_oh_my_egg_win_method">控制小鸟碰到鸡蛋</string>
+    <string name="game_finger_game_win_method">30秒内，分数达到一定要求则获胜</string>
     <string name="title_activity_attractions_roma_activity2">AttractionsRomaActivity2</string>
     <string name="roma_tips_1">可以漫游到景点，认识那里的人和了解风景情况</string>
     <string name="roma_tips_2">按住按钮，开始漫游</string>
@@ -197,5 +200,6 @@
     <string name="title_activity_shake_for_near_people">ShakeForNearPeopleActivity</string>
     <string name="title_activity_forget_password">ForgetPasswordActivity</string>
     <string name="title_activity_add_friends_from_address_book">AddFriendsFromAddressBookActivity</string>
+    <string name="title_activity_game_details">GameDetailsActivity</string>
 
 </resources>

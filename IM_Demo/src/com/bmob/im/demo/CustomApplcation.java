@@ -3,6 +3,7 @@ package com.bmob.im.demo;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -17,18 +18,25 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.telephony.TelephonyManager;
+import android.util.Log;
+import android.widget.Toast;
 import cn.bmob.im.BmobChat;
 import cn.bmob.im.BmobUserManager;
 import cn.bmob.im.bean.BmobChatUser;
 import cn.bmob.im.db.BmobDB;
+import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.datatype.BmobGeoPoint;
+import cn.bmob.v3.listener.FindListener;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.mapapi.SDKInitializer;
+import com.bmob.im.demo.bean.GameFile;
 import com.bmob.im.demo.util.CollectionUtils;
 import com.bmob.im.demo.util.SharePreferenceUtil;
+import com.deep.db.GameDatabaseUtil;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
@@ -50,30 +58,24 @@ public class CustomApplcation extends Application {
 	public LocationClient mLocationClient;
 	public MyLocationListener mMyLocationListener;
 
+	GameDatabaseUtil databaseUtil;
+	
 	// 上一次定位到的经纬度
 	public static BmobGeoPoint lastPoint = null;
 	
 	public static ArrayList<String> myWallPhoto;
 	
-	public static List<String> gameList = new ArrayList<String>();
+	public static List<GameInfo> gameList = new ArrayList<GameInfo>();
+	
 	public static List<String> loveList = new ArrayList<String>();
 	public static List<String> gameDifficultyList = new ArrayList<String>();
 	public static List<String> careerList = new ArrayList<String>();
-	
-	public static List<Integer> notificationId = new ArrayList<Integer>();
 	
 	public static int numOfPhoto = 0;
 	
 	public static Boolean sex = true;
 	
-	public static List<GameCard> gameCardList = new ArrayList<GameCard>();
 	
-	public static ArrayList<Integer> gameName = new ArrayList<Integer>();
-	public static ArrayList<Integer> gameIcon = new ArrayList<Integer>();
-	public static ArrayList<Integer> gameRuleDetails = new ArrayList<Integer>();
-	public static ArrayList<Integer> gameWinMethod = new ArrayList<Integer>();
-	
-	public static ArrayList<String> gamePackageName = new ArrayList<String>();
 	
 	@Override
 	public void onCreate() {
@@ -83,7 +85,6 @@ public class CustomApplcation extends Application {
 		BmobChat.DEBUG_MODE = true;
 		mInstance = this;
 	 	
-		
 		init();
 	}
 
@@ -92,10 +93,8 @@ public class CustomApplcation extends Application {
 		mNotificationManager = (NotificationManager) getSystemService(android.content.Context.NOTIFICATION_SERVICE);
 		myWallPhoto = new ArrayList<String>();
 		
-		gameList.add("水果连连看");
-		gameList.add("猜数字");
-		gameList.add("Mixed color");
-		gameList.add("oh my egg");
+		databaseUtil = GameDatabaseUtil.getInstance(getApplicationContext());
+		
 		
 		loveList.add("热恋");
 		loveList.add("单身");
@@ -119,88 +118,16 @@ public class CustomApplcation extends Application {
 		careerList.add(getString(R.string.career_list_item_Xue));
 		careerList.add(getString(R.string.career_list_item_No));
 		
-		gameName.add(R.string.game_lianliankan_name);
-		gameName.add(R.string.game_guess_number_name);
-		gameName.add(R.string.game_mixed_color_name);
-		gameName.add(R.string.game_oh_my_egg_name);
 		
-		gamePackageName.add("com.deep.lianliankan");
-		gamePackageName.add("com.deeo.caishuzi");
-		gamePackageName.add("com.deep.mixedcoloe");
-		gamePackageName.add("com.nsu.ttgame.ohmyeggs");
+//		databaseUtil = GameDatabaseUtil.getInstance(getApplicationContext());
+//		databaseUtil.deleteTable();
 		
-		notificationId.add(0000);
-		notificationId.add(0001);
-		notificationId.add(0002);
-		notificationId.add(0003);
+		// 查询游戏数据库
+		// 更新本地游戏信息
+//		updateLocalGameDB();
 		
-		gameIcon.add(R.drawable.game_icon);
-		gameIcon.add(R.drawable.game_icon);
-		gameIcon.add(R.drawable.icon_mixed_color);
-		gameIcon.add(R.drawable.icon_oh_my_egg);
-		
-		gameRuleDetails.add(R.string.game_lianliankan_rule_details);
-		gameRuleDetails.add(R.string.game_guess_number_rule_details);
-		gameRuleDetails.add(R.string.game_mixed_color_rule_details);
-		gameRuleDetails.add(R.string.game_oh_my_egg_rule_details);
-		
-		gameWinMethod.add(R.string.game_lianliankan_win_method);
-		gameWinMethod.add(R.string.game_guess_number_win_method);
-		gameWinMethod.add(R.string.game_mixed_color_win_method);
-		gameWinMethod.add(R.string.game_oh_my_egg_win_method);
-		
-		/*
-		 * 0 未下载，未安装
-		 * 1 已下载，未安装
-		 * 2 已下载，已安装
-		 */
-		
-		for (int i = 0; i < gameName.size(); i++) {
-			
-			switch (i) {
-			case 0:
-				gameCardList.add(new GameCard(getResources().getString(gameName.get(i)), getResources().getString(gameRuleDetails.get(i)),
-						getResources().getString(gameWinMethod.get(i)), gameIcon.get(i), 2));
-				break;
-				
-			case 1:
-				gameCardList.add(new GameCard(getResources().getString(gameName.get(i)), getResources().getString(gameRuleDetails.get(i)),
-						getResources().getString(gameWinMethod.get(i)), gameIcon.get(i), 2));
-				break;
-				
-			case 2:
-				gameCardList.add(new GameCard(getResources().getString(gameName.get(i)), getResources().getString(gameRuleDetails.get(i)),
-						getResources().getString(gameWinMethod.get(i)), gameIcon.get(i), 2));
-				break;
-				
-			// Oh my egg
-			case 3:
-				
-				int gameStatus = 0;
-				Boolean hasInstalled = isAppInstalled(getApplicationContext(), "com.nsu.ttgame.ohmyeggs");
-				
-				if (hasInstalled) {
-					gameStatus = 2;
-				}else {
-					Boolean hasDownloaded = isApkDownloaded(gameList.get(i) + "_" + notificationId.get(i));
-					if (hasDownloaded) {
-						gameStatus = 1;
-					}
-					else {
-						gameStatus = 0;
-					}
-				}
-				
-				gameCardList.add(new GameCard(getResources().getString(gameName.get(i)), getResources().getString(gameRuleDetails.get(i)),
-						getResources().getString(gameWinMethod.get(i)), gameIcon.get(i), gameStatus));
-				break;
-
-			default:
-				break;
-			}
-			
-			
-		}
+		// 初始话gameList
+		initGameList();
 		
 		// 初始化ImageLoader
 		initImageLoader(getApplicationContext());
@@ -212,6 +139,217 @@ public class CustomApplcation extends Application {
 			contactList = CollectionUtils.list2map(BmobDB.create(getApplicationContext()).getContactList());
 		}
 		initBaidu();
+	}
+	
+	public void initGameList() {
+//		gameList.clear();
+//		
+//		databaseUtil.queryAllGame();
+		
+		GameInfo gameInfo1 = new GameInfo();
+		gameInfo1.setGame_icon("game_icon.png");
+		gameInfo1.setGame_name("水果连连看");
+		gameInfo1.setGame_rule(getString(R.string.game_lianliankan_rule_details));
+		gameInfo1.setGame_status(2);
+		gameInfo1.setGame_win_method(getString(R.string.game_lianliankan_win_method));
+		gameInfo1.setObject_id("lianliankan");
+		gameInfo1.setPackage_name("gamelianliankan");
+		gameInfo1.setGame_version("1.0");
+		gameInfo1.setNotificationId(0);
+		
+		GameInfo gameInfo2 = new GameInfo();
+		gameInfo2.setGame_icon("game_icon.png");
+		gameInfo2.setGame_name("猜数字");
+		gameInfo2.setGame_rule(getString(R.string.game_guess_number_rule_details));
+		gameInfo2.setGame_status(2);
+		gameInfo2.setGame_win_method(getString(R.string.game_guess_number_win_method));
+		gameInfo2.setObject_id("guessnumber");
+		gameInfo2.setPackage_name("gameguessnumber");
+		gameInfo2.setGame_version("1.0");
+		gameInfo2.setNotificationId(1);
+		
+		GameInfo gameInfo3 = new GameInfo();
+		gameInfo3.setGame_icon("icon_mixed_color.png");
+		gameInfo3.setGame_name("Mixed color");
+		gameInfo3.setGame_rule(getString(R.string.game_mixed_color_rule_details));
+		gameInfo3.setGame_status(2);
+		gameInfo3.setGame_win_method(getString(R.string.game_mixed_color_win_method));
+		gameInfo3.setObject_id("mixedcolor");
+		gameInfo3.setPackage_name("gamemixedcolor");
+		gameInfo3.setGame_version("1.0");
+		gameInfo3.setNotificationId(2);
+		
+		gameList.add(gameInfo1);
+		gameList.add(gameInfo2);
+		gameList.add(gameInfo3);
+		
+		BmobQuery<GameFile> query = new BmobQuery<GameFile>();
+		query.setLimit(100);
+		query.findObjects(getApplicationContext(), new FindListener<GameFile>() {
+			
+			@Override
+			public void onSuccess(List<GameFile> arg0) {
+				// TODO Auto-generated method stub
+				// 插入游戏
+				
+				Toast.makeText(getApplicationContext(), "" + arg0.size(), Toast.LENGTH_LONG).show();
+				
+				for (Iterator<GameFile> iterator = arg0.iterator(); iterator.hasNext();) {
+					
+					GameFile gameFile = (GameFile) iterator.next();
+					GameInfo gameInfo = new GameInfo();
+					gameInfo.setGame_icon(gameFile.getGameIcon());
+					gameInfo.setGame_name(gameFile.getGameName());
+					gameInfo.setGame_rule(gameFile.getGameRule());
+					gameInfo.setGame_status(getGameStatus(gameFile.getPackageName(), gameFile.getGameName(), gameFile.getNotificationId()));
+					gameInfo.setGame_win_method(gameFile.getGameWinMethod());
+					gameInfo.setObject_id(gameFile.getObjectId());
+					gameInfo.setPackage_name(gameFile.getPackageName());
+					gameInfo.setGame_version(gameFile.getGameVersion());
+					gameInfo.setNotificationId(gameFile.getNotificationId());
+					
+//					databaseUtil.insertGame(gameInfo);
+					gameList.add(gameInfo);
+					
+				}
+			}
+			
+			@Override
+			public void onError(int arg0, String arg1) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+	}
+	
+//	// 查询游戏数据库
+//	// 更新本地游戏信息
+//	public void updateLocalGameDB() {
+//		// 先判断本地数据库是否为空
+//		
+//		// 如果本地数据库是空的，就从网络读取数据，并写入本地数据库
+//		if (databaseUtil.isDBNull()) {
+//			
+//			Log.i("NNNNNNNNNNNNNNNNNNNNNNNNN", "本地数据库为空");
+//			
+//			// 先插入三个基本的游戏信息
+//			insertThreeBasicGame();
+//			
+//			// 插入扩展的游戏信息
+//			insertExtendGame();
+//			
+//		}else {  // 如果本地游戏数据库不为空
+//			// 判断是否需要更新，需要就更新，如果数据库没有某条信息就从插入
+//			Log.i("FFFFFFFFFFFFFFFFFFFFFFFF", "本地数据库不为空");
+//			insertExtendGame();
+//		}
+//	}
+//	
+//	public void insertThreeBasicGame() {
+//		
+//		GameInfo gameInfo1 = new GameInfo();
+//		gameInfo1.setGame_icon("game_icon.png");
+//		gameInfo1.setGame_name("水果连连看");
+//		gameInfo1.setGame_rule(getString(R.string.game_lianliankan_rule_details));
+//		gameInfo1.setGame_status(2);
+//		gameInfo1.setGame_win_method(getString(R.string.game_lianliankan_win_method));
+//		gameInfo1.setObject_id("lianliankan");
+//		gameInfo1.setPackage_name("gamelianliankan");
+//		gameInfo1.setGame_version("1.0");
+//		gameInfo1.setNotificationId(0);
+//		
+//		GameInfo gameInfo2 = new GameInfo();
+//		gameInfo2.setGame_icon("game_icon.png");
+//		gameInfo2.setGame_name("猜数字");
+//		gameInfo2.setGame_rule(getString(R.string.game_guess_number_rule_details));
+//		gameInfo2.setGame_status(2);
+//		gameInfo2.setGame_win_method(getString(R.string.game_guess_number_win_method));
+//		gameInfo2.setObject_id("guessnumber");
+//		gameInfo2.setPackage_name("gameguessnumber");
+//		gameInfo2.setGame_version("1.0");
+//		gameInfo2.setNotificationId(1);
+//		
+//		GameInfo gameInfo3 = new GameInfo();
+//		gameInfo3.setGame_icon("icon_mixed_color.png");
+//		gameInfo3.setGame_name("Mixed color");
+//		gameInfo3.setGame_rule(getString(R.string.game_mixed_color_rule_details));
+//		gameInfo3.setGame_status(2);
+//		gameInfo3.setGame_win_method(getString(R.string.game_mixed_color_win_method));
+//		gameInfo3.setObject_id("mixedcolor");
+//		gameInfo3.setPackage_name("gamemixedcolor");
+//		gameInfo3.setGame_version("1.0");
+//		gameInfo3.setNotificationId(2);
+//		
+//		databaseUtil.insertGame(gameInfo1);
+//		databaseUtil.insertGame(gameInfo2);
+//		databaseUtil.insertGame(gameInfo3);
+//		
+//	}
+//	
+//	public void insertExtendGame() {
+//		
+//		BmobQuery<GameFile> query = new BmobQuery<GameFile>();
+//		query.setLimit(100);
+//		query.findObjects(getApplicationContext(), new FindListener<GameFile>() {
+//			
+//			@Override
+//			public void onSuccess(List<GameFile> arg0) {
+//				// TODO Auto-generated method stub
+//				// 插入游戏
+//				
+//				Toast.makeText(getApplicationContext(), "" + arg0.size(), Toast.LENGTH_LONG).show();
+//				
+//				for (Iterator<GameFile> iterator = arg0.iterator(); iterator.hasNext();) {
+//					
+//					GameFile gameFile = (GameFile) iterator.next();
+//					GameInfo gameInfo = new GameInfo();
+//					gameInfo.setGame_icon(gameFile.getGameIcon());
+//					gameInfo.setGame_name(gameFile.getGameName());
+//					gameInfo.setGame_rule(gameFile.getGameRule());
+//					gameInfo.setGame_status(getGameStatus(gameFile.getPackageName(), gameFile.getGameName(), gameFile.getNotificationId()));
+//					gameInfo.setGame_win_method(gameFile.getGameWinMethod());
+//					gameInfo.setObject_id(gameFile.getObjectId());
+//					gameInfo.setPackage_name(gameFile.getPackageName());
+//					gameInfo.setGame_version(gameFile.getGameVersion());
+//					gameInfo.setNotificationId(gameFile.getNotificationId());
+//					
+//					databaseUtil.insertGame(gameInfo);
+//					
+//				}
+//			}
+//			
+//			@Override
+//			public void onError(int arg0, String arg1) {
+//				// TODO Auto-generated method stub
+//				
+//			}
+//		});
+//		
+//	}
+	
+	public int getGameStatus(String packageName, String gameName, int notificationId) {
+		
+		if (notificationId < 3) {
+			return 2;
+		}
+		
+		int gameStatus = 0;
+		Boolean hasInstalled = isAppInstalled(getApplicationContext(), packageName);
+		
+		if (hasInstalled) {
+			gameStatus = 2;
+		}else {
+			Boolean hasDownloaded = isApkDownloaded(gameName + "_" + notificationId);
+			if (hasDownloaded) {
+				gameStatus = 1;
+			}
+			else {
+				gameStatus = 0;
+			}
+		}
+		
+		return gameStatus;
 	}
 
 	/**
@@ -462,6 +600,36 @@ public class CustomApplcation extends Application {
 		
 	}
 	
+	public List<String> getSelectAbleGame() {
+		
+		List<String> list = new ArrayList<String>();
+		for (Iterator<GameInfo> iterator = gameList.iterator(); iterator.hasNext();) {
+			
+			GameInfo gameInfo = (GameInfo) iterator.next();
+			if (gameInfo.getGame_status() == 2 || gameInfo.getGame_status() == 3) {
+				list.add(gameInfo.getGame_name());
+			}
+		}
+		
+		return list;
+		
+	}
 	
+	public int getCurrentNetType() {
+		
+		int state = 0;
+		
+		ConnectivityManager cm = (ConnectivityManager) getApplicationContext()
+				.getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo info = cm.getActiveNetworkInfo();
+		if (info == null) {
+			state = 0;
+		} else if (info.getType() == ConnectivityManager.TYPE_WIFI) {
+			state = 2;
+		} else if (info.getType() == ConnectivityManager.TYPE_MOBILE) {
+			state = 1;
+		}
+		return state;
+	}
 
 }

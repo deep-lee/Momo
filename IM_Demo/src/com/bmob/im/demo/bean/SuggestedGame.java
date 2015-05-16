@@ -1,12 +1,9 @@
 package com.bmob.im.demo.bean;
 
-
-import java.io.File;
-
 import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.datatype.BmobFile;
 
-public class GameFile extends BmobObject {
+public class SuggestedGame extends BmobObject{
 
 	/**
 	 * 
@@ -15,8 +12,11 @@ public class GameFile extends BmobObject {
 	
 	private String gameName;
 	private String packageName;
+	private BmobFile imageShowFile;
 	
-	private BmobFile file;
+	public SuggestedGame() {
+		
+	}
 
 	public String getGameName() {
 		return gameName;
@@ -34,12 +34,14 @@ public class GameFile extends BmobObject {
 		this.packageName = packageName;
 	}
 
-	public BmobFile getFile() {
-		return file;
+	public BmobFile getImageShowFile() {
+		return imageShowFile;
 	}
 
-	public void setFile(BmobFile file) {
-		this.file = file;
+	public void setImageShowFile(BmobFile imageShowFile) {
+		this.imageShowFile = imageShowFile;
 	}
+	
+	
+
 }
-

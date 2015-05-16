@@ -19,7 +19,7 @@
             android:paddingLeft="20dp"
             android:textSize="20sp"
             android:text="@string/login_account"
-            android:textStyle="bold" />
+            android:textColor="#000000"/>
 
         <EditText
             android:id="@+id/et_username"
@@ -51,7 +51,7 @@
             android:paddingLeft="20dp"
             android:textSize="20sp"
             android:text="@string/login_confim_phonenum"
-            android:textStyle="bold" />
+            android:textColor="#000000"/>
 
         <EditText
             android:id="@+id/et_confim_code"

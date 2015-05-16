@@ -452,8 +452,10 @@ public class EditMyInfoActivity extends ActivityBase implements OnClickListener{
 	// 选择游戏
 	private void showGameChooseDialog() {
 		
+		
+		
 		final SingleChoiceDialog singleChoiceDialog = new SingleChoiceDialog(EditMyInfoActivity.this,
-				CustomApplcation.gameList, "确定", "取消", "解锁游戏", true);
+				CustomApplcation.getInstance().getSelectAbleGame(), "确定", "取消", "解锁游戏", true);
 		
 		singleChoiceDialog.SetOnSuccessListener(new DialogInterface.OnClickListener() {
 			

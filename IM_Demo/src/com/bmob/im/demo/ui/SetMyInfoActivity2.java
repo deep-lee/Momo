@@ -878,7 +878,7 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 			rl_recent_play.setVisibility(View.GONE);
 		}
 		else {
-			tv_recent_play.setText(CustomApplcation.gameList.get(user.getRecentPlayGame() - 1));
+			tv_recent_play.setText(CustomApplcation.gameList.get(user.getRecentPlayGame() - 1).getGame_name());
 		}
 		
 		// –À»§∞Æ∫√

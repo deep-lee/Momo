@@ -228,9 +228,6 @@ public class LeftFragment extends Fragment {
 		if (avatar != null && !avatar.equals("")) {
 			ImageLoader.getInstance().displayImage(avatar, slideAvator,
 					ImageLoadOptions.getOptions());
-			
-			
-		
 		} else {
 			
 			// 否则显示默认的头像

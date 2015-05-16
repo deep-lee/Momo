@@ -4,8 +4,10 @@ package com.bmob.im.demo.ui;
 import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -54,6 +56,7 @@ import cn.bmob.v3.listener.UpdateListener;
 import cn.bmob.v3.listener.UploadFileListener;
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
+
 import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.bean.User;
@@ -402,7 +405,7 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
 		avatorPop.setOutsideTouchable(true);
 		avatorPop.setBackgroundDrawable(new BitmapDrawable());
 		// 动画效果 从底部弹起
-		avatorPop.setAnimationStyle(R.style.Animations_GrowFromBottom);
+		avatorPop.setAnimationStyle(R.style.PopupAnimation);
 		avatorPop.showAtLocation(register_layout_all, Gravity.BOTTOM, 0, 0);
 	}
 	
@@ -913,6 +916,7 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
 				handlerGetVerfyCode.sendMessage(message);
 			}
 		});
+		
 		dialogTips.SetOnCancelListener(new DialogInterface.OnClickListener() {
 			
 			@Override
@@ -928,7 +932,7 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
 	private void showGameChooseDialog() {
 		
 		final SingleChoiceDialog singleChoiceDialog = new SingleChoiceDialog(RegisterActivity.this,
-				CustomApplcation.gameList, "确定", "取消", "解锁游戏", true);
+				CustomApplcation.getInstance().getSelectAbleGame(), "确定", "取消", "解锁游戏", true);
 		
 		singleChoiceDialog.SetOnSuccessListener(new DialogInterface.OnClickListener() {
 			
@@ -950,9 +954,13 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
 				case 3:
 					gameType = "oh my egg";
 					break;
+				case 4:
+					gameType = "猜拳大比拼";
+					break;
 				default:
 					break;
 				}
+				
 				hasChooseGame = true;
 				et_game.setText(gameType);
 				singleChoiceDialog.dismiss();

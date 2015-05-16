@@ -95,6 +95,8 @@ public class MainActivity extends BaseMainActivity implements EventListener, OnC
 		editor = sharedPreferences.edit();
 		nearsSex = sharedPreferences.getInt("nearsSex", 2);
 		
+		// ShowToast(CustomApplcation.gameList.size());
+		
 	}
 
 	private void initView(){
@@ -128,6 +130,8 @@ public class MainActivity extends BaseMainActivity implements EventListener, OnC
         
         User user = userManager.getCurrentUser(User.class);
         CustomApplcation.sex = user.getSex();
+        
+        ShowToast("" + CustomApplcation.gameList.size());
 
 	}
 	
@@ -247,19 +251,6 @@ public class MainActivity extends BaseMainActivity implements EventListener, OnC
 				
 			}
 		});
-        
-//      //缩放动画效果，超级棒的，大神的参数我没看懂
-//        CanvasTransformer mCanvasTransformer =  new CanvasTransformer(){  
-//            @Override  
-//            public void transformCanvas(Canvas canvas, float percentOpen) {  
-//                float scale = (float) (percentOpen*0.25 + 0.75);  
-//                canvas.scale(scale, scale, canvas.getWidth()/2, canvas.getHeight()/2);                
-//            }  
-//              
-//        };  
-//        menu.setBehindCanvasTransformer(mCanvasTransformer);
-        
-        
         android.app.Fragment leftMenuFragment = new LeftFragment(MainActivity.this);  
        // setBehindContentView(R.layout.left_menu_frame);  
         getFragmentManager().beginTransaction()  
@@ -314,46 +305,8 @@ public class MainActivity extends BaseMainActivity implements EventListener, OnC
 			if (!fragments[index].isAdded()) {
 				trx.add(R.id.fragment_container, fragments[index]);
 			}
-			trx.show(fragments[index]).commit();
-			
-			
-			
-//			switch (index) {
-//			case 0:
-//				if (currentTabIndex == 1) {
-//					mTabs[1].setImageDrawable(getResources().getDrawable(R.drawable.comon_main_bottom_contacts_n));
-//				}
-//				else if (currentTabIndex == 2) {
-//					mTabs[2].setImageDrawable(getResources().getDrawable(R.drawable.comon_main_bottom_nears_n));
-//				}
-//				mTabs[index].setImageDrawable(getResources().getDrawable(R.drawable.comon_main_bottom_recents_p));
-//				break;
-//				
-//			case 1:
-//				if (currentTabIndex == 0) {
-//					mTabs[0].setImageDrawable(getResources().getDrawable(R.drawable.comon_main_bottom_recents_n));
-//				}
-//				else if (currentTabIndex == 2) {
-//					mTabs[2].setImageDrawable(getResources().getDrawable(R.drawable.comon_main_bottom_nears_n));
-//				}
-//				mTabs[index].setImageDrawable(getResources().getDrawable(R.drawable.comon_main_bottom_contacts_p));
-//				break;
-//				
-//			case 2:
-//				if (currentTabIndex == 1) {
-//					mTabs[1].setImageDrawable(getResources().getDrawable(R.drawable.comon_main_bottom_contacts_n));
-//				}
-//				else if (currentTabIndex == 0) {
-//					mTabs[0].setImageDrawable(getResources().getDrawable(R.drawable.comon_main_bottom_recents_n));
-//				}
-//				mTabs[index].setImageDrawable(getResources().getDrawable(R.drawable.comon_main_bottom_nears_p));
-//				break;
-//
-//			default:
-//				break;
-//			}		
-			
-			
+			trx.show(fragments[index]).commit();		
+				
 		}
 		mTabs[currentTabIndex].setSelected(false);
 		//把当前tab设为选中状态

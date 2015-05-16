@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -19,6 +20,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import com.bmob.im.demo.CustomApplcation;
+import com.bmob.im.demo.GameInfo;
 import com.bmob.im.demo.ui.GameCenterActivity;
 
 import android.annotation.SuppressLint;
@@ -123,7 +125,7 @@ public class DownloadService extends Service{
 							rootFile.mkdir();
 						
 						tempFile = new File(apkDir + CustomApplcation.gameList.get(notificationId) + "_" 
-						+ CustomApplcation.notificationId.get(notificationId) + ".apk");
+						+ notificationId + ".apk");
 						
 						if (tempFile.exists())
 							tempFile.delete();
@@ -236,6 +238,14 @@ public class DownloadService extends Service{
                     
 //                    // 更新数据 已下载
 //                    CustomApplcation.gameCardList.get(notifyId).setGameStatus(1);
+                    for (Iterator<GameInfo> iterator = CustomApplcation.gameList.iterator(); iterator
+							.hasNext();) {
+                    	GameInfo gameInfo = (GameInfo) iterator.next();
+                    	if (gameInfo.getNotificationId() == notifyId) {
+							gameInfo.setGame_status(1);
+						}
+						
+					}
                     
 					// 下载完成后清除所有下载信息，执行安装提示
                     download.remove(msg.arg1);

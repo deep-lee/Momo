@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+        <android.support.v4.view.ViewPager
+            android:id="@+id/adv_pager"
+            android:layout_width="fill_parent"
+            android:layout_height="160dp" >
+            
+        </android.support.v4.view.ViewPager>
+        <LinearLayout
+            android:id="@+id/viewGroup"
+            android:layout_below="@id/adv_pager"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-25px"
+            android:gravity="right"
+            android:orientation="horizontal" >
+        </LinearLayout>
+    </RelativeLayout>
+    
+    <TextView 
+	    android:id="@+id/game_center_header_tv"
+        android:layout_width="fill_parent"
+        android:background="#f7f5ed"
+        android:padding="7dp"
+        android:textSize="13sp"
+        android:text="已下载的游戏 (0)"
+        android:textColor="#a19d94" 
+        android:layout_height="wrap_content"/>
+    
+
+</LinearLayout>
