@@ -78,12 +78,13 @@
         android:inputType="textMultiLine"
         android:gravity="left|top"
         android:minLines="8" 
-        android:background="@drawable/selector_edittext"
+        android:background="@drawable/round_edittext_shape"
         android:paddingLeft="4dip"
         android:paddingRight="4dip"
-        android:layout_margin="16dp"
-        android:hint="说说这段风景的故事吧"
-        >
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp"
+        android:hint="说说这段风景的故事吧">
 		
         <requestFocus />
     </EditText>

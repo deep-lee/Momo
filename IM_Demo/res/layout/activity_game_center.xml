@@ -4,12 +4,7 @@
     android:layout_height="fill_parent"
     android:orientation="vertical"
     android:background="@color/theme_bg_color"
-    tools:context="${relativePackage}.${activityClass}" >
-    
-<!--     <include
-        android:id="@+id/common_actionbar"
-        layout="@layout/include_action_bar" /> -->
-        
+    tools:context="${relativePackage}.${activityClass}" >  
     
     <RelativeLayout
         android:id="@+id/title"
@@ -89,10 +84,14 @@
         android:id="@+id/game_list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:divider="@null"
+        android:cacheColorHint="#00000000"
+        android:divider="#00000000"
         android:dividerHeight="1dp"
-        android:scrollbarStyle="outsideOverlay" >
-  
-    </ListView>  
+        android:fadingEdge="none"
+        android:fastScrollEnabled="false"
+        android:footerDividersEnabled="false"
+        android:headerDividersEnabled="false"
+        android:smoothScrollbar="true"
+        android:scrollbarStyle="outsideOverlay" />
 
 </LinearLayout>

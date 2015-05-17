@@ -109,7 +109,7 @@ public class SlideSetActivity extends ActivityBase implements View.OnClickListen
 				FileSizeUtil.DeleteFile(new File(cachePath));
 				
 				// Ë¢ÐÂ»º´æ´óÐ¡
-				tv_cache_capacity.setText(cachePath);
+				tv_cache_capacity.setText(FileSizeUtil.getAutoFileOrFilesSize(cachePath));
 			}
 		});
 		

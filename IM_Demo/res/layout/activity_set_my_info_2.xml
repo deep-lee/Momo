@@ -425,84 +425,51 @@
 					android:layout_below="@+id/common_info_other"
 					android:layout_marginTop="15dp"
 					android:orientation="vertical" >
-			        	
-			  
-			             <!-- <Button
-					        android:id="@+id/info_btn_add_friend"
-					        style="@style/Smile.Button.theme"
-					        android:layout_width="match_parent"
-					        android:layout_height="45dp"
-					        android:layout_marginLeft="@dimen/activity_vertical_margin"
-					        android:layout_marginRight="@dimen/activity_vertical_margin"
-					        android:layout_marginTop="@dimen/activity_vertical_margin"
-					        android:text="@string/add_friend"
-					        android:visibility="gone" /> -->
 					        
-					        <com.dd.library.CircularProgressButton
-							    android:id="@+id/info_btn_add_friend"
-							    android:layout_width="fill_parent"
-							    android:layout_marginLeft="@dimen/activity_vertical_margin"
-					        	android:layout_marginRight="@dimen/activity_vertical_margin"
-					        	android:layout_marginTop="@dimen/activity_vertical_margin"
-							    android:gravity="center"
-							    android:layout_height="45dp"
-							    android:textColor="@color/cpb_white"
-							    app:cpb_cornerRadius="48dp"
-							    android:visibility="gone"
-							    app:cpb_iconComplete="@drawable/ic_action_accept"
-							    app:cpb_iconError="@drawable/ic_action_cancel"
-							    app:cpb_textIdle="@string/add_friend" />
-					
-					    <!-- <Button
-					        android:id="@+id/info_btn_chat"
-					        style="@style/Smile.Button.theme"
-					        android:layout_width="match_parent"
-					        android:layout_height="45dp"
-					        android:layout_marginLeft="@dimen/activity_vertical_margin"
-					        android:layout_marginRight="@dimen/activity_vertical_margin"
-					        android:layout_marginTop="@dimen/activity_vertical_margin"
-					        android:text="@string/chat" /> -->
+					<com.dd.library.CircularProgressButton
+						android:id="@+id/info_btn_add_friend"
+						android:layout_width="fill_parent"
+						android:layout_marginLeft="@dimen/activity_vertical_margin"
+					    android:layout_marginRight="@dimen/activity_vertical_margin"
+					    android:layout_marginTop="@dimen/activity_vertical_margin"
+						android:gravity="center"
+						android:layout_height="45dp"
+						android:textColor="@color/cpb_white"
+						app:cpb_cornerRadius="48dp"
+						android:visibility="gone"
+						app:cpb_iconComplete="@drawable/ic_action_accept"
+						app:cpb_iconError="@drawable/ic_action_cancel"
+						app:cpb_textIdle="@string/add_friend" />
 					        
-					        <com.dd.library.CircularProgressButton
-							    android:id="@+id/info_btn_chat"
-							    android:layout_width="fill_parent"
-							    android:layout_marginLeft="@dimen/activity_vertical_margin"
-					        	android:layout_marginRight="@dimen/activity_vertical_margin"
-					        	android:layout_marginTop="@dimen/activity_vertical_margin"
-							    android:gravity="center"
-							    android:layout_height="45dp"
-							    android:textColor="@color/cpb_white"
-							    app:cpb_cornerRadius="48dp"
-							    android:visibility="gone"
-							    app:cpb_iconComplete="@drawable/ic_action_accept"
-							    app:cpb_iconError="@drawable/ic_action_cancel"
-							    app:cpb_textIdle="@string/chat" />
-					
-					    <!-- <Button
-					        android:id="@+id/info_btn_black"
-					        style="@style/Smile.Button.logout"
-					        android:layout_width="match_parent"
-					        android:layout_height="45dp"
-					        android:layout_marginLeft="@dimen/activity_vertical_margin"
-					        android:layout_marginRight="@dimen/activity_vertical_margin"
-					        android:layout_marginTop="@dimen/activity_vertical_margin"
-					        android:layout_marginBottom="@dimen/activity_vertical_margin"
-					        android:text="@string/blacklist" /> -->
+					<com.dd.library.CircularProgressButton
+						android:id="@+id/info_btn_chat"
+						android:layout_width="fill_parent"
+						android:layout_marginLeft="@dimen/activity_vertical_margin"
+					    android:layout_marginRight="@dimen/activity_vertical_margin"
+					    android:layout_marginTop="@dimen/activity_vertical_margin"
+						android:gravity="center"
+						android:layout_height="45dp"
+						android:textColor="@color/cpb_white"
+						app:cpb_cornerRadius="48dp"
+						android:visibility="gone"
+						app:cpb_iconComplete="@drawable/ic_action_accept"
+						app:cpb_iconError="@drawable/ic_action_cancel"
+						app:cpb_textIdle="@string/chat" />
 					        
-					        <com.dd.library.CircularProgressButton
-							    android:id="@+id/info_btn_black"
-							    android:layout_width="fill_parent"
-							    android:layout_marginLeft="@dimen/activity_vertical_margin"
-					        	android:layout_marginRight="@dimen/activity_vertical_margin"
-					        	android:layout_marginTop="@dimen/activity_vertical_margin"
-							    android:gravity="center"
-							    android:layout_height="45dp"
-							    android:textColor="@color/cpb_white"
-							    app:cpb_cornerRadius="48dp"
-							    android:visibility="gone"
-							    app:cpb_iconComplete="@drawable/ic_action_accept"
-							    app:cpb_iconError="@drawable/ic_action_cancel"
-							    app:cpb_textIdle="@string/blacklist" />
+					<com.dd.library.CircularProgressButton
+						android:id="@+id/info_btn_black"
+						android:layout_width="fill_parent"
+						android:layout_marginLeft="@dimen/activity_vertical_margin"
+					    android:layout_marginRight="@dimen/activity_vertical_margin"
+					    android:layout_marginTop="@dimen/activity_vertical_margin"
+						android:gravity="center"
+						android:layout_height="45dp"
+						android:textColor="@color/cpb_white"
+						app:cpb_cornerRadius="48dp"
+						android:visibility="gone"
+						app:cpb_iconComplete="@drawable/ic_action_accept"
+						app:cpb_iconError="@drawable/ic_action_cancel"
+						app:cpb_textIdle="@string/blacklist" />
 					
 					    <RelativeLayout
 					        android:id="@+id/info_layout_black_tips"

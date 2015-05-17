@@ -80,11 +80,28 @@ public class User extends BmobChatUser {
 	// 收藏的状态
 	private BmobRelation favorite;
 	
+	// 我的状态
+	private BmobRelation states;
+	
 	public User() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 	
+	
+	
+	public BmobRelation getStates() {
+		return states;
+	}
+
+
+
+	public void setStates(BmobRelation states) {
+		this.states = states;
+	}
+
+
+
 	public BmobRelation getFavorite() {
 		return favorite;
 	}

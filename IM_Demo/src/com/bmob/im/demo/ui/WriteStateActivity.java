@@ -8,7 +8,9 @@ import java.util.Date;
 
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
+import cn.bmob.v3.datatype.BmobRelation;
 import cn.bmob.v3.listener.SaveListener;
+import cn.bmob.v3.listener.UpdateListener;
 import cn.bmob.v3.listener.UploadFileListener;
 
 import com.bmob.im.demo.R;
@@ -172,8 +174,7 @@ public class WriteStateActivity extends BaseActivity implements OnClickListener{
 	private void publishWithoutFigure(final String commitContent,
 			final BmobFile figureFile) {
 		
-		User user = BmobUser.getCurrentUser(WriteStateActivity.this, User.class);
-
+		final User user = BmobUser.getCurrentUser(WriteStateActivity.this, User.class);
 		
 		// 每个列表也就是发布的每个状态的内容
 		final QiangYu qiangYu = new QiangYu();
@@ -195,7 +196,28 @@ public class WriteStateActivity extends BaseActivity implements OnClickListener{
 				ActivityUtil.show(WriteStateActivity.this, "发表成功！");
 				Log.i(TAG, "创建成功。");
 				setResult(RESULT_OK);
-				finish();
+				
+				// 把状态和用户绑定在一起
+				BmobRelation relation = new BmobRelation();
+				relation.add(qiangYu);
+				user.setStates(relation);
+				
+				user.update(WriteStateActivity.this, new UpdateListener() {
+					
+					@Override
+					public void onSuccess() {
+						// TODO Auto-generated method stub
+						Log.i(TAG, "更新用户状态成功。");
+						
+						finish();
+					}
+					
+					@Override
+					public void onFailure(int arg0, String arg1) {
+						// TODO Auto-generated method stub
+						ActivityUtil.show(WriteStateActivity.this, "发表失败！yg" + arg1);
+					}
+				});
 			}
 
 			@Override

@@ -3,15 +3,18 @@ package com.bmob.im.demo.ui.fragment;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.adapter.AIContentAdapter;
 import com.bmob.im.demo.bean.QiangYu;
+import com.bmob.im.demo.bean.User;
 import com.bmob.im.demo.config.Config;
 import com.bmob.im.demo.ui.CommentActivity;
 import com.bmob.im.demo.ui.FragmentBase;
+import com.bmob.im.demo.util.CollectionUtils;
 import com.bmob.im.demo.view.dialog.CustomProgressDialog;
 import com.deep.db.DatabaseUtil;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
@@ -35,11 +38,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
+import cn.bmob.im.task.BRequest;
 import cn.bmob.v3.BmobQuery;
-import cn.bmob.v3.BmobQuery.CachePolicy;
 import cn.bmob.v3.datatype.BmobDate;
+import cn.bmob.v3.datatype.BmobPointer;
 import cn.bmob.v3.listener.FindListener;
 
 /**
@@ -66,6 +69,13 @@ public class QiangContentFragment extends FragmentBase{
 	private AIContentAdapter mAdapter;
 	private ListView actualListView;  // 当前的可见的ListView
 	
+	private List<User> readableUser;
+	
+	private List<BmobQuery<QiangYu>> queries;
+	BmobQuery<QiangYu> mainQuery;
+	
+	Boolean first = true;
+	
 	private TextView networkTips;
 	private CustomProgressDialog progress;
 	private boolean pullFromUser;
@@ -73,6 +83,8 @@ public class QiangContentFragment extends FragmentBase{
 		REFRESH,LOAD_MORE
 	}
 	private RefreshType mRefreshType = RefreshType.LOAD_MORE;
+	
+	
 	
 	public static Fragment newInstance(int index){
 		Fragment fragment = new QiangContentFragment();
@@ -155,6 +167,9 @@ public class QiangContentFragment extends FragmentBase{
 			}
 		});
 		
+		readableUser = new ArrayList<User>();
+		queries = new ArrayList<BmobQuery<QiangYu>>();
+		mainQuery = new BmobQuery<QiangYu>();
 		
 		actualListView = mPullRefreshListView.getRefreshableView();
 		mListItems = new ArrayList<QiangYu>();
@@ -187,69 +202,105 @@ public class QiangContentFragment extends FragmentBase{
 	
 	// 状态获取数据
 	public void fetchData(){
-		
 		setState(LOADING);
-		BmobQuery<QiangYu> query = new BmobQuery<QiangYu>();
 		
-		// 排序
-		query.order("-createdAt");
-//		query.setCachePolicy(CachePolicy.NETWORK_ONLY);
-		
-		// 设置查询多少个，设置成15个，15也是每Page显示的状态条数
-		query.setLimit(Config.NUMBERS_PER_PAGE);
-		BmobDate date = new BmobDate(new Date(System.currentTimeMillis()));
-		
-		// 条件
-		query.addWhereLessThan("createdAt", date);
-		Log.i(TAG,"SIZE:" + Config.NUMBERS_PER_PAGE*pageNum);
-		
-		// 跳过数据，避免显示重复
-		query.setSkip(Config.NUMBERS_PER_PAGE*(pageNum++));
-		//LogUtils.i(TAG,"SIZE:"+Constant.NUMBERS_PER_PAGE*pageNum);
-		query.include("author");
-		query.findObjects(getActivity(), new FindListener<QiangYu>() {
-			
-			@Override
-			public void onSuccess(List<QiangYu> list) {
-				// TODO Auto-generated method stub
-				//LogUtils.i(TAG,"find success."+list.size());
-				if(list.size() != 0 && list.get(list.size() - 1) != null){
-					
-					if(mRefreshType==RefreshType.REFRESH){
-						// 如果是刷新动作的话，就先清空当前的mListItems，后面再加入
-						mListItems.clear();
-					}
-					if(list.size()<Config.NUMBERS_PER_PAGE){
-						Log.i(TAG,"已加载完所有数据~");
-					}
-					if(userManager.getCurrentUser() != null){
-						
-						// 设置当前用户的内容收藏状态，也就是循环看当前用户有没有收藏这条状态，然后改变收藏的图标
-						list = DatabaseUtil.getInstance(mContext).setFav(list);
-					}
-					mListItems.addAll(list);
-					mAdapter.notifyDataSetChanged();
-					
-					setState(LOADING_COMPLETED);
-					mPullRefreshListView.onRefreshComplete();
-				}else{
-					
-					ShowToast("暂无更多数据～");
-					pageNum--;
-					setState(LOADING_COMPLETED);
-					mPullRefreshListView.onRefreshComplete();
-				}
-			}
+		if (first) {
+			// 先获取好友
+			final User currentUser = CustomApplcation.getInstance().getCurrentUser();
+			if (currentUser != null) {
+				BmobQuery<User> query1 = new BmobQuery<User>();
+				query1.addWhereRelatedTo("contacts", new BmobPointer(currentUser));
+				query1.findObjects(mContext, new FindListener<User>() {
 
-			@Override
-			public void onError(int arg0, String arg1) {
-				// TODO Auto-generated method stub
-				//LogUtils.i(TAG,"find failed."+arg1);
-				pageNum--;
-				setState(LOADING_FAILED);
-				mPullRefreshListView.onRefreshComplete();
+					@Override
+					public void onError(int arg0, String arg1) {
+						// TODO Auto-generated method stub
+						Log.i(TAG, "获取好友列表失败");
+					}
+
+					@Override
+					public void onSuccess(List<User> arg0) {
+						// TODO Auto-generated method stub
+						// 获取到好友列表
+						Log.i(TAG, "获取好友列表成功");
+						readableUser.addAll(arg0);
+						readableUser.add(currentUser); // 把自己也加进去
+						
+						// 获取附近的人列表
+						initNearByList();
+						
+					}
+					
+				});
 			}
-		});
+			
+			first = false;
+		}
+		// 如果不是第一次加载的话，就直接加载数据
+		else {
+			queryQiangyu();
+		}
+		
+		
+		
+//		BmobQuery<QiangYu> query = new BmobQuery<QiangYu>();
+//		// 排序
+//		query.order("-createdAt");
+//		// 设置查询多少个，设置成15个，15也是每Page显示的状态条数
+//		query.setLimit(Config.NUMBERS_PER_PAGE);
+//		BmobDate date = new BmobDate(new Date(System.currentTimeMillis()));
+//		
+//		// 条件
+//		query.addWhereLessThan("createdAt", date);
+//		Log.i(TAG,"SIZE:" + Config.NUMBERS_PER_PAGE*pageNum);
+//		
+//		// 跳过数据，避免显示重复
+//		query.setSkip(Config.NUMBERS_PER_PAGE*(pageNum++));
+//		Log.i(TAG,"SIZE:"+Config.NUMBERS_PER_PAGE*pageNum);
+//		query.include("author");
+//		query.findObjects(getActivity(), new FindListener<QiangYu>() {
+//			
+//			@Override
+//			public void onSuccess(List<QiangYu> list) {
+//				// TODO Auto-generated method stub
+//				//LogUtils.i(TAG,"find success."+list.size());
+//				if(list.size() != 0 && list.get(list.size() - 1) != null){
+//					
+//					if(mRefreshType==RefreshType.REFRESH){
+//						// 如果是刷新动作的话，就先清空当前的mListItems，后面再加入
+//						mListItems.clear();
+//					}
+//					if(list.size()<Config.NUMBERS_PER_PAGE){
+//						Log.i(TAG,"已加载完所有数据~");
+//					}
+//					if(userManager.getCurrentUser() != null){
+//						
+//						// 设置当前用户的内容收藏状态，也就是循环看当前用户有没有收藏这条状态，然后改变收藏的图标
+//						list = DatabaseUtil.getInstance(mContext).setFav(list);
+//					}
+//					mListItems.addAll(list);
+//					mAdapter.notifyDataSetChanged();
+//					
+//					setState(LOADING_COMPLETED);
+//					mPullRefreshListView.onRefreshComplete();
+//				}else{
+//					
+//					ShowToast("暂无更多数据～");
+//					pageNum--;
+//					setState(LOADING_COMPLETED);
+//					mPullRefreshListView.onRefreshComplete();
+//				}
+//			}
+//
+//			@Override
+//			public void onError(int arg0, String arg1) {
+//				// TODO Auto-generated method stub
+//				//LogUtils.i(TAG,"find failed."+arg1);
+//				pageNum--;
+//				setState(LOADING_FAILED);
+//				mPullRefreshListView.onRefreshComplete();
+//			}
+//		});
 	}
 	
 	private static final int LOADING = 1;
@@ -289,5 +340,122 @@ public class QiangContentFragment extends FragmentBase{
 		default:
 			break;
 		}
+	}
+	
+	private void initNearByList(){
+		
+		// 当前用户的地理位置信息不为空
+		if(!mApplication.getLatitude().equals("")&&!mApplication.getLongtitude().equals("")){
+			double latitude = Double.parseDouble(mApplication.getLatitude());
+			double longtitude = Double.parseDouble(mApplication.getLongtitude());
+
+			BRequest.QUERY_LIMIT_COUNT = 100;
+
+			userManager.queryKiloMetersListByPage(false, 0, "location", longtitude, latitude, false, 1, "sex",
+					null, new FindListener<User>() {
+
+				// 查询成功
+				@Override
+				public void onSuccess(List<User> arg0) {
+					// TODO Auto-generated method stub
+					if (CollectionUtils.isNotNull(arg0)) {
+						
+						readableUser.addAll(arg0);
+						
+					}else{
+						ShowToast("暂无附近的人1!");
+					}
+					
+					// 在这里获取附近的人的状态
+					queryQiangyu();
+				}
+				
+				@Override
+				public void onError(int arg0, String arg1) {
+					// TODO Auto-generated method stub
+					ShowToast("查询附近的人出错!");
+				}
+
+			});
+		}else{
+			ShowToast("暂无附近的人2!");
+		}
+		
+	}
+	
+	
+	// 查询状态
+	public void queryQiangyu() {
+		if (first) {
+			for (Iterator<User> iterator = readableUser.iterator(); iterator.hasNext();) {
+				User user = (User) iterator.next();
+				
+				BmobQuery<QiangYu> query = new BmobQuery<QiangYu>();
+				query.addWhereEqualTo("author", user);
+				
+				queries.add(query);
+				
+			}
+			mainQuery.or(queries);
+		}
+		
+		// 查询状态数据
+		mainQuery.order("-createdAt");
+		// 设置查询多少个，设置成15个，15也是每Page显示的状态条数
+		mainQuery.setLimit(Config.NUMBERS_PER_PAGE);
+		BmobDate date = new BmobDate(new Date(System.currentTimeMillis()));
+		
+		// 条件
+		mainQuery.addWhereLessThan("createdAt", date);
+		Log.i(TAG,"SIZE:" + Config.NUMBERS_PER_PAGE*pageNum);
+		
+		// 跳过数据，避免显示重复
+		mainQuery.setSkip(Config.NUMBERS_PER_PAGE*(pageNum++));
+		Log.i(TAG,"SIZE:"+Config.NUMBERS_PER_PAGE*pageNum);
+		mainQuery.include("author");
+		
+		mainQuery.findObjects(getActivity(), new FindListener<QiangYu>() {
+		
+			@Override
+			public void onSuccess(List<QiangYu> list) {
+				// TODO Auto-generated method stub
+				//LogUtils.i(TAG,"find success."+list.size());
+				if(list.size() != 0 && list.get(list.size() - 1) != null){
+					
+					if(mRefreshType==RefreshType.REFRESH){
+						// 如果是刷新动作的话，就先清空当前的mListItems，后面再加入
+						mListItems.clear();
+					}
+					if(list.size()<Config.NUMBERS_PER_PAGE){
+						Log.i(TAG,"已加载完所有数据~");
+					}
+					if(userManager.getCurrentUser() != null){
+						
+						// 设置当前用户的内容收藏状态，也就是循环看当前用户有没有收藏这条状态，然后改变收藏的图标
+						list = DatabaseUtil.getInstance(mContext).setFav(list);
+					}
+					mListItems.addAll(list);
+					mAdapter.notifyDataSetChanged();
+					
+					setState(LOADING_COMPLETED);
+					mPullRefreshListView.onRefreshComplete();
+				}else{
+					
+					ShowToast("暂无更多数据～");
+					pageNum--;
+					setState(LOADING_COMPLETED);
+					mPullRefreshListView.onRefreshComplete();
+				}
+			}
+	
+			@Override
+			public void onError(int arg0, String arg1) {
+				// TODO Auto-generated method stub
+				//LogUtils.i(TAG,"find failed."+arg1);
+				pageNum--;
+				setState(LOADING_FAILED);
+				mPullRefreshListView.onRefreshComplete();
+			}
+		});
 	}
 }

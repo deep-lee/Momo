@@ -14,13 +14,11 @@ import cn.bmob.v3.listener.UpdateListener;
 import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.GameInfo;
 import com.bmob.im.demo.R;
-import com.bmob.im.demo.adapter.GameCardAdapter;
 import com.bmob.im.demo.adapter.GameCenterHasInstalledAdapter;
 import com.bmob.im.demo.adapter.GameCenterUninstalledAdapter;
 import com.bmob.im.demo.bean.SuggestedGame;
 import com.bmob.im.demo.bean.User;
 import com.bmob.im.demo.util.CharacterParser;
-import com.bmob.im.demo.util.ImageLoadOptions;
 import com.bmob.im.demo.view.dialog.CustomProgressDialog;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -152,7 +150,7 @@ public class GameCenterActivity extends BaseMainActivity {
 		
 		inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
 		
-//		initTopBarForLeft("ÓÎÏ·ÖÐÐÄ");
+
 		
 		mInflater = LayoutInflater.from(GameCenterActivity.this);
 		
