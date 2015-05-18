@@ -6,6 +6,7 @@ import java.util.List;
 
 import cn.bmob.im.task.BRequest;
 import cn.bmob.im.util.BmobLog;
+import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.datatype.BmobGeoPoint;
 import cn.bmob.v3.listener.FindListener;
 
@@ -40,6 +41,7 @@ import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.adapter.NearPeopleAdapter;
+import com.bmob.im.demo.bean.GameFile;
 import com.bmob.im.demo.bean.User;
 import com.bmob.im.demo.util.CollectionUtils;
 import com.bmob.im.demo.view.HeaderLayout.onLeftImageButtonClickListener;
@@ -164,6 +166,10 @@ public class NearPeopleMapActivity extends BaseMainActivity implements OnGetGeoC
 	            		
 	            	case 1:
 	            		initNearsOnMap();
+	            		break;
+	            		
+	            	case 3:
+	            		
 	            		break;
 	            
 	            }   
@@ -344,6 +350,40 @@ public class NearPeopleMapActivity extends BaseMainActivity implements OnGetGeoC
 								return;
 							} 
 						}
+						else if (gameType.equals("猜拳大比拼")) {
+							Boolean flag = CustomApplcation.isAppInstalled(NearPeopleMapActivity.this, "com.jk.fingerGame");
+							
+							if (flag) {
+								intent = new  Intent("com.jk.fingerGame.MYACTION" , Uri  
+								        .parse("info://调用其他应用程序的Activity" ));  
+								//  传递数据   
+								intent.putExtra("value", gamedifficultNum);  
+							}
+							else {
+								
+								DialogTips dialogTips = new DialogTips(NearPeopleMapActivity.this, 
+										"对方设置的游戏是：" + gameType + "，您还没有安装该游戏！请到游戏中心进行安装！", "确认");
+								dialogTips.SetOnSuccessListener(new OnClickListener() {
+									
+									@Override
+									public void onClick(DialogInterface dialog, int which) {
+										// TODO Auto-generated method stub
+										
+									}
+								});
+								dialogTips.SetOnCancelListener(new OnClickListener() {
+									
+									@Override
+									public void onClick(DialogInterface dialog, int which) {
+										// TODO Auto-generated method stub
+										
+									}
+								});
+								
+								dialogTips.show();
+
+							}
+						}
 
 						
 						Bundle data = new Bundle();
@@ -354,7 +394,7 @@ public class NearPeopleMapActivity extends BaseMainActivity implements OnGetGeoC
 						intent.putExtras(data);
 						
 						ShowToast(user.getGameType() + "");
-						if (gameType.equals("oh my egg")) {
+						if (gameType.equals("oh my egg") || gameType.equals("猜拳大比拼")) {
 							startActivityForResult(intent, 1); 
 						}else {
 							startActivity(intent);
@@ -924,10 +964,9 @@ public class NearPeopleMapActivity extends BaseMainActivity implements OnGetGeoC
 		else if (gameType.equals("mixed color")) {
 			intent.setClass(NearPeopleMapActivity.this, MixedColorMenuActivity.class);
 		}
-		else if (gameType.equals("oh my egg")) {
+		else if(gameType.equals("oh my egg")){
 			
-			// 先判断有没有安装这个游戏
-			Boolean flag = CustomApplcation.isAppInstalled(NearPeopleMapActivity.this,"com.nsu.ttgame.ohmyeggs");
+			Boolean flag = CustomApplcation.isAppInstalled(NearPeopleMapActivity.this, "com.nsu.ttgame.ohmyeggs");
 			
 			if (flag) {
 				intent = new  Intent("com.nsu.ttgame.ohmyeggs.MYACTION" , Uri  
@@ -958,10 +997,41 @@ public class NearPeopleMapActivity extends BaseMainActivity implements OnGetGeoC
 				
 				dialogTips.show();
 				
-				return;
 			}
+		}
+		else if (gameType.equals("猜拳大比拼")) {
+			Boolean flag = CustomApplcation.isAppInstalled(NearPeopleMapActivity.this, "com.jk.fingerGame");
 			
-			
+			if (flag) {
+				intent = new  Intent("com.jk.fingerGame.MYACTION" , Uri  
+				        .parse("info://调用其他应用程序的Activity" ));  
+				//  传递数据   
+				intent.putExtra("value", gamedifficultNum);  
+			}
+			else {
+				
+				DialogTips dialogTips = new DialogTips(NearPeopleMapActivity.this, 
+						"对方设置的游戏是：" + gameType + "，您还没有安装该游戏！请到游戏中心进行安装！", "确认");
+				dialogTips.SetOnSuccessListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+						
+					}
+				});
+				dialogTips.SetOnCancelListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+						
+					}
+				});
+				
+				dialogTips.show();
+
+			}
 		}
 
 		
@@ -973,12 +1043,13 @@ public class NearPeopleMapActivity extends BaseMainActivity implements OnGetGeoC
 		intent.putExtras(data);
 		
 		ShowToast(user.getGameType() + "");
-		if (gameType.equals("oh my egg")) {
+		if (gameType.equals("oh my egg") || gameType.equals("猜拳大比拼")) {
 			startActivityForResult(intent, 1); 
 		}else {
 			startActivity(intent);
 		}
 	}
+	
 	
 	@Override   
 	protected  void  onActivityResult(int  requestCode, int  resultCode, Intent data)  {  

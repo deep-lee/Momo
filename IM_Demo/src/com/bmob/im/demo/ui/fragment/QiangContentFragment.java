@@ -71,6 +71,8 @@ public class QiangContentFragment extends FragmentBase{
 	
 	private List<User> readableUser;
 	
+	private List<User> myFriends;
+	
 	private List<BmobQuery<QiangYu>> queries;
 	BmobQuery<QiangYu> mainQuery;
 	
@@ -168,12 +170,13 @@ public class QiangContentFragment extends FragmentBase{
 		});
 		
 		readableUser = new ArrayList<User>();
+		myFriends = new ArrayList<User>();
 		queries = new ArrayList<BmobQuery<QiangYu>>();
 		mainQuery = new BmobQuery<QiangYu>();
 		
 		actualListView = mPullRefreshListView.getRefreshableView();
 		mListItems = new ArrayList<QiangYu>();
-		mAdapter = new AIContentAdapter(mContext, mListItems);
+		mAdapter = new AIContentAdapter(mContext, mListItems, myFriends);
 		actualListView.setAdapter(mAdapter);
 		if(mListItems.size() == 0){
 			
@@ -225,6 +228,8 @@ public class QiangContentFragment extends FragmentBase{
 						Log.i(TAG, "获取好友列表成功");
 						readableUser.addAll(arg0);
 						readableUser.add(currentUser); // 把自己也加进去
+						myFriends.addAll(arg0);
+						myFriends.add(currentUser);
 						
 						// 获取附近的人列表
 						initNearByList();

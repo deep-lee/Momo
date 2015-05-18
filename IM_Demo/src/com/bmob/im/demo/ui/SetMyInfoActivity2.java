@@ -75,6 +75,8 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 	
 	private InfoScrollView sv;
 	
+	TextView tv_title;
+	
 	// ±³¾°£¬Í·Ïñ£¬ÕÕÆ¬1£¬ÕÕÆ¬2£¬ÕÕÆ¬3£¬ÐÔ±ð
 	ImageView iv_head_bg, iv_avatar, iv_photo1, iv_photo2, iv_photo3, iv_sex;
 	
@@ -179,6 +181,8 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 
 		}else {
 			String nick = getIntent().getStringExtra("nick");
+			tv_title = (TextView) findViewById(R.id.tv_title);
+			tv_title.setText(nick);
 		}
 		
 		initView();

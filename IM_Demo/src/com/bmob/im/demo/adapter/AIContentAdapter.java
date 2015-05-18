@@ -1,11 +1,15 @@
 package com.bmob.im.demo.adapter;
 
+import java.util.Iterator;
 import java.util.List;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -13,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobPointer;
@@ -27,8 +32,14 @@ import com.bmob.im.demo.bean.User;
 import com.bmob.im.demo.config.Config;
 import com.bmob.im.demo.ui.CommentActivity;
 import com.bmob.im.demo.ui.LifeCircleActivity;
+import com.bmob.im.demo.ui.NearPeopleMapActivity;
+import com.bmob.im.demo.ui.SetMyInfoActivity2;
 import com.bmob.im.demo.util.ActivityUtil;
+import com.bmob.im.demo.view.dialog.DialogTips;
 import com.deep.db.DatabaseUtil;
+import com.deep.momo.game.ui.GameFruitActivity;
+import com.deep.momo.game.ui.GuessNumberActivity;
+import com.deep.momo.game.ui.MixedColorMenuActivity;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
@@ -43,12 +54,16 @@ public class AIContentAdapter extends BaseContentAdapter<QiangYu> {
 	public static final int SAVE_FAVOURITE = 2;
 	
 	private Context mContext;
+	
+	private List<User> myFriends;
 
-	public AIContentAdapter(Context context, List<QiangYu> list) {
+	public AIContentAdapter(Context context, List<QiangYu> list, List<User> friends) {
 		super(context, list);
 		// TODO Auto-generated constructor stub
 		
 		this.mContext = context;
+		this.myFriends = friends;
+		
 	}
 
 	@Override
@@ -112,11 +127,33 @@ public class AIContentAdapter extends BaseContentAdapter<QiangYu> {
 		viewHolder.userLogo.setOnClickListener(new OnClickListener() {
 
 			
-			// 点击进入用户资料界面
+			// 如果使好友或者本人就进入资料界面，如果使陌生人就进入游戏界面
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				User currentUser = CustomApplcation.getInstance().getCurrentUser();
+				// 是本人
+				if (entity.getAuthor().getUsername().equals(currentUser.getUsername())) {
+					Intent intent = new Intent();
+					intent.setClass(mContext, SetMyInfoActivity2.class);
+					intent.putExtra("from", "me");
+					mContext.startActivity(intent);
+					
+					return;
+				}
+				// 如果是好友
+				if (isMyFriend(entity.getAuthor().getUsername())) {
+					Intent intent =new Intent(mContext,SetMyInfoActivity2.class);
+					intent.putExtra("from", "other");
+					intent.putExtra("username", entity.getAuthor().getUsername());
+					intent.putExtra("nick", entity.getAuthor().getNick());
+					mContext.startActivity(intent);
+					
+					return;
+				}
 				
+				// 如果是陌生人，则判断游戏类型，和有没有这个游戏
+				Toast.makeText(mContext, "该用户并非您的好友，请在附近的人界面进行添加！", Toast.LENGTH_LONG).show();
 			}
 		});
 		viewHolder.userName.setText(entity.getAuthor().getNick());
@@ -285,6 +322,22 @@ public class AIContentAdapter extends BaseContentAdapter<QiangYu> {
 		return convertView;
 	}
 
+	public Boolean isMyFriend(String username) {
+		Boolean flag = false;
+		
+		for (Iterator<User> iterator = myFriends.iterator(); iterator.hasNext();) {
+			User user = (User) iterator.next();
+			
+			if (user.getUsername().equals(username)) {
+				flag = true;
+				break;
+			}
+			
+		}
+		
+		return flag;
+	}
+	
 	public static class ViewHolder {
 		public ImageView userLogo;
 		public TextView userName;
@@ -384,4 +437,5 @@ public class AIContentAdapter extends BaseContentAdapter<QiangYu> {
 			});
 		}
 	}
+	
 }

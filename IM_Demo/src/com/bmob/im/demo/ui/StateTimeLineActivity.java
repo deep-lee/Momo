@@ -29,6 +29,8 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -74,18 +76,26 @@ public class StateTimeLineActivity extends BaseActivity {
 	}
 	
 	public LayoutInflater mInflater;
+	
+//	Handler loadeHandler = new Handler(){
+//		public void handleMessage(Message msg) { 
+//            switch (msg.what) {   
+//            
+//            	case 0:
+//            		initView();
+//            		break;
+//            
+//            }   
+//            super.handleMessage(msg);  
+//		}
+//	};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_state_time_line);
 		
-		initView();
-		
-	}
-	
-	public void initView() {
-		// true代表是自己，false代表是别人
+//		initView();
 		
 		pageNum = 0;
 		
@@ -112,11 +122,18 @@ public class StateTimeLineActivity extends BaseActivity {
 					// TODO Auto-generated method stub
 					if (arg0.size() > 0) {
 						user = arg0.get(0);
+						
+						initView();
 					}
 				}
 			});
 		}
-				
+		
+	}
+	
+	public void initView() {
+		// true代表是自己，false代表是别人
+		
 		mInflater = LayoutInflater.from(StateTimeLineActivity.this);
 				
 		headerView = (LinearLayout) mInflater.inflate(R.layout.state_time_line_header, null);
