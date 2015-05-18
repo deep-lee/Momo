@@ -41,10 +41,14 @@ public class AIContentAdapter extends BaseContentAdapter<QiangYu> {
 
 	public static final String TAG = "AIContentAdapter";
 	public static final int SAVE_FAVOURITE = 2;
+	
+	private Context mContext;
 
 	public AIContentAdapter(Context context, List<QiangYu> list) {
 		super(context, list);
 		// TODO Auto-generated constructor stub
+		
+		this.mContext = context;
 	}
 
 	@Override
@@ -253,7 +257,7 @@ public class AIContentAdapter extends BaseContentAdapter<QiangYu> {
 				// MyApplication.getInstance().setCurrentQiangYu(entity);
 				
 				Intent intent = new Intent();
-				intent.setClass(CustomApplcation.getInstance().getTopActivity(),
+				intent.setClass(mContext,
 						CommentActivity.class);
 				intent.putExtra("data", entity);
 				mContext.startActivity(intent);

@@ -696,6 +696,8 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
 		bu.setMusic("未填写");
 		bu.setUsuallyAppear("未填写");
 		bu.setRecentPlayGame(-1);
+		bu.setStatus(true);
+		bu.setQiangYuStatus(true);
 		
 		//将user和设备id进行绑定
 		bu.setDeviceType("android");

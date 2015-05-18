@@ -234,7 +234,7 @@ public class QiangContentFragment extends FragmentBase{
 				});
 			}
 			
-			first = false;
+			
 		}
 		// 如果不是第一次加载的话，就直接加载数据
 		else {
@@ -360,7 +360,20 @@ public class QiangContentFragment extends FragmentBase{
 					// TODO Auto-generated method stub
 					if (CollectionUtils.isNotNull(arg0)) {
 						
-						readableUser.addAll(arg0);
+//						readableUser.addAll(arg0);
+						
+						//  根据Qiangyu状态，如果为true就不是隐身状态，就可以显示
+						for (Iterator<User> iterator = arg0.iterator(); iterator
+								.hasNext();) {
+							User user = (User) iterator.next();
+							
+							if (user.getQiangYuStatus()) {
+								readableUser.add(user);
+								
+								Log.i("FFFFFFFFFFFFFFFFFF", user.getNick());
+							}
+							
+						}
 						
 					}else{
 						ShowToast("暂无附近的人1!");
@@ -390,6 +403,8 @@ public class QiangContentFragment extends FragmentBase{
 			for (Iterator<User> iterator = readableUser.iterator(); iterator.hasNext();) {
 				User user = (User) iterator.next();
 				
+				Log.i("SSSSSSSSSSSSSSSSSSS", user.getNick());
+				
 				BmobQuery<QiangYu> query = new BmobQuery<QiangYu>();
 				query.addWhereEqualTo("author", user);
 				
@@ -397,6 +412,8 @@ public class QiangContentFragment extends FragmentBase{
 				
 			}
 			mainQuery.or(queries);
+			
+			first = false;
 		}
 		
 		// 查询状态数据

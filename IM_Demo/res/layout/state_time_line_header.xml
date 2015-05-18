@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#ffffff"
+    android:orientation="vertical" >
+    
+    <RelativeLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+        
+        <ImageView
+            android:id="@+id/state_time_line_bg"
+            android:layout_width="match_parent"
+            android:background="@drawable/default_info_head_bg"
+            android:layout_height="@dimen/image_profile_headbg_height" />
+        
+        <View
+			android:id="@+id/v_profile_hearbottom"
+	        android:layout_width="wrap_content"
+	        android:layout_height="60dp"
+	        android:layout_below="@+id/state_time_line_bg"
+	        android:layout_centerHorizontal="true"/>
+	
+	        <RelativeLayout 
+				android:id="@+id/login_set_avator_layout"
+				android:layout_width="160dp"
+				android:orientation="vertical"
+				android:layout_alignBottom="@+id/v_profile_hearbottom"
+				android:layout_alignParentRight="true"
+				android:layout_height="130dp">
+				
+	            <TextView 
+	                android:id="@+id/state_time_line_nick"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_marginTop="40dp"
+	                android:textColor="#ffffff"
+	                android:text="Nick"/>
+					
+				<ImageView
+					android:id="@+id/state_time_line_avartar"
+					android:layout_width="80dp"
+					android:layout_height="80dp"
+					android:layout_centerInParent="true"
+					android:src="@drawable/default_avatar" />
+				
+				<TextView 
+				    android:id="@+id/state_time_line_personalized_signature"
+				    android:layout_width="wrap_content"
+				    android:singleLine="true"
+				    android:text="我的个性签名"
+				    android:textColor="#aaaaaa"
+				    android:layout_marginTop="5dp"
+				    android:layout_centerHorizontal="true"
+				    android:layout_below="@+id/state_time_line_avartar"
+				    android:layout_height="wrap_content"/>
+		</RelativeLayout>
+        
+    </RelativeLayout>
+
+</LinearLayout>

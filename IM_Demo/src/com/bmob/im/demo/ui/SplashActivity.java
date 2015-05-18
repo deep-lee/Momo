@@ -5,9 +5,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.ViewDebug.FlagToString;
 import cn.bmob.im.BmobChat;
 
 import com.baidu.location.LocationClient;
@@ -35,12 +38,24 @@ public class SplashActivity extends BaseActivity {
 	private LocationClient mLocationClient;
 
 	private BaiduReceiver mReceiver;// 注册广播接收器，用于监听网络以及验证key
+	
+	private SharedPreferences preferences;  
+	private Editor editor;  
+	
+	Boolean first_launch = true;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_splash);
+		
+		preferences = getSharedPreferences("launch", Context.MODE_PRIVATE); 
+		
+		editor = preferences.edit();  
+		
+		first_launch = preferences.getBoolean("first_launch", true);
+		
 		//可设置调试模式，当为true的时候，会在logcat的BmobChat下输出一些日志，包括推送服务是否正常运行，如果服务端返回错误，也会一并打印出来。方便开发者调试
 		BmobChat.DEBUG_MODE = true;
 		//BmobIM SDK初始化--只需要这一段代码即可完成初始化
@@ -98,7 +113,15 @@ public class SplashActivity extends BaseActivity {
 				finish();
 				break;
 			case GO_LOGIN:
-				startAnimActivity(LoginActivity.class);
+				if (first_launch) {
+					
+					editor.putBoolean("first_launch", false);
+					editor.commit();
+					startAnimActivity(FirstGuildActivity.class);
+					
+				}else {
+					startAnimActivity(LoginActivity.class);
+				}
 				finish();
 				break;
 			}

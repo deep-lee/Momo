@@ -205,5 +205,8 @@
     <string name="title_activity_life_circle">LifeCircleActivity</string>
     <string name="title_activity_write_state">WriteStateActivity</string>
     <string name="title_activity_comment">CommentActivity</string>
+    <string name="title_activity_state_time_line">StateTimeLineActivity</string>
+    <string name="title_activity_hiding_mode">HidingModeActivity</string>
+    <string name="title_activity_first_guild">FirstGuildActivity</string>
 
 </resources>

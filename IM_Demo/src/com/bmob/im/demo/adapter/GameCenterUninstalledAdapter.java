@@ -6,7 +6,6 @@ import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
 
-import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.GameInfo;
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.bean.GameFile;
@@ -116,7 +115,6 @@ public class GameCenterUninstalledAdapter extends BaseAdapter {
 				data.putSerializable("gameInfo", mData.get(position));
 				intent.putExtras(data);
 				mContext.startActivity(intent);
-				
 			}
 		});
 		

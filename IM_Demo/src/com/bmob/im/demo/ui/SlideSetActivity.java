@@ -75,7 +75,8 @@ public class SlideSetActivity extends ActivityBase implements View.OnClickListen
 			break;
 		// 隐身模式
 		case R.id.slide_layout_hiding_mode:
-						
+			intent.setClass(SlideSetActivity.this, HidingModeActivity.class);
+			startActivity(intent);
 			break;
 		// 消息提醒
 		case R.id.slide_layout_message_notify:

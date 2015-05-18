@@ -98,7 +98,7 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 	
 	// 
 	RelativeLayout rl_personalized_signature, rl_career, rl_company, rl_school, rl_hometown, rl_book, rl_movie, rl_music, 
-					rl_recent_play, rl_interests,rl_usually_appear;
+					rl_recent_play, rl_interests,rl_usually_appear, rl_states;
 	
 	CircularProgressView []progressView;
 	
@@ -175,23 +175,10 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 		from = getIntent().getStringExtra("from"); //me add other
 		username = getIntent().getStringExtra("username");
 		
-		// ShowToast(from);
-		
 		if (from.equals("me")) {
-//			initTopBarForBoth("我的资料", R.drawable.base_action_bar_send_selector, "编辑",
-//					new onRightImageButtonClickListener() {
-//
-//						@Override
-//						public void onClick(View v) {
-//							// TODO Auto-generated method stub
-//							Intent intent2 = new Intent();
-//							intent2.setClass(SetMyInfoActivity2.this, EditMyInfoActivity.class);
-//							startActivityForResult(intent2, ETIT_MY_INFO);
-//						}
-//			});
+
 		}else {
 			String nick = getIntent().getStringExtra("nick");
-//			initTopBarForLeft(nick);
 		}
 		
 		initView();
@@ -315,6 +302,10 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 		rl_interests = (RelativeLayout) findViewById(R.id.rl_profile13);
 		
 		rl_usually_appear = (RelativeLayout) findViewById(R.id.rl_profile14);
+		
+		rl_states = (RelativeLayout) findViewById(R.id.rl_states_layout);
+		
+		rl_states.setOnClickListener(this);
 		
 		// 如果是我的自己的资料
 		if (from.equals("me")) {
@@ -1278,9 +1269,19 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 			showBlackDialog(user.getUsername());
 			break;
 			
-//		case R.id.info_show_back_btn:
-//			this.finish();
-//			break;
+		// 状态时间线
+		case R.id.rl_states_layout:
+			Intent intent4 = new Intent();
+			intent4.setClass(SetMyInfoActivity2.this, StateTimeLineActivity.class);
+			intent4.putExtra("username", username);
+			if (from.equals("me")) {
+				intent4.putExtra("flag", true);
+			}else {
+				intent4.putExtra("flag", false);
+			}
+			startActivity(intent4);
+			break;
+			
 		
 		default:
 			break;

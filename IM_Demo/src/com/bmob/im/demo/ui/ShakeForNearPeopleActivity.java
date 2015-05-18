@@ -5,11 +5,15 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.bmob.v3.listener.UpdateListener;
+
 import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.adapter.GridImageAdapter;
+import com.bmob.im.demo.bean.User;
 import com.bmob.im.demo.util.ShakeListener;
 import com.bmob.im.demo.util.ShakeListener.OnShakeListener;
+import com.bmob.im.demo.view.dialog.DialogTips;
 import com.daimajia.androidanimations.library.YoYo;
 import com.daimajia.androidanimations.library.attention.ShakeAnimator;
 import com.yalantis.contextmenu.lib.ContextMenuDialogFragment;
@@ -19,6 +23,8 @@ import com.yalantis.contextmenu.lib.interfaces.OnMenuItemLongClickListener;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
@@ -32,9 +38,11 @@ import android.graphics.Paint;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.os.Vibrator;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
@@ -68,6 +76,8 @@ public class ShakeForNearPeopleActivity extends BaseActivity implements OnMenuIt
 	Paint paint;
 	Canvas canvas;
 	
+	Boolean status = false;
+	
 	ColorMatrix cMatrix;
 	
 	public ShakeListener mShakeListener = null;
@@ -76,6 +86,34 @@ public class ShakeForNearPeopleActivity extends BaseActivity implements OnMenuIt
 	StringBuilder fileName = new StringBuilder("ic_welcome_photo_");
 	
 	YoYo.AnimationComposer shakeAnimation;
+	
+	Handler updatehandler = new Handler(){
+		public void handleMessage(Message msg) { 
+            switch (msg.what) {   
+            
+            	case 0:
+            		User user = new User();
+            		user.setStatus(true);
+            		updateUserData(user, new UpdateListener() {
+						
+						@Override
+						public void onSuccess() {
+							// TODO Auto-generated method stub
+							Log.i("TTTTTTTTTTTTTTTT", "更新成功");
+						}
+						
+						@Override
+						public void onFailure(int arg0, String arg1) {
+							// TODO Auto-generated method stub
+							Log.i("TTTTTTTTTTTTTTTT", "更新失败");
+						}
+					});
+            		break;
+            }   
+            super.handleMessage(msg);  
+		}
+		
+	};
 	
 	private int step = 3;
 	Handler handler = new Handler();
@@ -185,6 +223,10 @@ public class ShakeForNearPeopleActivity extends BaseActivity implements OnMenuIt
 			break;
 		}
 		
+		status = CustomApplcation.getInstance().getCurrentUser().getStatus();
+		if (status == null) {
+			status = true;
+		}
 		
 		fragmentManager = getSupportFragmentManager();
         // initToolbar();
@@ -214,6 +256,13 @@ public class ShakeForNearPeopleActivity extends BaseActivity implements OnMenuIt
 				
 				// ShowToast("现在是附近的人，不是景点漫游");
 				
+				// 更新用户的信息
+				if (!status) {
+					Message message = new Message();
+					message.what = 0;
+					updatehandler.sendMessage(message);
+				}
+				
 				startVibrato();
 				new Handler().postDelayed(new Runnable(){
 					@Override
@@ -230,7 +279,9 @@ public class ShakeForNearPeopleActivity extends BaseActivity implements OnMenuIt
 				},1500);
 			}
 		});
+
     }  
+		
 	
 	private List<MenuObject> getMenuObjects() {
 
@@ -252,7 +303,7 @@ public class ShakeForNearPeopleActivity extends BaseActivity implements OnMenuIt
         addFr.setResource(CustomApplcation.sex? R.drawable.ic_nears_all_people : R.drawable.ic_nears_all_people_female);
         addFr.setBgResource(R.drawable.menu_object_bg);
   
-        MenuObject addFav = new MenuObject("清除地理位置信息");
+        MenuObject addFav = new MenuObject("清除地理位置信息并退出");
         addFav.setResource(CustomApplcation.sex? R.drawable.ic_nears_clean_position_info : R.drawable.ic_nears_clean_position_info_female);
         addFav.setBgResource(R.drawable.menu_object_bg);
 
@@ -399,8 +450,51 @@ public class ShakeForNearPeopleActivity extends BaseActivity implements OnMenuIt
 		
 		// 清除地理位置信息
 		if (position == 3) {
-			
+			User user = new User();
+			user.setStatus(false);
+			updateUserData(user, new UpdateListener() {
+				
+				@Override
+				public void onSuccess() {
+					// TODO Auto-generated method stub
+					// ShowToast("清楚地理位置信息成功，附近的人将搜索不到你");
+					showClearTips(true);
+				}
+				
+				@Override
+				public void onFailure(int arg0, String arg1) {
+					// TODO Auto-generated method stub
+					// ShowToast("清楚地理位置信息失败！请重试！");
+					showClearTips(false);
+				}
+			});
 		}
+	}
+	
+	public void showClearTips(final Boolean flag) {
+		
+		String message;
+		if (flag) {
+			message = "地理位置信息已清除";
+		}else {
+			message = "清除地理位置信息失败";
+		}
+		
+		DialogTips dialogTips = new DialogTips(ShakeForNearPeopleActivity.this, "提示", message, 
+				"确定", false, true);
+		
+		dialogTips.SetOnSuccessListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				if (flag) {
+					finish();
+				}
+			}
+		});
+		
+		dialogTips.show();
 	}
 
 	@Override
@@ -408,5 +502,11 @@ public class ShakeForNearPeopleActivity extends BaseActivity implements OnMenuIt
 		// TODO Auto-generated method stub
 		super.onResume();
 		openShakeListener();
+	}
+	
+	private void updateUserData(User user,UpdateListener listener){
+		User current = (User) userManager.getCurrentUser(User.class);
+		user.setObjectId(current.getObjectId());
+		user.update(this, listener);
 	}
 }

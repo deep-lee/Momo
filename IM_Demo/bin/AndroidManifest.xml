@@ -346,18 +346,32 @@
         </activity>
         <activity
             android:name=".ui.LifeCircleActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" 
-            android:label="@string/title_activity_life_circle" >
+            android:label="@string/title_activity_life_circle"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
         <activity
             android:name=".ui.WriteStateActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" 
-            android:label="@string/title_activity_write_state" >
+            android:label="@string/title_activity_write_state"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
         <activity
-            android:name="com.bmob.im.demo.ui.CommentActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" 
-            android:label="@string/title_activity_comment" >
+            android:name=".ui.CommentActivity"
+            android:label="@string/title_activity_comment"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
+        <activity
+            android:name=".ui.StateTimeLineActivity"
+            android:label="@string/title_activity_state_time_line"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
+        <activity
+            android:name=".ui.HidingModeActivity"
+            android:label="@string/title_activity_hiding_mode"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="com.bmob.im.demo.ui.FirstGuildActivity"
+            android:label="@string/title_activity_first_guild" >
         </activity>
     </application>
 

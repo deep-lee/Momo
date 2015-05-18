@@ -80,8 +80,14 @@ public class User extends BmobChatUser {
 	// 收藏的状态
 	private BmobRelation favorite;
 	
+	// 用户的状态，true表明可以在附近的人界面搜索到，false则不能
+	private Boolean status;
+	
 	// 我的状态
 	private BmobRelation states;
+	
+	// 生活圈的状态，是隐身还是可见
+	private Boolean qiangYuStatus;
 	
 	public User() {
 		super();
@@ -89,18 +95,34 @@ public class User extends BmobChatUser {
 	}
 	
 	
-	
+
+	public Boolean getQiangYuStatus() {
+		return qiangYuStatus;
+	}
+
+
+
+	public void setQiangYuStatus(Boolean qiangYuStatus) {
+		this.qiangYuStatus = qiangYuStatus;
+	}
+
+
+
+	public Boolean getStatus() {
+		return status;
+	}
+
+	public void setStatus(Boolean status) {
+		this.status = status;
+	}
+
 	public BmobRelation getStates() {
 		return states;
 	}
 
-
-
 	public void setStates(BmobRelation states) {
 		this.states = states;
 	}
-
-
 
 	public BmobRelation getFavorite() {
 		return favorite;

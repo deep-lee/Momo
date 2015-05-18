@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:orientation="vertical"
+    android:paddingRight="20dp" >
+
+    <RelativeLayout
+        android:id="@+id/layout_1"
+        android:layout_width="60dp"
+        android:layout_height="25dp"
+        android:layout_marginLeft="43dp"
+        
+        android:gravity="center" >
+
+        <TextView
+            android:id="@+id/state_item_year"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="测试数据"
+            android:textColor="#000000"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/view_0"
+        android:layout_width="1dp"
+        android:layout_height="25dp"
+        android:layout_below="@+id/layout_1"
+        android:layout_marginLeft="71dp"
+        android:background="#A6A6A6" />
+
+    <RelativeLayout
+        android:id="@+id/layout_2"
+        android:layout_width="60dp"
+        android:layout_height="25dp"
+        android:layout_below="@+id/view_0"
+        android:layout_marginLeft="43dp"
+        android:gravity="center" >
+
+        <TextView
+            android:id="@+id/state_item_month"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="测试数据"
+            android:textColor="#000000"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/view_1"
+        android:layout_width="1dp"
+        android:layout_height="25dp"
+        android:layout_below="@+id/layout_2"
+        android:layout_marginLeft="71dp"
+        android:background="#A6A6A6" />
+
+    <TextView
+        android:id="@+id/state_item__time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/view_1"
+        android:layout_marginLeft="15dp"
+        android:text="测试数据"
+        android:textSize="12dp" />
+
+    <ImageView
+        android:id="@+id/state_item_image"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_below="@+id/view_1"
+        android:layout_marginLeft="65dp"
+        android:src="@drawable/timeline_green" />
+
+    <View
+        android:id="@+id/view_2"
+        android:layout_width="1dp"
+        android:layout_height="100dp"
+        android:layout_below="@+id/state_item_image"
+        android:layout_marginLeft="71dp"
+        android:background="#A6A6A6" />
+
+    <RelativeLayout
+        android:id="@+id/relative"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/state_item_image"
+        android:layout_marginTop="-20dp"
+        android:layout_toRightOf="@+id/state_item_image"
+        android:background="@drawable/timeline_content"
+        android:padding="10dp" >
+
+        <ImageView
+            android:id="@+id/image_1"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:src="@drawable/bg_green_circle_smic" />
+
+        <TextView
+            android:id="@+id/state_item_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/image_1"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:maxEms="7"
+            android:layout_centerVertical="true"
+            android:paddingLeft="5dp"
+            android:text="测试数据"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+</RelativeLayout>

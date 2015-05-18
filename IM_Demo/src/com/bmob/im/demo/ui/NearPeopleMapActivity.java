@@ -1,6 +1,7 @@
 package com.bmob.im.demo.ui;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import cn.bmob.im.task.BRequest;
@@ -68,6 +69,8 @@ import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.util.DisplayMetrics;
@@ -86,7 +89,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class NearPeopleMapActivity extends ActivityBase implements OnGetGeoCoderResultListener, onLeftImageButtonClickListener,
+public class NearPeopleMapActivity extends BaseMainActivity implements OnGetGeoCoderResultListener, onLeftImageButtonClickListener,
 		OnMenuItemClickListener, OnMenuItemLongClickListener, IXListViewListener,OnItemClickListener {
 	
 		private FragmentManager fragmentManager;
@@ -148,6 +151,25 @@ public class NearPeopleMapActivity extends ActivityBase implements OnGetGeoCoder
 		
 		SharedPreferences sharedPreferences;
 		SharedPreferences.Editor editor;
+		
+		Handler loadeHandler = new Handler(){
+			public void handleMessage(Message msg) {   
+	            switch (msg.what) {   
+	            
+	            	case 0:
+	            		
+	    				progress.dismiss();
+	    				progress = null;
+	            		break;
+	            		
+	            	case 1:
+	            		initNearsOnMap();
+	            		break;
+	            
+	            }   
+	            super.handleMessage(msg);  
+			}
+		};
 	
 	
 	@SuppressLint("InflateParams")
@@ -415,8 +437,6 @@ public class NearPeopleMapActivity extends ActivityBase implements OnGetGeoCoder
 		// 通过循环将附近的人的昵称显示在地图上
 		for (int i = 0; i < nears.size(); i++) {
 			
-			// ShowToast(nearUser.getNick());
-			
 			User nearUser = nears.get(i);
 			
 			markerNumber.setText(String.valueOf(i + 1));
@@ -457,107 +477,91 @@ public class NearPeopleMapActivity extends ActivityBase implements OnGetGeoCoder
 			progress.show();
 		}
 		
-		// 当前用户的地理位置信息不为空
-		if(!mApplication.getLatitude().equals("")&&!mApplication.getLongtitude().equals("")){
-			double latitude = Double.parseDouble(mApplication.getLatitude());
-			double longtitude = Double.parseDouble(mApplication.getLongtitude());
-			
-			if (randomGeoPoint != null) {
-				latitude = randomGeoPoint.getLatitude();
-				longtitude = randomGeoPoint.getLongitude();
-				QUERY_KILOMETERS = 10;
-			}
-			BRequest.QUERY_LIMIT_COUNT = 100;
-			//封装的查询方法，当进入此页面时 isUpdate为false，当下拉刷新的时候设置为true就行。
-			//此方法默认每页查询10条数据,若想查询多于10条，可在查询之前设置BRequest.QUERY_LIMIT_COUNT，如：BRequest.QUERY_LIMIT_COUNT=20
-			// 此方法是新增的查询指定1公里内的性别为女性的用户列表，默认包含好友列表
-			//如果你不想查询性别为女的用户，可以将equalProperty设为null或者equalObj设为null即可
-			
-//		    分页加载指定公里范围内用户：排除自己，是否排除好友由开发者决定，可以添加额外查询条件
-//
-//		    参数：
-//		        isPull：是否是属于刷新动作：如果是上拉或者下拉动作则设在为true,其他设在为false - 
-//		        page：当前查询页码 - 
-//		        property：查询条件，自己定义的位置属性 - 
-//		        longtitude：经度 - 
-//		        latitude：纬度 - 
-//		        isShowFriends：是否显示附近的好友 - 
-//		        kilometers - ：公里数
-//		        equalProperty：自己定义的其他属性：使用方法AddWhereEqualTo对应的属性名称 - 
-//		        equalObj：查询equalProperty属性对应的属性值 - 
-//		        findCallback - ：回调 
-			// ShowToast(equalProperty + ": " + sexValue);
-			userManager.queryKiloMetersListByPage(isUpdate,0,"location", longtitude, latitude, false, QUERY_KILOMETERS, equalProperty,
-					sexValue, new FindListener<User>() {
-			
-				
-//			    分页加载全部的用户列表：排除自己，是否排除好友由开发者决定，可以添加额外查询条件
-//
-//			    参数：
-//			        isPull：是否是属于刷新动作：如果是上拉或者下拉动作则设在为true,其他设在为false - 
-//			        page：当前查询页码 - 
-//			        locationProperty：自己定义的位置属性 - 
-//			        longtitude：经度 - 
-//			        latitude：纬度 - 
-//			        isShowFriends：是否显示附近的好友 - 
-//			        equalProperty：自己定义的其他属性：使用方法AddWhereEqualTo对应的属性名称 - 
-//			        equalObj：查询equalProperty属性对应的属性值 - 
-//			        findCallback - ：回调 
-				
-			//此方法默认查询所有带地理位置信息的且性别为女的用户列表，如果你不想包含好友列表的话，将查询条件中的isShowFriends设置为false就行
-//			userManager.queryNearByListByPage(isUpdate,0,"location", longtitude, latitude, true,"sex",false,new FindListener<User>() {
-
-				// 查询成功
-				@Override
-				public void onSuccess(List<User> arg0) {
-					// TODO Auto-generated method stub
-					if (CollectionUtils.isNotNull(arg0)) {
-						// 如果是刷新的话
-						if(isUpdate){
-							nears.clear();
-						}
-						
-						
-						
-						nears.addAll(arg0);
-						
-						initNearsOnMap();
-						
-						if(arg0.size()<BRequest.QUERY_LIMIT_COUNT){
-							// mListView.setPullLoadEnable(true);
-							// ShowToast("附近的人搜索完成!");
-						}else{
-							// mListView.setPullLoadEnable(true);
-						}
-					}else{
-						ShowToast("暂无附近的人!");
-					}
+		new Thread(){
+			@Override
+			public void run(){
+				// 当前用户的地理位置信息不为空
+				if(!mApplication.getLatitude().equals("")&&!mApplication.getLongtitude().equals("")){
+					double latitude = Double.parseDouble(mApplication.getLatitude());
+					double longtitude = Double.parseDouble(mApplication.getLongtitude());
 					
-					if(!isUpdate){
-						progress.dismiss();
-					}else{
-						// refreshPull();
+					if (randomGeoPoint != null) {
+						latitude = randomGeoPoint.getLatitude();
+						longtitude = randomGeoPoint.getLongitude();
+						QUERY_KILOMETERS = 10;
 					}
-				}
-				
-				@Override
-				public void onError(int arg0, String arg1) {
-					// TODO Auto-generated method stub
-					ShowToast("查询附近的人出错!");
-					// mListView.setPullLoadEnable(false);
-					if(!isUpdate){
-						progress.dismiss();
-					}else{
-						// refreshPull();
-					}
-				}
+					BRequest.QUERY_LIMIT_COUNT = 100;
+					
+					userManager.queryKiloMetersListByPage(isUpdate,0,"location", longtitude, latitude, false, QUERY_KILOMETERS, equalProperty,
+							sexValue, new FindListener<User>() {
 
-			});
-		}else{
-			ShowToast("暂无附近的人!");
-			progress.dismiss();
-			// refreshPull();
-		}
+						// 查询成功
+						@Override
+						public void onSuccess(List<User> arg0) {
+							// TODO Auto-generated method stub
+							if (CollectionUtils.isNotNull(arg0)) {
+								// 如果是刷新的话
+								if(isUpdate){
+									nears.clear();
+								}
+								
+								// 根据用户有没有清理地理位置信息，把没有清理地理位置信息的加入集合
+								for (Iterator<User> iterator = arg0.iterator(); iterator
+										.hasNext();) {
+									User user = (User) iterator.next();
+									
+									if (user.getStatus()) {
+										nears.add(user);
+									}
+									
+								}
+								
+								Message message = new Message();
+								message.what = 1;
+								loadeHandler.sendMessage(message);
+								
+								if(arg0.size() < BRequest.QUERY_LIMIT_COUNT){
+									// mListView.setPullLoadEnable(true);
+									// ShowToast("附近的人搜索完成!");
+								}else{
+									// mListView.setPullLoadEnable(true);
+								}
+							}else{
+								ShowToast("暂无附近的人!");
+							}
+							
+							if(!isUpdate){
+								Message message = new Message();
+								message.what = 0;
+								loadeHandler.sendMessage(message);
+							}else{
+								// refreshPull();
+							}
+						}
+						
+						@Override
+						public void onError(int arg0, String arg1) {
+							// TODO Auto-generated method stub
+							ShowToast("查询附近的人出错!");
+							// mListView.setPullLoadEnable(false);
+							if(!isUpdate){
+								Message message = new Message();
+								message.what = 0;
+								loadeHandler.sendMessage(message);
+							}else{
+								// refreshPull();
+							}
+						}
+
+					});
+				}else{
+					ShowToast("暂无附近的人!");
+					Message message = new Message();
+					message.what = 0;
+					loadeHandler.sendMessage(message);
+				}
+			}
+		}.start();
 		
 	}
 
@@ -1039,5 +1043,10 @@ public class NearPeopleMapActivity extends ActivityBase implements OnGetGeoCoder
                  // 没有检测到结果  
              }  
          }  
-     };  
+     };
+     
+     public void back(View view) {
+    	 finish();
+    	 overridePendingTransition(0, R.anim.base_slide_right_out);
+     }
 }

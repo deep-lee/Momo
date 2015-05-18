@@ -291,6 +291,9 @@ public class GameCenterActivity extends BaseMainActivity {
 		 uninstalledAdapter = new GameCenterUninstalledAdapter(GameCenterActivity.this, unInstalledGameData);
 		 uninstalled_list_view.setAdapter(uninstalledAdapter);
 		 
+		// 如果不动态设置作为Footer的ListView的高度的话，ListView只会显示一项
+		setListViewHeightBasedOnChildren(uninstalled_list_view);
+		 
 		 mListView.addHeaderView(headerView);
 		 mListView.addFooterView(footerView);
 		 
