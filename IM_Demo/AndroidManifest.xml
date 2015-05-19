@@ -370,8 +370,17 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
         <activity
-            android:name="com.bmob.im.demo.ui.FirstGuildActivity"
+            android:name=".ui.FirstGuildActivity"
             android:label="@string/title_activity_first_guild" >
+        </activity>
+        <activity
+            android:name=".ui.GameCommunityActivity"
+            android:label="@string/title_activity_game_community" >
+        </activity>
+        <activity
+            android:name="com.bmob.im.demo.ui.AboutActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" 
+            android:label="@string/title_activity_about" >
         </activity>
     </application>
 

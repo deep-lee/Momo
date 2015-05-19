@@ -8,7 +8,7 @@
         android:id="@+id/register_set_avator_layout"
         android:layout_width="140dp"
         android:orientation="vertical"
-        android:background="@drawable/register_set_avator_layout_bg"
+        
         android:layout_gravity="center"
         android:layout_marginTop="40dip"
         android:layout_height="140dp">
@@ -18,7 +18,7 @@
             android:layout_width="135dp"
             android:layout_height="135dp"
             android:layout_centerInParent="true"
-            android:src="@drawable/default_avatar" />
+            android:src="@drawable/icon_register_take_picture" />
     </RelativeLayout>
     
       <TextView 

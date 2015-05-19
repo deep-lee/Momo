@@ -51,7 +51,7 @@ public class NewFriendAdapter extends BaseListAdapter<BmobInvitation> {
 		TextView name = ViewHolder.get(convertView, R.id.name);
 		ImageView iv_avatar = ViewHolder.get(convertView, R.id.avatar);
 		
-		final Button btn_add = ViewHolder.get(convertView, R.id.btn_add);
+//		final Button btn_add = ViewHolder.get(convertView, R.id.btn_add);
 
 		String avatar = msg.getAvatar();
 
@@ -61,30 +61,32 @@ public class NewFriendAdapter extends BaseListAdapter<BmobInvitation> {
 			// 没有头像就显示默认的头像
 			iv_avatar.setImageResource(R.drawable.default_head);
 		}
+		
+		agressAdd(msg);
 
 		// 消息状态
-		int status = msg.getStatus();
-		if(status==BmobConfig.INVITE_ADD_NO_VALIDATION||status==BmobConfig.INVITE_ADD_NO_VALI_RECEIVED){
-//			btn_add.setText("同意");
-//			btn_add.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.btn_login_selector));
-//			btn_add.setTextColor(mContext.getResources().getColor(R.color.base_color_text_white));
-			btn_add.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View arg0) {
-					// TODO Auto-generated method stub
-					BmobLog.i("点击同意按钮:"+msg.getFromid());
-					
-					// 同意添加好友
-					agressAdd(btn_add, msg);
-				}
-			});
-		}else if(status==BmobConfig.INVITE_ADD_AGREE){
-			btn_add.setText("已同意");
-			btn_add.setBackgroundDrawable(null);
-			btn_add.setTextColor(mContext.getResources().getColor(R.color.base_color_text_black));
-			btn_add.setEnabled(false);
-		}
+//		int status = msg.getStatus();
+//		if(status==BmobConfig.INVITE_ADD_NO_VALIDATION||status==BmobConfig.INVITE_ADD_NO_VALI_RECEIVED){
+////			btn_add.setText("同意");
+////			btn_add.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.btn_login_selector));
+////			btn_add.setTextColor(mContext.getResources().getColor(R.color.base_color_text_white));
+//			btn_add.setOnClickListener(new OnClickListener() {
+//				
+//				@Override
+//				public void onClick(View arg0) {
+//					// TODO Auto-generated method stub
+//					BmobLog.i("点击同意按钮:"+msg.getFromid());
+//					
+//					// 同意添加好友
+//					agressAdd(btn_add, msg);
+//				}
+//			});
+//		}else if(status==BmobConfig.INVITE_ADD_AGREE){
+//			btn_add.setText("已同意");
+//			btn_add.setBackgroundDrawable(null);
+//			btn_add.setTextColor(mContext.getResources().getColor(R.color.base_color_text_black));
+//			btn_add.setEnabled(false);
+//		}
 		name.setText(msg.getFromname());
 		
 		return convertView;
@@ -100,37 +102,66 @@ public class NewFriendAdapter extends BaseListAdapter<BmobInvitation> {
 	  * @return void
 	  * @throws
 	  */
-	private void agressAdd(final Button btn_add,final BmobInvitation msg){
-		final CustomProgressDialog progress = new CustomProgressDialog(mContext, "正在添加...");
-		progress.setCanceledOnTouchOutside(false);
-		progress.show();
-		try {
-			//同意添加好友
-			BmobUserManager.getInstance(mContext).agreeAddContact(msg, new UpdateListener() {
-				
-				@SuppressWarnings("deprecation")
-				@Override
-				public void onSuccess() {
-					// TODO Auto-generated method stub
-					progress.dismiss();
-					btn_add.setText("已同意");
-					btn_add.setBackgroundDrawable(null);
-					btn_add.setTextColor(mContext.getResources().getColor(R.color.base_color_text_black));
-					btn_add.setEnabled(false);
-					//保存到application中方便比较
-					CustomApplcation.getInstance().setContactList(CollectionUtils.list2map(BmobDB.create(mContext).getContactList()));	
-				}
-				
-				@Override
-				public void onFailure(int arg0, final String arg1) {
-					// TODO Auto-generated method stub
-					progress.dismiss();
-					ShowToast("添加失败: " +arg1);
-				}
-			});
-		} catch (final Exception e) {
-			progress.dismiss();
-			ShowToast("添加失败: " +e.getMessage());
-		}
+//	private void agressAdd(final Button btn_add,final BmobInvitation msg){
+//		final CustomProgressDialog progress = new CustomProgressDialog(mContext, "正在添加...");
+//		progress.setCanceledOnTouchOutside(false);
+//		progress.show();
+//		try {
+//			//同意添加好友
+//			BmobUserManager.getInstance(mContext).agreeAddContact(msg, new UpdateListener() {
+//				
+//				@SuppressWarnings("deprecation")
+//				@Override
+//				public void onSuccess() {
+//					// TODO Auto-generated method stub
+//					progress.dismiss();
+//					btn_add.setText("已同意");
+//					btn_add.setBackgroundDrawable(null);
+//					btn_add.setTextColor(mContext.getResources().getColor(R.color.base_color_text_black));
+//					btn_add.setEnabled(false);
+//					//保存到application中方便比较
+//					CustomApplcation.getInstance().setContactList(CollectionUtils.list2map(BmobDB.create(mContext).getContactList()));	
+//				}
+//				
+//				@Override
+//				public void onFailure(int arg0, final String arg1) {
+//					// TODO Auto-generated method stub
+//					progress.dismiss();
+//					ShowToast("添加失败: " +arg1);
+//				}
+//			});
+//		} catch (final Exception e) {
+//			progress.dismiss();
+//			ShowToast("添加失败: " +e.getMessage());
+//		}
+//	}
+	
+	private void agressAdd(final BmobInvitation msg){
+//	final CustomProgressDialog progress = new CustomProgressDialog(mContext, "正在添加...");
+//	progress.setCanceledOnTouchOutside(false);
+//	progress.show();
+	try {
+		//同意添加好友
+		BmobUserManager.getInstance(mContext).agreeAddContact(msg, new UpdateListener() {
+			
+			@SuppressWarnings("deprecation")
+			@Override
+			public void onSuccess() {
+				// TODO Auto-generated method stub
+				//保存到application中方便比较
+				CustomApplcation.getInstance().setContactList(CollectionUtils.list2map(BmobDB.create(mContext).getContactList()));	
+			}
+			
+			@Override
+			public void onFailure(int arg0, final String arg1) {
+				// TODO Auto-generated method stub
+				// progress.dismiss();
+				// ShowToast("添加失败: " +arg1);
+			}
+		});
+	} catch (final Exception e) {
+		// progress.dismiss();
+		// ShowToast("添加失败: " +e.getMessage());
 	}
+}
 }

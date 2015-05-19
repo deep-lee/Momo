@@ -447,7 +447,7 @@
 						android:visibility="gone"
 						app:cpb_iconComplete="@drawable/ic_action_accept"
 						app:cpb_iconError="@drawable/ic_action_cancel"
-						app:cpb_textIdle="@string/add_friend" />
+						app:cpb_textIdle="加入通讯录" />
 					        
 					<com.dd.library.CircularProgressButton
 						android:id="@+id/info_btn_chat"

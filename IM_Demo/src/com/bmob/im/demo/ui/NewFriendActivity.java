@@ -38,15 +38,16 @@ public class NewFriendActivity extends ActivityBase implements OnItemLongClickLi
 	}
 	
 	private void initView(){
-//		initTopBarForLeft("新朋友");
 		
 		listview = (ListView)findViewById(R.id.list_newfriend);
 		listview.setOnItemLongClickListener(this);
 		adapter = new NewFriendAdapter(this,BmobDB.create(this).queryBmobInviteList());
 		listview.setAdapter(adapter);
-		if(from==null){//若来自通知栏的点击，则定位到最后一条
+		if(from == null){//若来自通知栏的点击，则定位到最后一条
 			listview.setSelection(adapter.getCount());
 		}
+		
+		
 	}
 
 	@Override
@@ -81,13 +82,14 @@ public class NewFriendActivity extends ActivityBase implements OnItemLongClickLi
 	private void deleteInvite(int position, BmobInvitation invite){
 		adapter.remove(position);
 		BmobDB.create(this).deleteInviteMsg(invite.getFromid(), Long.toString(invite.getTime()));
+		
 	}
 	
 	@Override
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
 		super.onDestroy();
-		if(from==null){
+		if(from == null){
 			startAnimActivity(MainActivity.class);
 		}
 	}

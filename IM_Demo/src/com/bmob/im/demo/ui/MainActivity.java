@@ -1,5 +1,7 @@
 package com.bmob.im.demo.ui;
 
+import java.util.List;
+
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -23,6 +25,11 @@ import cn.bmob.im.bean.BmobMsg;
 import cn.bmob.im.config.BmobConfig;
 import cn.bmob.im.db.BmobDB;
 import cn.bmob.im.inteface.EventListener;
+import cn.bmob.v3.BmobInstallation;
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.datatype.BmobRelation;
+import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.UpdateListener;
 
 import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.MyMessageReceiver;
@@ -32,6 +39,7 @@ import com.bmob.im.demo.ui.fragment.ContactFragment;
 import com.bmob.im.demo.ui.fragment.FindFragment;
 import com.bmob.im.demo.ui.fragment.LeftFragment;
 import com.bmob.im.demo.ui.fragment.RecentFragment;
+import com.bmob.im.demo.util.CollectionUtils;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnClosedListener;
@@ -84,9 +92,16 @@ public class MainActivity extends BaseMainActivity implements EventListener, OnC
 		//开启定时检测服务（单位为秒）-在这里检测后台是否还有未读的消息，有的话就取出来
 		//如果你觉得检测服务比较耗流量和电量，你也可以去掉这句话-同时还有onDestory方法里面的stopPollService方法
 		BmobChat.getInstance(this).startPollService(30);
+		
+		// 使用推送服务时的初始化操作
+	    BmobInstallation.getCurrentInstallation(this).save();
+	    // 启动推送服务
+//	    BmobPush.startWork(this, com.bmob.im.demo.config.Config.applicationId);
+		
 		//开启广播接收器
 		initNewMessageBroadCast();
 		initTagMessageBroadCast();
+//		initAutomaticAddToContactMessageBroadCast();
 		
 		initView();
 		initTab();
@@ -439,6 +454,79 @@ public class MainActivity extends BaseMainActivity implements EventListener, OnC
 		}
 	}
 	
+//	AutomticAddToContactMessageReceiver addToContactMessageReceiver;
+//	
+//	private void initAutomaticAddToContactMessageBroadCast(){
+//		addToContactMessageReceiver = new AutomticAddToContactMessageReceiver();
+//		IntentFilter intentFilter = new IntentFilter(BmobConfig.);
+//		
+//		
+//		//优先级要低于ChatActivity
+//		intentFilter.setPriority(3);
+//		registerReceiver(addToContactMessageReceiver, intentFilter);
+//	}
+//	
+//	public class AutomticAddToContactMessageReceiver extends BroadcastReceiver{
+//
+//	    @Override
+//	    public void onReceive(Context context, Intent intent) {
+//	        // TODO Auto-generated method stub
+//	        if(intent.getAction().equals(PushConstants.ACTION_MESSAGE)){
+//	            Log.d("bmob", "客户端收到推送内容：" + intent.getStringExtra(PushConstants.EXTRA_PUSH_MESSAGE_STRING));
+//	            
+//	            // 通知栏显示通知，并加为好友和更新本地好友数据库
+//	            String[] message = intent.getStringExtra(PushConstants.EXTRA_PUSH_MESSAGE_STRING).split("_");
+//	            String username = message[0];
+//	            BmobQuery<User> query = new BmobQuery<User>();
+//	            query.addWhereEqualTo("username", username);
+//	            query.findObjects(MainActivity.this, new FindListener<User>() {
+//					
+//					@Override
+//					public void onSuccess(List<User> arg0) {
+//						// TODO Auto-generated method stub
+//						if (arg0.size() > 0) {
+//							
+//							final User user = arg0.get(0);
+//							
+//							User currentUser = CustomApplcation.getInstance().getCurrentUser();
+//							BmobRelation relation = new BmobRelation();
+//							relation.add(user);
+//							currentUser.setContacts(relation);
+//							
+//							currentUser.update(MainActivity.this, new UpdateListener() {
+//								
+//								@Override
+//								public void onSuccess() {
+//									// TODO Auto-generated method stub
+//									ShowToast("添加成功！");
+//									
+//									// 更新本地好友数据库
+//									BmobDB.create(MainActivity.this).saveContact(user);
+//									
+//									//保存到application中方便比较
+//									CustomApplcation.getInstance().setContactList(CollectionUtils.list2map(BmobDB.create(MainActivity.this).getContactList()));	
+//								}
+//								
+//								@Override
+//								public void onFailure(int arg0, String arg1) {
+//									// TODO Auto-generated method stub
+//									ShowToast("添加失败！");
+//								}
+//							});
+//						}
+//					}
+//					
+//					@Override
+//					public void onError(int arg0, String arg1) {
+//						// TODO Auto-generated method stub
+//						ShowToast("添加到通讯录失败");
+//					}
+//				});
+//	        }
+//	    }
+//
+//	}
+	
 	@Override
 	public void onNetChange(boolean isNetConnected) {
 		// TODO Auto-generated method stub
@@ -454,29 +542,98 @@ public class MainActivity extends BaseMainActivity implements EventListener, OnC
 	}
 	
 	
-	/** 刷新好友请求
-	  * @Title: notifyAddUser
-	  * @Description: TODO
-	  * @param @param message 
-	  * @return void
-	  * @throws
-	  */
+//	/** 刷新好友请求
+//	  * @Title: notifyAddUser
+//	  * @Description: TODO
+//	  * @param @param message 
+//	  * @return void
+//	  * @throws
+//	  */
+//	private void refreshInvite(BmobInvitation message){
+//		boolean isAllow = CustomApplcation.getInstance().getSpUtil().isAllowVoice();
+//		if(isAllow){
+//			CustomApplcation.getInstance().getMediaPlayer().start();
+//		}
+//		iv_contact_tips.setVisibility(View.VISIBLE);
+//		if(currentTabIndex == 1){
+//			if(contactFragment != null){
+//				contactFragment.refresh();
+//			}
+//		}else{
+//			//同时提醒通知
+//			String tickerText = message.getFromname()+"请求添加好友";
+//			boolean isAllowVibrate = CustomApplcation.getInstance().getSpUtil().isAllowVibrate();
+//			BmobNotifyManager.getInstance(this).showNotify(isAllow,isAllowVibrate,R.drawable.ic_launcher, tickerText, message.getFromname(), tickerText.toString(),NewFriendActivity.class);
+//		}
+//	}
+	
 	private void refreshInvite(BmobInvitation message){
 		boolean isAllow = CustomApplcation.getInstance().getSpUtil().isAllowVoice();
 		if(isAllow){
 			CustomApplcation.getInstance().getMediaPlayer().start();
 		}
 		iv_contact_tips.setVisibility(View.VISIBLE);
-		if(currentTabIndex==1){
+		if(currentTabIndex == 1){
 			if(contactFragment != null){
 				contactFragment.refresh();
 			}
 		}else{
 			//同时提醒通知
-			String tickerText = message.getFromname()+"请求添加好友";
+			String tickerText = message.getFromname() + "(" + message.getNick() + ")" + "已把您加入通讯录";
 			boolean isAllowVibrate = CustomApplcation.getInstance().getSpUtil().isAllowVibrate();
-			BmobNotifyManager.getInstance(this).showNotify(isAllow,isAllowVibrate,R.drawable.ic_launcher, tickerText, message.getFromname(), tickerText.toString(),NewFriendActivity.class);
+			BmobNotifyManager.getInstance(this).showNotify(isAllow,isAllowVibrate,R.drawable.ic_launcher, tickerText, message.getFromname(), tickerText.toString(), NewFriendActivity.class);
+			
+			// 把他加入通讯录
+			automaticAddToContact(message.getFromname());
 		}
+	}
+	
+	public void automaticAddToContact(String username) {
+		BmobQuery<User> query = new BmobQuery<User>();
+        query.addWhereEqualTo("username", username);
+        query.findObjects(MainActivity.this, new FindListener<User>() {
+			
+			@Override
+			public void onSuccess(List<User> arg0) {
+				// TODO Auto-generated method stub
+				if (arg0.size() > 0) {
+					
+					final User user = arg0.get(0);
+					
+					User currentUser = CustomApplcation.getInstance().getCurrentUser();
+					BmobRelation relation = new BmobRelation();
+					relation.add(user);
+					currentUser.setContacts(relation);
+					
+					currentUser.update(MainActivity.this, new UpdateListener() {
+						
+						@Override
+						public void onSuccess() {
+							// TODO Auto-generated method stub
+							ShowToast("添加成功！");
+							
+							// 更新本地好友数据库
+							BmobDB.create(MainActivity.this).saveContact(user);
+							
+							//保存到application中方便比较
+							CustomApplcation.getInstance().setContactList(CollectionUtils.list2map(BmobDB.create(MainActivity.this).getContactList()));	
+						}
+						
+						@Override
+						public void onFailure(int arg0, String arg1) {
+							// TODO Auto-generated method stub
+							ShowToast("添加失败！");
+						}
+					});
+				}
+			}
+			
+			@Override
+			public void onError(int arg0, String arg1) {
+				// TODO Auto-generated method stub
+				ShowToast("添加到通讯录失败");
+			}
+		});
 	}
 
 	@Override

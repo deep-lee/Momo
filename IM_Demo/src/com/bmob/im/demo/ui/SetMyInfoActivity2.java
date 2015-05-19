@@ -18,8 +18,13 @@ import cn.bmob.im.BmobChatManager;
 import cn.bmob.im.config.BmobConfig;
 import cn.bmob.im.db.BmobDB;
 import cn.bmob.im.util.BmobLog;
+import cn.bmob.v3.BmobInstallation;
+import cn.bmob.v3.BmobPushManager;
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.datatype.BmobGeoPoint;
+import cn.bmob.v3.datatype.BmobRelation;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.PushListener;
 import cn.bmob.v3.listener.UpdateListener;
@@ -1354,6 +1359,8 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 	 */
 	private void addFriend() {
 		
+		final User currentUser = BmobUser.getCurrentUser(SetMyInfoActivity2.this, User.class);
+		
 		if (btn_add.getProgress() == -1 || btn_add.getProgress() == 100) {
 			btn_add.setProgress(0);
 			return;
@@ -1374,6 +1381,7 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 //        installId - 目标用户绑定的设备id
 //        pushCallback - 发送回调 
 		
+		
 		BmobChatManager.getInstance(this).sendTagMessage(BmobConfig.TAG_ADD_CONTACT,
 				user.getObjectId(), new PushListener() {
 
@@ -1382,9 +1390,37 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 						// TODO Auto-generated method stub
 						progress.dismiss();
 						
+						
+						BmobRelation relation = new BmobRelation();
+						relation.add(user);
+						currentUser.setContacts(relation);
+						
+						currentUser.update(SetMyInfoActivity2.this, new UpdateListener() {
+							
+							@Override
+							public void onSuccess() {
+								// TODO Auto-generated method stub
+								ShowToast("添加成功！");
+								
+								// 更新本地好友数据库
+								BmobDB.create(SetMyInfoActivity2.this).saveContact(user);
+								
+								//保存到application中方便比较
+								CustomApplcation.getInstance().setContactList(CollectionUtils.list2map(BmobDB.create(SetMyInfoActivity2.this).getContactList()));	
+							}
+							
+							@Override
+							public void onFailure(int arg0, String arg1) {
+								// TODO Auto-generated method stub
+								ShowToast("添加失败！");
+							}
+						});
+						
 						btn_add.setProgress(100);
 						
-						ShowToast("发送请求成功，等待对方验证！");
+						// ShowToast("发送请求成功，等待对方验证！");
+						
+						
 					}
 
 					@Override
@@ -1394,10 +1430,113 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 						
 						btn_add.setProgress(-1);
 						
-						ShowToast("发送请求失败！");
+						// ShowToast("发送请求失败！");
 						ShowLog("发送请求失败:" + arg1);
 					}
 				});
+		
+		
+		// 发送点播推送消息
+//		String installationId = user.getInstallId();
+//		BmobPushManager<BmobInstallation> bmobPush = new BmobPushManager<BmobInstallation>(this);
+//		BmobQuery<BmobInstallation> query = BmobInstallation.getQuery();
+//		query.addWhereEqualTo("installationId", installationId);
+//		bmobPush.setQuery(query);
+//		bmobPush.pushMessage(currentUser.getUsername() + "_将您添加到通讯录");
+//		
+//		BmobRelation relation = new BmobRelation();
+//		relation.add(user);
+//		currentUser.setContacts(relation);
+//		
+//		currentUser.update(SetMyInfoActivity2.this, new UpdateListener() {
+//			
+//			@Override
+//			public void onSuccess() {
+//				// TODO Auto-generated method stub
+//				ShowToast("添加成功！");
+//				
+//				// 更新本地好友数据库
+//				BmobDB.create(SetMyInfoActivity2.this).saveContact(user);
+//				
+//				//保存到application中方便比较
+//				CustomApplcation.getInstance().setContactList(CollectionUtils.list2map(BmobDB.create(SetMyInfoActivity2.this).getContactList()));	
+//			}
+//			
+//			@Override
+//			public void onFailure(int arg0, String arg1) {
+//				// TODO Auto-generated method stub
+//				ShowToast("添加失败！");
+//			}
+//		});
+		
+//		BmobChatManager.getInstance(this).sendTagMessage(BmobConfig.TAG_ADD_CONTACT,
+//				user.getObjectId(), new PushListener() {
+//
+//					@Override
+//					public void onSuccess() {
+//						// TODO Auto-generated method stub
+//						progress.dismiss();
+//						
+//						btn_add.setProgress(100);
+//						
+//						ShowToast("发送请求成功，等待对方验证！");
+//						
+//						// 添加到好友数据库
+//						BmobQuery<User> query2 = new BmobQuery<User>();
+//						query2.addWhereEqualTo("username", currentUser.getUsername());
+//						query2.findObjects(SetMyInfoActivity2.this, new FindListener<User>() {
+//
+//							@Override
+//							public void onError(int arg0, String arg1) {
+//								// TODO Auto-generated method stub
+//								ShowToast("添加失败！");
+//								ShowLog("添加失败:" + arg1);
+//							}
+//
+//							@Override
+//							public void onSuccess(List<User> arg0) {
+//								// TODO Auto-generated method stub
+//								if (arg0.size() > 0) {
+//									BmobRelation relation = new BmobRelation();
+//									relation.add(user);
+//									currentUser.setContacts(relation);
+//									
+//									currentUser.update(SetMyInfoActivity2.this, new UpdateListener() {
+//										
+//										@Override
+//										public void onSuccess() {
+//											// TODO Auto-generated method stub
+//											ShowToast("添加成功！");
+//											
+//											// 更新本地好友数据库
+//											BmobDB.create(SetMyInfoActivity2.this).saveContact(user);
+//											
+//											//保存到application中方便比较
+//											CustomApplcation.getInstance().setContactList(CollectionUtils.list2map(BmobDB.create(SetMyInfoActivity2.this).getContactList()));	
+//										}
+//										
+//										@Override
+//										public void onFailure(int arg0, String arg1) {
+//											// TODO Auto-generated method stub
+//											ShowToast("添加失败！");
+//										}
+//									});
+//								}
+//							}
+//						});
+//					}
+//
+//					@Override
+//					public void onFailure(int arg0, final String arg1) {
+//						// TODO Auto-generated method stub
+//						progress.dismiss();
+//						
+//						btn_add.setProgress(-1);
+//						
+//						ShowToast("发送请求失败！");
+//						ShowLog("发送请求失败:" + arg1);
+//					}
+//				});
 	}
 	
 	private static final double EARTH_RADIUS = 6378137;

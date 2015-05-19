@@ -3,22 +3,21 @@ package com.bmob.im.demo.ui;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import cn.bmob.im.bean.BmobChatUser;
 import cn.bmob.im.task.BRequest;
 import cn.bmob.im.util.BmobLog;
-import cn.bmob.v3.listener.CountListener;
 import cn.bmob.v3.listener.FindListener;
 
 import com.bmob.im.demo.CustomApplcation;
@@ -27,8 +26,7 @@ import com.bmob.im.demo.adapter.AddFriendAdapter;
 import com.bmob.im.demo.bean.User;
 import com.bmob.im.demo.util.CollectionUtils;
 import com.bmob.im.demo.view.dialog.CustomProgressDialog;
-import com.bmob.im.demo.view.xlist.XListView;
-import com.bmob.im.demo.view.xlist.XListView.IXListViewListener;
+import com.bmob.im.demo.view.dialog.DialogTips;
 import com.daimajia.androidanimations.library.YoYo;
 import com.daimajia.androidanimations.library.YoYo.AnimationComposer;
 import com.daimajia.androidanimations.library.attention.ShakeAnimator;
@@ -36,7 +34,6 @@ import com.dd.library.CircularProgressButton;
 import com.deep.momo.game.ui.GameFruitActivity;
 import com.deep.momo.game.ui.GuessNumberActivity;
 import com.deep.momo.game.ui.MixedColorMenuActivity;
-import com.nineoldandroids.animation.Animator;
 
 /** 添加好友
   * @ClassName: AddFriendActivity
@@ -246,12 +243,7 @@ public class AddFriendActivity extends ActivityBase implements OnClickListener, 
 	
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-		// TODO Auto-generated method stub
-//		BmobChatUser user = (BmobChatUser) adapter.getItem(position);
-//		Intent intent =new Intent(this,SetMyInfoActivity2.class);
-//		intent.putExtra("from", "add");
-//		intent.putExtra("username", user.getUsername());
-//		startAnimActivity(intent);		
+		// TODO Auto-generated method stub	
 		
 		 // 玩游戏
 		
@@ -285,6 +277,15 @@ public class AddFriendActivity extends ActivityBase implements OnClickListener, 
 					User user = arg0.get(0);
 					Intent intent = new Intent();
 					
+					int gamedifficultNum = 0;
+					if (user.getGameDifficulty().equals("简单")) {
+						gamedifficultNum = 0;
+					}else if (user.getGameDifficulty().equals("一般")) {
+						gamedifficultNum = 1;
+					}else if (user.getGameDifficulty().equals("困难")) {
+						gamedifficultNum = 2;
+					}
+					
 					String gameType = user.getGameType();
 					
 					if (gameType.equals("水果连连看")) {
@@ -295,9 +296,76 @@ public class AddFriendActivity extends ActivityBase implements OnClickListener, 
 					}
 					else if (gameType.equals("mixed color")) {
 						intent.setClass(AddFriendActivity.this, MixedColorMenuActivity.class);
+					}else if(gameType.equals("oh my egg")){
+						
+						Boolean flag = CustomApplcation.isAppInstalled(AddFriendActivity.this, "com.nsu.ttgame.ohmyeggs");
+						
+						if (flag) {
+							intent = new  Intent("com.nsu.ttgame.ohmyeggs.MYACTION" , Uri  
+							        .parse("info://调用其他应用程序的Activity" ));  
+							//  传递数据   
+							intent.putExtra("value", gamedifficultNum);  
+						}
+						else {
+							
+							DialogTips dialogTips = new DialogTips(AddFriendActivity.this, 
+									"对方设置的游戏是：" + gameType + "，您还没有安装该游戏！请到游戏中心进行安装！", "确认");
+							dialogTips.SetOnSuccessListener(new DialogInterface.OnClickListener() {
+								
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									// TODO Auto-generated method stub
+									
+								}
+							});
+							dialogTips.SetOnCancelListener(new DialogInterface.OnClickListener() {
+								
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									// TODO Auto-generated method stub
+									
+								}
+							});
+							
+							dialogTips.show();
+							
+						}
+					}
+					else if (gameType.equals("猜拳大比拼")) {
+						Boolean flag = CustomApplcation.isAppInstalled(AddFriendActivity.this, "com.jk.fingerGame");
+						
+						if (flag) {
+							intent = new  Intent("com.jk.fingerGame.MYACTION" , Uri  
+							        .parse("info://调用其他应用程序的Activity" ));  
+							//  传递数据   
+							intent.putExtra("value", gamedifficultNum);  
+						}
+						else {
+							
+							DialogTips dialogTips = new DialogTips(AddFriendActivity.this, 
+									"对方设置的游戏是：" + gameType + "，您还没有安装该游戏！请到游戏中心进行安装！", "确认");
+							dialogTips.SetOnSuccessListener(new DialogInterface.OnClickListener() {
+								
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									// TODO Auto-generated method stub
+									
+								}
+							});
+							dialogTips.SetOnCancelListener(new DialogInterface.OnClickListener() {
+								
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									// TODO Auto-generated method stub
+									
+								}
+							});
+							
+							dialogTips.show();
+
+						}
 					}
 
-					
 					Bundle data = new Bundle();
 					data.putString("from", "other");
 					data.putString("username", user.getUsername());
@@ -306,12 +374,46 @@ public class AddFriendActivity extends ActivityBase implements OnClickListener, 
 					intent.putExtras(data);
 					
 					ShowToast(user.getGameType() + "");
-					startActivity(intent);
+					if (gameType.equals("oh my egg") || gameType.equals("猜拳大比拼")) {
+						startActivityForResult(intent, 1); 
+					}else {
+						startActivity(intent);
+					}
 					
 				}
 			});
 		}
 	}
+	
+	@Override   
+	protected  void  onActivityResult(int  requestCode, int  resultCode, Intent data)  {  
+		
+		switch (requestCode) {
+		case 1:
+			
+			int gameResult = data.getExtras().getInt("result");
+			
+			// 赢了
+			if (gameResult == 1) {
+				BmobChatUser user = users.get(0);
+				Intent intent = new Intent();
+				intent.setClass(AddFriendActivity.this, SetMyInfoActivity2.class);
+				intent.putExtra("from", "add");
+				intent.putExtra("username", user.getUsername());
+				startActivity(intent);
+			}
+			// 输了
+			else if(gameResult == 0){
+				
+			}
+			
+			break;
+
+		default:
+			break;
+		}
+	      
+	} 
 	
 	String searchName ="";
 	@Override

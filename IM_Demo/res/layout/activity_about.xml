@@ -1,0 +1,195 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/theme_bg_color"
+    tools:context="${relativePackage}.${activityClass}" >
+    
+    <RelativeLayout
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_top_bar"
+        android:background="@color/common_action_bar_bg_color" >
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:onClick="back"
+            android:paddingBottom="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="5dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/base_action_bar_back_bg_selector" />
+
+        <View
+            android:id="@+id/view_temp"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_toRightOf="@id/iv_back"
+            android:background="#14191A" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/view_temp"
+            android:text="关于摇摇"
+            android:textColor="#ffffff"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+   <com.bmob.im.demo.view.InfoScrollView
+	        android:id="@+id/sv_profile"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:fadingEdge="none"
+	        android:layout_below="@+id/title"
+	        android:scrollbars="none" >
+	        
+       <RelativeLayout 
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
+           
+           <ImageView 
+               android:id="@+id/about_app_icon"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_centerHorizontal="true"
+               android:layout_marginTop="20dp"
+               android:src="@drawable/ic_launcher"/>
+           
+           <TextView 
+               android:id="@+id/about_app_version"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_centerHorizontal="true"
+               android:text="摇摇1.2"
+               android:layout_marginTop="10dp"
+               android:textColor="#aaaaaa"
+               android:layout_below="@+id/about_app_icon"/>
+           
+           <LinearLayout 
+               android:layout_width="fill_parent"
+               android:layout_height="wrap_content"
+               android:layout_marginTop="20dp"
+               android:orientation="vertical"
+               android:layout_below="@+id/about_app_version">
+               
+               <RelativeLayout
+			        android:id="@+id/about_layout_welcome_page"
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:background="@drawable/common_list_item_bg_selector"
+			        android:minHeight="50dp"
+			        android:layout_marginTop="20dp"
+			        android:padding="10dp" >
+			
+			        <TextView
+			            style="@style/Smile.TextView._Black"
+			            android:layout_alignParentLeft="true"
+			            android:layout_centerVertical="true"
+			            android:textSize="16sp"
+			            android:text="欢迎页" />
+			        
+			        <TextView
+			            android:layout_width="10dp"
+			            android:layout_height="15dp"
+			            android:layout_alignParentRight="true"
+			            android:layout_centerVertical="true"
+			            android:layout_marginRight="10dp"
+			            android:drawablePadding="10dp"
+			            android:background="@drawable/register_bottom_arrow" />
+			        
+			    </RelativeLayout>
+			    
+               <View
+			        android:layout_width="match_parent"
+			        android:layout_height="0.1dp"
+			        android:layout_marginRight="12dp"
+			        android:layout_marginLeft="12dp"
+			        android:background="#dadada" />
+			    
+               <RelativeLayout
+			        android:id="@+id/about_layout_help_and_feedback"
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:background="@drawable/common_list_item_bg_selector"
+			        android:minHeight="50dp"
+			        android:padding="10dp" >
+			
+			        <TextView
+			            style="@style/Smile.TextView._Black"
+			            android:layout_alignParentLeft="true"
+			            android:layout_centerVertical="true"
+			            android:textSize="16sp"
+			            android:text="帮助与反馈" />
+			        
+			        <TextView
+			            android:layout_width="10dp"
+			            android:layout_height="15dp"
+			            android:layout_alignParentRight="true"
+			            android:layout_centerVertical="true"
+			            android:layout_marginRight="10dp"
+			            android:drawablePadding="10dp"
+			            android:background="@drawable/register_bottom_arrow" />
+			        
+			    </RelativeLayout>
+			    
+               <View
+			        android:layout_width="match_parent"
+			        android:layout_height="0.1dp"
+			        android:layout_marginRight="12dp"
+			        android:layout_marginLeft="12dp"
+			        android:background="#dadada" />
+			    
+               <RelativeLayout
+			        android:id="@+id/about_layout_check_for_update"
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:background="@drawable/common_list_item_bg_selector"
+			        android:minHeight="50dp"
+			        android:padding="10dp" >
+			
+			        <TextView
+			            style="@style/Smile.TextView._Black"
+			            android:layout_alignParentLeft="true"
+			            android:layout_centerVertical="true"
+			            android:textSize="16sp"
+			            android:text="检查更新" />
+			        
+			        <TextView
+			            android:layout_width="10dp"
+			            android:layout_height="15dp"
+			            android:layout_alignParentRight="true"
+			            android:layout_centerVertical="true"
+			            android:layout_marginRight="10dp"
+			            android:drawablePadding="10dp"
+			            android:background="@drawable/register_bottom_arrow" />
+			        
+			    </RelativeLayout>
+			    
+               <TextView 
+                   android:layout_width="wrap_content"
+                   android:layout_marginTop="120dp"
+                   android:textColor="#aaaaaa"
+                   android:textSize="13sp"
+                   android:layout_gravity="center_horizontal"
+                   android:layout_height="wrap_content"
+                   android:text="四川大学Deep团队 版权所有"/>
+               
+           </LinearLayout>
+           
+       </RelativeLayout>
+	        
+       
+   </com.bmob.im.demo.view.InfoScrollView>
+
+</RelativeLayout>

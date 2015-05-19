@@ -2,6 +2,9 @@ package com.bmob.im.demo.ui;
 
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -18,6 +21,7 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
+import android.graphics.Bitmap.Config;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -61,6 +65,7 @@ import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.bean.User;
 import com.bmob.im.demo.config.BmobConstants;
+import com.bmob.im.demo.util.CacheUtils;
 import com.bmob.im.demo.util.CommonUtils;
 import com.bmob.im.demo.util.ImageLoadOptions;
 import com.bmob.im.demo.util.PhotoUtil;
@@ -353,60 +358,64 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
 	public String filePath = "";
 	
 	private void showAvatarPop() {
-		View view = LayoutInflater.from(this).inflate(R.layout.pop_showavator,
-				null);
-		layout_choose = (LinearLayout) view.findViewById(R.id.register_select_picture_from_image);
-		layout_photo = (LinearLayout) view.findViewById(R.id.register_select_picture_from_camera);
-		layout_cancle = (LinearLayout) view.findViewById(R.id.register_select_picture_cancle);
-		layout_cancle.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				avatorPop.dismiss();
-			}
-		});
-		layout_photo.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				ShowLog("点击拍照");
-				// TODO Auto-generated method stub			
-				getImageFromCamera();
-			}
-		});
-		layout_choose.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				ShowLog("点击相册");
-				pickImage();
-				
-			}
-		});
-
-		avatorPop = new PopupWindow(view, mScreenWidth, 600);
-		avatorPop.setTouchInterceptor(new OnTouchListener() {
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
-					avatorPop.dismiss();
-					return true;
-				}
-				return false;
-			}
-		});
-
-		avatorPop.setWidth(WindowManager.LayoutParams.MATCH_PARENT);
-		avatorPop.setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
-		avatorPop.setTouchable(true);
-		avatorPop.setFocusable(true);
-		avatorPop.setOutsideTouchable(true);
-		avatorPop.setBackgroundDrawable(new BitmapDrawable());
-		// 动画效果 从底部弹起
-		avatorPop.setAnimationStyle(R.style.PopupAnimation);
-		avatorPop.showAtLocation(register_layout_all, Gravity.BOTTOM, 0, 0);
+		
+		// 直接拍照
+		getImageFromCamera();
+		
+//		View view = LayoutInflater.from(this).inflate(R.layout.pop_showavator,
+//				null);
+//		layout_choose = (LinearLayout) view.findViewById(R.id.register_select_picture_from_image);
+//		layout_photo = (LinearLayout) view.findViewById(R.id.register_select_picture_from_camera);
+//		layout_cancle = (LinearLayout) view.findViewById(R.id.register_select_picture_cancle);
+//		layout_cancle.setOnClickListener(new OnClickListener() {
+//			
+//			@Override
+//			public void onClick(View v) {
+//				// TODO Auto-generated method stub
+//				avatorPop.dismiss();
+//			}
+//		});
+//		layout_photo.setOnClickListener(new OnClickListener() {
+//
+//			@Override
+//			public void onClick(View arg0) {
+//				ShowLog("点击拍照");
+//				// TODO Auto-generated method stub			
+//				getImageFromCamera();
+//			}
+//		});
+//		layout_choose.setOnClickListener(new OnClickListener() {
+//
+//			@Override
+//			public void onClick(View arg0) {
+//				// TODO Auto-generated method stub
+//				ShowLog("点击相册");
+//				pickImage();
+//				
+//			}
+//		});
+//
+//		avatorPop = new PopupWindow(view, mScreenWidth, 600);
+//		avatorPop.setTouchInterceptor(new OnTouchListener() {
+//			@Override
+//			public boolean onTouch(View v, MotionEvent event) {
+//				if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
+//					avatorPop.dismiss();
+//					return true;
+//				}
+//				return false;
+//			}
+//		});
+//
+//		avatorPop.setWidth(WindowManager.LayoutParams.MATCH_PARENT);
+//		avatorPop.setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
+//		avatorPop.setTouchable(true);
+//		avatorPop.setFocusable(true);
+//		avatorPop.setOutsideTouchable(true);
+//		avatorPop.setBackgroundDrawable(new BitmapDrawable());
+//		// 动画效果 从底部弹起
+//		avatorPop.setAnimationStyle(R.style.PopupAnimation);
+//		avatorPop.showAtLocation(register_layout_all, Gravity.BOTTOM, 0, 0);
 	}
 	
 	
@@ -418,12 +427,12 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
 		filePath = file.getAbsolutePath(); // 获取相片的保存路径
 		Uri imageUri = Uri.fromFile(file);
 
-         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-         intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
 
-         mCurrentPhotoPath = imageUri.getPath();
+        mCurrentPhotoPath = imageUri.getPath();
 
-         startActivityForResult(intent, BmobConstants.REQUESTCODE_UPLOADAVATAR_CAMERA);
+        startActivityForResult(intent, BmobConstants.REQUESTCODE_UPLOADAVATAR_CAMERA);
     }
 	
 	protected void pickImage(){
@@ -450,7 +459,8 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
             else if(requestCode == BmobConstants.REQUESTCODE_UPLOADAVATAR_CAMERA) {
                 System.out.println( " REQUESTCODE_UPLOADAVATAR_CAMERA " + mCurrentPhotoPath);
                 if(mCurrentPhotoPath != null) {
-                    beginCrop( Uri.fromFile( new File( mCurrentPhotoPath)));
+                	// 压缩图片
+                    beginCrop( Uri.fromFile( new File( saveToSdCard(compressImageFromFile(mCurrentPhotoPath)))));
                 }
             }
         }
@@ -1023,20 +1033,22 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
 				return;
 			}
 
-			if (TextUtils.isEmpty(et_confim_code.getText().toString())) {
-				ShowToast(R.string.toast_error_confim_code_null);
-				
-				shakeAnimation.playOn(et_confim_code);
-				
-				return;
-			}
+//			if (TextUtils.isEmpty(et_confim_code.getText().toString())) {
+//				ShowToast(R.string.toast_error_confim_code_null);
+//				
+//				shakeAnimation.playOn(et_confim_code);
+//				
+//				return;
+//			}
+//			
+//			SMSSDK.submitVerificationCode("86", et_username.getText().toString(), et_confim_code.getText().toString());
+//			
+//			progress = new CustomProgressDialog(RegisterActivity.this, "正在验证...");
+//			progress.setCanceledOnTouchOutside(false);
+//			progress.setCancelable(false);
+//			progress.show();
 			
-			SMSSDK.submitVerificationCode("86", et_username.getText().toString(), et_confim_code.getText().toString());
-			
-			progress = new CustomProgressDialog(RegisterActivity.this, "正在验证...");
-			progress.setCanceledOnTouchOutside(false);
-			progress.setCancelable(false);
-			progress.show();
+			gotoNextPage();
 			
 //			viewFlipper.showNext();
 //			currentPage++;
@@ -1176,5 +1188,61 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
 		// registerEventHandler必须和unregisterEventHandler配套使用，否则可能造成内存泄漏。
 		SMSSDK.unregisterEventHandler(eh);
 	}
+	
+	// 压缩图片
+		private Bitmap compressImageFromFile(String srcPath) {
+			BitmapFactory.Options newOpts = new BitmapFactory.Options();
+			newOpts.inJustDecodeBounds = true;// 只读边,不读内容
+			Bitmap bitmap = BitmapFactory.decodeFile(srcPath, newOpts);
+
+			newOpts.inJustDecodeBounds = false;
+			int w = newOpts.outWidth;
+			int h = newOpts.outHeight;
+			float hh = 800f;//
+			float ww = 480f;//
+			int be = 1;
+			if (w > h && w > ww) {
+				be = (int) (newOpts.outWidth / ww);
+			} else if (w < h && h > hh) {
+				be = (int) (newOpts.outHeight / hh);
+			}
+			if (be <= 0)
+				be = 1;
+			newOpts.inSampleSize = be;// 设置采样率
+
+			newOpts.inPreferredConfig = Config.ARGB_8888;// 该模式是默认的,可不设
+			newOpts.inPurgeable = true;// 同时设置才会有效
+			newOpts.inInputShareable = true;// 。当系统内存不够时候图片自动被回收
+
+			bitmap = BitmapFactory.decodeFile(srcPath, newOpts);
+			// return compressBmpFromBmp(bitmap);//原来的方法调用了这个方法企图进行二次压缩
+			// 其实是无效的,大家尽管尝试
+			return bitmap;
+		}
+
+		public String saveToSdCard(Bitmap bitmap) {
+			
+			File file = new File(dir, new SimpleDateFormat("yyMMddHHmmss")
+			.format(new Date()) + ".png");
+			
+//			String files = CacheUtils.getCacheDirectory(RegisterActivity.this, true, "pic")
+//					+ dateTime + "_11.jpg";
+//			File file = new File(files);
+			try {
+				FileOutputStream out = new FileOutputStream(file);
+				if (bitmap.compress(Bitmap.CompressFormat.JPEG, 50, out)) {
+					out.flush();
+					out.close();
+				}
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			Log.i("WriteStateActivity", file.getAbsolutePath());
+			return file.getAbsolutePath();
+		}
 
 }

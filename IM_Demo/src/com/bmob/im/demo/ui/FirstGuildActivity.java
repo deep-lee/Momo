@@ -20,6 +20,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.view.ViewDebug.FlagToString;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -50,6 +51,8 @@ public class FirstGuildActivity extends Activity implements OnClickListener, OnP
     
     float point1_x = 0, point1_y = 0, point2_x = 0, point2_y = 0;
     
+    Boolean flag = false;
+    
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +69,8 @@ public class FirstGuildActivity extends Activity implements OnClickListener, OnP
 	}
 	
 	public void initView() {
+		
+		flag = getIntent().getBooleanExtra("flag", false);
 		
         views = new ArrayList<View>();  
          
@@ -229,11 +234,17 @@ public class FirstGuildActivity extends Activity implements OnClickListener, OnP
 		case MotionEvent.ACTION_UP:
 			point2_x = event.getX();
 			if (currentIndex == 3 && point1_x - point2_x > 100) {
-				Intent intent=new Intent();
-				intent.setClass(FirstGuildActivity.this, LoginActivity.class);
-				startActivity(intent);
-				overridePendingTransition(R.anim.base_slide_right_in, R.anim.base_slide_remain);
-				finish();
+				
+				if (!flag) {
+					Intent intent=new Intent();
+					intent.setClass(FirstGuildActivity.this, LoginActivity.class);
+					startActivity(intent);
+					overridePendingTransition(R.anim.base_slide_right_in, R.anim.base_slide_remain);
+					finish();
+				}
+				else {
+					finish();
+				}
 			}
 			break;
 

@@ -32,6 +32,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import cn.bmob.im.bean.BmobChatUser;
+import cn.bmob.im.bean.BmobInvitation;
 import cn.bmob.im.db.BmobDB;
 import cn.bmob.v3.listener.UpdateListener;
 
@@ -41,6 +42,7 @@ import com.bmob.im.demo.adapter.UserFriendAdapter;
 import com.bmob.im.demo.bean.User;
 import com.bmob.im.demo.ui.AddPopWindow;
 import com.bmob.im.demo.ui.BlackListActivity;
+import com.bmob.im.demo.ui.ChatActivity;
 import com.bmob.im.demo.ui.FragmentBase;
 import com.bmob.im.demo.ui.NewFriendActivity;
 import com.bmob.im.demo.ui.SetMyInfoActivity2;
@@ -330,6 +332,8 @@ public class ContactFragment extends FragmentBase implements OnItemClickListener
 				Intent intent = new Intent(getActivity(), NewFriendActivity.class);
 				intent.putExtra("from", "contact");
 				startAnimActivity(intent);
+				
+				// iv_msg_tips.setVisibility(View.INVISIBLE);
 			}
 		});
 //		layout_near.setOnClickListener(new OnClickListener() {
@@ -471,11 +475,15 @@ public class ContactFragment extends FragmentBase implements OnItemClickListener
 		// TODO Auto-generated method stub
 		User user = (User) userAdapter.getItem(position-1);
 		//先进入好友的详细资料页面
-		Intent intent =new Intent(getActivity(),SetMyInfoActivity2.class);
-		intent.putExtra("from", "other");
-		intent.putExtra("username", user.getUsername());
-		intent.putExtra("nick", user.getNick());
-		startAnimActivity(intent);
+//		Intent intent =new Intent(getActivity(),SetMyInfoActivity2.class);
+//		intent.putExtra("from", "other");
+//		intent.putExtra("username", user.getUsername());
+//		intent.putExtra("nick", user.getNick());
+//		startAnimActivity(intent);
+		
+		Intent intent3 = new Intent(getActivity(), ChatActivity.class);
+		intent3.putExtra("user", user);
+		startAnimActivity(intent3);
 		
 	}
 	

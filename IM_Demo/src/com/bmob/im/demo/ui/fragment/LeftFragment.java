@@ -11,6 +11,7 @@ import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.adapter.SlideAdapter;
 import com.bmob.im.demo.bean.User;
+import com.bmob.im.demo.ui.AboutActivity;
 import com.bmob.im.demo.ui.EditPersonalizedSignatureActivity;
 import com.bmob.im.demo.ui.GameCenterActivity;
 import com.bmob.im.demo.ui.LoginActivity;
@@ -160,19 +161,14 @@ public class LeftFragment extends Fragment {
 					Intent intent = new Intent();
 					intent.setClass(context, SlideSetActivity.class);
 					startActivity(intent);
-					break;
-					
-//					// 地点漫游
-//				case 3:
-//					Intent romaIntent = new Intent();
-//					romaIntent.setClass(context, AttractionsRomaActivity2.class);
-//					startActivity(romaIntent);
-//					
-//					break;	
+					break;	
 					
 					// 关于
 				case 3:
-					
+					Intent aboutIntent = new Intent();
+					aboutIntent.setClass(getActivity(), AboutActivity.class);
+					aboutIntent.putExtra("flag", false);
+					startActivity(aboutIntent);
 					break;
 					// 退出登录
 				case 4:

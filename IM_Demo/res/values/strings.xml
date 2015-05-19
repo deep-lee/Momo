@@ -208,5 +208,7 @@
     <string name="title_activity_state_time_line">StateTimeLineActivity</string>
     <string name="title_activity_hiding_mode">HidingModeActivity</string>
     <string name="title_activity_first_guild">FirstGuildActivity</string>
+    <string name="title_activity_game_community">GameCommunityActivity</string>
+    <string name="title_activity_about">AboutActivity</string>
 
 </resources>
