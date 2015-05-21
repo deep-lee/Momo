@@ -42,7 +42,7 @@
 			            android:layout_height="match_parent"
 			            android:layout_marginBottom="8dp"
 			            android:layout_marginTop="8dp"
-			            android:background="#14191A" />
+			            android:background="@color/common_topbar_divider" />
 
 				</LinearLayout>
                 
@@ -50,7 +50,7 @@
                     android:id="@+id/fragment_app_name"
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
-		            android:text="摇摇"
+		            android:text="摇一摇"
 		            android:layout_marginLeft="10dp"
 		            android:layout_gravity="center_vertical"
 		            android:textColor="#ffffff"
@@ -85,6 +85,8 @@
 	            android:layout_centerVertical="true"
 	            android:textColor="#ffffff"
 	            android:hint="搜索"
+	            android:drawablePadding="8dp"
+	            android:textColorHint="#ffffff"
 	            android:visibility="invisible"
 	            android:drawableLeft="@drawable/icon_fragment_searchview_search"
 	            android:background="@drawable/common_fragment_search_bg"/>
@@ -111,7 +113,7 @@
                 android:id="@+id/list_friends"
                 android:layout_width="match_parent"
                 android:background="#ffffff"
-                android:divider="#efefef"  
+                android:divider="@null"  
           		android:dividerHeight="1dip"
           		android:listSelector="@android:color/transparent"
                 android:layout_height="match_parent"

@@ -375,12 +375,32 @@
         </activity>
         <activity
             android:name=".ui.GameCommunityActivity"
-            android:label="@string/title_activity_game_community" >
+            android:label="@string/title_activity_game_community"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
         <activity
-            android:name="com.bmob.im.demo.ui.AboutActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" 
-            android:label="@string/title_activity_about" >
+            android:name=".ui.AboutActivity"
+            android:label="@string/title_activity_about"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
+        <activity
+            android:name=".ui.GameTopicActivity"
+            android:label="@string/title_activity_game_topic"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
+        <activity
+            android:name=".ui.WriteGameTopicActivity"
+            android:label="@string/title_activity_write_game_topic"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
+        <activity
+            android:name=".ui.GameTopicDetailsActivity"
+            android:label="@string/title_activity_game_topic_details"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="com.deep.ui.update.MainActivity2"
+            android:label="@string/title_activity_main_activity2" >
         </activity>
     </application>
 

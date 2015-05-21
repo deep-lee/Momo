@@ -1,0 +1,92 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/theme_bg_color"
+    tools:context="${relativePackage}.${activityClass}" >
+
+    <RelativeLayout
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_top_bar"
+        android:background="@color/common_action_bar_bg_color" >
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:onClick="back"
+            android:paddingBottom="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="5dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/base_action_bar_back_bg_selector" />
+
+        <!-- <View
+            android:id="@+id/view_temp"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_toRightOf="@id/iv_back"
+            android:background="@color/common_topbar_divider" /> -->
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_centerInParent="true"
+            android:text="话题"
+            android:textColor="#ffffff"
+            android:textSize="18sp" />
+        
+        <TextView
+            android:id="@+id/tv_write_topic_publish"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="13dp"
+            android:gravity="center"
+            android:text="发布"
+            android:onClick="publishTopic"
+            android:clickable="true"
+            android:textColor="#fff"
+            android:textSize="16sp" />
+
+        <!-- <View
+            android:id="@+id/view_temp2"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="8dp"
+            android:layout_toLeftOf="@id/tv_write_topic_publish"
+            android:background="@color/common_topbar_divider" /> -->
+    </RelativeLayout>
+    
+    <EditText
+        android:id="@+id/edit_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+ 		android:layout_below="@id/title"
+        android:inputType="textMultiLine"
+        android:gravity="left|top"
+        android:minLines="8" 
+        android:background="@drawable/round_edittext_shape"
+        android:paddingLeft="4dip"
+        android:paddingRight="4dip"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp"
+        android:hint="说说你对游戏的想法吧">
+		
+        <requestFocus />
+    </EditText>
+
+</RelativeLayout>

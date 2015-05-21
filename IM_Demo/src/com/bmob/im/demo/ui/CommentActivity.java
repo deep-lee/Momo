@@ -60,9 +60,9 @@ public class CommentActivity extends BaseActivity implements OnClickListener{
 	private ImageView commentItemImage;
 
 	private ImageView userLogo;
-	private ImageView myFav;
+//	private ImageView myFav;
 	private TextView comment;
-	private TextView share;
+//	private TextView share;
 	private TextView love;
 	private TextView hate;
 
@@ -95,9 +95,9 @@ public class CommentActivity extends BaseActivity implements OnClickListener{
 		commentItemImage = (ImageView) findViewById(R.id.content_image);
 
 		userLogo = (ImageView) findViewById(R.id.user_logo);
-		myFav = (ImageView) findViewById(R.id.item_action_fav);
+//		myFav = (ImageView) findViewById(R.id.item_action_fav);
 		comment = (TextView) findViewById(R.id.item_action_comment);
-		share = (TextView) findViewById(R.id.item_action_share);
+//		share = (TextView) findViewById(R.id.item_action_share);
 		love = (TextView) findViewById(R.id.item_action_love);
 		hate = (TextView) findViewById(R.id.item_action_hate);
 		
@@ -128,6 +128,8 @@ public class CommentActivity extends BaseActivity implements OnClickListener{
 		commentList.setSmoothScrollbarEnabled(true);
 
 		initMoodView(qiangYu);
+		
+		fetchData();
 	}
 	
 	private void initMoodView(QiangYu mood2) {
@@ -175,11 +177,11 @@ public class CommentActivity extends BaseActivity implements OnClickListener{
 			love.setTextColor(Color.parseColor("#000000"));
 		}
 		hate.setText(qiangYu.getHate() + "");
-		if (qiangYu.getMyFav()) {
-			myFav.setImageResource(R.drawable.ic_action_fav_choose);
-		} else {
-			myFav.setImageResource(R.drawable.ic_action_fav_normal);
-		}
+//		if (qiangYu.getMyFav()) {
+//			myFav.setImageResource(R.drawable.ic_action_fav_choose);
+//		} else {
+//			myFav.setImageResource(R.drawable.ic_action_fav_normal);
+//		}
 
 		User user = qiangYu.getAuthor();
 		BmobFile avatar = new BmobFile();
@@ -211,10 +213,10 @@ public class CommentActivity extends BaseActivity implements OnClickListener{
 		commentCommit.setOnClickListener(this);
 
 		userLogo.setOnClickListener(this);
-		myFav.setOnClickListener(this);
+//		myFav.setOnClickListener(this);
 		love.setOnClickListener(this);
 		hate.setOnClickListener(this);
-		share.setOnClickListener(this);
+//		share.setOnClickListener(this);
 		comment.setOnClickListener(this);
 	}
 
@@ -277,18 +279,18 @@ public class CommentActivity extends BaseActivity implements OnClickListener{
 		case R.id.comment_commit:
 			onClickCommit();
 			break;
-		case R.id.item_action_fav:
-			onClickFav(v);
-			break;
+//		case R.id.item_action_fav:
+//			onClickFav(v);
+//			break;
 		case R.id.item_action_love:
 			onClickLove();
 			break;
 		case R.id.item_action_hate:
 			onClickHate();
 			break;
-		case R.id.item_action_share:
-			// onClickShare();
-			break;
+//		case R.id.item_action_share:
+//			// onClickShare();
+//			break;
 		case R.id.item_action_comment:
 			onClickComment();
 			break;
@@ -340,6 +342,7 @@ public class CommentActivity extends BaseActivity implements OnClickListener{
 				BmobRelation relation = new BmobRelation();
 				relation.add(comment);
 				qiangYu.setRelation(relation);
+				qiangYu.setComment(qiangYu.getComment() + 1);
 				qiangYu.update(CommentActivity.this, new UpdateListener() {
 
 					@Override

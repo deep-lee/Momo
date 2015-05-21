@@ -28,6 +28,7 @@ import com.daimajia.androidanimations.library.YoYo;
 import com.daimajia.androidanimations.library.YoYo.AnimationComposer;
 import com.daimajia.androidanimations.library.attention.ShakeAnimator;
 import com.dd.library.CircularProgressButton;
+import com.deep.ui.update.MainActivity2;
 import com.nineoldandroids.animation.Animator;
 
 /**
@@ -215,7 +216,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 				progressDialog.dismiss();
 				progressDialog = null;
 				
-				Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+				Intent intent = new Intent(LoginActivity.this,MainActivity2.class);
 				startActivity(intent);
 				// ShowToast(user.getGameType() + "");
 				finish();

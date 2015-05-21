@@ -198,25 +198,25 @@ public class MainActivity extends BaseMainActivity implements EventListener, OnC
 //        // 设置渐入渐出效果的值  
 //        menu.setFadeDegree(0.35f);  
         
-        // 配置背景图片  
-        menu.setBackgroundImage(R.drawable.icon_bg1);  
-        // 设置专场动画效果  
-        menu.setBehindCanvasTransformer(new SlidingMenu.CanvasTransformer() {  
-            @Override  
-            public void transformCanvas(Canvas canvas, float percentOpen) {  
-                float scale = (float) (percentOpen * 0.25 + 0.75);  
-                canvas.scale(scale, scale, -canvas.getWidth() / 2,  
-                        canvas.getHeight() / 2);  
-            }  
-        });  
-          
-        menu.setAboveCanvasTransformer(new SlidingMenu.CanvasTransformer() {  
-            @Override  
-            public void transformCanvas(Canvas canvas, float percentOpen) {  
-                float scale = (float) (1 - percentOpen * 0.25);  
-                canvas.scale(scale, scale, 0, canvas.getHeight() / 2);  
-            }  
-        });  
+//        // 配置背景图片  
+//        menu.setBackgroundImage(R.drawable.icon_bg1);  
+//        // 设置专场动画效果  
+//        menu.setBehindCanvasTransformer(new SlidingMenu.CanvasTransformer() {  
+//            @Override  
+//            public void transformCanvas(Canvas canvas, float percentOpen) {  
+//                float scale = (float) (percentOpen * 0.25 + 0.75);  
+//                canvas.scale(scale, scale, -canvas.getWidth() / 2,  
+//                        canvas.getHeight() / 2);  
+//            }  
+//        });  
+//          
+//        menu.setAboveCanvasTransformer(new SlidingMenu.CanvasTransformer() {  
+//            @Override  
+//            public void transformCanvas(Canvas canvas, float percentOpen) {  
+//                float scale = (float) (1 - percentOpen * 0.25);  
+//                canvas.scale(scale, scale, 0, canvas.getHeight() / 2);  
+//            }  
+//        });  
         
         /** 
          * SLIDING_WINDOW will include the Title/ActionBar in the content 

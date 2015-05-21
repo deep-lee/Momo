@@ -3,39 +3,58 @@
     android:layout_width="match_parent"
     android:background="@drawable/common_list_item_bg_selector"
     android:layout_height="wrap_content" >
-
-    <TextView
-        android:id="@+id/alpha"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/base_common_contact_list_suoyin_bg"
-        android:padding="2dp"
-        android:textSize="13sp"
-        android:textColor="@color/guide_color" 
-        />
     
-    <ImageView
-        android:id="@+id/img_friend_avatar"
-        android:layout_width="50.0dip"
-        android:layout_height="50.0dip"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@id/alpha"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="6.0dip"
-        android:padding="5dp"
-        android:src="@drawable/default_avatar" />
-
-    <TextView
-        android:id="@+id/tv_friend_name"
-        style="@style/Smile.TextView._Black"
-        android:layout_alignTop="@id/img_friend_avatar"
-        android:layout_below="@id/alpha"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10.0dip"
-        android:layout_centerVertical="true"
-        android:layout_toRightOf="@id/img_friend_avatar"
-        android:padding="5dp"
-        android:singleLine="true"
-        android:textSize="15sp" />
+    <View 
+        android:id="@+id/item_user_line"
+        android:layout_width="fill_parent"
+        android:background="#e6e6e6"
+        android:layout_marginLeft="75dp"
+        android:layout_marginTop="3dp"
+        android:layout_height="1dp"/>
+    
+    <RelativeLayout 
+        android:layout_width="fill_parent"
+        android:layout_below="@+id/item_user_line"
+        android:layout_marginTop="5dp"
+        android:layout_height="wrap_content">
+        
+        <TextView
+	        android:id="@+id/alpha"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:padding="5dp"
+	        android:textSize="30sp"
+	        android:text="A"
+	        android:layout_marginLeft="10dp"
+	        android:layout_centerVertical="true"
+	        android:textColor="@color/common_action_bar_bg_color" 
+	        />
+	
+	    <TextView
+	        android:id="@+id/tv_friend_name"
+	        style="@style/Smile.TextView._Black"
+	        android:layout_toRightOf="@id/alpha"
+	        android:layout_marginLeft="30dp"
+	        android:layout_marginTop="10.0dip"
+	        android:layout_centerVertical="true"
+	        android:padding="5dp"
+	        android:text="Nick"
+	        android:singleLine="true"
+	        android:textSize="15sp" />
+	    
+	    <ImageView
+	        android:id="@+id/img_friend_avatar"
+	        android:layout_width="50.0dip"
+	        android:layout_height="50.0dip"
+	        android:layout_alignParentRight="true"
+	        android:layout_marginLeft="10dp"
+	        android:layout_marginTop="6.0dip"
+	        android:padding="5dp"
+	        android:layout_centerVertical="true"
+	        android:src="@drawable/default_avatar" />
+        
+    </RelativeLayout>
+    
+    
 
 </RelativeLayout>

@@ -61,7 +61,7 @@ public class MyLetterView extends View {
 		int singleHeight = height / b.length;// 获取每一个字母的高度
 
 		for (int i = 0; i < b.length; i++) {
-			paint.setColor(getResources().getColor(R.color.color_bottom_text_normal));
+			paint.setColor(getResources().getColor(R.color.common_letter_view_normal));
 			paint.setTypeface(Typeface.DEFAULT_BOLD);
 			paint.setAntiAlias(true);
 			paint.setTextSize(PixelUtil.sp2px(12));

@@ -20,6 +20,7 @@ import com.baidu.mapapi.SDKInitializer;
 import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.config.Config;
+import com.deep.ui.update.MainActivity2;
 
 /**
  * Òýµ¼Ò³
@@ -109,7 +110,7 @@ public class SplashActivity extends BaseActivity {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case GO_HOME:
-				startAnimActivity(MainActivity.class);
+				startAnimActivity(MainActivity2.class);
 				finish();
 				break;
 			case GO_LOGIN:

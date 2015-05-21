@@ -92,6 +92,16 @@ public class GameView extends BoardView {
 		startPlay();
 	}
 	
+	
+	
+	public int getLeftTime() {
+		return leftTime;
+	}
+
+	public void setLeftTime(int leftTime) {
+		this.leftTime = leftTime;
+	}
+
 	public static void initSound(Context context){
 		 soundPlay = new SoundPlay();
 	        soundPlay.initSounds(context);

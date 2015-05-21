@@ -18,12 +18,16 @@ import android.widget.TextView;
 import cn.bmob.im.bean.BmobChatUser;
 import cn.bmob.im.task.BRequest;
 import cn.bmob.im.util.BmobLog;
+import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.UpdateListener;
 
 import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.adapter.AddFriendAdapter;
+import com.bmob.im.demo.bean.GameFile;
 import com.bmob.im.demo.bean.User;
+import com.bmob.im.demo.util.ActivityUtil;
 import com.bmob.im.demo.util.CollectionUtils;
 import com.bmob.im.demo.view.dialog.CustomProgressDialog;
 import com.bmob.im.demo.view.dialog.DialogTips;
@@ -396,6 +400,14 @@ public class AddFriendActivity extends ActivityBase implements OnClickListener, 
 			// 赢了
 			if (gameResult == 1) {
 				BmobChatUser user = users.get(0);
+				
+				if (((User) user).getGameType().equals("oh my egg")) {
+					updateOhMyEggGameBest(data.getExtras().getLong("gameTime"));
+				}
+				else if(((User) user).getGameType().equals("猜拳大比拼")){
+					updateFingerGameBest(data.getExtras().getInt("gameScore"));
+				}
+				
 				Intent intent = new Intent();
 				intent.setClass(AddFriendActivity.this, SetMyInfoActivity2.class);
 				intent.putExtra("from", "add");
@@ -414,6 +426,102 @@ public class AddFriendActivity extends ActivityBase implements OnClickListener, 
 		}
 	      
 	} 
+	
+	public void updateOhMyEggGameBest(final long time) {
+		new Thread(){
+			
+			@Override
+			public void run(){
+				
+				BmobQuery<GameFile> query = new BmobQuery<GameFile>();
+				query.addWhereEqualTo("packageName", "com.nsu.ttgame.ohmyeggs");
+				query.addWhereGreaterThan("bestScore", time);
+				query.findObjects(AddFriendActivity.this, new FindListener<GameFile>() {
+					
+					@Override
+					public void onSuccess(List<GameFile> arg0) {
+						// TODO Auto-generated method stub
+						if (arg0.size() != 0) {
+							GameFile gameFile = arg0.get(0);
+							gameFile.setBestScore((int)time);
+							gameFile.setBestUser(CustomApplcation.getInstance().getCurrentUser());
+							
+							gameFile.update(AddFriendActivity.this, new UpdateListener() {
+								
+								@Override
+								public void onSuccess() {
+									// TODO Auto-generated method stub
+									ActivityUtil.show(AddFriendActivity.this, "你已成为oh my egg最佳玩家，更新游戏排名成功！");
+								}
+								
+								@Override
+								public void onFailure(int arg0, String arg1) {
+									// TODO Auto-generated method stub
+									ActivityUtil.show(AddFriendActivity.this, "更新游戏排名失败！");
+								}
+							});
+							
+						}
+					}
+					
+					@Override
+					public void onError(int arg0, String arg1) {
+						// TODO Auto-generated method stub
+						ActivityUtil.show(AddFriendActivity.this, "更新游戏排名失败！");
+					}
+				});
+			}
+			
+		}.start();
+}
+
+public void updateFingerGameBest(final int mark) {
+	new Thread(){
+		
+		@Override
+		public void run(){
+			
+			BmobQuery<GameFile> query = new BmobQuery<GameFile>();
+			query.addWhereEqualTo("packageName", "com.jk.fingerGame");
+			query.addWhereLessThan("bestScore", mark);
+			query.findObjects(AddFriendActivity.this, new FindListener<GameFile>() {
+				
+				@Override
+				public void onSuccess(List<GameFile> arg0) {
+					// TODO Auto-generated method stub
+					if (arg0.size() != 0) {
+						GameFile gameFile = arg0.get(0);
+						gameFile.setBestScore(mark);
+						gameFile.setBestUser(CustomApplcation.getInstance().getCurrentUser());
+						
+						gameFile.update(AddFriendActivity.this, new UpdateListener() {
+							
+							@Override
+							public void onSuccess() {
+								// TODO Auto-generated method stub
+								ActivityUtil.show(AddFriendActivity.this, "你已成为猜拳大比拼最佳玩家，更新游戏排名成功！");
+							}
+							
+							@Override
+							public void onFailure(int arg0, String arg1) {
+								// TODO Auto-generated method stub
+								ActivityUtil.show(AddFriendActivity.this, "更新游戏排名失败！");
+							}
+						});
+						
+					}
+				}
+				
+				@Override
+				public void onError(int arg0, String arg1) {
+					// TODO Auto-generated method stub
+					ActivityUtil.show(AddFriendActivity.this, "更新游戏排名失败！");
+				}
+			});
+		}
+		
+	}.start();
+}
 	
 	String searchName ="";
 	@Override

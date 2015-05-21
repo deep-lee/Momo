@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.ui.AddPopWindow;
@@ -37,6 +38,8 @@ public class FindFragment extends FragmentBase implements OnClickListener {
 	
 	RelativeLayout rl_life_circle, rl_nears_people, rl_attractions_roma, rl_sign_in,
 					rl_game_community, rl_eat_drink_play_happy;
+	
+	TextView iv_shake;
 	
 
 	public FindFragment() {
@@ -104,6 +107,10 @@ public class FindFragment extends FragmentBase implements OnClickListener {
 		
 		icon_life_circle = (ImageView) findViewById(R.id.find_life_circle_icon);
 		
+		iv_shake = (TextView) findViewById(R.id.fragment_find_shake_tv);
+		iv_shake.setClickable(true);
+		iv_shake.setOnClickListener(this);
+		
 	}
 
 	
@@ -153,6 +160,12 @@ public class FindFragment extends FragmentBase implements OnClickListener {
 			
 		case R.id.fragment_find_eat_drink_play_happy:
 			
+			break;
+			
+		case R.id.fragment_find_shake_tv:
+			Intent topNearsIntent = new Intent();
+			topNearsIntent.setClass(getActivity(), ShakeForNearPeopleActivity.class);
+			startAnimActivity(topNearsIntent);
 			break;
 
 		default:

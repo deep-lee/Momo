@@ -288,23 +288,23 @@ public class ShakeForNearPeopleActivity extends BaseActivity implements OnMenuIt
         List<MenuObject> menuObjects = new ArrayList<MenuObject>();
 
         MenuObject close = new MenuObject();
-        close.setResource(CustomApplcation.sex? R.drawable.icn_close : R.drawable.icn_close_female);
+        close.setResource(R.drawable.icn_close);
         close.setBgResource(R.drawable.menu_object_bg);
 
         MenuObject send = new MenuObject("只看女生");
-        send.setResource(CustomApplcation.sex? R.drawable.icon_info_female : R.drawable.icon_info_female_female);
+        send.setResource(R.drawable.icon_info_female);
         send.setBgResource(R.drawable.menu_object_bg);
 
         MenuObject like = new MenuObject("只看男生");
-        like.setResource(CustomApplcation.sex? R.drawable.icon_info_male : R.drawable.icon_info_male_female);
+        like.setResource(R.drawable.icon_info_male);
         like.setBgResource(R.drawable.menu_object_bg);
 
         MenuObject addFr = new MenuObject("查看全部");
-        addFr.setResource(CustomApplcation.sex? R.drawable.ic_nears_all_people : R.drawable.ic_nears_all_people_female);
+        addFr.setResource(R.drawable.ic_nears_all_people);
         addFr.setBgResource(R.drawable.menu_object_bg);
   
         MenuObject addFav = new MenuObject("清除地理位置信息并退出");
-        addFav.setResource(CustomApplcation.sex? R.drawable.ic_nears_clean_position_info : R.drawable.ic_nears_clean_position_info_female);
+        addFav.setResource(R.drawable.ic_nears_clean_position_info);
         addFav.setBgResource(R.drawable.menu_object_bg);
 
         menuObjects.add(close);

@@ -30,14 +30,14 @@
             android:scaleType="centerInside"
             android:src="@drawable/base_action_bar_back_bg_selector" />
 
-        <View
+        <!-- <View
             android:id="@+id/view_temp"
             android:layout_width="1dp"
             android:layout_height="match_parent"
             android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
             android:layout_toRightOf="@id/iv_back"
-            android:background="#14191A" />
+            android:background="@color/common_topbar_divider" /> -->
 
         <TextView
             android:id="@+id/tv_title"
@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@id/view_temp"
+            android:layout_centerInParent="true"
             android:text="添加好友"
             android:textColor="#ffffff"
             android:textSize="18sp" />
@@ -64,7 +64,7 @@
             android:textColor="#fff"
             android:textSize="16sp" />
 
-        <View
+        <!-- <View
             android:id="@+id/view_temp2"
             android:layout_width="1dp"
             android:layout_height="match_parent"
@@ -72,7 +72,7 @@
             android:layout_marginRight="5dp"
             android:layout_marginTop="8dp"
             android:layout_toLeftOf="@id/tv_add_from_tongxunlu"
-            android:background="#14191A" />
+            android:background="@color/common_topbar_divider" /> -->
     </RelativeLayout>
 
     <LinearLayout
@@ -108,6 +108,7 @@
               android:singleLine="true"
               android:textColorHint="#C5C5C5"
               android:textSize="14sp"
+              android:drawablePadding="8dp"
               android:textColor="#666666"
 	          android:layout_gravity="center_vertical"
 	          android:drawableLeft="@drawable/add_friends_search_icon"
@@ -131,7 +132,7 @@
 			android:layout_margin="@dimen/activity_vertical_margin"
 			android:gravity="center"
 			android:layout_gravity="center"
-			android:layout_height="36dp"
+			android:layout_height="48dp"
 			android:textColor="@color/cpb_white"
 			android:textSize="15sp"
 			app:cpb_cornerRadius="48dp"

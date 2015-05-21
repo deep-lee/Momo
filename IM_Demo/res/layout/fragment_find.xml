@@ -13,12 +13,14 @@
 	        android:background="@color/common_action_bar_bg_color" >
 	
 	        <TextView
+	            android:id="@+id/fragment_find_shake_tv"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:layout_alignParentLeft="true"
 	            android:layout_centerVertical="true"
 	            android:layout_marginLeft="10dp"
-	            android:text="摇摇"
+	            android:text="摇一摇"
+	            android:clickable="true"
 	            android:textColor="#ffffff"
 	            android:textSize="18sp" />
 	
@@ -30,13 +32,13 @@
 	            android:clickable="true"
 	            android:src="@drawable/base_action_bar_add_bg_selector" />
 	
-	        <ImageView
+	        <!-- <ImageView
 	            android:id="@+id/iv_search"
 	            android:layout_width="56dp"
 	            android:layout_height="match_parent"
 	            android:layout_toLeftOf="@id/iv_add"
 	            android:clickable="true"
-	            android:src="@drawable/base_action_bar_search_bg_selector" />
+	            android:src="@drawable/base_action_bar_search_bg_selector" /> -->
 	    </RelativeLayout>
     
     <!-- 生活圈 -->

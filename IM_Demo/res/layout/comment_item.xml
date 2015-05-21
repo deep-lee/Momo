@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical" 
     android:padding="16dp"
-    android:background="#F7F7F7">
+    android:background="@drawable/radius_bg"  >
     <RelativeLayout 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

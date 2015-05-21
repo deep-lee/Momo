@@ -28,7 +28,26 @@ public class GameFile extends BmobObject {
 	
 	private int notificationId;
 	
+	private User bestUser;
 	
+	private int bestScore;
+	
+
+	public User getBestUser() {
+		return bestUser;
+	}
+
+	public void setBestUser(User bestUser) {
+		this.bestUser = bestUser;
+	}
+
+	public int getBestScore() {
+		return bestScore;
+	}
+
+	public void setBestScore(int bestScore) {
+		this.bestScore = bestScore;
+	}
 
 	public BmobFile getGameDisplay1() {
 		return gameDisplay1;

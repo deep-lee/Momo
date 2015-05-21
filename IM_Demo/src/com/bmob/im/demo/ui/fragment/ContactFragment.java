@@ -46,6 +46,7 @@ import com.bmob.im.demo.ui.ChatActivity;
 import com.bmob.im.demo.ui.FragmentBase;
 import com.bmob.im.demo.ui.NewFriendActivity;
 import com.bmob.im.demo.ui.SetMyInfoActivity2;
+import com.bmob.im.demo.ui.ShakeForNearPeopleActivity;
 import com.bmob.im.demo.util.CharacterParser;
 import com.bmob.im.demo.util.CollectionUtils;
 import com.bmob.im.demo.util.PinyinComparator;
@@ -140,6 +141,18 @@ public class ContactFragment extends FragmentBase implements OnItemClickListener
 		et_search = (EditText) findViewById(R.id.fragment_search_et);
 		iv_search = (ImageView) findViewById(R.id.iv_search);
 		iv_add = (ImageView) findViewById(R.id.iv_add);
+		
+		app_name.setClickable(true);
+		app_name.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent topNearsIntent = new Intent();
+				topNearsIntent.setClass(getActivity(), ShakeForNearPeopleActivity.class);
+				startAnimActivity(topNearsIntent);
+			}
+		});
 		
         iv_add.setOnClickListener(new OnClickListener() {
 
@@ -305,7 +318,6 @@ public class ContactFragment extends FragmentBase implements OnItemClickListener
 	ImageView iv_msg_tips;
 	TextView tv_new_name;
 	LinearLayout layout_new;//新朋友
-	// LinearLayout layout_near;//附近的人
 	LinearLayout layout_black;// 黑名单
 	
 	@SuppressLint("InflateParams")

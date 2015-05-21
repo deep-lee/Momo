@@ -133,6 +133,7 @@ public class FileSizeUtil {
 		}
 		return fileSizeString;
 	}
+	
 	/**
 	 * 转换文件大小,指定转换的类型
 	 * @param fileS 
@@ -189,7 +190,9 @@ public class FileSizeUtil {
                 } 
                 file.delete(); 
             } 
-        } 
+        }
+        
+        file.delete(); 
     } 
 	
 }

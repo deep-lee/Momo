@@ -20,8 +20,6 @@ public class StateLineAdapter extends BaseAdapter {
 	private Context mContext; 
 	
 	private List<QiangYu> mData;
-	
-	
 
 	public StateLineAdapter(Context mContext, List<QiangYu> mData) {
 		super();

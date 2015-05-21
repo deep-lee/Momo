@@ -1,8 +1,17 @@
 package com.deep.momo.game.ui;
 
+import java.util.List;
+
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.UpdateListener;
+
+import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
+import com.bmob.im.demo.bean.DefaultGameFile;
 import com.bmob.im.demo.ui.ActivityBase;
 import com.bmob.im.demo.ui.SetMyInfoActivity2;
+import com.bmob.im.demo.util.ActivityUtil;
 import com.bmob.im.demo.util.SoundPlay;
 import com.bmob.im.demo.view.dialog.DialogTips;
 
@@ -403,6 +412,9 @@ public class GuessNumberActivity extends Activity implements OnClickListener{
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
 							// TODO Auto-generated method stub
+							
+							updateGameRankInfo();
+							
 							Intent intent = new Intent();
 							intent.setClass(GuessNumberActivity.this, SetMyInfoActivity2.class);
 							intent.putExtra("from", "add");
@@ -472,6 +484,9 @@ public class GuessNumberActivity extends Activity implements OnClickListener{
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
 							// TODO Auto-generated method stub
+							
+							updateGameRankInfo();
+							
 							Intent intent = new Intent();
 							intent.setClass(GuessNumberActivity.this, SetMyInfoActivity2.class);
 							intent.putExtra("from", "add");
@@ -622,6 +637,55 @@ public class GuessNumberActivity extends Activity implements OnClickListener{
 		});
 		
 		dialogTips.show();
+	}
+	
+	public void updateGameRankInfo(){
+		new Thread(){
+			
+			@Override
+			public void run(){
+				final int guessNum = getGuessTime();
+				
+				BmobQuery<DefaultGameFile> query = new BmobQuery<DefaultGameFile>();
+				query.addWhereEqualTo("packageName", "gameguessnumber");
+				query.addWhereGreaterThan("bestScore", guessNum);
+				query.findObjects(GuessNumberActivity.this, new FindListener<DefaultGameFile>() {
+					
+					@Override
+					public void onSuccess(List<DefaultGameFile> arg0) {
+						// TODO Auto-generated method stub
+						if (arg0.size() != 0) {
+							DefaultGameFile gameFile = arg0.get(0);
+							gameFile.setBestScore(guessNum);
+							gameFile.setBestUser(CustomApplcation.getInstance().getCurrentUser());
+							
+							gameFile.update(GuessNumberActivity.this, new UpdateListener() {
+								
+								@Override
+								public void onSuccess() {
+									// TODO Auto-generated method stub
+									ActivityUtil.show(GuessNumberActivity.this, "你已成为猜数字最佳玩家，更新游戏排名成功！");
+								}
+								
+								@Override
+								public void onFailure(int arg0, String arg1) {
+									// TODO Auto-generated method stub
+									ActivityUtil.show(GuessNumberActivity.this, "更新游戏排名失败！");
+								}
+							});
+							
+						}
+					}
+					
+					@Override
+					public void onError(int arg0, String arg1) {
+						// TODO Auto-generated method stub
+						ActivityUtil.show(GuessNumberActivity.this, "更新游戏排名失败！");
+					}
+				});
+			}
+			
+		}.start();
 	}
 	
 }

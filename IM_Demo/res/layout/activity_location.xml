@@ -29,14 +29,14 @@
             android:scaleType="centerInside"
             android:src="@drawable/base_action_bar_back_bg_selector" />
 
-        <View
+        <!-- <View
             android:id="@+id/view_temp"
             android:layout_width="1dp"
             android:layout_height="match_parent"
             android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
             android:layout_toRightOf="@id/iv_back"
-            android:background="#14191A" />
+            android:background="@color/common_topbar_divider" /> -->
 
         <TextView
             android:id="@+id/tv_title"
@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@id/view_temp"
+            android:layout_centerInParent="true"
             android:text="位置"
             android:textColor="#ffffff"
             android:textSize="18sp" />
@@ -55,13 +55,13 @@
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="8dp"
+            android:layout_marginRight="13dp"
             android:gravity="center"
             android:text="发送"
             android:textColor="#fff"
             android:textSize="16sp" />
 
-        <View
+        <!-- <View
             android:id="@+id/view_temp2"
             android:layout_width="1dp"
             android:layout_height="match_parent"
@@ -69,7 +69,7 @@
             android:layout_marginRight="5dp"
             android:layout_marginTop="8dp"
             android:layout_toLeftOf="@id/tv_add"
-            android:background="#14191A" />
+            android:background="@color/common_topbar_divider" /> -->
     </RelativeLayout>
      
     <com.baidu.mapapi.map.MapView

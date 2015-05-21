@@ -14,4 +14,7 @@ public class Config {
 	public static final int NUMBERS_PER_PAGE = 15;// 每次请求返回评论条数
 	public static final int SAVE_FAVOURITE = 2;
 	public static final int GET_FAVOURITE = 3;
+	
+	public static int versionNum = 1500;
+	public static String version = "V1.2";
 }

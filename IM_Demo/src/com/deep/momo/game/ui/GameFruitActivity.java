@@ -1,8 +1,18 @@
 package com.deep.momo.game.ui;
 
+import java.util.List;
+
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.datatype.BmobRelation;
+import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.UpdateListener;
+
+import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
+import com.bmob.im.demo.bean.DefaultGameFile;
 import com.bmob.im.demo.ui.ActivityBase;
 import com.bmob.im.demo.ui.SetMyInfoActivity2;
+import com.bmob.im.demo.util.ActivityUtil;
 import com.bmob.im.demo.view.dialog.DialogTips;
 import com.deep.momo.game.view.GameView;
 import com.deep.momo.game.view.OnStateListener;
@@ -225,12 +235,17 @@ public class GameFruitActivity extends Activity implements OnClickListener, OnTi
 			dialogTips = null;
 			
 		}else if (from.equals("other")) {
+			
+			// new一个线程，更新游戏排名信息
+			
 			DialogTips dialogTips = new DialogTips(GameFruitActivity.this, "你赢了", "查看资料", "退出", "结果", false);
 			dialogTips.SetOnSuccessListener(new DialogInterface.OnClickListener() {
 				
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					// TODO Auto-generated method stub
+					// 更新游戏的排名信息
+					updateGameRankInfo();
 					gotoMomo();
 					quit();
 				}
@@ -248,6 +263,54 @@ public class GameFruitActivity extends Activity implements OnClickListener, OnTi
 			dialogTips.show();
 			dialogTips = null;
 		}
+	}
+	
+	public void updateGameRankInfo(){
+		new Thread(){
+			
+			@Override
+			public void run(){
+				BmobQuery<DefaultGameFile> query = new BmobQuery<DefaultGameFile>();
+				final int spendTime = gameView.getTotalTime() - gameView.getLeftTime();
+				query.addWhereEqualTo("packageName", "gamelianliankan");
+				query.addWhereLessThan("bestScore", spendTime);
+				query.findObjects(GameFruitActivity.this, new FindListener<DefaultGameFile>() {
+					
+					@Override
+					public void onSuccess(List<DefaultGameFile> arg0) {
+						// TODO Auto-generated method stub
+						if (arg0.size() != 0) {
+							DefaultGameFile gameFile = arg0.get(0);
+							gameFile.setBestScore(spendTime);
+							gameFile.setBestUser(CustomApplcation.getInstance().getCurrentUser());
+							
+							gameFile.update(GameFruitActivity.this, new UpdateListener() {
+								
+								@Override
+								public void onSuccess() {
+									// TODO Auto-generated method stub
+									ActivityUtil.show(GameFruitActivity.this, "你已成为水果连连看最佳玩家，更新游戏排名成功！");
+								}
+								
+								@Override
+								public void onFailure(int arg0, String arg1) {
+									// TODO Auto-generated method stub
+									ActivityUtil.show(GameFruitActivity.this, "更新游戏排名失败！");
+								}
+							});
+							
+						}
+					}
+					
+					@Override
+					public void onError(int arg0, String arg1) {
+						// TODO Auto-generated method stub
+						ActivityUtil.show(GameFruitActivity.this, "更新游戏排名失败！");
+					}
+				});
+			}
+			
+		}.start();
 	}
 	
 	private void gotoMomo() {

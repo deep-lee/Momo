@@ -96,6 +96,8 @@ public class ChatActivity extends ActivityBase implements OnClickListener,
 	private Button btn_chat_emo, btn_chat_send, btn_chat_add,btn_chat_keyboard, btn_speak, btn_chat_voice;
 
 	XListView mListView;
+	
+	TextView tv_title;
 
 	// 可输入表情的输入框
 	EmoticonsEditText edit_user_comment;
@@ -201,6 +203,12 @@ public class ChatActivity extends ActivityBase implements OnClickListener,
 		mHeaderLayout = (HeaderLayout) findViewById(R.id.common_actionbar);
 		mListView = (XListView) findViewById(R.id.mListView);
 //		initTopBarForLeft(targetUser.getNick());
+		
+		tv_title = (TextView) findViewById(R.id.tv_title);
+		if (targetUser != null) {
+			tv_title.setText(targetUser.getNick());
+		}
+		
 		
 		// 初始化界面下方的控件
 		initBottomView();

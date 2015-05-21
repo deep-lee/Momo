@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/theme_bg_color"
     tools:context="${relativePackage}.${activityClass}" >
     
     <RelativeLayout
@@ -24,14 +25,14 @@
             android:scaleType="centerInside"
             android:src="@drawable/base_action_bar_back_bg_selector" />
 
-        <View
+        <!-- <View
             android:id="@+id/view_temp"
             android:layout_width="1dp"
             android:layout_height="match_parent"
             android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
             android:layout_toRightOf="@id/iv_back"
-            android:background="#14191A" />
+            android:background="@color/common_topbar_divider" /> -->
 
         <TextView
             android:id="@+id/tv_title"
@@ -39,22 +40,41 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@id/view_temp"
+            android:layout_centerInParent="true"
             android:text="游戏社区"
             android:textColor="#ffffff"
             android:textSize="18sp" />
+        
+        <TextView
+            android:id="@+id/tv_game_community_write_topic"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="13dp"
+            android:gravity="center"
+            android:text="发表话题"
+            android:onClick="writeTopic"
+            android:clickable="true"
+            android:textColor="#fff"
+            android:textSize="16sp" />
+
+        <!-- <View
+            android:id="@+id/view_temp2"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="8dp"
+            android:layout_toLeftOf="@id/tv_game_community_write_topic"
+            android:background="@color/common_topbar_divider" /> -->
 
     </RelativeLayout>
-    
-
-    <ListView
-        android:id="@+id/game_community_list_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:cacheColorHint="#00000000"
-        android:divider="@null"
-        android:layout_below="@+id/title"
-        android:dividerHeight="1dp"
-        android:scrollbarStyle="outsideOverlay" />
+        
+        <android.support.v4.view.ViewPager
+         android:id="@+id/game_community_viewpager"
+         android:layout_width="match_parent"
+         android:layout_below="@+id/title"
+         android:layout_height="match_parent"/>
 
 </RelativeLayout>

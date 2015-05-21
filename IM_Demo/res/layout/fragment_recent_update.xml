@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" 
+    android:background="@color/theme_bg_color"
+    android:scrollbarStyle="outsideOverlay">
+    
+    <com.deep.phoenix.PullToRefreshView
+        android:id="@+id/pull_to_refresh"
+        android:layout_width="match_parent"
+        android:background="@color/theme_bg_color"
+        android:layout_height="match_parent">
+        
+        <com.baoyz.swipemenulistview.SwipeMenuListView
+	    	android:dividerHeight="1dp"   
+	    	android:fadingEdgeLength="0dp"
+	        android:fastScrollEnabled="true"
+	        android:id="@+id/list"
+	        android:background="#ffffff"
+	        android:divider="#d9d9d9"
+	        android:listSelector="@android:color/transparent"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:cacheColorHint="#00000000"/>
+
+
+    </com.deep.phoenix.PullToRefreshView>
+    
+</RelativeLayout>

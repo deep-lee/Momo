@@ -1,0 +1,185 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/theme_bg_color"
+    tools:context="${relativePackage}.${activityClass}" >
+    
+    <RelativeLayout
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_top_bar"
+        android:background="@color/common_action_bar_bg_color" >
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:onClick="back"
+            android:paddingBottom="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="5dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/base_action_bar_back_bg_selector" />
+
+        <!-- <View
+            android:id="@+id/view_temp"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_toRightOf="@id/iv_back"
+            android:background="@color/common_topbar_divider" /> -->
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_centerInParent="true"
+            android:text="话题"
+            android:textColor="#ffffff"
+            android:textSize="18sp" />
+    </RelativeLayout>
+    
+    <ScrollView 
+	    android:id="@+id/commit_scroll"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_below="@id/title"
+	    android:layout_marginBottom="56dp">
+    
+	    <LinearLayout 
+	        android:layout_width="fill_parent"
+	        android:orientation="vertical"
+	         
+	        android:layout_height="wrap_content"
+	        android:padding="10dp">
+	        
+	        <RelativeLayout 
+	            android:layout_width="fill_parent"
+	            android:orientation="horizontal"
+	            android:layout_height="wrap_content">
+	            
+	            <ImageView 
+	                android:id="@+id/game_topic_author_icon"
+	                android:layout_width="50dp"
+	                android:src="@drawable/user_icon_default_main"
+	                android:layout_height="50dp"/>
+	            
+	            <LinearLayout 
+	                android:layout_width="wrap_content"
+	                android:orientation="vertical"
+	                android:layout_marginLeft="20dp"
+	                android:layout_centerVertical="true"
+	                android:layout_toRightOf="@+id/game_topic_author_icon"
+	                android:layout_height="wrap_content">
+	                
+	                <TextView 
+	                    android:id="@+id/game_topic_author_name"
+	                    android:layout_width="wrap_content"
+	                    android:text="Nick"
+	                    android:layout_height="wrap_content"/>
+	                
+	                <TextView 
+	                    android:id="@+id/game_topic_update_time"
+	                    android:layout_width="wrap_content"
+	                    android:text="刚刚"
+	                    android:textColor="#aaaaaa"
+	                    android:textSize="13sp"
+	                    android:layout_marginTop="5dp"
+	                    android:layout_height="wrap_content"/>
+	                
+	            </LinearLayout>
+	            
+	        </RelativeLayout>
+	        
+	        <TextView 
+			    android:id="@+id/game_topic_content_text"
+			    style="@style/TextTheme"
+			    android:layout_marginTop="10dp"
+			    android:text="十年之前，我不认识你 你不属于我，我们还是一样，陪在一个陌生人左右，走过渐渐熟悉的街头;十年之后，我们是朋友， 还可以问候，只是那种温柔，再也找不到拥抱的理由，情人最后难免沦为朋友。"/>
+	        
+	        
+	        
+	        <View 
+			    android:layout_width="match_parent"
+			    android:layout_height="1dp"
+			    android:layout_marginTop="10dp"
+			    android:background="#dddddd"/>
+		    
+			<ListView 
+			    android:id="@+id/game_topic_comment_list"
+			    android:layout_width="match_parent"
+			    android:layout_marginTop="10dp"
+			    android:divider="#00000000"
+        		android:dividerHeight="8dp"
+        		android:fadingEdge="none"
+        		android:fastScrollEnabled="false"
+       		 	android:footerDividersEnabled="false"
+       		 	android:headerDividersEnabled="false"
+        		android:smoothScrollbar="true"
+			    android:layout_height="wrap_content"></ListView>
+		
+			<TextView 
+			    android:id="@+id/game_topic_loadmore"
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:text="加载更多评论"
+			    android:padding="12dip"
+			    android:gravity="center"
+			    style="@style/TextTheme.tipstheme_second"
+			    android:textColor="@drawable/selector_load_more"/>
+	        
+	    </LinearLayout>
+    
+    </ScrollView>
+    
+    <LinearLayout 
+	    android:id="@+id/game_topic_area_commit"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal"
+	    android:layout_alignParentBottom="true"
+	    android:padding="4dip"
+	    android:background="@drawable/bg_comment_comment"
+	    android:gravity="center_vertical">
+
+    <EditText
+        android:id="@+id/game_topic_comment_content"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:hint="来评论一句吧"
+        android:background="@drawable/selector_edittext_account"
+        android:ems="10" 
+        android:minHeight="40dp"
+        android:layout_marginRight="4dip"
+        android:layout_marginLeft="4dp"
+        android:paddingLeft="4dip">
+        <requestFocus />
+    </EditText>
+    
+    <Button
+        android:id="@+id/game_topic_comment_commit"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:minWidth="80dp"
+        android:layout_weight="0"
+        android:paddingLeft="32dp"
+        android:paddingRight="32dp"
+        android:text="评论" 
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:padding="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/selector_logout"/>
+	</LinearLayout>
+
+</RelativeLayout>

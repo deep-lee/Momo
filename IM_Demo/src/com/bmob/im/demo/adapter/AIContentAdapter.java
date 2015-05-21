@@ -77,8 +77,8 @@ public class AIContentAdapter extends BaseContentAdapter<QiangYu> {
 					.findViewById(R.id.user_name);
 			viewHolder.userLogo = (ImageView) convertView
 					.findViewById(R.id.user_logo);
-			viewHolder.favMark = (ImageView) convertView
-					.findViewById(R.id.item_action_fav);
+//			viewHolder.favMark = (ImageView) convertView
+//					.findViewById(R.id.item_action_fav);
 			viewHolder.contentText = (TextView) convertView
 					.findViewById(R.id.content_text);
 			viewHolder.contentImage = (ImageView) convertView
@@ -87,10 +87,11 @@ public class AIContentAdapter extends BaseContentAdapter<QiangYu> {
 					.findViewById(R.id.item_action_love);
 			viewHolder.hate = (TextView) convertView
 					.findViewById(R.id.item_action_hate);
-			viewHolder.share = (TextView) convertView
-					.findViewById(R.id.item_action_share);
+//			viewHolder.share = (TextView) convertView
+//					.findViewById(R.id.item_action_share);
 			viewHolder.comment = (TextView) convertView
 					.findViewById(R.id.item_action_comment);
+			viewHolder.createTime = (TextView) convertView.findViewById(R.id.state_create_time);
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
@@ -158,6 +159,7 @@ public class AIContentAdapter extends BaseContentAdapter<QiangYu> {
 		});
 		viewHolder.userName.setText(entity.getAuthor().getNick());
 		viewHolder.contentText.setText(entity.getContent());
+		viewHolder.createTime.setText("" + entity.getCreatedAt());
 		if (null == entity.getContentfigureurl()) {
 			viewHolder.contentImage.setVisibility(View.GONE);
 		} else {
@@ -276,15 +278,16 @@ public class AIContentAdapter extends BaseContentAdapter<QiangYu> {
 				});
 			}
 		});
-		viewHolder.share.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				// share to sociaty
-				
-			}
-		});
+//		viewHolder.share.setOnClickListener(new OnClickListener() {
+//
+//			@Override
+//			public void onClick(View v) {
+//				// TODO Auto-generated method stub
+//				// share to sociaty
+//				
+//			}
+//		});
+		viewHolder.comment.setText("评论(" + entity.getComment() + ")");
 		viewHolder.comment.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -301,24 +304,24 @@ public class AIContentAdapter extends BaseContentAdapter<QiangYu> {
 			}
 		});
 
-		if (entity.getMyFav()) {
-			viewHolder.favMark
-					.setImageResource(R.drawable.ic_action_fav_choose);
-		} else {
-			viewHolder.favMark
-					.setImageResource(R.drawable.ic_action_fav_normal);
-		}
-		viewHolder.favMark.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				// 收藏
-				ActivityUtil.show(mContext, "收藏");
-				onClickFav(v, entity);
-
-			}
-		});
+//		if (entity.getMyFav()) {
+//			viewHolder.favMark
+//					.setImageResource(R.drawable.ic_action_fav_choose);
+//		} else {
+//			viewHolder.favMark
+//					.setImageResource(R.drawable.ic_action_fav_normal);
+//		}
+//		viewHolder.favMark.setOnClickListener(new OnClickListener() {
+//
+//			@Override
+//			public void onClick(View v) {
+//				// TODO Auto-generated method stub
+//				// 收藏
+//				ActivityUtil.show(mContext, "收藏");
+//				onClickFav(v, entity);
+//
+//			}
+//		});
 		return convertView;
 	}
 
@@ -344,11 +347,12 @@ public class AIContentAdapter extends BaseContentAdapter<QiangYu> {
 		public TextView contentText;
 		public ImageView contentImage;
 
-		public ImageView favMark;
+//		public ImageView favMark;
 		public TextView love;
 		public TextView hate;
-		public TextView share;
+//		public TextView share;
 		public TextView comment;
+		public TextView createTime;
 	}
 
 	private void onClickFav(View v, final QiangYu qiangYu) {

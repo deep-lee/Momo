@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/navi_list"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_navi" >
+    
+    <ImageView 
+        android:id="@+id/fragment_navi_setting_iv"
+        android:layout_width="wrap_content"
+        android:background="@drawable/base_fragment_navi_setting_selector"
+        android:padding="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content"/>
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="top|center"
+        android:orientation="vertical" >
+        
+        <LinearLayout
+	        android:id="@+id/fragment_navi_avatar_layout"
+	        android:layout_width="wrap_content"
+	        android:orientation="vertical"
+	        android:layout_gravity="center_horizontal"
+	        android:layout_height="wrap_content">
+	        
+	        <ImageView
+	            android:id="@+id/fragment_navi_avatar_iv"
+	            android:layout_width="70dp"
+	            android:layout_gravity="center_horizontal"
+	            android:src="@drawable/default_avatar"
+	            android:layout_height="70dp"/>
+	        
+	        <TextView 
+	            android:id="@+id/fragment_navi_nick"
+	            android:layout_width="wrap_content"
+	            android:textColor="#ffffff"
+	            android:text="Nick"
+	            android:textSize="16sp"
+	            android:layout_gravity="center_horizontal"
+	            android:layout_marginTop="20dp"
+	            android:layout_height="wrap_content"/>
+	        
+	    </LinearLayout>
+	    
+        <!-- <RelativeLayout 
+	        android:layout_width="fill_parent"
+	        android:layout_marginTop="20dp"
+	        android:layout_marginLeft="30dp"
+	        android:background="@drawable/slide_personal_layout_bg_selector"
+	        android:id="@+id/slide_personal_layout"
+	        android:layout_marginRight="10dp"
+	        android:clickable="true"
+	        android:layout_gravity="center_horizontal"
+	        android:layout_height="wrap_content">
+	        
+	        <View 
+	            android:id="@+id/line1"
+	            android:layout_width="fill_parent"
+	            android:layout_height="0.5dp"
+	            android:background="@drawable/slide_list_line"/>
+	        
+	        <TextView 
+	            android:id="@+id/slide_personal"
+	            android:layout_width="wrap_content"
+	            android:layout_centerVertical="true"
+	            android:gravity="center"
+	            android:drawablePadding="5dip"
+	            android:singleLine="true"
+	            android:layout_marginTop="5dip"
+	            android:layout_height="wrap_content"
+	            android:layout_below="@+id/line1"
+	            android:drawableLeft="@drawable/slide_icon_say"
+	            android:textColor="#727d84"
+	            android:text="testttttttttttt"/>
+	        
+	        <View 
+	            android:id="@+id/line2"
+	            android:layout_width="fill_parent"
+	            android:layout_marginTop="5dip"
+	            android:layout_height="0.5dp"
+	            android:layout_below="@+id/slide_personal"
+	            android:background="@drawable/slide_list_line"/>
+	        
+	    </RelativeLayout> -->
+        
+		<TextView
+            android:id="@+id/tv_navi_chat"
+            style="@style/navitext"
+            android:drawableLeft="@drawable/base_fragment_navi_recent_selector"
+            android:text="@string/fragment_navi_recent"
+            android:drawablePadding="20dp"
+            android:layout_marginTop="20dp"
+            android:textColor="@drawable/base_fragment_text_selector" />
+        <TextView
+            android:id="@+id/tv_navi_contacts"
+            style="@style/navitext"
+            android:drawableLeft="@drawable/base_fragment_navi_contact_selector"
+            android:text="@string/fragment_navi_contact"
+            android:drawablePadding="20dp"
+            android:textColor="@drawable/base_fragment_text_selector"/>
+
+        <TextView
+            android:id="@+id/tv_navi_nears"
+            style="@style/navitext"
+            android:drawableLeft="@drawable/base_fragment_navi_nears_selector"
+            android:text="@string/fragment_navi_nears" 
+            android:drawablePadding="20dp"
+            android:textColor="@drawable/base_fragment_text_selector"/>
+
+        <TextView
+            android:id="@+id/tv_navi_find"
+            style="@style/navitext"
+            android:drawableLeft="@drawable/base_fragment_navi_find_selector"
+            android:text="@string/fragment_navi_find" 
+            android:drawablePadding="20dp"
+            android:textColor="@drawable/base_fragment_text_selector"/>
+    </LinearLayout>
+
+</RelativeLayout>

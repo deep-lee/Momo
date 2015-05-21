@@ -11,7 +11,6 @@ import cn.bmob.v3.listener.FindListener;
 
 import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
-import com.bmob.im.demo.R.id;
 import com.bmob.im.demo.adapter.StateLineAdapter;
 import com.bmob.im.demo.bean.QiangYu;
 import com.bmob.im.demo.bean.User;
@@ -29,12 +28,10 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewDebug.FlagToString;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -76,26 +73,11 @@ public class StateTimeLineActivity extends BaseActivity {
 	}
 	
 	public LayoutInflater mInflater;
-	
-//	Handler loadeHandler = new Handler(){
-//		public void handleMessage(Message msg) { 
-//            switch (msg.what) {   
-//            
-//            	case 0:
-//            		initView();
-//            		break;
-//            
-//            }   
-//            super.handleMessage(msg);  
-//		}
-//	};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_state_time_line);
-		
-//		initView();
 		
 		pageNum = 0;
 		
@@ -106,6 +88,8 @@ public class StateTimeLineActivity extends BaseActivity {
 		// 初始化user
 		if (flag) {
 			user = CustomApplcation.getInstance().getCurrentUser();
+			initView();
+			
 		}else {
 			String username = getIntent().getStringExtra("username");
 			BmobQuery<User> query = new BmobQuery<User>();
@@ -115,14 +99,14 @@ public class StateTimeLineActivity extends BaseActivity {
 				@Override
 				public void onError(int arg0, String arg1) {
 					// TODO Auto-generated method stub
-							
+					//ShowToast("找不到");
 				}
 				@Override
 				public void onSuccess(List<User> arg0) {
 					// TODO Auto-generated method stub
 					if (arg0.size() > 0) {
 						user = arg0.get(0);
-						
+						//ShowToast("初始化View");
 						initView();
 					}
 				}
@@ -196,6 +180,7 @@ public class StateTimeLineActivity extends BaseActivity {
 				
 		if(mListItems.size() == 0){
 					
+			Log.i("TTTTTTTTTTT", "fetch data");
 			// 获取状态数据
 			fetchData();
 		}
@@ -259,6 +244,8 @@ public class StateTimeLineActivity extends BaseActivity {
 					mAdapter.notifyDataSetChanged();
 						
 					setState(LOADING_COMPLETED);
+					
+					//ShowToast("加载完成");
 					mPullRefreshListView.onRefreshComplete();
 				}else{
 					ActivityUtil.show(StateTimeLineActivity.this, "暂无更多数据~");

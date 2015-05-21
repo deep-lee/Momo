@@ -77,17 +77,7 @@ public class GameCommunityAdapter extends BaseAdapter {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				// 进入游戏界面
-				
-				Intent intent = new Intent();
-				
-				intent.setClass(mContext, GameDetailsActivity.class);
-				
-				Bundle data = new Bundle();
-				data.putString("from", "me");
-				data.putSerializable("gameInfo", mData.get(position));
-				intent.putExtras(data);
-				mContext.startActivity(intent);
+				// 进入游戏话题界面
 			}
 		});
 		

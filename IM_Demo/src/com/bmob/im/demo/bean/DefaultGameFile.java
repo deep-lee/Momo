@@ -23,10 +23,32 @@ public class DefaultGameFile extends BmobObject {
 	private BmobFile gameDisplay3;
 	private BmobFile gameDisplay4;
 	
+	private User bestUser;
+	
+	private int bestScore;
+	
 	private String gameRule;
 	private String gameWinMethod;
 	
 	private int notificationId;
+	
+	
+
+	public User getBestUser() {
+		return bestUser;
+	}
+
+	public void setBestUser(User bestUser) {
+		this.bestUser = bestUser;
+	}
+
+	public int getBestScore() {
+		return bestScore;
+	}
+
+	public void setBestScore(int bestScore) {
+		this.bestScore = bestScore;
+	}
 
 	public String getGameName() {
 		return gameName;

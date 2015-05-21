@@ -7,8 +7,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.UpdateListener;
+
+import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
+import com.bmob.im.demo.bean.DefaultGameFile;
 import com.bmob.im.demo.bean.User;
+import com.bmob.im.demo.util.ActivityUtil;
 import com.bmob.im.demo.util.ColorData;
 import com.bmob.im.demo.util.MixedConstant;
 import com.bmob.im.demo.util.RectArea;
@@ -49,6 +56,7 @@ import android.widget.Toast;
 import com.bmob.im.demo.ui.*;
 import com.bmob.im.demo.view.UIModel;
 import com.bmob.im.demo.view.dialog.DialogTips;
+import com.deep.momo.game.ui.GuessNumberActivity;
 import com.deep.momo.game.ui.MixedColorActivity;
 
 public class MixedColorView extends SurfaceView implements
@@ -141,6 +149,9 @@ public class MixedColorView extends SurfaceView implements
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
 								// TODO Auto-generated method stub
+								
+								updateGameRankInfo();
+								
 								Intent intent = new Intent();
 								intent.setClass(mContext, SetMyInfoActivity2.class);
 								
@@ -568,6 +579,53 @@ public class MixedColorView extends SurfaceView implements
 		}
 	}// Thread
 	
-
+	public void updateGameRankInfo(){
+		new Thread(){
+			
+			@Override
+			public void run(){
+				final int correctNum = correct;
+				
+				BmobQuery<DefaultGameFile> query = new BmobQuery<DefaultGameFile>();
+				query.addWhereEqualTo("packageName", "gamemixedcolor");
+				query.addWhereLessThan("bestScore", correctNum);
+				query.findObjects(mContext, new FindListener<DefaultGameFile>() {
+					
+					@Override
+					public void onSuccess(List<DefaultGameFile> arg0) {
+						// TODO Auto-generated method stub
+						if (arg0.size() != 0) {
+							DefaultGameFile gameFile = arg0.get(0);
+							gameFile.setBestScore(correctNum);
+							gameFile.setBestUser(CustomApplcation.getInstance().getCurrentUser());
+							
+							gameFile.update(mContext, new UpdateListener() {
+								
+								@Override
+								public void onSuccess() {
+									// TODO Auto-generated method stub
+									ActivityUtil.show(mContext, "你已成为猜数字最佳玩家，更新游戏排名成功！");
+								}
+								
+								@Override
+								public void onFailure(int arg0, String arg1) {
+									// TODO Auto-generated method stub
+									ActivityUtil.show(mContext, "更新游戏排名失败！");
+								}
+							});
+							
+						}
+					}
+					
+					@Override
+					public void onError(int arg0, String arg1) {
+						// TODO Auto-generated method stub
+						ActivityUtil.show(mContext, "更新游戏排名失败！");
+					}
+				});
+			}
+			
+		}.start();
+	}
 
 }

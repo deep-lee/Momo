@@ -66,6 +66,7 @@ public class UserFriendAdapter extends BaseAdapter implements SectionIndexer {
 		return 0;
 	}
 
+	@SuppressLint("InflateParams")
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ViewHolder viewHolder = null;
@@ -73,11 +74,13 @@ public class UserFriendAdapter extends BaseAdapter implements SectionIndexer {
 			convertView = LayoutInflater.from(ct).inflate(
 					R.layout.item_user_friend, null);
 			viewHolder = new ViewHolder();
+			viewHolder.user_item_line = convertView.findViewById(R.id.item_user_line);
 			viewHolder.alpha = (TextView) convertView.findViewById(R.id.alpha);
 			viewHolder.name = (TextView) convertView
 					.findViewById(R.id.tv_friend_name);
 			viewHolder.avatar = (ImageView) convertView
 					.findViewById(R.id.img_friend_avatar);
+			
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
@@ -101,7 +104,8 @@ public class UserFriendAdapter extends BaseAdapter implements SectionIndexer {
 			viewHolder.alpha.setVisibility(View.VISIBLE);
 			viewHolder.alpha.setText(friend.getSortLetters());
 		} else {
-			viewHolder.alpha.setVisibility(View.GONE);
+			viewHolder.alpha.setVisibility(View.INVISIBLE);
+			viewHolder.user_item_line.setVisibility(View.INVISIBLE);
 		}
 
 		return convertView;
@@ -111,6 +115,7 @@ public class UserFriendAdapter extends BaseAdapter implements SectionIndexer {
 		TextView alpha;// Ê××ÖÄ¸ÌáÊ¾
 		ImageView avatar;
 		TextView name;
+		View user_item_line;
 	}
 
 	/**

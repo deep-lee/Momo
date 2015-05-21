@@ -386,6 +386,14 @@
         <item name="android:textStyle">normal</item>
     </style>
     
+       <style name="navitext">
+        <item name="android:layout_width">150dip</item>
+        <item name="android:layout_height">56dip</item>
+        <item name="android:paddingLeft">20dip</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+    
 
 </resources>
 

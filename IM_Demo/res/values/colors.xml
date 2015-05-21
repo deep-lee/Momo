@@ -18,8 +18,8 @@
     <!-- emot -->
     <color name="msg_emote_divider">#ffa1a1a1</color>
     <color name="color_bottom_bg">#272a2e</color>
-    <color name="color_bottom_text_normal">#999999</color>
-    <color name="color_bottom_text_press">#45c01a</color>
+    <color name="color_bottom_text_normal">#5286c1</color>
+    <color name="color_bottom_text_press">#5286c1</color>
     <color name="text_gray">#969696</color>
     <color name="transparent">#00000000</color>
     <color name="msg_chat_bg">#eceff4</color>
@@ -78,9 +78,11 @@
     
     <color name="base_common_contact_list_suoyin_bg">#ebebeb</color>
     
-    <color name="common_action_bar_bg_color">#22292c</color>
+    <color name="common_action_bar_bg_color">#D95555</color>
+    <color name="common_letter_view_normal">#b4cdcd</color>
     
     <color name="register_bottom_bar_btn_p">#141414</color>
     <color name="theme_color">#D95555</color>
     <color name="second_color">#888888</color>
+    <color name="common_topbar_divider">#1a68c0</color>
 </resources>
