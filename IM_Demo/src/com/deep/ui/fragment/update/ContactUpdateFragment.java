@@ -18,6 +18,9 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
+import android.view.animation.Animation.AnimationListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -45,6 +48,10 @@ import com.bmob.im.demo.util.PinyinComparator;
 import com.bmob.im.demo.view.MyLetterView;
 import com.bmob.im.demo.view.MyLetterView.OnTouchingLetterChangedListener;
 import com.bmob.im.demo.view.dialog.DialogTips;
+import com.deep.ui.update.BaseSlidingFragmentActivity;
+import com.deep.ui.update.ContactSearchActivity;
+import com.deep.ui.update.MainActivity2;
+import com.deep.ui.update.SearchActivity;
 
 public class ContactUpdateFragment extends FragmentBase implements OnItemClickListener,OnItemLongClickListener{
 	
@@ -53,6 +60,8 @@ public class ContactUpdateFragment extends FragmentBase implements OnItemClickLi
 	TextView dialog;
 
 	ListView list_friends;
+	
+	ImageView iv_search;
 	
 	// ÓÒ±ßµÄ×ÖÄ¸±í
 	MyLetterView right_letter;
@@ -123,6 +132,7 @@ public class ContactUpdateFragment extends FragmentBase implements OnItemClickLi
 		layout_new =(LinearLayout)headView.findViewById(R.id.layout_new);
 		
 		layout_black = (LinearLayout) headView.findViewById(R.id.layout_black_new);
+		iv_search = (ImageView) headView.findViewById(R.id.common_fragment_search_iv);
 		
 		layout_new.setOnClickListener(new OnClickListener() {
 			
@@ -143,6 +153,35 @@ public class ContactUpdateFragment extends FragmentBase implements OnItemClickLi
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(getActivity(), BlackListActivity.class);
 				startAnimActivity(intent);
+			}
+		});
+		
+		iv_search.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				float y = 90;
+				
+				MainActivity2.y = y;
+				
+				TranslateAnimation animation = new TranslateAnimation(0, 0, 0, -y);
+				animation.setDuration(200);
+				animation.setFillAfter(true);
+				animation.setAnimationListener(new AnimationListener() {
+					@Override
+					public void onAnimationRepeat(Animation animation) {}
+					@Override
+					public void onAnimationStart(Animation animation) {}
+					@Override
+					public void onAnimationEnd(Animation animation) {
+						Intent intent = new Intent(getActivity(), ContactSearchActivity.class);
+						BaseSlidingFragmentActivity.flag = false;
+						getActivity().startActivityForResult(intent, 200);
+						getActivity().overridePendingTransition(R.anim.animationb,R.anim.animationa);
+					}
+				});
+				MainActivity2.layout_all.startAnimation(animation);
 			}
 		});
 		

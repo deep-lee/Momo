@@ -95,7 +95,7 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 	
 	// ImageButton btn_back;
 	
-	// 编辑，添加好友，发起会话，添加到黑名单
+	// 添加好友，发起会话，添加到黑名单
 	CircularProgressButton btn_add, btn_chat, btn_black;
 	
 	// 黑名单提示，照片墙
@@ -183,7 +183,7 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 		username = getIntent().getStringExtra("username");
 		
 		if (from.equals("me")) {
-
+			
 		}else {
 			String nick = getIntent().getStringExtra("nick");
 			tv_title = (TextView) findViewById(R.id.tv_title);
@@ -1230,11 +1230,6 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 		lp.setMargins(0, top, 0, 0);
 		iv_head_bg.setLayoutParams(lp);
 	}
-	
-//	btn_edit = (Button) findViewById(R.id.btn_edit_info);
-//	btn_add = (Button) findViewById(R.id.info_btn_add_friend);
-//	btn_chat = (Button) findViewById(R.id.info_btn_chat);
-//	btn_black = (Button) findViewById(R.id.info_btn_black);
 
 	@Override
 	public void onClick(View v) {

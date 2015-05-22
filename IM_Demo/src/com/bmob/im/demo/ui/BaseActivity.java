@@ -15,17 +15,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
 import cn.bmob.im.BmobChatManager;
+import cn.bmob.im.BmobNotifyManager;
 import cn.bmob.im.BmobUserManager;
 import cn.bmob.im.bean.BmobChatUser;
 import cn.bmob.im.config.BmobConfig;
+import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.UpdateListener;
 
 import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
+import com.bmob.im.demo.bean.Update;
 import com.bmob.im.demo.bean.User;
+import com.bmob.im.demo.config.Config;
 import com.bmob.im.demo.util.CollectionUtils;
 import com.bmob.im.demo.util.CommonUtils;
+import com.bmob.im.demo.util.DownloadService;
 import com.bmob.im.demo.view.HeaderLayout;
 import com.bmob.im.demo.view.HeaderLayout.HeaderStyle;
 import com.bmob.im.demo.view.HeaderLayout.onLeftImageButtonClickListener;
@@ -43,7 +48,7 @@ public class BaseActivity extends FragmentActivity {
 	
 	protected SwipeBackLayout layout;
 
-	BmobUserManager userManager;
+	protected BmobUserManager userManager;
 	BmobChatManager manager;
 	
 	CustomApplcation mApplication;
@@ -317,7 +322,4 @@ public class BaseActivity extends FragmentActivity {
 		super.onBackPressed();
 		overridePendingTransition(0, R.anim.base_slide_right_out);
 	}
-	
-	
-	
 }

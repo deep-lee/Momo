@@ -92,6 +92,12 @@ public class StateTimeLineActivity extends BaseActivity {
 			
 		}else {
 			String username = getIntent().getStringExtra("username");
+			
+			if (username == null) {
+				ShowToast(R.string.network_tips);
+				username = CustomApplcation.getInstance().getCurrentUser().getUsername();
+			}
+			
 			BmobQuery<User> query = new BmobQuery<User>();
 			query.addWhereEqualTo("username", username);
 			query.findObjects(StateTimeLineActivity.this, new FindListener<User>() {

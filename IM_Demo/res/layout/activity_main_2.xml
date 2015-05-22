@@ -33,6 +33,19 @@
             android:textSize="20sp"
             android:textStyle="bold"
             android:typeface="monospace" />
+        
+        <TextView
+            android:id="@+id/topbar_edit_my_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="编辑"
+            android:visibility="invisible"
+            android:layout_centerVertical="true"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:typeface="monospace" />
     </RelativeLayout>
 
     <RelativeLayout 

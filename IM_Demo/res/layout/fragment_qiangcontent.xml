@@ -16,6 +16,8 @@
         android:footerDividersEnabled="false"
         android:headerDividersEnabled="false"
         android:smoothScrollbar="true"/>
+    
+    
 
     <TextView 
         android:id="@+id/networkTips"

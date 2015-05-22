@@ -50,8 +50,6 @@ public class PhotoWallFallActivity extends ActivityBase {
 		// requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_photo_wall_fall);
 		
-//		otherPhotoWall = new ArrayList<String>();
-		
 		photoWallView = (MyScrollView) findViewById(R.id.my_scroll_view);
 		
 		from = getIntent().getStringExtra("from");
@@ -59,18 +57,8 @@ public class PhotoWallFallActivity extends ActivityBase {
 		tv_add = (TextView) findViewById(R.id.tv_add);
 		line_1 = findViewById(R.id.view_temp2);
 		
-		
-		
 		if (from.equals("me")) {
-//			initTopBarForBoth("’’∆¨«Ω", R.drawable.base_action_bar_upload_selector, new onRightImageButtonClickListener() {
-//				
-//				@Override
-//				public void onClick(View v) {
-//					// TODO Auto-generated method stub
-//					Intent intent = new Intent(PhotoWallFallActivity.this,SelectPictureActivity.class);
-//					startActivityForResult(intent, TO_SELECT_PHOTO);
-//				}
-//			});
+			
 		}
 		else if(from.equals("other")){
 //			initTopBarForLeft("’’∆¨«Ω");

@@ -13,8 +13,8 @@ import cn.bmob.im.db.BmobDB;
 import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.adapter.SearchListAdapter;
-import com.bmob.im.demo.adapter.UserFriendAdapter;
 import com.bmob.im.demo.bean.User;
+import com.bmob.im.demo.ui.BaseActivity;
 import com.bmob.im.demo.util.CharacterParser;
 import com.bmob.im.demo.util.CollectionUtils;
 import com.bmob.im.demo.util.PinyinComparator;
@@ -29,13 +29,13 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-public class SearchActivity extends Activity {
+public class SearchActivity extends BaseActivity {
 	
 	/**
 	 * 汉字转换成拼音的类
@@ -81,6 +81,8 @@ public class SearchActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setTheme(R.style.Transparent);    
+		//设置窗体背景模糊
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND, WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
 		setContentView(R.layout.activity_search);
 		
 		inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);

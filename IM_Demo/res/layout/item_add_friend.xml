@@ -16,7 +16,7 @@
 
         <ImageView
             android:id="@+id/avatar"
-            style="@style/Smile.ImageView.Photo_Middle"
+            style="@style/Smile.ImageView.Photo_Small"
             android:layout_centerVertical="true"
             android:layout_marginLeft="11dp"
             android:scaleType="fitXY"
@@ -29,38 +29,9 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="18dp"
             android:layout_toRightOf="@id/avatar"
-            android:textColor="#0F0F0F"
+            android:textColor="#9a9a9a"
+            android:text="Nick"
             android:textSize="16sp" />
-
-        <!-- <Button
-            android:id="@+id/btn_add"
-            android:layout_width="68dp"
-            android:layout_height="36dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="11dp"
-            android:background="@drawable/btn_login_selector"
-            android:paddingLeft="12dp"
-            android:paddingRight="12dp"
-            android:text="同意"
-            android:textColor="@color/base_color_text_white"
-            android:textSize="14sp" /> -->
-            
-            <!-- <com.dd.library.CircularProgressButton
-			    android:id="@+id/btn_add"
-			    android:layout_width="68dp"
-			    android:layout_margin="@dimen/activity_vertical_margin"
-			    android:gravity="center"
-			    android:layout_height="36dp"
-			    android:textColor="@color/cpb_white"
-			    android:textSize="14sp"
-			    android:layout_alignParentRight="true"
-            	android:layout_centerVertical="true"
-            	android:layout_marginRight="11dp"
-			    app:cpb_cornerRadius="48dp"
-			    app:cpb_iconComplete="@drawable/ic_action_accept"
-			    app:cpb_iconError="@drawable/ic_action_cancel"
-			    app:cpb_textIdle="添加" /> -->
     </RelativeLayout>
 
 </LinearLayout>

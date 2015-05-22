@@ -8,18 +8,13 @@ import cn.bmob.v3.listener.FindListener;
 
 import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
-import com.bmob.im.demo.R.layout;
 import com.bmob.im.demo.bean.Update;
 import com.bmob.im.demo.config.Config;
 import com.bmob.im.demo.util.DownloadService;
 import com.bmob.im.demo.view.dialog.DialogTips;
-
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.RelativeLayout;
@@ -80,7 +75,7 @@ public class AboutActivity extends BaseActivity implements OnClickListener{
 			public void onSuccess(List<Update> arg0) {
 				// TODO Auto-generated method stub
 				if (arg0.size() == 0) {
-					ShowToast("小摇我已经是最新版本，不需要更新了哦～");
+					ShowToast("Find已经是最新版本，不需要更新了哦～");
 				}else {
 					// 最新的版本
 					Update update = arg0.get(0);
@@ -106,7 +101,7 @@ public class AboutActivity extends BaseActivity implements OnClickListener{
 				// 下载并安装
 				// 开启线程，下载文件		
 				DownloadService.downNewFile(update.getApkFile().getFileUrl(AboutActivity.this),
-						update.getVersionNum(), "摇摇" + update.getVersion());
+						update.getVersionNum(), "Find " + update.getVersion());
 			}
 		});
 		
@@ -122,7 +117,7 @@ public class AboutActivity extends BaseActivity implements OnClickListener{
 					CustomApplcation.getInstance().getMediaPlayer().start();
 				}
 				
-				String tickerText = "摇摇" + update.getVersion() + "更新可供下载";
+				String tickerText = "Find " + update.getVersion() + "更新可供下载";
 				boolean isAllowVibrate = CustomApplcation.getInstance().getSpUtil().isAllowVibrate();
 				showNotifyMessage(isAllow, isAllowVibrate, R.drawable.ic_launcher, tickerText, "更新", tickerText.toString());
 			}
@@ -135,6 +130,4 @@ public class AboutActivity extends BaseActivity implements OnClickListener{
 			String contentTitle, String contentText) {
 		BmobNotifyManager.getInstance(this).showNotify(isAllow, isAllowVibrate, notifyIcon, tickerText, contentTitle, contentText, AboutActivity.class);
 	}
-	
-	
 }

@@ -304,6 +304,15 @@ public class NearsUpdateFragment extends FragmentBase {
 		handler.removeCallbacks(runnable);
 	}
 	
+	
+	
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		openShakeListener();
+	}
+
 	private void updateUserData(User user,UpdateListener listener){
 		User current = (User) userManager.getCurrentUser(User.class);
 		user.setObjectId(current.getObjectId());

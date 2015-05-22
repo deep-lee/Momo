@@ -265,7 +265,7 @@ public class RecentUpdateFragment extends FragmentBase implements OnItemClickLis
 				public void onAnimationEnd(Animation animation) {
 					Intent intent = new Intent(getActivity(), SearchActivity.class);
 					BaseSlidingFragmentActivity.flag = false;
-					startActivityForResult(intent, 200);
+					getActivity().startActivityForResult(intent, 200);
 					getActivity().overridePendingTransition(R.anim.animationb,R.anim.animationa);
 				}
 			});

@@ -219,5 +219,6 @@
     <string name="fragment_navi_nears">附&#160;&#160;&#160;&#160;近</string>
     <string name="fragment_navi_find">发&#160;&#160;&#160;&#160;现</string>
     <string name="title_activity_search">SearchActivity</string>
+    <string name="title_activity_contact_search">ContactSearchActivity</string>
 
 </resources>

@@ -3,15 +3,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center_vertical"
-    android:orientation="horizontal"
-    android:padding="3dp" >
+    android:orientation="horizontal" >
+    
+    <ImageView 
+        android:id="@+id/common_fragment_search_iv"
+        android:layout_width="fill_parent"
+        android:src="@drawable/icon_fragment_search_bg"
+        android:layout_height="wrap_content"/>
 
     <LinearLayout
         android:id="@+id/layout_new"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="true"
-        
+        android:layout_below="@+id/common_fragment_search_iv"
         android:gravity="center_vertical"
         android:orientation="horizontal" >
         

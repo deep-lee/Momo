@@ -30,6 +30,7 @@ public class NaviFragment  extends Fragment implements OnClickListener{
     private static final int NEARSFRAGMENT = 2;
     private static final int FINDFRAGMENT = 3;
     private static final int SETTINGFRAGMENT = 4;
+    private static final int PERSONINFOFRAGMENT = 5;
 
     private MainActivity2 mActivity;
     private TextView navi_recent;
@@ -37,7 +38,6 @@ public class NaviFragment  extends Fragment implements OnClickListener{
     private TextView navi_nears;
     private TextView navi_find;
     private ImageView navi_setting;
-    
     private ImageView navi_avatar;
     private TextView navi_nick;
     
@@ -48,6 +48,7 @@ public class NaviFragment  extends Fragment implements OnClickListener{
     NearsUpdateFragment mNearsUpdateFragment;
     FindUpdateFragment mFindUpdateFragment;
     SettingUpdateFragment mSettingUpdateFragment;
+    PersonInfoUpdateFragment mPersonInfoUpdateFragment;
 
     private FragmentManager fragmentManager;
 
@@ -121,6 +122,7 @@ public class NaviFragment  extends Fragment implements OnClickListener{
         navi_nears.setOnClickListener(this);
         navi_find.setOnClickListener(this);
         navi_setting.setOnClickListener(this);
+        navi_avatar.setOnClickListener(this);
     }
 
     /**
@@ -136,6 +138,7 @@ public class NaviFragment  extends Fragment implements OnClickListener{
         	navi_nears.setSelected(false);
         	navi_find.setSelected(false);
         	navi_setting.setSelected(false);
+        	navi_avatar.setSelected(false);
             
             OnTabSelected(RECENTFRAGMENT);
             break;
@@ -146,6 +149,7 @@ public class NaviFragment  extends Fragment implements OnClickListener{
             navi_nears.setSelected(false);
             navi_find.setSelected(false);
             navi_setting.setSelected(false);
+            navi_avatar.setSelected(false);
 
             OnTabSelected(CONTACTFRAGMENT);
             break;
@@ -156,6 +160,7 @@ public class NaviFragment  extends Fragment implements OnClickListener{
             navi_nears.setSelected(true);
             navi_find.setSelected(false);
             navi_setting.setSelected(false);
+            navi_avatar.setSelected(false);
 
             OnTabSelected(NEARSFRAGMENT);
             break;
@@ -166,6 +171,7 @@ public class NaviFragment  extends Fragment implements OnClickListener{
             navi_nears.setSelected(false);
             navi_find.setSelected(true);
             navi_setting.setSelected(false);
+            navi_avatar.setSelected(false);
 
             OnTabSelected(FINDFRAGMENT);
             break;
@@ -176,8 +182,20 @@ public class NaviFragment  extends Fragment implements OnClickListener{
             navi_nears.setSelected(false);
             navi_find.setSelected(false);
             navi_setting.setSelected(true);
+            navi_avatar.setSelected(false);
 
             OnTabSelected(SETTINGFRAGMENT);
+        	break;
+        	
+        case R.id.fragment_navi_avatar_iv:
+        	navi_recent.setSelected(false);
+        	navi_contact.setSelected(false);
+            navi_nears.setSelected(false);
+            navi_find.setSelected(false);
+            navi_setting.setSelected(false);
+            navi_avatar.setSelected(true);
+
+            OnTabSelected(PERSONINFOFRAGMENT);
         	break;
         }
         
@@ -238,6 +256,16 @@ public class NaviFragment  extends Fragment implements OnClickListener{
 	        	transaction.show(mSettingUpdateFragment);
 	        }
         	break;
+        	
+        case PERSONINFOFRAGMENT:
+        	hideFragments(transaction);
+	        if(null == mPersonInfoUpdateFragment){
+	        	mPersonInfoUpdateFragment = new PersonInfoUpdateFragment(getActivity());
+	        	transaction.add(R.id.center, mPersonInfoUpdateFragment);
+	        }else{
+	        	transaction.show(mPersonInfoUpdateFragment);
+	        }
+        	break;
         }
         
         transaction.commit();
@@ -264,6 +292,9 @@ public class NaviFragment  extends Fragment implements OnClickListener{
     	}
     	if(mSettingUpdateFragment != null){
     		transaction.hide(mSettingUpdateFragment);
+    	}
+    	if(mPersonInfoUpdateFragment != null){
+    		transaction.hide(mPersonInfoUpdateFragment);
     	}
     }
     

@@ -85,14 +85,6 @@ public class AddFriendActivity extends ActivityBase implements OnClickListener, 
 
 	private void initListView() {
 		mListView = (ListView) findViewById(R.id.list_search);
-//		// 首先不允许加载更多
-//		mListView.setPullLoadEnable(false);
-//		// 不允许下拉
-//		mListView.setPullRefreshEnable(false);
-//		// 设置监听器
-//		mListView.setXListViewListener(this);
-//		//
-//		mListView.pullRefreshing();
 		
 		adapter = new AddFriendAdapter(this, users);
 		mListView.setAdapter(adapter);
@@ -473,9 +465,9 @@ public class AddFriendActivity extends ActivityBase implements OnClickListener, 
 			}
 			
 		}.start();
-}
+	}
 
-public void updateFingerGameBest(final int mark) {
+	public void updateFingerGameBest(final int mark) {
 	new Thread(){
 		
 		@Override
@@ -520,8 +512,8 @@ public void updateFingerGameBest(final int mark) {
 			});
 		}
 		
-	}.start();
-}
+		}.start();
+	}
 	
 	String searchName ="";
 	@Override
@@ -559,13 +551,6 @@ public void updateFingerGameBest(final int mark) {
 			
 			
 			break;
-			
-//		// 添加通讯录好友
-//		case R.id.tv_add_from_tongxunlu:
-//			
-//			
-//			break;
-
 		default:
 			break;
 		}

@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/info_layout_all"
+    android:orientation="vertical" >
+    
+    <RelativeLayout 
+        android:id="@+id/info_layout"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_width="wrap_content">
+        
+        <ImageView
+	        android:id="@+id/iv_profile_bg"
+	        android:layout_width="match_parent"
+	        android:layout_height="@dimen/image_profile_headbg_height"
+	        android:layout_alignParentLeft="true"
+	        android:layout_alignParentTop="true"
+	        android:background="@drawable/default_info_head_bg" />
+        
+	    <com.bmob.im.demo.view.InfoScrollView
+	        android:id="@+id/sv_profile"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:fadingEdge="none"
+	        android:scrollbars="none" >
+	
+	        <RelativeLayout
+	            android:layout_width="match_parent"
+	            android:layout_height="match_parent" >
+	            <RelativeLayout
+	                android:id="@+id/rl_profile1"
+	                android:layout_width="match_parent"
+	                android:layout_height="wrap_content"
+	                android:layout_alignParentLeft="true"
+	                android:layout_alignParentTop="true" >
+	
+	                <RelativeLayout
+	                    android:id="@+id/ll_profile_bg"
+	                    android:layout_width="fill_parent"
+	                    android:layout_height="@dimen/image_profile_headbg_height"
+	                    android:layout_alignParentLeft="true"
+	                    android:layout_alignParentTop="true">
+
+	                    
+	                </RelativeLayout>
+	
+	                <View
+	                    android:id="@+id/v_profile_hearbottom"
+	                    android:layout_width="wrap_content"
+	                    android:layout_height="@dimen/view_profile_headbottom_height"
+	                    android:layout_below="@+id/ll_profile_bg"
+	                    android:layout_centerHorizontal="true"
+	                    />
+	
+	                <!-- <ImageView
+	                    android:id="@+id/iv_profile_avartar"
+	                    android:layout_width="@dimen/image_profile_avatar_size"
+	                    android:layout_height="@dimen/image_profile_avatar_size"
+	                    android:layout_alignBottom="@+id/v_profile_hearbottom"
+	                    android:layout_centerHorizontal="true"
+	                    android:background="@drawable/default_head" /> -->
+	                    
+	                    <RelativeLayout 
+					        android:id="@+id/login_set_avator_layout"
+					        android:layout_width="120dp"
+					        android:orientation="vertical"
+					        android:layout_alignBottom="@+id/v_profile_hearbottom"
+					        android:layout_centerHorizontal="true"
+					        android:layout_height="120dp">
+					
+					        <ImageView
+					            android:id="@+id/iv_profile_avartar"
+					            android:layout_width="116dp"
+					            android:layout_height="116dp"
+					            android:layout_centerInParent="true"
+					            android:src="@drawable/default_avatar" />
+					    </RelativeLayout>
+	
+	            </RelativeLayout>
+	            
+	            <RelativeLayout
+	                android:id="@+id/rl_profile2"
+	                android:layout_width="match_parent"
+	                android:layout_height="90dp"
+	                android:background="@drawable/radius_bg"  
+    				android:layout_marginTop="15dp"
+
+	                android:layout_below="@+id/rl_profile1" >
+	
+	                <TextView 
+	                    android:id="@+id/info_photo_text"
+	                    android:layout_height="wrap_content"
+	                    android:text="照片墙"
+	                    android:layout_marginLeft="10dp"
+	                    android:textColor="#999999"
+	                    android:layout_centerVertical="true"
+	                    android:layout_width="wrap_content"/>
+	
+	                <LinearLayout 
+	                    android:layout_height="wrap_content"
+	                    android:orientation="horizontal"
+	                    android:layout_toRightOf="@+id/info_photo_text"
+	                    android:layout_marginLeft="20dp"
+	                    android:layout_centerVertical="true"
+	                    android:layout_width="fill_parent">
+	                    
+	                    <FrameLayout 
+	                        android:layout_width="68dp"
+	                        android:layout_height="70dp">
+	                        
+	                        <ImageView 
+		                        android:id="@+id/info_photo_1"
+		                        android:layout_width="68dp"
+		                        android:layout_gravity="center"
+		                        android:src="@drawable/game_icon"
+		                        android:layout_height="70dp"/>
+	                        
+	                        <com.bmob.im.demo.view.CircularProgressView 
+						        android:id="@+id/progress_view1" 
+						        android:layout_width="fill_parent" 
+						        android:layout_height="fill_parent" 
+						        android:padding="0dp" 
+						        app:cpv_thickness="4dp" 
+						        android:layout_gravity="center"
+						        app:cpv_indeterminate="true" 
+						        app:cpv_animAutostart="false"/>
+	                       
+	                    </FrameLayout>
+	                    
+	                    <FrameLayout 
+	                        android:layout_width="68dp"
+	                        android:layout_height="70dp">
+	                        
+	                        <ImageView 
+		                        android:id="@+id/info_photo_2"
+		                        android:layout_width="68dp"
+		                        android:layout_gravity="center"
+		                        android:src="@drawable/game_icon"
+		                        android:layout_height="70dp"/>
+	                        
+	                        <com.bmob.im.demo.view.CircularProgressView 
+						        android:id="@+id/progress_view2" 
+						        android:layout_width="fill_parent" 
+						        android:layout_height="fill_parent" 
+						        android:padding="0dp" 
+						        app:cpv_thickness="4dp" 
+						        android:layout_gravity="center"
+						        app:cpv_indeterminate="true" 
+						        app:cpv_animAutostart="false"/>
+	                        
+	                    </FrameLayout>
+	                    
+	                    <FrameLayout 
+	                        android:layout_width="68dp"
+	                        android:layout_height="70dp">
+	                        
+	                        <ImageView 
+		                        android:id="@+id/info_photo_3"
+		                        android:layout_width="68dp"
+		                        android:src="@drawable/game_icon"
+		                        android:layout_gravity="center"
+		                        android:layout_height="70dp"/>
+	                        
+	                        <com.bmob.im.demo.view.CircularProgressView 
+						        android:id="@+id/progress_view3" 
+						        android:layout_width="fill_parent" 
+						        android:layout_height="fill_parent" 
+						        android:padding="0dp" 
+						        app:cpv_thickness="4dp" 
+						        android:layout_gravity="center"
+						        app:cpv_indeterminate="true" 
+						        app:cpv_animAutostart="false"/>
+	                        
+	                    </FrameLayout>
+	                    
+	                    
+	                    
+	                    
+	                    
+	                </LinearLayout>
+	                
+	                <ImageView
+			            android:id="@+id/iv_photowallarraw"
+			            style="@style/Smile.ImageView"
+			            android:layout_width="20dp"
+			            android:layout_centerInParent="true"
+			            android:layout_alignParentRight="true"
+			            android:layout_marginRight="10dp"
+			            android:contentDescription="@string/action_settings"
+			            android:src="@drawable/register_bottom_arrow" />
+	                
+	            </RelativeLayout>
+	            
+	           <RelativeLayout
+	                android:id="@+id/rl_states_layout"
+	                android:layout_width="match_parent"
+	                android:layout_height="60dp"
+	                android:background="@drawable/radius_bg"  
+    				android:layout_marginTop="15dp"
+	                android:layout_below="@+id/rl_profile2" >
+	
+	                <TextView 
+	                    android:id="@+id/tv_states_name"
+	                    android:layout_height="wrap_content"
+	                    android:text="我的时间线"
+	                    android:layout_marginLeft="10dp"
+	                    android:textColor="#999999"
+	                    android:layout_centerVertical="true"
+	                    android:layout_width="wrap_content"/>
+	
+	                <ImageView
+			            android:id="@+id/iv_states_arraw"
+			            style="@style/Smile.ImageView"
+			            android:layout_width="20dp"
+			            android:layout_centerInParent="true"
+			            android:layout_alignParentRight="true"
+			            android:layout_marginRight="10dp"
+			            android:contentDescription="@string/action_settings"
+			            android:src="@drawable/register_bottom_arrow" />
+	                
+	                <TextView 
+		                android:id="@+id/tv_recent_states"
+		                android:layout_height="wrap_content"
+		                android:text="最近状态更新"
+		                android:layout_toLeftOf="@+id/iv_states_arraw"
+		                android:layout_centerVertical="true"
+		                android:layout_marginRight="10dp"
+		                android:textColor="#999999"
+		                android:layout_width="wrap_content"/>
+	                
+	            </RelativeLayout>
+	            
+	            <RelativeLayout 
+	                android:id="@+id/rl_profile3"
+	                android:layout_below="@+id/rl_states_layout"
+	                android:background="@drawable/radius_bg"  
+        			android:layout_marginTop="15dp"
+	                android:layout_height="60dp"
+	                android:layout_width="fill_parent">
+	                
+	                <LinearLayout 
+	                    android:layout_height="20dp"
+	                    android:orientation="horizontal"
+	                    android:layout_centerVertical="true"
+	                    android:layout_marginLeft="10dp"
+	                    android:layout_width="50dp">
+	                    
+	                    <ImageView 
+		                    android:id="@+id/info_sex_iv" 
+		                    android:layout_height="25dp"
+		                    android:layout_marginLeft="7dp"
+		                    android:layout_gravity="center_vertical"
+		                    android:src="@drawable/icon_nears_sex_male"
+		                    android:layout_width="25dp"/>
+
+	                    <TextView
+	                        android:id="@+id/info_age_tv"
+	                        android:layout_width="wrap_content"
+	                        android:layout_height="wrap_content"
+	                        android:text="20"
+	                        android:layout_gravity="center_vertical"
+	                        android:textColor="#999999" />
+
+	                </LinearLayout>
+	                
+	                <LinearLayout 
+	                    android:id="@+id/info_uptade_time_layout"
+	                    android:orientation="horizontal"
+	                    android:layout_height="wrap_content"
+	                    android:layout_alignParentRight="true"
+	                    android:layout_centerVertical="true"
+	                    android:layout_marginRight="10dp"
+	                    android:layout_width="wrap_content">
+	                    
+	                     <ImageView 
+		                    android:layout_height="20dp"
+		                    android:src="@drawable/icon_time"
+		                    android:layout_gravity="center_vertical"
+		                    android:layout_width="20dp"/>
+	                     
+	                     <TextView 
+	                         android:id="@+id/info_tv_last_update"
+	                         android:layout_width="wrap_content"
+	                         android:text="时间"
+	                         android:layout_gravity="center_vertical"
+	                         android:textColor="#999999"
+	                         android:layout_height="wrap_content"/>
+	                </LinearLayout>
+	                
+	                <LinearLayout 
+	                    android:id="@+id/info_uptade_location_diatance_layout"
+	                    android:orientation="horizontal"
+	                    android:layout_height="wrap_content"
+	                    android:layout_marginRight="10dp"
+	                    android:layout_centerVertical="true"
+	                    android:layout_toLeftOf="@+id/info_uptade_time_layout"
+	                    android:layout_width="wrap_content">
+	                    
+	                     <ImageView 
+		                    android:layout_height="20dp"
+		                    android:src="@drawable/icon_location"
+		                    android:layout_width="20dp"/>
+	                     
+	                     <TextView 
+	                         android:id="@+id/info_tv_last_location_distance"
+	                         android:layout_width="wrap_content"
+	                         android:text="距离"
+	                         android:textColor="#999999"
+	                         android:layout_height="wrap_content"/>
+	                </LinearLayout>
+	                
+	            </RelativeLayout>
+	            
+	            <!-- <View
+	                android:id="@+id/line_view2"
+			        android:layout_width="match_parent"
+			        android:layout_height="@dimen/base_line_width_2"
+			        android:layout_below="@+id/rl_profile3"
+			        android:background="@drawable/base_horizontal_line" >
+	    		</View> -->
+	    		
+	            <include
+			        android:id="@+id/common_info_basic"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:paddingLeft="15dp"
+        			android:paddingRight="15dp"
+        			android:layout_marginTop="15dp"
+			        android:layout_below="@+id/rl_profile3"
+			        layout="@layout/include_info_basic" />
+	            
+	            <include
+			        android:id="@+id/common_info_hobbi"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			         android:paddingLeft="15dp"
+        			android:paddingRight="15dp"
+        			android:layout_marginTop="15dp"
+			        android:layout_below="@+id/common_info_basic"
+			        layout="@layout/include_info_hobbi" />
+	            
+	            <include
+			        android:id="@+id/common_info_other"
+			        android:layout_width="wrap_content"
+			        android:paddingLeft="15dp"
+        			android:paddingRight="15dp"
+        			android:layout_marginTop="15dp"
+			        android:layout_height="wrap_content"
+			        android:layout_below="@+id/common_info_hobbi"
+			        layout="@layout/include_info_other" />
+	            
+	            <LinearLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_gravity="bottom"
+					android:background="@drawable/radius_bg"  
+					android:layout_alignParentBottom="true"
+					android:layout_below="@+id/common_info_other"
+					android:layout_marginTop="15dp"
+					android:orientation="vertical" >
+					        
+					<com.dd.library.CircularProgressButton
+						android:id="@+id/info_btn_add_friend"
+						android:layout_width="fill_parent"
+						android:layout_marginLeft="@dimen/activity_vertical_margin"
+					    android:layout_marginRight="@dimen/activity_vertical_margin"
+					    android:layout_marginTop="@dimen/activity_vertical_margin"
+						android:gravity="center"
+						android:layout_height="45dp"
+						android:textColor="@color/cpb_white"
+						app:cpb_cornerRadius="48dp"
+						android:visibility="gone"
+						app:cpb_iconComplete="@drawable/ic_action_accept"
+						app:cpb_iconError="@drawable/ic_action_cancel"
+						app:cpb_textIdle="加入通讯录" />
+					        
+					<com.dd.library.CircularProgressButton
+						android:id="@+id/info_btn_chat"
+						android:layout_width="fill_parent"
+						android:layout_marginLeft="@dimen/activity_vertical_margin"
+					    android:layout_marginRight="@dimen/activity_vertical_margin"
+					    android:layout_marginTop="@dimen/activity_vertical_margin"
+						android:gravity="center"
+						android:layout_height="45dp"
+						android:textColor="@color/cpb_white"
+						app:cpb_cornerRadius="48dp"
+						android:visibility="gone"
+						app:cpb_iconComplete="@drawable/ic_action_accept"
+						app:cpb_iconError="@drawable/ic_action_cancel"
+						app:cpb_textIdle="@string/chat" />
+					        
+					<com.dd.library.CircularProgressButton
+						android:id="@+id/info_btn_black"
+						android:layout_width="fill_parent"
+						android:layout_marginLeft="@dimen/activity_vertical_margin"
+					    android:layout_marginRight="@dimen/activity_vertical_margin"
+					    android:layout_marginTop="@dimen/activity_vertical_margin"
+						android:gravity="center"
+						android:layout_height="45dp"
+						android:textColor="@color/cpb_white"
+						app:cpb_cornerRadius="48dp"
+						android:visibility="gone"
+						app:cpb_iconComplete="@drawable/ic_action_accept"
+						app:cpb_iconError="@drawable/ic_action_cancel"
+						app:cpb_textIdle="@string/blacklist" />
+					
+					    <RelativeLayout
+					        android:id="@+id/info_layout_black_tips"
+					        android:layout_width="match_parent"
+					        android:layout_height="wrap_content"
+					        android:layout_marginTop="10dp"
+					        android:padding="10dp"
+					        android:visibility="gone" >
+					
+					        <TextView
+					            style="@style/Smile.TextView._Black"
+					            android:layout_centerInParent="true"
+					            android:text="@string/black_tips"
+					            android:textSize="14sp" />
+					    </RelativeLayout>
+	
+				</LinearLayout>
+	             
+	        </RelativeLayout>
+ 
+	    </com.bmob.im.demo.view.InfoScrollView>
+        
+    </RelativeLayout>
+    
+
+</RelativeLayout>

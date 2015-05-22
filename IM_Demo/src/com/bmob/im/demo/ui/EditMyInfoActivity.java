@@ -1,38 +1,25 @@
 package com.bmob.im.demo.ui;
 
-import java.io.File;
-
-import cn.bmob.im.BmobChatManager;
-import cn.bmob.im.config.BmobConfig;
-import cn.bmob.v3.listener.PushListener;
 import cn.bmob.v3.listener.UpdateListener;
 
 import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
-import com.bmob.im.demo.R.id;
-import com.bmob.im.demo.R.layout;
 import com.bmob.im.demo.bean.User;
-import com.bmob.im.demo.config.BmobConstants;
 import com.bmob.im.demo.util.CommonUtils;
 import com.bmob.im.demo.view.EditTextWithDel;
-import com.bmob.im.demo.view.HeaderLayout;
 import com.bmob.im.demo.view.dialog.CustomProgressDialog;
 import com.bmob.im.demo.view.dialog.DateChooseDialog;
+import com.bmob.im.demo.view.dialog.DialogTips;
 import com.bmob.im.demo.view.dialog.SingleChoiceDialog;
-import com.soundcloud.android.crop.Crop;
 
-import android.R.integer;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -48,6 +35,8 @@ public class EditMyInfoActivity extends ActivityBase implements OnClickListener{
 	
 
 	User currentUser;
+	
+	ImageView iv_back;
 	
 	String gameType, gameDifficulty, lovtStatus;
 	
@@ -66,16 +55,9 @@ public class EditMyInfoActivity extends ActivityBase implements OnClickListener{
 	
 	private void initView() {
 		
-//		initTopBarForBoth("编辑资料", R.drawable.base_action_bar_send_selector, "保存", new HeaderLayout.onRightImageButtonClickListener() {
-//			
-//			@Override
-//			public void onClick(View v) {
-//				// TODO Auto-generated method stub
-//				// 检查哪些有更改，并检查网络连接，以及更改资料
-//				checkAndUpdate();
-//			}
-//		});
-		
+		iv_back = (ImageView) findViewById(R.id.iv_back);
+		iv_back.setOnClickListener(this);
+
 		currentUser = userManager.getCurrentUser(User.class);
 		
 		rl_edit_birthday = (RelativeLayout) findViewById(R.id.rl_edit_birthday_layout);
@@ -350,7 +332,37 @@ public class EditMyInfoActivity extends ActivityBase implements OnClickListener{
 		case R.id.rl_edit_profile6:
 			showCareerSelectDialog();
 			break;
+			
+		case R.id.iv_back:
+			showBackDialog();
+			break;
 		}
+	}
+	
+	public void showBackDialog() {
+		DialogTips dialogTips = new DialogTips(EditMyInfoActivity.this, "是否放弃本次编辑", "继续编辑", "放弃", "提示", true);
+		dialogTips.SetOnCancelListener(new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				// 放弃编辑
+				setResult(RESULT_OK, getIntent()); // intent为A传来的带有Bundle的intent，当然也可以自己定义新的Bundle
+				getIntent().putExtra("update", false);
+				finish(); //此处一定要调用finish()方法
+			}
+		});
+		
+		dialogTips.SetOnSuccessListener(new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+		dialogTips.show();
 	}
 	
 	private void showCareerSelectDialog() {
@@ -598,5 +610,12 @@ public class EditMyInfoActivity extends ActivityBase implements OnClickListener{
 		User current = (User) userManager.getCurrentUser(User.class);
 		user.setObjectId(current.getObjectId());
 		user.update(this, listener);
+	}
+	
+	// Press the back button in mobile phone
+	@Override
+	public void onBackPressed() {
+		
+		showBackDialog();
 	}
 }

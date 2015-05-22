@@ -15,20 +15,27 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 import cn.bmob.im.BmobChatManager;
+import cn.bmob.im.BmobNotifyManager;
 import cn.bmob.im.BmobUserManager;
 import cn.bmob.im.bean.BmobChatUser;
 import cn.bmob.im.config.BmobConfig;
+import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.UpdateListener;
 
 import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
+import com.bmob.im.demo.bean.Update;
 import com.bmob.im.demo.bean.User;
+import com.bmob.im.demo.config.Config;
+import com.bmob.im.demo.ui.AboutActivity;
+import com.bmob.im.demo.ui.BaseActivity;
 import com.bmob.im.demo.ui.BaseMainActivity;
 import com.bmob.im.demo.ui.LoginActivity;
 import com.bmob.im.demo.ui.BaseMainActivity.OnLeftButtonClickListener;
 import com.bmob.im.demo.util.CollectionUtils;
 import com.bmob.im.demo.util.CommonUtils;
+import com.bmob.im.demo.util.DownloadService;
 import com.bmob.im.demo.view.HeaderLayout;
 import com.bmob.im.demo.view.HeaderLayout.HeaderStyle;
 import com.bmob.im.demo.view.HeaderLayout.onLeftImageButtonClickListener;
@@ -64,6 +71,8 @@ public class BaseSlidingFragmentActivity extends SlidingFragmentActivity {
 		
 		// 自动登陆状态下检测是否在其他设备登陆
 		checkLogin();
+		
+		checkForUpdate();
 		
 	}
 
@@ -326,5 +335,74 @@ public class BaseSlidingFragmentActivity extends SlidingFragmentActivity {
 				manager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 		}
 	}
+	
+	// 检查更新
+	
+		public void checkForUpdate() {
+			BmobQuery<Update> query = new BmobQuery<Update>();
+			query.addWhereGreaterThan("versionNum", Config.versionNum);
+			query.order("versionNum");
+			query.findObjects(BaseSlidingFragmentActivity.this, new FindListener<Update>() {
+				
+				@Override
+				public void onSuccess(List<Update> arg0) {
+					// TODO Auto-generated method stub
+					if (arg0.size() == 0) {
+						// ShowToast("Find已经是最新版本，不需要更新了哦～");
+						// 此时是最新版本
+					}else {
+						// 最新的版本
+						Update update = arg0.get(0);
+						showUpdateDialog(update);
+					}
+				}
+				
+				@Override
+				public void onError(int arg0, String arg1) {
+					// TODO Auto-generated method stub
+					ShowToast(R.string.network_tips);
+				}
+			});
+		}
+		
+		public void showUpdateDialog(final Update update) {
+			DialogTips dialogTips = new DialogTips(BaseSlidingFragmentActivity.this, update.getUpdateLog(), "下载更新", "暂不更新", "更新", true);
+			dialogTips.SetOnSuccessListener(new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// TODO Auto-generated method stub
+					// 下载并安装
+					// 开启线程，下载文件		
+					DownloadService.downNewFile(update.getApkFile().getFileUrl(BaseSlidingFragmentActivity.this),
+							update.getVersionNum(), "Find " + update.getVersion());
+				}
+			});
+			
+			dialogTips.SetOnCancelListener(new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// TODO Auto-generated method stub
+					// 在通知栏显示更新通知
+					
+					boolean isAllow = CustomApplcation.getInstance().getSpUtil().isAllowVoice();
+					if(isAllow){
+						CustomApplcation.getInstance().getMediaPlayer().start();
+					}
+					
+					String tickerText = "Find " + update.getVersion() + "更新可供下载";
+					boolean isAllowVibrate = CustomApplcation.getInstance().getSpUtil().isAllowVibrate();
+					showNotifyMessage(isAllow, isAllowVibrate, R.drawable.ic_launcher, tickerText, "更新", tickerText.toString());
+				}
+			});
+			
+			dialogTips.show();
+		}
+		
+		public void showNotifyMessage(Boolean isAllow, Boolean isAllowVibrate, int notifyIcon, String tickerText,
+				String contentTitle, String contentText) {
+			BmobNotifyManager.getInstance(this).showNotify(isAllow, isAllowVibrate, notifyIcon, tickerText, contentTitle, contentText, AboutActivity.class);
+		}
 }
 

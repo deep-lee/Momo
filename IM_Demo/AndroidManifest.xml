@@ -400,16 +400,23 @@
         </activity>
         <activity
             android:name="com.deep.ui.update.MainActivity2"
+            android:label="@string/title_activity_main_activity2"
             android:launchMode="singleTask"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"
-            android:label="@string/title_activity_main_activity2" >
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" >
         </activity>
         <activity
             android:name="com.deep.ui.update.SearchActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" 
-            android:configChanges="orientation|keyboardHidden|locale" 
-            android:windowSoftInputMode="stateVisible|adjustPan"
-            android:label="@string/title_activity_search" >
+            android:configChanges="orientation|keyboardHidden|locale"
+            android:label="@string/title_activity_search"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:windowSoftInputMode="stateVisible|adjustPan" >
+        </activity>
+        <activity
+            android:name="com.deep.ui.update.ContactSearchActivity"
+            android:configChanges="orientation|keyboardHidden|locale"
+            android:label="@string/title_activity_contact_search" 
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:windowSoftInputMode="stateVisible|adjustPan">
         </activity>
     </application>
 

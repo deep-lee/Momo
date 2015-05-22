@@ -42,6 +42,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 import cn.bmob.im.BmobChatManager;
 import cn.bmob.im.BmobNotifyManager;
@@ -485,6 +486,35 @@ public class ChatActivity extends ActivityBase implements OnClickListener,
 			@Override
 			public void afterTextChanged(Editable s) {
 				// TODO Auto-generated method stub
+			}
+		});
+		
+		edit_user_comment.setOnEditorActionListener(new OnEditorActionListener() {
+			
+			@Override
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+				// TODO Auto-generated method stub
+				
+				final String msg = edit_user_comment.getText().toString();
+				if (msg.equals("")) {
+					ShowToast("请输入发送消息!");
+					return false;
+				}
+				boolean isNetConnected = CommonUtils.isNetworkAvailable(ChatActivity.this);
+				if (!isNetConnected || targetId == null) {
+					ShowToast(R.string.network_tips);
+					// return;
+				}
+				// 组装BmobMessage对象
+				
+				// 创建文本消息，第二个参数是目标聊天用户的Id，第三个是消息的内容
+				BmobMsg message = BmobMsg.createTextSendMsg(ChatActivity.this, targetId, msg);
+				// 默认发送完成，将数据保存到本地消息表和最近会话表中
+				manager.sendTextMessage(targetUser, message);
+				// 刷新界面
+				refreshMessage(message);
+				
+				return false;
 			}
 		});
 
