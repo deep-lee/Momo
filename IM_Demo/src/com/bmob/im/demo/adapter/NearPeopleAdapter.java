@@ -44,16 +44,6 @@ public class NearPeopleAdapter extends BaseListAdapter<User> {
 		TextView tv_logintime = ViewHolder.get(convertView, R.id.tv_logintime);
 		ImageView iv_avatar = ViewHolder.get(convertView, R.id.iv_avatar);
 		
-		// 获取头像
-		String avatar = contract.getAvatar();
-		if (avatar != null && !avatar.equals("")) {
-			ImageLoader.getInstance().displayImage(avatar, iv_avatar,
-					ImageLoadOptions.getOptions());
-		} else {
-			// 没有头像就显示默认的头像
-			iv_avatar.setImageResource(R.drawable.default_head);
-		}
-		
 		// 获取联系人的地理位置信息
 		BmobGeoPoint location = contract.getLocation();
 		String currentLat = CustomApplcation.getInstance().getLatitude();

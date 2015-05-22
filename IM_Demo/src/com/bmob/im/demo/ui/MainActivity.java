@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.graphics.Canvas;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -146,7 +145,7 @@ public class MainActivity extends BaseMainActivity implements EventListener, OnC
         User user = userManager.getCurrentUser(User.class);
         CustomApplcation.sex = user.getSex();
         
-        ShowToast("" + CustomApplcation.gameList.size());
+        // ShowToast("" + CustomApplcation.gameList.size());
 
 	}
 	
@@ -350,13 +349,6 @@ public class MainActivity extends BaseMainActivity implements EventListener, OnC
 		MyMessageReceiver.ehList.add(this);// 监听推送的消息
 		//清空
 		MyMessageReceiver.mNewNum=0;
-		
-//		if (currentTabIndex == 2 && nearByFragment != null && nearByFragment.mShakeListener != null) {
-//			
-//			if (!nearByFragment.getFlag() && menuFlag == false) {
-//				nearByFragment.openShakeListener();
-//			}	
-//		}
 		
 	}
 	
@@ -684,35 +676,4 @@ public class MainActivity extends BaseMainActivity implements EventListener, OnC
 		// TODO Auto-generated method stub
 		
 	}
-
-//	@Override
-//	public void onMenuItemLongClick(View clickedView, int position) {
-//		// TODO Auto-generated method stub
-//		
-//	}
-//
-//	@Override
-//	public void onMenuItemClick(View clickedView, int position) {
-//		
-//		position--;
-//		// ShowToast("" + position);
-//		// TODO Auto-generated method stub
-//		if (position >= 0 && position <= 2) {
-//			if (nearsSex == position) {
-//				
-//			}else {
-//				editor.putInt("nearsSex", position);
-//				nearsSex = position;
-//				editor.commit();
-//				
-//				nearByFragment.nearBySexChanged(position);
-//
-//			}
-//		}
-//		
-//		// 清除地理位置信息
-//		if (position == 3) {
-//			
-//		}
-//	}
 }

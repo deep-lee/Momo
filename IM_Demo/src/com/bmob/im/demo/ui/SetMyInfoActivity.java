@@ -2,16 +2,13 @@ package com.bmob.im.demo.ui;
 
 import java.io.File;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -54,9 +51,7 @@ import com.bmob.im.demo.bean.User;
 import com.bmob.im.demo.config.BmobConstants;
 import com.bmob.im.demo.util.CollectionUtils;
 import com.bmob.im.demo.util.ImageLoadOptions;
-import com.bmob.im.demo.util.JudgeDate;
 import com.bmob.im.demo.util.PhotoUtil;
-import com.bmob.im.demo.util.ScreenInfo;
 import com.bmob.im.demo.util.WheelMain;
 import com.bmob.im.demo.view.dialog.DateChooseDialog;
 import com.bmob.im.demo.view.dialog.DialogTips;

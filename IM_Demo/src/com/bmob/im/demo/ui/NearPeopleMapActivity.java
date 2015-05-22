@@ -171,6 +171,10 @@ public class NearPeopleMapActivity extends BaseMainActivity implements OnGetGeoC
 	            	case 3:
 	            		
 	            		break;
+	            		
+	            	case 4:
+	            		showPopUpWindow();
+	            		break;
 	            
 	            }   
 	            super.handleMessage(msg);  
@@ -241,6 +245,10 @@ public class NearPeopleMapActivity extends BaseMainActivity implements OnGetGeoC
 		randomGeoPoint = (BmobGeoPoint) getIntent().getSerializableExtra("randomGeoPoint");
 		
 		initBaiduMap();
+		
+		Message message = new Message();
+		message.what = 4;
+		loadeHandler.sendMessageDelayed(message, 1000);
 		
 		mBaiduMap.setOnMapClickListener(new OnMapClickListener() {
 			

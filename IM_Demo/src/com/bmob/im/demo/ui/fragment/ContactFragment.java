@@ -32,7 +32,6 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import cn.bmob.im.bean.BmobChatUser;
-import cn.bmob.im.bean.BmobInvitation;
 import cn.bmob.im.db.BmobDB;
 import cn.bmob.v3.listener.UpdateListener;
 
@@ -45,7 +44,6 @@ import com.bmob.im.demo.ui.BlackListActivity;
 import com.bmob.im.demo.ui.ChatActivity;
 import com.bmob.im.demo.ui.FragmentBase;
 import com.bmob.im.demo.ui.NewFriendActivity;
-import com.bmob.im.demo.ui.SetMyInfoActivity2;
 import com.bmob.im.demo.ui.ShakeForNearPeopleActivity;
 import com.bmob.im.demo.util.CharacterParser;
 import com.bmob.im.demo.util.CollectionUtils;
@@ -63,8 +61,6 @@ import com.bmob.im.demo.view.dialog.DialogTips;
  */
 @SuppressLint("DefaultLocale")
 public class ContactFragment extends FragmentBase implements OnItemClickListener,OnItemLongClickListener{
-
-//	ClearEditText mClearEditText;
 	
 	LinearLayout search_back_layout;
 	ImageView iv_back;
@@ -112,17 +108,6 @@ public class ContactFragment extends FragmentBase implements OnItemClickListener
 	private void init() {
 		characterParser = CharacterParser.getInstance();
 		pinyinComparator = new PinyinComparator();
-//		initTopBarForRight("联系人", R.drawable.base_action_bar_add_bg_selector,
-//				new onRightImageButtonClickListener() {
-//
-//					@Override
-//					public void onClick(View v) {
-//						// TODO Auto-generated method stub
-//						startAnimActivity(AddFriendActivity.class);
-//					}
-//				});
-		
-		
 		// 初始化好友列表
 		initListView();
 		// 初始化字母索引
@@ -133,7 +118,6 @@ public class ContactFragment extends FragmentBase implements OnItemClickListener
 	}
 
 	private void initEditText() {
-//		mClearEditText = (ClearEditText)findViewById(R.id.et_msg_search);
 		
 		search_back_layout = (LinearLayout) findViewById(R.id.search_back_layout);
 		iv_back = (ImageView) findViewById(R.id.iv_back);
@@ -331,9 +315,6 @@ public class ContactFragment extends FragmentBase implements OnItemClickListener
 		// 新的好友
 		layout_new =(LinearLayout)headView.findViewById(R.id.layout_new);
 		
-//		// 附近的人
-//		layout_near =(LinearLayout)headView.findViewById(R.id.layout_near);
-		
 		layout_black = (LinearLayout) headView.findViewById(R.id.layout_black_new);
 		
 		layout_new.setOnClickListener(new OnClickListener() {
@@ -345,18 +326,9 @@ public class ContactFragment extends FragmentBase implements OnItemClickListener
 				intent.putExtra("from", "contact");
 				startAnimActivity(intent);
 				
-				// iv_msg_tips.setVisibility(View.INVISIBLE);
+				iv_msg_tips.setVisibility(View.INVISIBLE);
 			}
 		});
-//		layout_near.setOnClickListener(new OnClickListener() {
-//			
-//			@Override
-//			public void onClick(View arg0) {
-//				// TODO Auto-generated method stub
-//				Intent intent = new Intent(getActivity(), ShakeActivity.class);
-//				startAnimActivity(intent);
-//			}
-//		});
 		
 		layout_black.setOnClickListener(new OnClickListener() {
 			
@@ -486,12 +458,6 @@ public class ContactFragment extends FragmentBase implements OnItemClickListener
 	public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
 		// TODO Auto-generated method stub
 		User user = (User) userAdapter.getItem(position-1);
-		//先进入好友的详细资料页面
-//		Intent intent =new Intent(getActivity(),SetMyInfoActivity2.class);
-//		intent.putExtra("from", "other");
-//		intent.putExtra("username", user.getUsername());
-//		intent.putExtra("nick", user.getNick());
-//		startAnimActivity(intent);
 		
 		Intent intent3 = new Intent(getActivity(), ChatActivity.class);
 		intent3.putExtra("user", user);

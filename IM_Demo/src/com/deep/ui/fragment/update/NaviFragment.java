@@ -40,6 +40,10 @@ public class NaviFragment  extends Fragment implements OnClickListener{
     private ImageView navi_setting;
     private ImageView navi_avatar;
     private TextView navi_nick;
+    public static TextView tv_navi_chat_tips;
+    public static TextView tv_navi_contact_tips;
+    public static TextView tv_navi_nears_tips;
+    public static TextView tv_navi_find_tips;
     
     private User currentUser;
 
@@ -103,6 +107,10 @@ public class NaviFragment  extends Fragment implements OnClickListener{
     	navi_nears = (TextView) rootView.findViewById(R.id.tv_navi_nears);
     	navi_find = (TextView) rootView.findViewById(R.id.tv_navi_find);
     	navi_setting = (ImageView) rootView.findViewById(R.id.fragment_navi_setting_iv);
+    	tv_navi_chat_tips = (TextView) rootView.findViewById(R.id.tv_navi_chat_tips);
+    	tv_navi_contact_tips = (TextView) rootView.findViewById(R.id.tv_navi_contact_tips);
+    	tv_navi_nears_tips = (TextView) rootView.findViewById(R.id.tv_navi_nears_tips);
+    	tv_navi_find_tips = (TextView) rootView.findViewById(R.id.tv_navi_find_tips);
     	
     	navi_avatar = (ImageView) rootView.findViewById(R.id.fragment_navi_avatar_iv);
     	navi_nick = (TextView) rootView.findViewById(R.id.fragment_navi_nick);
@@ -141,6 +149,7 @@ public class NaviFragment  extends Fragment implements OnClickListener{
         	navi_avatar.setSelected(false);
             
             OnTabSelected(RECENTFRAGMENT);
+            MainActivity2.currentTabIndex = 0;
             break;
         case R.id.tv_navi_contacts:
 
@@ -152,6 +161,7 @@ public class NaviFragment  extends Fragment implements OnClickListener{
             navi_avatar.setSelected(false);
 
             OnTabSelected(CONTACTFRAGMENT);
+            MainActivity2.currentTabIndex = 1;
             break;
         case R.id.tv_navi_nears:// 
 
@@ -163,6 +173,7 @@ public class NaviFragment  extends Fragment implements OnClickListener{
             navi_avatar.setSelected(false);
 
             OnTabSelected(NEARSFRAGMENT);
+            MainActivity2.currentTabIndex = 2;
             break;
         case R.id.tv_navi_find:
 
@@ -174,6 +185,7 @@ public class NaviFragment  extends Fragment implements OnClickListener{
             navi_avatar.setSelected(false);
 
             OnTabSelected(FINDFRAGMENT);
+            MainActivity2.currentTabIndex = 3;
             break;
             
         case R.id.fragment_navi_setting_iv:
@@ -185,6 +197,7 @@ public class NaviFragment  extends Fragment implements OnClickListener{
             navi_avatar.setSelected(false);
 
             OnTabSelected(SETTINGFRAGMENT);
+            MainActivity2.currentTabIndex = 4;
         	break;
         	
         case R.id.fragment_navi_avatar_iv:
@@ -196,6 +209,7 @@ public class NaviFragment  extends Fragment implements OnClickListener{
             navi_avatar.setSelected(true);
 
             OnTabSelected(PERSONINFOFRAGMENT);
+            MainActivity2.currentTabIndex = 5;
         	break;
         }
         
@@ -211,7 +225,7 @@ public class NaviFragment  extends Fragment implements OnClickListener{
         case RECENTFRAGMENT:
         	hideFragments(transaction);
           if (null == mRecentUpdateFragment) {
-        	  mRecentUpdateFragment = new RecentUpdateFragment(getActivity());
+        	  mRecentUpdateFragment = new RecentUpdateFragment(getActivity(), this);
               transaction.add(R.id.center, mRecentUpdateFragment);
           } else {
               transaction.show(mRecentUpdateFragment);
@@ -221,7 +235,7 @@ public class NaviFragment  extends Fragment implements OnClickListener{
 
         	hideFragments(transaction);
         	if (null == mContactUpdateFragment) {
-        		mContactUpdateFragment = new ContactUpdateFragment(getActivity());
+        		mContactUpdateFragment = new ContactUpdateFragment(getActivity(), this);
                 transaction.add(R.id.center, mContactUpdateFragment);
             } else {
                 transaction.show(mContactUpdateFragment);
@@ -301,5 +315,88 @@ public class NaviFragment  extends Fragment implements OnClickListener{
     public void showOpenAnimation() {
     	rotateInAnimation.playOn(navi_setting);
 	}
+
+	public RecentUpdateFragment getmRecentUpdateFragment() {
+		return mRecentUpdateFragment;
+	}
+
+	public void setmRecentUpdateFragment(RecentUpdateFragment mRecentUpdateFragment) {
+		this.mRecentUpdateFragment = mRecentUpdateFragment;
+	}
+
+	public ContactUpdateFragment getmContactUpdateFragment() {
+		return mContactUpdateFragment;
+	}
+
+	public void setmContactUpdateFragment(
+			ContactUpdateFragment mContactUpdateFragment) {
+		this.mContactUpdateFragment = mContactUpdateFragment;
+	}
+
+	public NearsUpdateFragment getmNearsUpdateFragment() {
+		return mNearsUpdateFragment;
+	}
+
+	public void setmNearsUpdateFragment(NearsUpdateFragment mNearsUpdateFragment) {
+		this.mNearsUpdateFragment = mNearsUpdateFragment;
+	}
+
+	public FindUpdateFragment getmFindUpdateFragment() {
+		return mFindUpdateFragment;
+	}
+
+	public void setmFindUpdateFragment(FindUpdateFragment mFindUpdateFragment) {
+		this.mFindUpdateFragment = mFindUpdateFragment;
+	}
+
+	public SettingUpdateFragment getmSettingUpdateFragment() {
+		return mSettingUpdateFragment;
+	}
+
+	public void setmSettingUpdateFragment(
+			SettingUpdateFragment mSettingUpdateFragment) {
+		this.mSettingUpdateFragment = mSettingUpdateFragment;
+	}
+
+	public PersonInfoUpdateFragment getmPersonInfoUpdateFragment() {
+		return mPersonInfoUpdateFragment;
+	}
+
+	public void setmPersonInfoUpdateFragment(
+			PersonInfoUpdateFragment mPersonInfoUpdateFragment) {
+		this.mPersonInfoUpdateFragment = mPersonInfoUpdateFragment;
+	}
+    
+    public void setChatTipState(Boolean flag){
+    	if (flag) {
+			tv_navi_chat_tips.setVisibility(View.VISIBLE);
+		}else {
+			tv_navi_chat_tips.setVisibility(View.INVISIBLE);
+		}
+    }
+    
+    public void setContactTipState(Boolean flag){
+    	if (flag) {
+			tv_navi_contact_tips.setVisibility(View.VISIBLE);
+		}else {
+			tv_navi_contact_tips.setVisibility(View.INVISIBLE);
+		}
+    }
+    
+    public void setNearsTipState(Boolean flag){
+    	if (flag) {
+			tv_navi_nears_tips.setVisibility(View.VISIBLE);
+		}else {
+			tv_navi_nears_tips.setVisibility(View.INVISIBLE);
+		}
+    }
+    
+    public void setFindTipState(Boolean flag){
+    	if (flag) {
+			tv_navi_find_tips.setVisibility(View.VISIBLE);
+		}else {
+			tv_navi_find_tips.setVisibility(View.INVISIBLE);
+		}
+    }
     
 }

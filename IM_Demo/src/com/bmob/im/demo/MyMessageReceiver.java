@@ -25,11 +25,10 @@ import cn.bmob.im.util.BmobLog;
 import cn.bmob.v3.listener.FindListener;
 
 import com.bmob.im.demo.R;
-import com.bmob.im.demo.R.drawable;
-import com.bmob.im.demo.ui.MainActivity;
 import com.bmob.im.demo.ui.NewFriendActivity;
 import com.bmob.im.demo.util.CollectionUtils;
 import com.bmob.im.demo.util.CommonUtils;
+import com.deep.ui.update.MainActivity2;
 
 /**
  * 推送消息接收器
@@ -159,7 +158,7 @@ public class MyMessageReceiver extends BroadcastReceiver {
 								}
 							});
 							//显示通知
-							showOtherNotify(context, username, toId,  username+"同意添加您为好友", MainActivity.class);
+							showOtherNotify(context, username, toId,  username+"同意添加您为好友", MainActivity2.class);
 							
 							
 							// 创建一个临时验证会话--用于在会话界面形成初始会话
@@ -227,7 +226,7 @@ public class MyMessageReceiver extends BroadcastReceiver {
 		CharSequence tickerText = msg.getBelongUsername() + ":" + trueMsg;
 		String contentTitle = msg.getBelongUsername()+ " (" + mNewNum + "条新消息)";
 		
-		Intent intent = new Intent(context, MainActivity.class);
+		Intent intent = new Intent(context, MainActivity2.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 		
 		boolean isAllowVoice = CustomApplcation.getInstance().getSpUtil().isAllowVoice();

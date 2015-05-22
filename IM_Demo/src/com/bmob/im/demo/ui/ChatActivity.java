@@ -58,7 +58,6 @@ import cn.bmob.im.inteface.UploadListener;
 import cn.bmob.im.util.BmobLog;
 import cn.bmob.v3.listener.PushListener;
 
-import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.MyMessageReceiver;
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.adapter.EmoViewPagerAdapter;
@@ -147,8 +146,6 @@ public class ChatActivity extends ActivityBase implements OnClickListener,
 		if (targetUser != null) {
 			targetId = targetUser.getObjectId();
 		}
-//		BmobLog.i("聊天对象：" + targetUser.getUsername() + ",targetId = "
-//				+ targetId);
 		
 		//注册广播接收器
 		initNewMessageBroadCast();
@@ -203,7 +200,6 @@ public class ChatActivity extends ActivityBase implements OnClickListener,
 	private void initView() {
 		mHeaderLayout = (HeaderLayout) findViewById(R.id.common_actionbar);
 		mListView = (XListView) findViewById(R.id.mListView);
-//		initTopBarForLeft(targetUser.getNick());
 		
 		tv_title = (TextView) findViewById(R.id.tv_title);
 		if (targetUser != null) {

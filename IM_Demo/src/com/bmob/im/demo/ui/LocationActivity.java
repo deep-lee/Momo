@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.view.View;
 import cn.bmob.im.util.BmobLog;
 
 import com.baidu.location.BDLocation;
@@ -30,9 +29,7 @@ import com.baidu.mapapi.search.geocode.GeoCoder;
 import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
-import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
-import com.bmob.im.demo.view.HeaderLayout.onRightImageButtonClickListener;
 
 /**
  * 用于发送位置的界面

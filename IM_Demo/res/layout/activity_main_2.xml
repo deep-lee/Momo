@@ -22,6 +22,15 @@
             android:layout_centerVertical="true"
             android:scaleType="centerInside"
             android:src="@drawable/topbar_menu_left" />
+        <TextView 
+	        android:id="@+id/tv_main_tips"
+	        android:layout_width="15dp"
+	        android:visibility="gone"
+	        android:layout_alignRight="@+id/topbar_menu_left"
+	        android:layout_alignTop="@+id/topbar_menu_left"
+	        android:layout_gravity="center_vertical"
+	        android:background="@drawable/red_point"
+	        android:layout_height="15dp"/>
 
         <TextView
             android:id="@+id/topbar_title"

@@ -20,14 +20,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
-import android.view.ViewDebug.FlagToString;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ImageView.ScaleType;
-import android.widget.Toast;
 
 public class FirstGuildActivity extends Activity implements OnClickListener, OnPageChangeListener, OnTouchListener{
 	

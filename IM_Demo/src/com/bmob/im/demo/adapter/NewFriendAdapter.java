@@ -5,16 +5,12 @@ import java.util.List;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import cn.bmob.im.BmobUserManager;
 import cn.bmob.im.bean.BmobInvitation;
-import cn.bmob.im.config.BmobConfig;
 import cn.bmob.im.db.BmobDB;
-import cn.bmob.im.util.BmobLog;
 import cn.bmob.v3.listener.UpdateListener;
 
 import com.bmob.im.demo.CustomApplcation;
@@ -23,7 +19,6 @@ import com.bmob.im.demo.adapter.base.BaseListAdapter;
 import com.bmob.im.demo.adapter.base.ViewHolder;
 import com.bmob.im.demo.util.CollectionUtils;
 import com.bmob.im.demo.util.ImageLoadOptions;
-import com.bmob.im.demo.view.dialog.CustomProgressDialog;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 /** 新的好友请求
@@ -39,7 +34,6 @@ public class NewFriendAdapter extends BaseListAdapter<BmobInvitation> {
 		// TODO Auto-generated constructor stub
 	}
 
-	@SuppressWarnings("deprecation")
 	@SuppressLint("InflateParams")
 	@Override
 	public View bindView(int arg0, View convertView, ViewGroup arg2) {
@@ -63,6 +57,7 @@ public class NewFriendAdapter extends BaseListAdapter<BmobInvitation> {
 		}
 		
 		agressAdd(msg);
+//		BmobDB.create(mContext).resetUnread(msg.getFromid());
 
 		// 消息状态
 //		int status = msg.getStatus();
@@ -137,31 +132,24 @@ public class NewFriendAdapter extends BaseListAdapter<BmobInvitation> {
 //	}
 	
 	private void agressAdd(final BmobInvitation msg){
-//	final CustomProgressDialog progress = new CustomProgressDialog(mContext, "正在添加...");
-//	progress.setCanceledOnTouchOutside(false);
-//	progress.show();
-	try {
-		//同意添加好友
-		BmobUserManager.getInstance(mContext).agreeAddContact(msg, new UpdateListener() {
-			
-			@SuppressWarnings("deprecation")
-			@Override
-			public void onSuccess() {
-				// TODO Auto-generated method stub
-				//保存到application中方便比较
-				CustomApplcation.getInstance().setContactList(CollectionUtils.list2map(BmobDB.create(mContext).getContactList()));	
-			}
-			
-			@Override
-			public void onFailure(int arg0, final String arg1) {
-				// TODO Auto-generated method stub
-				// progress.dismiss();
-				// ShowToast("添加失败: " +arg1);
-			}
-		});
-	} catch (final Exception e) {
-		// progress.dismiss();
-		// ShowToast("添加失败: " +e.getMessage());
+		try {
+			//同意添加好友
+			BmobUserManager.getInstance(mContext).agreeAddContact(msg, new UpdateListener() {
+				
+				@SuppressWarnings("deprecation")
+				@Override
+				public void onSuccess() {
+					// TODO Auto-generated method stub
+					//保存到application中方便比较
+					CustomApplcation.getInstance().setContactList(CollectionUtils.list2map(BmobDB.create(mContext).getContactList()));	
+				}
+				
+				@Override
+				public void onFailure(int arg0, final String arg1) {
+					// TODO Auto-generated method stub
+				}
+			});
+		} catch (final Exception e) {
+		}
 	}
-}
 }

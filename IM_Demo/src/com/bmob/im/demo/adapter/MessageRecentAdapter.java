@@ -7,7 +7,6 @@ import android.text.SpannableString;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
@@ -19,7 +18,6 @@ import cn.bmob.im.db.BmobDB;
 
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.adapter.base.ViewHolder;
-import com.bmob.im.demo.bean.User;
 import com.bmob.im.demo.util.FaceTextUtils;
 import com.bmob.im.demo.util.ImageLoadOptions;
 import com.bmob.im.demo.util.TimeUtil;

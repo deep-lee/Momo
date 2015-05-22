@@ -87,38 +87,106 @@
 	            android:background="@drawable/slide_list_line"/>
 	        
 	    </RelativeLayout> -->
+	    
+	    <LinearLayout 
+	        android:layout_width="wrap_content"
+	        android:orientation="horizontal"
+	        android:layout_marginTop="20dp"
+	        android:layout_height="wrap_content">
+	        
+	        
+	        <TextView
+	            android:id="@+id/tv_navi_chat"
+	            style="@style/navitext"
+	            android:drawableLeft="@drawable/base_fragment_navi_recent_selector"
+	            android:text="@string/fragment_navi_recent"
+	            android:drawablePadding="20dp"
+	            android:textColor="@drawable/base_fragment_text_selector" />
+	        
+	        <TextView 
+	            android:id="@+id/tv_navi_chat_tips"
+	            android:layout_width="15dp"
+	            android:visibility="invisible"
+	            android:layout_gravity="center_vertical"
+	            android:background="@drawable/red_point"
+	            android:layout_height="15dp"/>
+	        
+	    </LinearLayout>
+	    
+	    <LinearLayout 
+	        android:layout_width="wrap_content"
+	        android:orientation="horizontal"
+	        android:layout_height="wrap_content">
+	        
+	        
+	        <TextView
+	            android:id="@+id/tv_navi_contacts"
+	            style="@style/navitext"
+	            android:drawableLeft="@drawable/base_fragment_navi_contact_selector"
+	            android:text="@string/fragment_navi_contact"
+	            android:drawablePadding="20dp"
+	            android:textColor="@drawable/base_fragment_text_selector"/>
+	        
+	        <TextView 
+	            android:id="@+id/tv_navi_contact_tips"
+	            android:layout_width="15dp"
+	            android:visibility="invisible"
+	            android:layout_gravity="center_vertical"
+	            android:background="@drawable/red_point"
+	            android:layout_height="15dp"/>
+	        
+	    </LinearLayout>
         
-		<TextView
-            android:id="@+id/tv_navi_chat"
-            style="@style/navitext"
-            android:drawableLeft="@drawable/base_fragment_navi_recent_selector"
-            android:text="@string/fragment_navi_recent"
-            android:drawablePadding="20dp"
-            android:layout_marginTop="20dp"
-            android:textColor="@drawable/base_fragment_text_selector" />
-        <TextView
-            android:id="@+id/tv_navi_contacts"
-            style="@style/navitext"
-            android:drawableLeft="@drawable/base_fragment_navi_contact_selector"
-            android:text="@string/fragment_navi_contact"
-            android:drawablePadding="20dp"
-            android:textColor="@drawable/base_fragment_text_selector"/>
+		
+        <LinearLayout 
+	        android:layout_width="wrap_content"
+	        android:orientation="horizontal"
+	        android:layout_height="wrap_content">
+	        
+	        
+	        <TextView
+	            android:id="@+id/tv_navi_nears"
+	            style="@style/navitext"
+	            android:drawableLeft="@drawable/base_fragment_navi_nears_selector"
+	            android:text="@string/fragment_navi_nears" 
+	            android:drawablePadding="20dp"
+	            android:textColor="@drawable/base_fragment_text_selector"/>
+	        
+	        <TextView 
+	            android:id="@+id/tv_navi_nears_tips"
+	            android:layout_width="15dp"
+	            android:visibility="invisible"
+	            android:layout_gravity="center_vertical"
+	            android:background="@drawable/red_point"
+	            android:layout_height="15dp"/>
+	        
+	    </LinearLayout>
 
-        <TextView
-            android:id="@+id/tv_navi_nears"
-            style="@style/navitext"
-            android:drawableLeft="@drawable/base_fragment_navi_nears_selector"
-            android:text="@string/fragment_navi_nears" 
-            android:drawablePadding="20dp"
-            android:textColor="@drawable/base_fragment_text_selector"/>
+        <LinearLayout 
+	        android:layout_width="wrap_content"
+	        android:orientation="horizontal"
+	        android:layout_height="wrap_content">
+	        
+	        
+	        <TextView
+	            android:id="@+id/tv_navi_find"
+	            style="@style/navitext"
+	            android:drawableLeft="@drawable/base_fragment_navi_find_selector"
+	            android:text="@string/fragment_navi_find" 
+	            android:drawablePadding="20dp"
+	            android:textColor="@drawable/base_fragment_text_selector"/>
+	        
+	        <TextView 
+	            android:id="@+id/tv_navi_find_tips"
+	            android:layout_width="15dp"
+	            android:visibility="invisible"
+	            android:layout_gravity="center_vertical"
+	            android:background="@drawable/red_point"
+	            android:layout_height="15dp"/>
+	        
+	    </LinearLayout>
 
-        <TextView
-            android:id="@+id/tv_navi_find"
-            style="@style/navitext"
-            android:drawableLeft="@drawable/base_fragment_navi_find_selector"
-            android:text="@string/fragment_navi_find" 
-            android:drawablePadding="20dp"
-            android:textColor="@drawable/base_fragment_text_selector"/>
+        
     </LinearLayout>
 
 </RelativeLayout>

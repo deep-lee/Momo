@@ -51,11 +51,12 @@ import com.bmob.im.demo.view.dialog.DialogTips;
 import com.deep.ui.update.BaseSlidingFragmentActivity;
 import com.deep.ui.update.ContactSearchActivity;
 import com.deep.ui.update.MainActivity2;
-import com.deep.ui.update.SearchActivity;
 
 public class ContactUpdateFragment extends FragmentBase implements OnItemClickListener,OnItemLongClickListener{
 	
 	private Context mContext;
+	
+	private NaviFragment naviFragment;
 	
 	TextView dialog;
 
@@ -85,9 +86,10 @@ public class ContactUpdateFragment extends FragmentBase implements OnItemClickLi
 		super();
 	}
 	
-	public ContactUpdateFragment(Context mContext) {
+	public ContactUpdateFragment(Context mContext, NaviFragment naviFragment) {
 		super();
 		this.mContext = mContext;
+		this.naviFragment = naviFragment;
 	}
 
 	@Override
@@ -142,6 +144,8 @@ public class ContactUpdateFragment extends FragmentBase implements OnItemClickLi
 				Intent intent = new Intent(getActivity(), NewFriendActivity.class);
 				intent.putExtra("from", "contact");
 				startAnimActivity(intent);
+				iv_msg_tips.setVisibility(View.INVISIBLE);
+				naviFragment.setContactTipState(false);
 				
 			}
 		});

@@ -10,7 +10,6 @@ import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.view.ViewDebug.FlagToString;
 import cn.bmob.im.BmobChat;
 
 import com.baidu.location.LocationClient;

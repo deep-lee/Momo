@@ -4,15 +4,10 @@ import cn.bmob.v3.listener.UpdateListener;
 
 import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
-import com.bmob.im.demo.R.layout;
 import com.bmob.im.demo.bean.User;
 
-import a.thing;
-import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;

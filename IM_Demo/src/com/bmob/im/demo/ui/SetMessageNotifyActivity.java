@@ -1,20 +1,13 @@
 package com.bmob.im.demo.ui;
 
-import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
-import com.bmob.im.demo.R.layout;
 import com.bmob.im.demo.util.SharePreferenceUtil;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 public class SetMessageNotifyActivity extends ActivityBase implements OnClickListener{
 	

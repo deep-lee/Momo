@@ -20,8 +20,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Environment;
 import android.preference.PreferenceManager;
-import android.telephony.TelephonyManager;
-import android.util.Log;
 import android.widget.Toast;
 import cn.bmob.im.BmobChat;
 import cn.bmob.im.BmobUserManager;

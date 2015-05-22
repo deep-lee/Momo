@@ -46,7 +46,6 @@ import android.view.View.OnClickListener;
 import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 @SuppressWarnings("deprecation")
 public class GameDetailsActivity extends BaseMainActivity implements OnClickListener{

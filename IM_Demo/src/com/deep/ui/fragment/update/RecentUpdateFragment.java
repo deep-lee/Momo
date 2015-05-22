@@ -45,6 +45,8 @@ public class RecentUpdateFragment extends FragmentBase implements OnItemClickLis
 	
 	private Context mContext;
 	
+	private NaviFragment naviFragment;
+	
 	View headerView;
 	
 	public static final int REFRESH_DELAY = 2000;
@@ -67,9 +69,10 @@ public class RecentUpdateFragment extends FragmentBase implements OnItemClickLis
 		super();
 	}
 	
-	public RecentUpdateFragment(Context mContext) {
+	public RecentUpdateFragment(Context mContext, NaviFragment naviFragment) {
 		super();
 		this.mContext = mContext;
+		this.naviFragment = naviFragment;
 	}
 	
 	@Override
@@ -134,7 +137,7 @@ public class RecentUpdateFragment extends FragmentBase implements OnItemClickLis
 						// set item width
 						openItem.setWidth(dp2px(90));
 						// set item title
-						openItem.setTitle("Open");
+						openItem.setTitle("标记已读");
 						// set item title fontsize
 						openItem.setTitleSize(18);
 						// set item title font color
@@ -166,20 +169,14 @@ public class RecentUpdateFragment extends FragmentBase implements OnItemClickLis
 
 						switch (index) {
 						case 0:
-							// open
+							// 标记已读
 
 							BmobRecent recent1 = (BmobRecent)adapter.getItem(position);
 							//重置未读消息
 							BmobDB.create(getActivity()).resetUnread(recent1.getTargetid());
-							//组装聊天对象
-							BmobChatUser user = new BmobChatUser();
-							user.setAvatar(recent1.getAvatar());
-							user.setNick(recent1.getNick());
-							user.setUsername(recent1.getUserName());
-							user.setObjectId(recent1.getTargetid());
-							Intent intent = new Intent(getActivity(), ChatActivity.class);
-							intent.putExtra("user", user);
-							startAnimActivity(intent);
+							
+							refresh();
+							
 							break;
 						case 1:
 							// delete
@@ -276,6 +273,8 @@ public class RecentUpdateFragment extends FragmentBase implements OnItemClickLis
 		BmobRecent recent = (BmobRecent) adapter.getItem(position);
 		//重置未读消息
 		BmobDB.create(getActivity()).resetUnread(recent.getTargetid());
+		naviFragment.setChatTipState(false);
+		
 		//组装聊天对象
 		BmobChatUser user = new BmobChatUser();
 		user.setAvatar(recent.getAvatar());
