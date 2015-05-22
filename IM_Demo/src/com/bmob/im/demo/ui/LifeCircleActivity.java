@@ -29,7 +29,6 @@ public class LifeCircleActivity extends BaseActivity implements OnPageChangeList
 	@Override
 	public void onPageScrollStateChanged(int arg0) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

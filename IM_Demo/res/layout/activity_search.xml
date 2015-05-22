@@ -1,0 +1,60 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="${relativePackage}.${activityClass}" >
+
+    <RelativeLayout 
+        android:id="@+id/header_search_layout"
+        android:layout_width="fill_parent"
+        android:background="#ebeced"
+        android:padding="5dp"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+        
+        <TextView 
+            android:id="@+id/header_search_cancle_btn"
+            android:text="取消"
+            android:padding="10dp"
+            android:textColor="#00a5e0"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        
+        <EditText 
+            android:id="@+id/header_search_et"
+            android:layout_width="fill_parent"
+            android:background="@drawable/skin_searchbar_input_theme_version2"
+            android:drawableLeft="@drawable/skin_searchbar_icon_theme_version2"
+            android:drawablePadding="5dp"
+            android:hint="搜索"
+            android:gravity="center_vertical"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/header_search_cancle_btn"
+            android:textSize="16sp"
+            android:layout_marginRight="8dp"
+            android:paddingLeft="10dp"
+            android:layout_height="45dip">
+            <requestFocus />
+    	</EditText>
+        
+    </RelativeLayout>
+    
+    <ListView 
+		android:id="@+id/fragment_search_list"
+		android:layout_width="match_parent"
+		android:background="@color/theme_bg_color"
+	    android:divider="#d9d9d9"
+	    android:visibility="invisible"
+	    android:dividerHeight="1dp"
+	    android:layout_below="@+id/header_search_layout"
+        android:fadingEdge="none"
+        android:listSelector="@android:color/transparent"
+        android:fastScrollEnabled="false"
+       	android:footerDividersEnabled="false"
+       	android:headerDividersEnabled="false"
+        android:smoothScrollbar="true"
+		android:layout_height="match_parent"></ListView>
+
+</RelativeLayout>

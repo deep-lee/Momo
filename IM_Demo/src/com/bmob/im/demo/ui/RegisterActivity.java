@@ -77,6 +77,7 @@ import com.daimajia.androidanimations.library.YoYo;
 import com.daimajia.androidanimations.library.YoYo.AnimationComposer;
 import com.daimajia.androidanimations.library.attention.ShakeAnimator;
 import com.dd.library.CircularProgressButton;
+import com.deep.ui.update.MainActivity2;
 import com.nineoldandroids.animation.Animator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.soundcloud.android.crop.Crop;
@@ -148,7 +149,7 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
     				sendBroadcast(new Intent(BmobConstants.ACTION_REGISTER_SUCCESS_FINISH));
     				progress.dismiss();
             		// Æô¶¯Ö÷Ò³
-    				Intent intent = new Intent(RegisterActivity.this,MainActivity.class);
+    				Intent intent = new Intent(RegisterActivity.this,MainActivity2.class);
     				startActivity(intent);
     				finish();
             		break;

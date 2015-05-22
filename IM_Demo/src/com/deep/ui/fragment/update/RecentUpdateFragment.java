@@ -12,9 +12,13 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
+import android.view.animation.Animation.AnimationListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.ImageView;
 import cn.bmob.im.bean.BmobChatUser;
 import cn.bmob.im.bean.BmobRecent;
 import cn.bmob.im.db.BmobDB;
@@ -28,14 +32,20 @@ import com.baoyz.swipemenulistview.SwipeMenuListView.OnSwipeListener;
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.adapter.MessageRecentAdapter;
 import com.bmob.im.demo.bean.User;
+import com.bmob.im.demo.ui.BaseMainActivity;
 import com.bmob.im.demo.ui.ChatActivity;
 import com.bmob.im.demo.ui.FragmentBase;
 import com.bmob.im.demo.view.dialog.DialogTips;
 import com.deep.phoenix.PullToRefreshView;
+import com.deep.ui.update.BaseSlidingFragmentActivity;
+import com.deep.ui.update.MainActivity2;
+import com.deep.ui.update.SearchActivity;
 
 public class RecentUpdateFragment extends FragmentBase implements OnItemClickListener,OnItemLongClickListener{
 	
 	private Context mContext;
+	
+	View headerView;
 	
 	public static final int REFRESH_DELAY = 2000;
 
@@ -49,6 +59,10 @@ public class RecentUpdateFragment extends FragmentBase implements OnItemClickLis
 	
 	MessageRecentAdapter adapter;
 	
+	LayoutInflater inflater;
+	
+	ImageView search;
+	
 	public RecentUpdateFragment() {
 		super();
 	}
@@ -60,6 +74,7 @@ public class RecentUpdateFragment extends FragmentBase implements OnItemClickLis
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		this.inflater = inflater;
 		return inflater.inflate(R.layout.fragment_recent_update, container, false);
 	}
 	@Override
@@ -70,12 +85,18 @@ public class RecentUpdateFragment extends FragmentBase implements OnItemClickLis
 	}
 	
 	private void initView(){
+		
+		headerView = inflater.inflate(R.layout.fragment_search_header, null);
+		
+		search = (ImageView) headerView.findViewById(R.id.common_fragment_search_iv);
 	
 		mListView = (SwipeMenuListView)findViewById(R.id.list);
 		mListView.setOnItemClickListener(this);
 		mListView.setOnItemLongClickListener(this);		
 		
-		mListView.setDividerHeight(0);
+		mListView.setDividerHeight(1);
+		
+		mListView.addHeaderView(headerView);
 		
 		user = userManager.getCurrentUser(User.class);
 		
@@ -94,7 +115,7 @@ public class RecentUpdateFragment extends FragmentBase implements OnItemClickLis
 	            }
 	        });
 		 
-		 recents = BmobDB.create(getActivity()).queryRecents();
+		recents = BmobDB.create(getActivity()).queryRecents();
 		
 		adapter = new MessageRecentAdapter(getActivity(), R.layout.item_conversation, recents);
 		mListView.setAdapter(adapter);
@@ -201,6 +222,9 @@ public class RecentUpdateFragment extends FragmentBase implements OnItemClickLis
 	public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int position,
 			long arg3) {
 		// TODO Auto-generated method stub
+		if (position-- == 0) {
+			return true;
+		}
 		BmobRecent recent = (BmobRecent) adapter.getItem(position);
 		showDeleteDialog(position, recent);
 		return true;
@@ -222,6 +246,33 @@ public class RecentUpdateFragment extends FragmentBase implements OnItemClickLis
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
 		// TODO Auto-generated method stub
+		if (--position == -1) {
+			// 点击了搜索head
+			
+			float y = 90;
+			
+			MainActivity2.y = y;
+			
+			TranslateAnimation animation = new TranslateAnimation(0, 0, 0, -y);
+			animation.setDuration(200);
+			animation.setFillAfter(true);
+			animation.setAnimationListener(new AnimationListener() {
+				@Override
+				public void onAnimationRepeat(Animation animation) {}
+				@Override
+				public void onAnimationStart(Animation animation) {}
+				@Override
+				public void onAnimationEnd(Animation animation) {
+					Intent intent = new Intent(getActivity(), SearchActivity.class);
+					BaseSlidingFragmentActivity.flag = false;
+					startActivityForResult(intent, 200);
+					getActivity().overridePendingTransition(R.anim.animationb,R.anim.animationa);
+				}
+			});
+			MainActivity2.layout_all.startAnimation(animation);
+			
+			return;
+		}
 		BmobRecent recent = (BmobRecent) adapter.getItem(position);
 		//重置未读消息
 		BmobDB.create(getActivity()).resetUnread(recent.getTargetid());

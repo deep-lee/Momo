@@ -43,6 +43,8 @@ public class BaseSlidingFragmentActivity extends SlidingFragmentActivity {
 	CustomApplcation mApplication;
 	protected HeaderLayout mHeaderLayout;
 	
+	public static Boolean flag = true;
+	
 	protected int mScreenWidth;
 	protected int mScreenHeight;
 	
@@ -286,7 +288,10 @@ public class BaseSlidingFragmentActivity extends SlidingFragmentActivity {
 	@Override
 	public void startActivity(Intent intent) {
 		super.startActivity(intent);
-		overridePendingTransition(R.anim.base_slide_right_in, R.anim.base_slide_remain);
+		if (flag) {
+			overridePendingTransition(R.anim.base_slide_right_in, R.anim.base_slide_remain);
+		}
+		
 	}
 	
 	@Override

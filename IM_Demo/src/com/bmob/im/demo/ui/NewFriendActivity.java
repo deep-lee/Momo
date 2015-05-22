@@ -13,6 +13,7 @@ import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.adapter.NewFriendAdapter;
 import com.bmob.im.demo.view.dialog.DialogTips;
+import com.deep.ui.update.MainActivity2;
 
 /** –¬≈Û”—
   * @ClassName: NewFriendActivity
@@ -90,7 +91,7 @@ public class NewFriendActivity extends ActivityBase implements OnItemLongClickLi
 		// TODO Auto-generated method stub
 		super.onDestroy();
 		if(from == null){
-			startAnimActivity(MainActivity.class);
+			startAnimActivity(MainActivity2.class);
 		}
 	}
 	

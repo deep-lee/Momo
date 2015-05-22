@@ -4,14 +4,15 @@ package com.deep.ui.update;
 import com.bmob.im.demo.R;
 import com.deep.ui.fragment.update.NaviFragment;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnClosedListener;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenedListener;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 
 public class MainActivity2 extends BaseSlidingFragmentActivity implements OnClickListener{
@@ -20,12 +21,17 @@ public class MainActivity2 extends BaseSlidingFragmentActivity implements OnClic
 	private NaviFragment naviFragment;
 	private ImageView leftMenu;
 	private SlidingMenu mSlidingMenu;
+	
+	public static View layout_all;
+
+	public static float y;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main_2);
 		
+		layout_all = findViewById(R.id.layout_all);
 		leftMenu = (ImageView) findViewById(R.id.topbar_menu_left);
 		leftMenu.setOnClickListener(this);
 		initFragment();
@@ -75,6 +81,25 @@ public class MainActivity2 extends BaseSlidingFragmentActivity implements OnClic
 		default:
 			break;
 		}
+	}
+	
+	public void setLayoutAnimation(Animation animation) {
+		layout_all.startAnimation(animation);
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		TranslateAnimation animation = new TranslateAnimation(0, 0, -y, 0);
+		animation.setDuration(200);
+		animation.setFillAfter(true);
+		layout_all.startAnimation(animation);
+		super.onActivityResult(requestCode, resultCode, data);
+	}
+	
+	@Override
+	public void onBackPressed() {
+		// super.onBackPressed();
+		mSlidingMenu.toggle();
 	}
 
 }
