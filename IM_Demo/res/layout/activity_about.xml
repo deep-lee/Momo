@@ -25,15 +25,6 @@
             android:scaleType="centerInside"
             android:src="@drawable/base_action_bar_back_bg_selector" />
 
-        <!-- <View
-            android:id="@+id/view_temp"
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_toRightOf="@id/iv_back"
-            android:background="@color/common_topbar_divider" /> -->
-
         <TextView
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
@@ -41,7 +32,8 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:layout_centerInParent="true"
-            android:text="关于摇摇"
+            android:text="关于Find"
+            android:typeface="monospace"
             android:textColor="#ffffff"
             android:textSize="18sp" />
     </RelativeLayout>
@@ -56,7 +48,7 @@
 	        
        <RelativeLayout 
            android:layout_width="match_parent"
-           android:layout_height="wrap_content">
+           android:layout_height="match_parent">
            
            <ImageView 
                android:id="@+id/about_app_icon"
@@ -71,14 +63,14 @@
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
                android:layout_centerHorizontal="true"
-               android:text="摇摇1.2"
+               android:text="Find V1.2.0"
                android:layout_marginTop="10dp"
                android:textColor="#aaaaaa"
                android:layout_below="@+id/about_app_icon"/>
            
            <LinearLayout 
                android:layout_width="fill_parent"
-               android:layout_height="wrap_content"
+               android:layout_height="match_parent"
                android:layout_marginTop="20dp"
                android:orientation="vertical"
                android:layout_below="@+id/about_app_version">
@@ -178,10 +170,10 @@
 			    
                <TextView 
                    android:layout_width="wrap_content"
-                   android:layout_marginTop="120dp"
                    android:textColor="#aaaaaa"
                    android:textSize="13sp"
-                   android:layout_gravity="center_horizontal"
+                   android:layout_marginTop="150dp"
+                   android:layout_gravity="center_horizontal|bottom"
                    android:layout_height="wrap_content"
                    android:text="四川大学Deep团队 版权所有"/>
                

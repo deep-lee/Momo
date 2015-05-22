@@ -193,6 +193,8 @@
             android:name=".util.DownloadService"
             android:label="DownloadService" >
         </service>
+        
+        <meta-data android:value="2" android:name="BMOB_CHANNEL"/>
 
         <activity
             android:name=".ui.NearPeopleMapActivity"
@@ -417,6 +419,11 @@
             android:label="@string/title_activity_contact_search" 
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:windowSoftInputMode="stateVisible|adjustPan">
+        </activity>
+        
+        <activity 
+            android:name="cn.bmob.v3.update.UpdateDialogActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
     </application>
 

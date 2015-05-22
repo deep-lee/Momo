@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.ui.AttractionsRomaActivity2;
 import com.bmob.im.demo.ui.FragmentBase;
+import com.bmob.im.demo.ui.GameCenterActivity;
 import com.bmob.im.demo.ui.GameCommunityActivity;
 import com.bmob.im.demo.ui.LifeCircleActivity;
 import com.bmob.im.demo.ui.ShakeForNearPeopleActivity;
@@ -20,8 +21,8 @@ public class FindUpdateFragment extends FragmentBase implements OnClickListener{
 	
 	Context mContext;
 	
-	RelativeLayout rl_life_circle, rl_nears_people, rl_attractions_roma, rl_sign_in,
-	rl_game_community, rl_eat_drink_play_happy;
+	RelativeLayout rl_life_circle, rl_attractions_roma, rl_sign_in,
+	rl_game_community, rl_eat_drink_play_happy, rl_game_center;
 
 	public FindUpdateFragment() {
 		super();
@@ -59,14 +60,14 @@ public class FindUpdateFragment extends FragmentBase implements OnClickListener{
 		// TODO Auto-generated method stub
 		
 		rl_life_circle = (RelativeLayout) findViewById(R.id.fragment_find_life_circle);
-		rl_nears_people = (RelativeLayout) findViewById(R.id.fragment_find_life_nears_friends);
+		rl_game_center = (RelativeLayout) findViewById(R.id.fragment_find_game_center);
 		rl_attractions_roma = (RelativeLayout) findViewById(R.id.fragment_find_attractions_roma);
 		rl_sign_in = (RelativeLayout) findViewById(R.id.fragment_find_sign_in);
 		rl_game_community = (RelativeLayout) findViewById(R.id.fragment_find_game_community);
 		rl_eat_drink_play_happy = (RelativeLayout) findViewById(R.id.fragment_find_eat_drink_play_happy);
 		
 		rl_life_circle.setOnClickListener(this);
-		rl_nears_people.setOnClickListener(this);
+		rl_game_center.setOnClickListener(this);
 		rl_attractions_roma.setOnClickListener(this);
 		rl_sign_in.setOnClickListener(this);
 		rl_game_community.setOnClickListener(this);
@@ -95,10 +96,10 @@ public class FindUpdateFragment extends FragmentBase implements OnClickListener{
 			mContext.startActivity(lifeCircleIntent);
 			break;
 			
-		case R.id.fragment_find_life_nears_friends:
+		case R.id.fragment_find_game_center:
 			
 			Intent nearsIntent = new Intent();
-			nearsIntent.setClass(getActivity(), ShakeForNearPeopleActivity.class);
+			nearsIntent.setClass(getActivity(), GameCenterActivity.class);
 			mContext.startActivity(nearsIntent);
 			
 			break;

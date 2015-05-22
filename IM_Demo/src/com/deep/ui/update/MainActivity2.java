@@ -16,6 +16,7 @@ import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.datatype.BmobRelation;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.UpdateListener;
+import cn.bmob.v3.update.BmobUpdateAgent;
 
 import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.MyMessageReceiver;
@@ -42,8 +43,11 @@ import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity2 extends BaseSlidingFragmentActivity implements OnClickListener, EventListener{
+	
+	public static String AUTOMATICADDFRIEND = "automatic_add_friends";
 	
 	public static int ETIT_MY_INFO = 100;
 	
@@ -76,6 +80,31 @@ public class MainActivity2 extends BaseSlidingFragmentActivity implements OnClic
 		//开启广播接收器
 		initNewMessageBroadCast();
 		initTagMessageBroadCast();
+		
+		BmobUpdateAgent.initAppVersion(MainActivity2.this);
+		
+//		BmobUpdateAgent.setUpdateListener(new BmobUpdateListener() {
+//
+//	        @Override
+//	        public void onUpdateReturned(int updateStatus, UpdateResponse updateInfo) {
+//	            // TODO Auto-generated method stub
+//	            if (updateStatus == UpdateStatus.Yes) {//版本有更新
+//
+//	            }else if(updateStatus == UpdateStatus.No){
+//	                Toast.makeText(MainActivity2.this, "版本无更新", Toast.LENGTH_SHORT).show();
+//	            }else if(updateStatus==UpdateStatus.EmptyField){//此提示只是提醒开发者关注那些必填项，测试成功后，无需对用户提示
+//	                Toast.makeText(MainActivity2.this, "请检查你AppVersion表的必填项，1、target_size（文件大小）是否填写；2、path或者android_url两者必填其中一项。", Toast.LENGTH_SHORT).show();
+//	            }else if(updateStatus==UpdateStatus.IGNORED){
+//	                Toast.makeText(MainActivity2.this, "该版本已被忽略更新", Toast.LENGTH_SHORT).show();
+//	            }else if(updateStatus==UpdateStatus.ErrorSizeFormat){
+//	                Toast.makeText(MainActivity2.this, "请检查target_size填写的格式，请使用file.length()方法获取apk大小。", Toast.LENGTH_SHORT).show();
+//	            }else if(updateStatus==UpdateStatus.TimeOut){
+//	                Toast.makeText(MainActivity2.this, "查询出错或查询超时", Toast.LENGTH_SHORT).show();
+//	            }
+//	        }
+//	    });
+		
+		BmobUpdateAgent.update(this);
 		
 		layout_all = findViewById(R.id.layout_all);
 		tv_edit_my_info = (TextView) findViewById(R.id.topbar_edit_my_info);
@@ -450,6 +479,51 @@ public class MainActivity2 extends BaseSlidingFragmentActivity implements OnClic
 			public void onError(int arg0, String arg1) {
 				// TODO Auto-generated method stub
 				ShowToast("添加到通讯录失败");
+			}
+		});
+	}
+	
+	public static void	addToContact(String objectId){
+		BmobQuery<User> query = new BmobQuery<User>();
+		query.addWhereEqualTo("objectId", objectId);
+		query.findObjects(CustomApplcation.getInstance(), new FindListener<User>() {
+
+			@Override
+			public void onError(int arg0, String arg1) {
+				// TODO Auto-generated method stub
+				Toast.makeText(CustomApplcation.getInstance(), CustomApplcation.getInstance().getString(R.string.network_tips), Toast.LENGTH_LONG).show();
+			}
+
+			@Override
+			public void onSuccess(List<User> arg0) {
+				// TODO Auto-generated method stub
+				final User user = arg0.get(0);
+				
+				User currentUser = CustomApplcation.getInstance().getCurrentUser();
+				BmobRelation relation = new BmobRelation();
+				relation.add(user);
+				currentUser.setContacts(relation);
+				
+				currentUser.update(CustomApplcation.getInstance(), new UpdateListener() {
+					
+					@Override
+					public void onSuccess() {
+						// TODO Auto-generated method stub
+						Toast.makeText(CustomApplcation.getInstance(), "添加成功", Toast.LENGTH_LONG).show();
+						
+						// 更新本地好友数据库
+						BmobDB.create(CustomApplcation.getInstance()).saveContact(user);
+						
+						//保存到application中方便比较
+						CustomApplcation.getInstance().setContactList(CollectionUtils.list2map(BmobDB.create(CustomApplcation.getInstance()).getContactList()));	
+					}
+					
+					@Override
+					public void onFailure(int arg0, String arg1) {
+						// TODO Auto-generated method stub
+						Toast.makeText(CustomApplcation.getInstance(), "添加失败", Toast.LENGTH_LONG).show();
+					}
+				});
 			}
 		});
 	}

@@ -13,14 +13,12 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import cn.bmob.im.BmobChatManager;
-import cn.bmob.im.config.BmobConfig;
 import cn.bmob.im.db.BmobDB;
 import cn.bmob.im.util.BmobLog;
-import cn.bmob.v3.BmobInstallation;
-import cn.bmob.v3.BmobPushManager;
-import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.datatype.BmobGeoPoint;
@@ -47,6 +45,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -69,7 +68,6 @@ import com.bmob.im.demo.util.CommonUtils;
 import com.bmob.im.demo.util.ImageLoadOptions;
 import com.bmob.im.demo.view.CircularProgressView;
 import com.bmob.im.demo.view.InfoScrollView;
-import com.bmob.im.demo.view.HeaderLayout.onRightImageButtonClickListener;
 import com.bmob.im.demo.view.dialog.CustomProgressDialog;
 import com.bmob.im.demo.view.dialog.DialogTips;
 import com.dd.library.CircularProgressButton;
@@ -89,9 +87,6 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 	TextView tv_age, tv_distance, tv_last_update_time, tv_nick, tv_account, tv_personalized_signature, tv_game, 
 			 tv_game_difficulty, tv_love_status, tv_career, tv_company, tv_school, tv_hometown, tv_book, 
 			 tv_movie, tv_music, tv_interests, tv_usually_appear, tv_register_time, tv_recent_play;
-	
-	TextView tv_edit_info;
-	View edit_line;
 	
 	// ImageButton btn_back;
 	
@@ -200,7 +195,6 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 		photoTask = new ArrayList<MYTask>();
 		
 		if (from.equals("other") || from.equals("add")) {
-//			otherWallPhoto = getIntent().getStringArrayListExtra("photo");
 			otherWallPhoto = new ArrayList<String>();
 		}
 		
@@ -255,9 +249,6 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 			});
 		}
 		
-//		btn_back = (ImageButton) findViewById(R.id.info_show_back_btn);
-//		btn_back.setOnClickListener(this);
-		
 		tv_age = (TextView) findViewById(R.id.info_age_tv);
 		tv_distance = (TextView) findViewById(R.id.info_tv_last_location_distance);
 		tv_last_update_time = (TextView) findViewById(R.id.info_tv_last_update);
@@ -282,18 +273,11 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 		
 		tv_recent_play = (TextView) findViewById(R.id.info_recent_play_details);
 		
-		tv_edit_info = (TextView) findViewById(R.id.tv_edit_info);
-		edit_line = findViewById(R.id.view_temp2);
-		
-//		btn_edit = (Button) findViewById(R.id.btn_edit_info);
 		btn_add = (CircularProgressButton) findViewById(R.id.info_btn_add_friend);
 		btn_chat = (CircularProgressButton) findViewById(R.id.info_btn_chat);
 		btn_black = (CircularProgressButton) findViewById(R.id.info_btn_black);
 		black_list_tips = (RelativeLayout) findViewById(R.id.info_layout_black_tips);
 		
-//		if (from.equals("me")) {
-//			btn_edit.setOnClickListener(this);
-//		}
 		btn_add.setOnClickListener(this);
 		btn_chat.setOnClickListener(this);
 		btn_black.setOnClickListener(this);
@@ -321,17 +305,12 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 			btn_add.setVisibility(View.GONE);
 			btn_chat.setVisibility(View.GONE);
 			btn_black.setVisibility(View.GONE);
-//			btn_edit.setVisibility(View.VISIBLE);
 		}
 		else{
 			//不管对方是不是你的好友，均可以发送消息--BmobIM_V1.1.2修改
 			btn_chat.setEnabled(true);
 			btn_chat.setVisibility(View.VISIBLE);
 			btn_chat.setOnClickListener(this);
-//			btn_edit.setVisibility(View.GONE);
-			
-			tv_edit_info.setVisibility(View.INVISIBLE);
-			edit_line.setVisibility(View.INVISIBLE);
 			
 			// 从附近的人列表添加好友--因为获取附近的人的方法里面有是否显示好友的情况，因此在这里需要判断下这个用户是否是自己的好友
 			
@@ -343,7 +322,6 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 					btn_black.setVisibility(View.VISIBLE);
 					btn_black.setOnClickListener(this);
 				} else { // 不是好友，就可以添加好友
-//					btn_chat.setVisibility(View.GONE);
 					btn_black.setVisibility(View.GONE);
 					btn_add.setEnabled(true);
 					btn_add.setVisibility(View.VISIBLE);
@@ -1244,13 +1222,6 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 			intent1.putStringArrayListExtra("photo", otherWallPhoto);
 			startActivity(intent1);
 			break;
-			
-//		// 编辑资料
-//		case R.id.btn_edit_info:
-//			Intent intent2 = new Intent();
-//			intent2.setClass(SetMyInfoActivity2.this, EditMyInfoActivity.class);
-//			startActivityForResult(intent2, ETIT_MY_INFO);
-			// break;
 		// 添加好友
 		case R.id.info_btn_add_friend:
 			addFriend();
@@ -1291,12 +1262,6 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 			break;
 		}
 		
-	}
-	
-	public void editMyInfo(View view) {
-		Intent intent2 = new Intent();
-		intent2.setClass(SetMyInfoActivity2.this, EditMyInfoActivity.class);
-		startActivityForResult(intent2, ETIT_MY_INFO);
 	}
 	
 	/**
@@ -1366,20 +1331,12 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 		final CustomProgressDialog progress = new CustomProgressDialog(SetMyInfoActivity2.this, "正在添加...");
 		progress.setCanceledOnTouchOutside(false);
 		progress.show();
-		// 发送tag请求，TAG_ADD_CONTACT表示添加好友
 		
-//		
-//		给指定用户推送Tag标记的消息请提供回调操作:此方法方便开发者使用自定义tag标记的消息，不携带回调方法
-//
-//    参数：
-//        tag - 消息类型
-//        installId - 目标用户绑定的设备id
-//        pushCallback - 发送回调 
+		// 发送自定义Json格式消息
 		
-		
-		BmobChatManager.getInstance(this).sendTagMessage(BmobConfig.TAG_ADD_CONTACT,
+		BmobChatManager.getInstance(this).sendJsonMessage(getJsonAutomaticAddFriendMsg(currentUser, user), 
 				user.getObjectId(), new PushListener() {
-
+					
 					@Override
 					public void onSuccess() {
 						// TODO Auto-generated method stub
@@ -1412,126 +1369,44 @@ public class SetMyInfoActivity2 extends ActivityBase implements InfoScrollView.O
 						});
 						
 						btn_add.setProgress(100);
-						
-						// ShowToast("发送请求成功，等待对方验证！");
-						
-						
 					}
-
+					
 					@Override
-					public void onFailure(int arg0, final String arg1) {
+					public void onFailure(int arg0, String arg1) {
 						// TODO Auto-generated method stub
 						progress.dismiss();
 						
 						btn_add.setProgress(-1);
-						
-						// ShowToast("发送请求失败！");
 						ShowLog("发送请求失败:" + arg1);
 					}
 				});
-		
-		
-		// 发送点播推送消息
-//		String installationId = user.getInstallId();
-//		BmobPushManager<BmobInstallation> bmobPush = new BmobPushManager<BmobInstallation>(this);
-//		BmobQuery<BmobInstallation> query = BmobInstallation.getQuery();
-//		query.addWhereEqualTo("installationId", installationId);
-//		bmobPush.setQuery(query);
-//		bmobPush.pushMessage(currentUser.getUsername() + "_将您添加到通讯录");
-//		
-//		BmobRelation relation = new BmobRelation();
-//		relation.add(user);
-//		currentUser.setContacts(relation);
-//		
-//		currentUser.update(SetMyInfoActivity2.this, new UpdateListener() {
-//			
-//			@Override
-//			public void onSuccess() {
-//				// TODO Auto-generated method stub
-//				ShowToast("添加成功！");
-//				
-//				// 更新本地好友数据库
-//				BmobDB.create(SetMyInfoActivity2.this).saveContact(user);
-//				
-//				//保存到application中方便比较
-//				CustomApplcation.getInstance().setContactList(CollectionUtils.list2map(BmobDB.create(SetMyInfoActivity2.this).getContactList()));	
-//			}
-//			
-//			@Override
-//			public void onFailure(int arg0, String arg1) {
-//				// TODO Auto-generated method stub
-//				ShowToast("添加失败！");
-//			}
-//		});
-		
-//		BmobChatManager.getInstance(this).sendTagMessage(BmobConfig.TAG_ADD_CONTACT,
-//				user.getObjectId(), new PushListener() {
-//
-//					@Override
-//					public void onSuccess() {
-//						// TODO Auto-generated method stub
-//						progress.dismiss();
-//						
-//						btn_add.setProgress(100);
-//						
-//						ShowToast("发送请求成功，等待对方验证！");
-//						
-//						// 添加到好友数据库
-//						BmobQuery<User> query2 = new BmobQuery<User>();
-//						query2.addWhereEqualTo("username", currentUser.getUsername());
-//						query2.findObjects(SetMyInfoActivity2.this, new FindListener<User>() {
-//
-//							@Override
-//							public void onError(int arg0, String arg1) {
-//								// TODO Auto-generated method stub
-//								ShowToast("添加失败！");
-//								ShowLog("添加失败:" + arg1);
-//							}
-//
-//							@Override
-//							public void onSuccess(List<User> arg0) {
-//								// TODO Auto-generated method stub
-//								if (arg0.size() > 0) {
-//									BmobRelation relation = new BmobRelation();
-//									relation.add(user);
-//									currentUser.setContacts(relation);
-//									
-//									currentUser.update(SetMyInfoActivity2.this, new UpdateListener() {
-//										
-//										@Override
-//										public void onSuccess() {
-//											// TODO Auto-generated method stub
-//											ShowToast("添加成功！");
-//											
-//											// 更新本地好友数据库
-//											BmobDB.create(SetMyInfoActivity2.this).saveContact(user);
-//											
-//											//保存到application中方便比较
-//											CustomApplcation.getInstance().setContactList(CollectionUtils.list2map(BmobDB.create(SetMyInfoActivity2.this).getContactList()));	
-//										}
-//										
-//										@Override
-//										public void onFailure(int arg0, String arg1) {
-//											// TODO Auto-generated method stub
-//											ShowToast("添加失败！");
-//										}
-//									});
-//								}
-//							}
-//						});
-//					}
-//
-//					@Override
-//					public void onFailure(int arg0, final String arg1) {
-//						// TODO Auto-generated method stub
-//						progress.dismiss();
-//						
-//						btn_add.setProgress(-1);
-//						
-//						ShowToast("发送请求失败！");
-//						ShowLog("发送请求失败:" + arg1);
-//					}
-//				});
+	}
+	
+	public String getJsonAutomaticAddFriendMsg(User currentUser, User toUser) {
+		String jsonresult = "";//定义返回字符串  
+        JSONObject object = new JSONObject();//创建一个总的对象，这个对象对整个json串  
+        try {
+			
+        	JSONObject jsonObject1 = new JSONObject();
+        	jsonObject1.put("sound", "");
+        	jsonObject1.put("alert", "通过你设置的游戏，并自动添加为好友");
+        	jsonObject1.put("badge", 0);
+        	object.put("aps", jsonObject1);
+        	
+        	object.put("tag", "automatic_add_friends");
+        	object.put("fId", currentUser.getObjectId());
+        	object.put("fU", currentUser.getUsername());
+        	object.put("tId", toUser.getObjectId());
+        	
+        	jsonresult = object.toString();//生成返回字符串  
+        	
+        	
+		} catch (JSONException e) {
+			// TODO: handle exception
+			e.printStackTrace();  
+		}
+        Log.i("JSON", "生成的json串为:"+jsonresult);  
+        return jsonresult;
 	}
 	
 	private static final double EARTH_RADIUS = 6378137;

@@ -16,6 +16,7 @@ import android.widget.TextView;
 import cn.bmob.v3.BmobUser;
 
 import com.bmob.im.demo.R;
+import com.bmob.im.demo.ui.AboutActivity;
 import com.bmob.im.demo.ui.FragmentBase;
 import com.bmob.im.demo.ui.HidingModeActivity;
 import com.bmob.im.demo.ui.LoginActivity;
@@ -29,8 +30,8 @@ public class SettingUpdateFragment extends FragmentBase implements OnClickListen
 	
 	private Context mContext;
 	
-	RelativeLayout accountSafeLayout, accountBangdingLayout, hidingModeLayout, 
-	messageNitifyLayout, personDress, emojStoreLayout, clearCacheLayout,
+	RelativeLayout hidingModeLayout, 
+	messageNitifyLayout, personDress, emojStoreLayout, clearCacheLayout, about_find_layout,
 	logOutLayout;
 	TextView tv_cache_capacity;
 	
@@ -60,25 +61,23 @@ public class SettingUpdateFragment extends FragmentBase implements OnClickListen
 		
 		cachePath = Environment.getExternalStorageDirectory().getPath() + "/Bmob_IM_test/GameAPK/";
 		
-		accountSafeLayout = (RelativeLayout) findViewById(R.id.slide_layout_account_safe);
-		accountBangdingLayout = (RelativeLayout) findViewById(R.id.slide_layout_account_bangding);
 		hidingModeLayout = (RelativeLayout) findViewById(R.id.slide_layout_hiding_mode);
 		messageNitifyLayout = (RelativeLayout) findViewById(R.id.slide_layout_message_notify);
 		personDress = (RelativeLayout) findViewById(R.id.slide_layout_person_dress);
 		emojStoreLayout = (RelativeLayout) findViewById(R.id.slide_layout_emoj_store);
 		clearCacheLayout = (RelativeLayout) findViewById(R.id.slide_layout_clear_cache);
+		about_find_layout = (RelativeLayout) findViewById(R.id.slide_layout_about);
 		logOutLayout = (RelativeLayout) findViewById(R.id.slide_layout_logout);
 		
 		tv_cache_capacity = (TextView) findViewById(R.id.slide_tv_set_cache_capacity);
 		tv_cache_capacity.setText(FileSizeUtil.getAutoFileOrFilesSize(cachePath));
 		
-		accountBangdingLayout.setOnClickListener(this);
-		accountSafeLayout.setOnClickListener(this);
 		hidingModeLayout.setOnClickListener(this);
 		messageNitifyLayout.setOnClickListener(this);
 		personDress.setOnClickListener(this);
 		emojStoreLayout.setOnClickListener(this);
 		clearCacheLayout.setOnClickListener(this);
+		about_find_layout.setOnClickListener(this);
 		logOutLayout.setOnClickListener(this);
 		
 		
@@ -91,15 +90,6 @@ public class SettingUpdateFragment extends FragmentBase implements OnClickListen
 		
 		Intent intent = new Intent();
 		switch (v.getId()) {
-		
-		// 账户安全
-		case R.id.slide_layout_account_safe:
-			
-			break;
-		// 账户绑定
-		case R.id.slide_layout_account_bangding:
-						
-			break;
 		// 隐身模式
 		case R.id.slide_layout_hiding_mode:
 			intent.setClass(mContext, HidingModeActivity.class);
@@ -121,6 +111,13 @@ public class SettingUpdateFragment extends FragmentBase implements OnClickListen
 		// 清除缓存
 		case R.id.slide_layout_clear_cache:
 			clearCache();
+			break;
+			
+		//  关于Find
+		case R.id.slide_layout_about:
+			Intent intent2 = new Intent();
+			intent2.setClass(mContext, AboutActivity.class);
+			mContext.startActivity(intent2);
 			break;
 			
 		// 退出登陆

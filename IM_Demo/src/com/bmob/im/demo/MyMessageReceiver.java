@@ -9,6 +9,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
+import android.util.Log;
+import android.widget.Toast;
 import cn.bmob.im.BmobChatManager;
 import cn.bmob.im.BmobNotifyManager;
 import cn.bmob.im.BmobUserManager;
@@ -41,6 +43,8 @@ public class MyMessageReceiver extends BroadcastReceiver {
 
 	// 事件监听
 	public static ArrayList<EventListener> ehList = new ArrayList<EventListener>();
+	
+	public static String AUTOMATICADDFRIEND = "automatic_add_friends";
 	
 	public static final int NOTIFY_ID = 0x000;
 	public static int mNewNum = 0;//
@@ -80,7 +84,7 @@ public class MyMessageReceiver extends BroadcastReceiver {
 			jo = new JSONObject(json);
 			String tag = BmobJsonUtil.getString(jo, BmobConstant.PUSH_KEY_TAG);
 			if(tag.equals(BmobConfig.TAG_OFFLINE)){//下线通知
-				if(currentUser!=null){
+				if(currentUser != null){
 					if (ehList.size() > 0) {// 有监听的时候，传递下去
 						for (EventListener handler : ehList)
 							handler.onOffline();
@@ -179,6 +183,13 @@ public class MyMessageReceiver extends BroadcastReceiver {
 									}
 								}
 							}
+						}else if (tag.equals(AUTOMATICADDFRIEND)) {  // 自动添加好友的消息
+							
+							if(currentUser != null){//有登陆用户
+								if(toId.equals(currentUser.getObjectId())){
+									MainActivity2.addToContact(jo.getString("fId"));
+								}
+							}
 						}
 					}
 				}else{//在黑名单期间所有的消息都应该置为已读，不然等取消黑名单之后又可以查询的到
@@ -197,7 +208,7 @@ public class MyMessageReceiver extends BroadcastReceiver {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			//这里截取到的有可能是web后台推送给客户端的消息，也有可能是开发者自定义发送的消息，需要开发者自行解析和处理
+			// 这里截取到的有可能是web后台推送给客户端的消息，也有可能是开发者自定义发送的消息，需要开发者自行解析和处理
 			BmobLog.i("parseMessage错误："+e.getMessage());
 		}
 	}

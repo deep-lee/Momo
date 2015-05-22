@@ -72,7 +72,7 @@ public class BaseSlidingFragmentActivity extends SlidingFragmentActivity {
 		// 自动登陆状态下检测是否在其他设备登陆
 		checkLogin();
 		
-		checkForUpdate();
+		// checkForUpdate();
 		
 	}
 

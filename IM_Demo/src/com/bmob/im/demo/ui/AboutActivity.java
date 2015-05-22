@@ -4,20 +4,28 @@ import java.util.List;
 
 import cn.bmob.im.BmobNotifyManager;
 import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.listener.BmobUpdateListener;
 import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.update.BmobUpdateAgent;
+import cn.bmob.v3.update.UpdateStatus;
+import cn.bmob.v3.update.UpdateResponse;
 
+import com.baidu.location.ab;
 import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.bean.Update;
 import com.bmob.im.demo.config.Config;
 import com.bmob.im.demo.util.DownloadService;
 import com.bmob.im.demo.view.dialog.DialogTips;
+import com.deep.ui.update.MainActivity2;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 public class AboutActivity extends BaseActivity implements OnClickListener{
 	
@@ -27,7 +35,8 @@ public class AboutActivity extends BaseActivity implements OnClickListener{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_about);
-		
+		BmobUpdateAgent.initAppVersion(AboutActivity.this);
+		BmobUpdateAgent.initAppVersion(AboutActivity.this);
 		initView();
 	}
 	
@@ -39,6 +48,27 @@ public class AboutActivity extends BaseActivity implements OnClickListener{
 		rl_welcome_page.setOnClickListener(this);
 		rl_help_and_feedback.setOnClickListener(this);
 		rl_check_for_update.setOnClickListener(this);
+		
+		BmobUpdateAgent.setUpdateListener(new BmobUpdateListener() {
+
+	        @Override
+	        public void onUpdateReturned(int updateStatus, UpdateResponse updateInfo) {
+	            // TODO Auto-generated method stub
+	            if (updateStatus == UpdateStatus.Yes) {//版本有更新
+
+	            }else if(updateStatus == UpdateStatus.No){
+	                Toast.makeText(AboutActivity.this, "版本无更新", Toast.LENGTH_SHORT).show();
+	            }else if(updateStatus==UpdateStatus.EmptyField){//此提示只是提醒开发者关注那些必填项，测试成功后，无需对用户提示
+	                Toast.makeText(AboutActivity.this, "请检查你AppVersion表的必填项，1、target_size（文件大小）是否填写；2、path或者android_url两者必填其中一项。", Toast.LENGTH_SHORT).show();
+	            }else if(updateStatus==UpdateStatus.IGNORED){
+	                Toast.makeText(AboutActivity.this, "该版本已被忽略更新", Toast.LENGTH_SHORT).show();
+	            }else if(updateStatus==UpdateStatus.ErrorSizeFormat){
+	                Toast.makeText(AboutActivity.this, "请检查target_size填写的格式，请使用file.length()方法获取apk大小。", Toast.LENGTH_SHORT).show();
+	            }else if(updateStatus==UpdateStatus.TimeOut){
+	                Toast.makeText(AboutActivity.this, "查询出错或查询超时", Toast.LENGTH_SHORT).show();
+	            }
+	        }
+	    });
 	}
 
 	@Override
@@ -57,7 +87,8 @@ public class AboutActivity extends BaseActivity implements OnClickListener{
 			break;
 			
 		case R.id.about_layout_check_for_update:
-			checkForUpdate();
+			// checkForUpdate();
+			BmobUpdateAgent.forceUpdate(AboutActivity.this);
 			break;
 
 		default:

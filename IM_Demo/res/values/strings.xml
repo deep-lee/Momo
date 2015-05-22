@@ -220,5 +220,7 @@
     <string name="fragment_navi_find">发&#160;&#160;&#160;&#160;现</string>
     <string name="title_activity_search">SearchActivity</string>
     <string name="title_activity_contact_search">ContactSearchActivity</string>
+    <string name="slide_about_find">关于Find</string>
+    <string name="fragment_find_game_center">游戏中心</string>
 
 </resources>

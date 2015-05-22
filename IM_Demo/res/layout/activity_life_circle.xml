@@ -52,6 +52,7 @@
             android:layout_marginLeft="10dp"
             android:layout_centerInParent="true"
             android:text="时间线"
+            android:typeface="monospace"
             android:textColor="#ffffff"
             android:textSize="18sp" />
 
@@ -66,6 +67,7 @@
             android:gravity="center"
             android:onClick="writeState"
             android:text="写状态"
+            android:typeface="monospace"
             android:textColor="#fff"
             android:textSize="16sp" />
 
