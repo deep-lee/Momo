@@ -20,8 +20,8 @@ import com.bmob.im.demo.ui.AboutActivity;
 import com.bmob.im.demo.ui.FragmentBase;
 import com.bmob.im.demo.ui.HidingModeActivity;
 import com.bmob.im.demo.ui.LoginActivity;
+import com.bmob.im.demo.ui.PersonalDressActivity;
 import com.bmob.im.demo.ui.SetMessageNotifyActivity;
-import com.bmob.im.demo.util.ActivityUtil;
 import com.bmob.im.demo.util.FileSizeUtil;
 import com.bmob.im.demo.view.dialog.DialogTips;
 import com.deep.ui.update.MainActivity2;
@@ -31,7 +31,7 @@ public class SettingUpdateFragment extends FragmentBase implements OnClickListen
 	private Context mContext;
 	
 	RelativeLayout hidingModeLayout, 
-	messageNitifyLayout, personDress, emojStoreLayout, clearCacheLayout, about_find_layout,
+	messageNitifyLayout, personDress, clearCacheLayout, about_find_layout,
 	logOutLayout;
 	TextView tv_cache_capacity;
 	
@@ -64,7 +64,6 @@ public class SettingUpdateFragment extends FragmentBase implements OnClickListen
 		hidingModeLayout = (RelativeLayout) findViewById(R.id.slide_layout_hiding_mode);
 		messageNitifyLayout = (RelativeLayout) findViewById(R.id.slide_layout_message_notify);
 		personDress = (RelativeLayout) findViewById(R.id.slide_layout_person_dress);
-		emojStoreLayout = (RelativeLayout) findViewById(R.id.slide_layout_emoj_store);
 		clearCacheLayout = (RelativeLayout) findViewById(R.id.slide_layout_clear_cache);
 		about_find_layout = (RelativeLayout) findViewById(R.id.slide_layout_about);
 		logOutLayout = (RelativeLayout) findViewById(R.id.slide_layout_logout);
@@ -75,7 +74,6 @@ public class SettingUpdateFragment extends FragmentBase implements OnClickListen
 		hidingModeLayout.setOnClickListener(this);
 		messageNitifyLayout.setOnClickListener(this);
 		personDress.setOnClickListener(this);
-		emojStoreLayout.setOnClickListener(this);
 		clearCacheLayout.setOnClickListener(this);
 		about_find_layout.setOnClickListener(this);
 		logOutLayout.setOnClickListener(this);
@@ -102,11 +100,8 @@ public class SettingUpdateFragment extends FragmentBase implements OnClickListen
 			break;
 		// 个性装扮
 		case R.id.slide_layout_person_dress:
-						
-			break;
-		// 表情商城
-		case R.id.slide_layout_emoj_store:
-						
+			intent.setClass(mContext, PersonalDressActivity.class);
+			startActivity(intent);
 			break;
 		// 清除缓存
 		case R.id.slide_layout_clear_cache:

@@ -1,0 +1,168 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/theme_bg_color"
+    tools:context="${relativePackage}.${activityClass}" >
+    
+    <RelativeLayout
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_top_bar"
+        android:background="@color/common_action_bar_bg_color" >
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:onClick="back"
+            android:paddingBottom="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="5dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/base_action_bar_back_bg_selector" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_centerInParent="true"
+            android:text="个性装扮"
+            android:typeface="monospace"
+            android:textColor="#ffffff"
+            android:textSize="18sp" />
+    </RelativeLayout>
+    
+    <RelativeLayout
+        android:id="@+id/personal_dress_suggest_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title"
+        android:orientation="vertical" >
+        <android.support.v4.view.ViewPager
+            android:id="@+id/adv_pager"
+            android:layout_width="fill_parent"
+            android:layout_height="160dp" >
+            
+        </android.support.v4.view.ViewPager>
+        <LinearLayout
+            android:id="@+id/viewGroup"
+            android:layout_below="@id/adv_pager"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-25px"
+            android:gravity="right"
+            android:orientation="horizontal" >
+        </LinearLayout>
+    </RelativeLayout>
+    
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@+id/personal_dress_suggest_layout">
+        
+        
+        <RelativeLayout
+	        android:id="@+id/personal_dress_emoj_layout"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:background="@drawable/common_list_item_bg_selector"
+	        android:minHeight="50dp"
+	        android:padding="10dp" >
+	
+	        <TextView
+	            style="@style/Smile.TextView._Black"
+	            android:layout_alignParentLeft="true"
+	            android:textSize="16sp"
+	            android:layout_centerVertical="true"
+	            android:text="@string/personal_dress_emoj" />
+	        
+	        <TextView
+	            android:id="@+id/slide_tv_set_person_dress"
+	            android:layout_width="10dp"
+	            android:layout_height="15dp"
+	            android:layout_alignParentRight="true"
+	            android:layout_centerVertical="true"
+	            android:layout_marginRight="10dp"
+	            android:drawablePadding="10dp"
+	            android:background="@drawable/register_bottom_arrow" />
+	
+	    </RelativeLayout>
+	    
+        <View
+	        android:layout_width="match_parent"
+	        android:layout_height="0.1dp"
+	        android:layout_marginRight="12dp"
+	        android:layout_marginLeft="12dp"
+	        android:background="#dadada" />
+	    
+        <RelativeLayout
+	        android:id="@+id/personal_dress_chat_bg_layout"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:background="@drawable/common_list_item_bg_selector"
+	        android:minHeight="50dp"
+	        android:padding="10dp" >
+	
+	        <TextView
+	            style="@style/Smile.TextView._Black"
+	            android:layout_alignParentLeft="true"
+	            android:textSize="16sp"
+	            android:layout_centerVertical="true"
+	            android:text="@string/personal_dress_chat_bg" />
+	        
+	        <TextView
+	            android:id="@+id/personal_dress_chat_bg"
+	            android:layout_width="10dp"
+	            android:layout_height="15dp"
+	            android:layout_alignParentRight="true"
+	            android:layout_centerVertical="true"
+	            android:layout_marginRight="10dp"
+	            android:drawablePadding="10dp"
+	            android:background="@drawable/register_bottom_arrow" />
+	
+	    </RelativeLayout>
+	    
+        <View
+	        android:layout_width="match_parent"
+	        android:layout_height="0.1dp"
+	        android:layout_marginRight="12dp"
+	        android:layout_marginLeft="12dp"
+	        android:background="#dadada" />
+	    
+        <RelativeLayout
+	        android:id="@+id/personal_dress_coloful_bubble_layout"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:background="@drawable/common_list_item_bg_selector"
+	        android:minHeight="50dp"
+	        android:padding="10dp" >
+	
+	        <TextView
+	            style="@style/Smile.TextView._Black"
+	            android:layout_alignParentLeft="true"
+	            android:textSize="16sp"
+	            android:layout_centerVertical="true"
+	            android:text="@string/personal_dress_coloful_bubble" />
+	        
+	        <TextView
+	            android:id="@+id/personal_dress_coloful_bubble"
+	            android:layout_width="10dp"
+	            android:layout_height="15dp"
+	            android:layout_alignParentRight="true"
+	            android:layout_centerVertical="true"
+	            android:layout_marginRight="10dp"
+	            android:drawablePadding="10dp"
+	            android:background="@drawable/register_bottom_arrow" />
+	
+	    </RelativeLayout>
+        
+    </LinearLayout>
+
+</RelativeLayout>

@@ -5,13 +5,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -58,6 +63,7 @@ import cn.bmob.im.inteface.UploadListener;
 import cn.bmob.im.util.BmobLog;
 import cn.bmob.v3.listener.PushListener;
 
+import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.MyMessageReceiver;
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.adapter.EmoViewPagerAdapter;
@@ -101,6 +107,8 @@ public class ChatActivity extends ActivityBase implements OnClickListener,
 
 	// 可输入表情的输入框
 	EmoticonsEditText edit_user_comment;
+	
+	private View main_chat_bg;
 
 	// 聊天对象的Id
 	String targetId = "";
@@ -197,9 +205,28 @@ public class ChatActivity extends ActivityBase implements OnClickListener,
 		});
 	}
 
+	@SuppressWarnings("deprecation")
 	private void initView() {
+		
 		mHeaderLayout = (HeaderLayout) findViewById(R.id.common_actionbar);
 		mListView = (XListView) findViewById(R.id.mListView);
+		
+		main_chat_bg = findViewById(R.id.chat_main_bg);
+		
+		if (CustomApplcation.chatBgAddress.equals("default")) {
+			main_chat_bg.setBackgroundColor(getResources().getColor(R.color.theme_bg_color));
+		}
+		else {
+			File mFile = new File(CustomApplcation.chatBgAddress);
+	        //若该文件存在
+	        if (mFile.exists()) {
+	            Bitmap bitmap = BitmapFactory.decodeFile(CustomApplcation.chatBgAddress);
+	            main_chat_bg.setBackground(new BitmapDrawable(bitmap));
+	        }
+	        else {
+				main_chat_bg.setBackgroundColor(getResources().getColor(R.color.theme_bg_color));
+			}
+		}
 		
 		tv_title = (TextView) findViewById(R.id.tv_title);
 		if (targetUser != null) {

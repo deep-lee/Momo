@@ -89,13 +89,22 @@ public class User extends BmobChatUser {
 	// 生活圈的状态，是隐身还是可见
 	private Boolean qiangYuStatus;
 	
+	// 聊天背景
+	private ChatBg chatBg;
+	
 	public User() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 	
-	
+	public ChatBg getChatBg() {
+		return chatBg;
+	}
 
+	public void setChatBg(ChatBg chatBg) {
+		this.chatBg = chatBg;
+	}
+	
 	public Boolean getQiangYuStatus() {
 		return qiangYuStatus;
 	}

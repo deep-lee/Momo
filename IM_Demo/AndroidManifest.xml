@@ -193,8 +193,10 @@
             android:name=".util.DownloadService"
             android:label="DownloadService" >
         </service>
-        
-        <meta-data android:value="2" android:name="BMOB_CHANNEL"/>
+
+        <meta-data
+            android:name="BMOB_CHANNEL"
+            android:value="2" />
 
         <activity
             android:name=".ui.NearPeopleMapActivity"
@@ -416,14 +418,38 @@
         <activity
             android:name="com.deep.ui.update.ContactSearchActivity"
             android:configChanges="orientation|keyboardHidden|locale"
-            android:label="@string/title_activity_contact_search" 
+            android:label="@string/title_activity_contact_search"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:windowSoftInputMode="stateVisible|adjustPan">
+            android:windowSoftInputMode="stateVisible|adjustPan" >
         </activity>
-        
-        <activity 
+        <activity
             android:name="cn.bmob.v3.update.UpdateDialogActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
+        <activity
+            android:name=".ui.SendFeedbackActivity"
+            android:label="@string/title_activity_send_feedback"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
+        <activity
+            android:name=".ui.PersonalDressActivity"
+            android:label="@string/title_activity_personal_dress"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
+        <activity
+            android:name=".ui.ChatBgSelectActivity"
+            android:label="@string/title_activity_chat_bg_select"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
+        <activity
+            android:name=".ui.ChatBgGroupDetailsActivity"
+            android:label="@string/title_activity_chat_bg_group_details"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="com.bmob.im.demo.ui.ShowChatBgActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:label="@string/title_activity_show_chat_bg" >
         </activity>
     </application>
 

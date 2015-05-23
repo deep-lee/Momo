@@ -1,6 +1,12 @@
 package com.deep.ui.update;
 
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.List;
 
 import cn.bmob.im.BmobChat;
@@ -21,6 +27,7 @@ import cn.bmob.v3.update.BmobUpdateAgent;
 import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.MyMessageReceiver;
 import com.bmob.im.demo.R;
+import com.bmob.im.demo.bean.ChatBg;
 import com.bmob.im.demo.bean.User;
 import com.bmob.im.demo.ui.EditMyInfoActivity;
 import com.bmob.im.demo.ui.NewFriendActivity;
@@ -31,11 +38,17 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnClosedListener;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -64,6 +77,30 @@ public class MainActivity2 extends BaseSlidingFragmentActivity implements OnClic
 	public static int currentTabIndex = 0;
 	
 	public static TextView iv_tips;
+	
+	SharedPreferences mySharedPreferences;
+	//实例化SharedPreferences.Editor对象（第二步） 
+	SharedPreferences.Editor editor; 
+	
+	@SuppressLint("HandlerLeak")
+	Handler handler = new Handler(){
+		public void handleMessage(Message msg) {   
+            switch (msg.what) {   
+            
+            	case 0:
+    				Bundle data = msg.getData();
+    				String chat_bg_address = data.getString("chat_bg_address");
+    				CustomApplcation.chatBgAddress = chat_bg_address;
+    				
+    				editor.putString("chat_bg_address", chat_bg_address);
+    				editor.commit();
+    				
+            		break;
+            
+            }   
+            super.handleMessage(msg);   
+       }
+	};
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -83,28 +120,14 @@ public class MainActivity2 extends BaseSlidingFragmentActivity implements OnClic
 		
 		BmobUpdateAgent.initAppVersion(MainActivity2.this);
 		
-//		BmobUpdateAgent.setUpdateListener(new BmobUpdateListener() {
-//
-//	        @Override
-//	        public void onUpdateReturned(int updateStatus, UpdateResponse updateInfo) {
-//	            // TODO Auto-generated method stub
-//	            if (updateStatus == UpdateStatus.Yes) {//版本有更新
-//
-//	            }else if(updateStatus == UpdateStatus.No){
-//	                Toast.makeText(MainActivity2.this, "版本无更新", Toast.LENGTH_SHORT).show();
-//	            }else if(updateStatus==UpdateStatus.EmptyField){//此提示只是提醒开发者关注那些必填项，测试成功后，无需对用户提示
-//	                Toast.makeText(MainActivity2.this, "请检查你AppVersion表的必填项，1、target_size（文件大小）是否填写；2、path或者android_url两者必填其中一项。", Toast.LENGTH_SHORT).show();
-//	            }else if(updateStatus==UpdateStatus.IGNORED){
-//	                Toast.makeText(MainActivity2.this, "该版本已被忽略更新", Toast.LENGTH_SHORT).show();
-//	            }else if(updateStatus==UpdateStatus.ErrorSizeFormat){
-//	                Toast.makeText(MainActivity2.this, "请检查target_size填写的格式，请使用file.length()方法获取apk大小。", Toast.LENGTH_SHORT).show();
-//	            }else if(updateStatus==UpdateStatus.TimeOut){
-//	                Toast.makeText(MainActivity2.this, "查询出错或查询超时", Toast.LENGTH_SHORT).show();
-//	            }
-//	        }
-//	    });
-		
 		BmobUpdateAgent.update(this);
+		
+		mySharedPreferences = getSharedPreferences("test", 
+				Activity.MODE_PRIVATE); 
+		editor = mySharedPreferences.edit(); 
+		
+		// 获取用户设置的聊天背景
+		getUserChatBg();
 		
 		layout_all = findViewById(R.id.layout_all);
 		tv_edit_my_info = (TextView) findViewById(R.id.topbar_edit_my_info);
@@ -183,6 +206,78 @@ public class MainActivity2 extends BaseSlidingFragmentActivity implements OnClic
 		});
 		newThread.start(); //启动线程
 		    
+	}
+	
+	/*
+	 * 获取用的聊天背景
+	 */
+	public void getUserChatBg() {
+		Log.i("bu下载", "调用了");
+		new Thread(){
+			@Override
+			public void run(){
+				
+				downLoadChatBgToSD(CustomApplcation.getInstance().getCurrentUser().getChatBg());
+			}
+			
+		}.start();
+	}
+	
+	public void downLoadChatBgToSD(ChatBg chatBg) {
+		
+		String urlStr = chatBg.getFile().getFileUrl(MainActivity2.this);
+		String dirName = "";
+		dirName = Environment.getExternalStorageDirectory()+"/Find/";
+		File f = new File(dirName);
+		if(!f.exists())
+		{
+		    f.mkdir();
+		}
+		
+		String newFilename = urlStr.substring(urlStr.lastIndexOf("/") + 1);
+		newFilename = dirName + newFilename;
+		File file = new File(newFilename);
+		//如果目标文件已经存在，则删除。产生覆盖旧文件的效果
+		if(file.exists())
+		{
+		    file.delete();
+		}
+		
+		try {
+	         // 构造URL   
+	         URL url = new URL(urlStr);   
+	         // 打开连接   
+	         URLConnection con = url.openConnection();
+	         //获得文件的长度
+	         int contentLength = con.getContentLength();
+	         System.out.println("长度 :"+contentLength);
+	         // 输入流   
+	         InputStream is = con.getInputStream();  
+	         // 1K的数据缓冲   
+	         byte[] bs = new byte[1024];   
+	         // 读取到的数据长度   
+	         int len;   
+	         // 输出的文件流   
+	         OutputStream os = new FileOutputStream(newFilename);   
+	         // 开始读取   
+	         while ((len = is.read(bs)) != -1) {   
+	             os.write(bs, 0, len);   
+	         }  
+	         // 完毕，关闭所有链接   
+	         os.close();  
+	         is.close();
+	         
+	         Message message = new Message();
+	         message.what = 0;
+	         Bundle data = new Bundle();
+	         data.putString("chat_bg_address", file.getAbsolutePath());
+	         message.setData(data);
+	         handler.sendMessage(message);
+	            
+		} catch (Exception e) {
+		        e.printStackTrace();
+		        CustomApplcation.chatBgAddress = mySharedPreferences.getString("chat_bg_address", "default");
+		}
 	}
 
 	@Override

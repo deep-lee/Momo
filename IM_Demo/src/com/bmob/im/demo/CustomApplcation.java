@@ -63,6 +63,8 @@ public class CustomApplcation extends Application {
 	public LocationClient mLocationClient;
 	public MyLocationListener mMyLocationListener;
 	
+	public static String chatBgAddress = "default";
+	
 	// 上一次定位到的经纬度
 	public static BmobGeoPoint lastPoint = null;
 	

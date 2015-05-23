@@ -36,12 +36,10 @@ import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.datatype.BmobDate;
 import cn.bmob.v3.listener.FindListener;
 
-import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.adapter.GTContentAdapter;
 import com.bmob.im.demo.bean.GameTopic;
 import com.bmob.im.demo.config.Config;
-import com.bmob.im.demo.ui.CommentActivity;
 import com.bmob.im.demo.ui.FragmentBase;
 import com.bmob.im.demo.ui.GameTopicDetailsActivity;
 import com.bmob.im.demo.view.dialog.CustomProgressDialog;

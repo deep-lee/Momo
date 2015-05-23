@@ -98,45 +98,6 @@
 	            android:background="@drawable/register_bottom_arrow" />
 	
 	    </RelativeLayout>
-	    <View
-	        android:layout_width="match_parent"
-	        android:layout_height="0.1dp"
-	        android:layout_marginRight="12dp"
-	        android:layout_marginLeft="12dp"
-	        android:background="#dadada" />
-	    
-	    <RelativeLayout
-	        android:id="@+id/slide_layout_emoj_store"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:background="@drawable/common_list_item_bg_selector"
-	        android:minHeight="50dp"
-	        android:padding="10dp" >
-	
-	        <TextView
-	            style="@style/Smile.TextView._Black"
-	            android:layout_alignParentLeft="true"
-	            android:layout_centerVertical="true"
-	            android:textSize="16sp"
-	            android:text="@string/slide_set_emoj_store" />
-	        
-	        <TextView
-	            android:id="@+id/slide_tv_set_emoj_store"
-	            android:layout_width="10dp"
-	            android:layout_height="15dp"
-	            android:layout_alignParentRight="true"
-	            android:layout_centerVertical="true"
-	            android:layout_marginRight="10dp"
-	            android:drawablePadding="10dp"
-	            android:background="@drawable/register_bottom_arrow" />
-	
-	    </RelativeLayout>
-	    
-	    <!-- <View
-	        android:layout_width="match_parent"
-	        android:layout_height="@dimen/base_line_width_2"
-	        android:background="@drawable/base_horizontal_line" >
-	    </View> -->
 	    
 	    <RelativeLayout
 	        android:id="@+id/slide_layout_clear_cache"

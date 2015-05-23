@@ -1,0 +1,34 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000"
+    tools:context="${relativePackage}.${activityClass}" >
+
+    <RelativeLayout 
+        android:layout_width="fill_parent"
+        android:layout_centerInParent="true"
+        android:padding="10dp"
+        android:layout_height="wrap_content">
+        
+        
+        <ImageView 
+	        android:id="@+id/chat_bg_show_image"
+	        android:layout_width="wrap_content"
+	        android:layout_centerHorizontal="true"
+	        android:layout_height="wrap_content"/>
+        
+        <Button 
+            android:id="@+id/select_chat_bg"
+            android:layout_width="fill_parent"
+            android:layout_height="48dp"
+            android:textColor="#ffffff"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/chat_bg_show_image"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/selector_logout"
+            android:text="设为聊天背景"/>
+        
+    </RelativeLayout>
+    
+</RelativeLayout>
