@@ -51,27 +51,19 @@
             android:textSize="18sp" />
  
         <TextView
-            android:id="@+id/tv_add"
+            android:id="@+id/tv_send"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="13dp"
             android:gravity="center"
+            android:clickable="true"
             android:text="发送"
+            android:onClick="sendPosition"
             android:typeface="monospace"
             android:textColor="#fff"
             android:textSize="16sp" />
-
-        <!-- <View
-            android:id="@+id/view_temp2"
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="8dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="8dp"
-            android:layout_toLeftOf="@id/tv_add"
-            android:background="@color/common_topbar_divider" /> -->
     </RelativeLayout>
      
     <com.baidu.mapapi.map.MapView

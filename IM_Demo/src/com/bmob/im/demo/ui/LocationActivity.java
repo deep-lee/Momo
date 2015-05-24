@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.view.View;
 import cn.bmob.im.util.BmobLog;
 
 import com.baidu.location.BDLocation;
@@ -213,7 +214,7 @@ public class LocationActivity extends ActivityBase implements
 			MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
 			mBaiduMap.animateMapStatus(u);
 			//设置按钮可点击
-			mHeaderLayout.getRightImageButton().setEnabled(true);
+//			mHeaderLayout.getRightImageButton().setEnabled(true);
 		}
 
 	}
@@ -278,6 +279,10 @@ public class LocationActivity extends ActivityBase implements
 		super.onDestroy();
 		// 回收 bitmap 资源
 		bdgeo.recycle();
+	}
+	
+	public void sendPosition(View view) {
+		gotoChatPage();
 	}
 
 }

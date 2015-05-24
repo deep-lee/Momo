@@ -5,19 +5,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,22 +29,30 @@ import android.text.Selection;
 import android.text.Spannable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
+import android.widget.Scroller;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
@@ -72,8 +79,10 @@ import com.bmob.im.demo.adapter.MessageChatAdapter;
 import com.bmob.im.demo.adapter.NewRecordPlayClickListener;
 import com.bmob.im.demo.bean.FaceText;
 import com.bmob.im.demo.config.BmobConstants;
+import com.bmob.im.demo.util.AudioUtils;
 import com.bmob.im.demo.util.CommonUtils;
 import com.bmob.im.demo.util.FaceTextUtils;
+import com.bmob.im.demo.util.ScrollUtils;
 import com.bmob.im.demo.view.EmoticonsEditText;
 import com.bmob.im.demo.view.HeaderLayout;
 import com.bmob.im.demo.view.dialog.DialogTips;
@@ -95,13 +104,60 @@ import com.bmob.im.demo.view.xlist.XListView.IXListViewListener;
  * @date 2014-6-23 下午3:28:49
  */
 @SuppressLint({ "ClickableViewAccessibility", "InflateParams" })
-public class ChatActivity extends ActivityBase implements OnClickListener,
+public class ChatActivity extends BaseMainActivity implements OnClickListener,
 		IXListViewListener, EventListener {
 
 	// 表情 发送 添加 键盘 语音 
-	private Button btn_chat_emo, btn_chat_send, btn_chat_add,btn_chat_keyboard, btn_speak, btn_chat_voice;
+	private Button btn_chat_emo, btn_chat_send, btn_chat_add,btn_chat_keyboard, btn_chat_voice;
 
 	XListView mListView;
+	
+	private Handler mHandler = new Handler();
+	
+	ImageView iv_voice;
+	private ViewGroup trashcan;
+	ImageView gai;
+	private ViewGroup voice_note_layout;
+	private TextView mRecordTime;
+	private FrameLayout scroller_view;
+	private View ivVoiceCancel;
+	private String mTimerFormat;
+	Animation cancle_animation;
+	int pop_flag = 0;
+	Animation mic_fling;
+	Animation trash_lid_start;
+	Animation slide_in_right;
+	Animation slide_in_left;
+	Animation slide_out_left;
+	Animation slide_out_right;
+	private long startVoiceT, endVoiceT;
+	private Animation push_up_in;
+	private Animation push_up_out;
+	private Animation grow_from_top;
+	private Animation mic_twinkle;
+	
+	/**
+	 * 滑动类
+	 */
+	private Scroller scroller;
+	/**
+	 * 屏幕宽度
+	 */
+	private int screenWidth;
+	
+	/**
+	 * 手指按下X的坐标
+	 */
+	private int downY;
+	/**
+	 * 手指按下Y的坐标
+	 */
+	private int downX;
+	private ScrollUtils utils ;
+	int raw_x ;
+	private boolean flagmv=false;
+	private AudioUtils audioUtils;
+	private int flag = 1;
 	
 	TextView tv_title;
 
@@ -145,6 +201,18 @@ public class ChatActivity extends ActivityBase implements OnClickListener,
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_chat);
 		
+		getWindow().setSoftInputMode(
+				WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN|WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);// 默认不弹出软键盘
+		
+		this.setVolumeControlStream(AudioManager.STREAM_MUSIC); //注册的默认 音频通道
+		DisplayMetrics dm = new DisplayMetrics();
+		((WindowManager) this.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(dm);
+		
+		screenWidth = dm.widthPixels;
+		scroller = new Scroller(this);
+		utils = new ScrollUtils();
+		audioUtils = new AudioUtils(this);
+		
 		// 聊天管理
 		manager = BmobChatManager.getInstance(this);
 		MsgPagerNum = 0;
@@ -183,8 +251,8 @@ public class ChatActivity extends ActivityBase implements OnClickListener,
 				BmobLog.i("voice", "已录音长度:" + recordTime);
 				if (recordTime >= BmobRecordManager.MAX_RECORD_TIME) {// 1分钟结束，发送消息
 					// 需要重置按钮
-					btn_speak.setPressed(false);
-					btn_speak.setClickable(false);
+//					btn_speak.setPressed(false);
+//					btn_speak.setClickable(false);
 					// 取消录音框
 					layout_record.setVisibility(View.INVISIBLE);
 					// 发送语音消息
@@ -195,7 +263,7 @@ public class ChatActivity extends ActivityBase implements OnClickListener,
 						@Override
 						public void run() {
 							// TODO Auto-generated method stub
-							btn_speak.setClickable(true);
+							// btn_speak.setClickable(true);
 						}
 					}, 1000);
 				}else{
@@ -237,6 +305,8 @@ public class ChatActivity extends ActivityBase implements OnClickListener,
 		// 初始化界面下方的控件
 		initBottomView();
 		
+		initAnimation();
+		
 		// 初始化聊天纪录的XListView
 		initXListView();
 		
@@ -257,7 +327,8 @@ public class ChatActivity extends ActivityBase implements OnClickListener,
 		layout_record = (RelativeLayout) findViewById(R.id.layout_record);
 		tv_voice_tips = (TextView) findViewById(R.id.tv_voice_tips);
 		iv_record = (ImageView) findViewById(R.id.iv_record);
-		btn_speak.setOnTouchListener(new VoiceTouchListen());
+		// btn_speak.setOnTouchListener(new VoiceTouchListen());
+		
 		
 		// 初始化语音动画资源
 		initVoiceAnimRes();
@@ -383,6 +454,117 @@ public class ChatActivity extends ActivityBase implements OnClickListener,
 		toast.setDuration(50);
 		return toast;
 	}
+	
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		if (flagmv) {
+			utils.addVelocityTracker(event);
+			utils.getScrollVelocity();
+			int x= (int) event.getX();
+			raw_x = (int) event.getRawX();
+			int[] loc_bt_voice = new int[2];
+			btn_chat_voice.getLocationOnScreen(loc_bt_voice);
+			int bt_voice_x = loc_bt_voice[0];
+			if (event.getAction() == MotionEvent.ACTION_DOWN && flag == 1) {
+				
+					if (!CommonUtils.checkSdCard()) {
+						ShowToast("发送语音需要sdcard支持！");
+						return false;
+					}
+					try {
+						btn_chat_voice.setPressed(true);
+						// layout_record.setVisibility(View.VISIBLE);
+						// tv_voice_tips.setText(getString(R.string.voice_cancel_tips));
+						// 开始录音，参数事聊天对象的Id
+						recordManager.startRecording(targetId);
+					} catch (Exception e) {
+						
+					}
+				
+					//在播放录音就停止该播放
+					utils.addVelocityTracker(event);
+					utils.scrollByDistanceX(scroller_view);
+					audioUtils.playSound(1);
+					_layoutNormal2CancelAnimation();
+					// 假如scroller滚动还没有结束，我们直接返回
+					if (!scroller.isFinished()) {
+						return super.onTouchEvent(event);
+					}
+					downX = (int) event.getRawX();
+					downY = (int) event.getY();
+					startVoiceT = System.currentTimeMillis();
+					flag = 2;
+					updateTimerView();
+					flagmv = false;
+					//设置名称开始录音
+			} else if (event.getAction() == MotionEvent.ACTION_UP && flag == 2) {
+				_layoutCancel2NormalAnimation();
+//				int time = (int) ((endVoiceT - startVoiceT) / 1000);
+//				if (time < 60) {
+//					//获取路径
+//					if (time <= 1) {
+//						flag = 1;
+//						flagmv = false;
+//						return false;
+//					}
+//					//不发送语音
+//				}
+//				// 松开手势时执行录制完成
+				
+				
+				btn_chat_voice.setPressed(false);
+				// layout_record.setVisibility(View.INVISIBLE);
+				try {
+						int recordTime = recordManager.stopRecording();
+						if (recordTime > 1) {
+							// 发送语音文件
+							BmobLog.i("voice", "发送语音");
+							sendVoiceMessage(
+									recordManager.getRecordFilePath(targetId),
+									recordTime);
+						} else {// 录音时间过短，则提示录音过短的提示
+							// layout_record.setVisibility(View.GONE);
+							showShortToast().show();
+						}
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+				
+				flagmv = false;
+				flag = 1;
+				
+				return true;
+				
+				
+			}else if(event.getAction() == MotionEvent.ACTION_MOVE){
+				int deltaX = downX -raw_x;
+				if(event.getX() + bt_voice_x> bt_voice_x
+						&& event.getX() + bt_voice_x< bt_voice_x + btn_chat_voice.getWidth()){
+					//手指在录音按钮范围内滑动时，文字不触发滑动事件
+				}else{//否则触发滑动事件
+					scroller_view.scrollBy(deltaX, 0);// 手指拖动itemView滚动, deltaX大于0向左滚动，小于0向右滚
+				}
+				downX =raw_x;//记住上次触摸屏的位置
+				if ((raw_x < screenWidth/2 + 50)&&flag==2) {// 手指滑到屏幕一半时执行取消事件
+					
+					recordManager.cancelRecording();
+					BmobLog.i("voice", "放弃发送语音");
+					
+					utils.scrollByDistanceX(scroller_view);
+					utils.recycleVelocityTracker();
+					_layoutCancel2NormalAnimation();
+					audioUtils.playSound(2);
+					_trashcanAndMicAnimation();
+					flag = 1;
+					return false;
+				} else {
+					
+				}
+			}
+			flagmv = false;
+		}
+		return super.onTouchEvent(event);
+	}
 
 	/**
 	 * 初始化语音动画资源
@@ -452,6 +634,31 @@ public class ChatActivity extends ActivityBase implements OnClickListener,
 	}
 
 	private void initBottomView() {
+		
+		// 滑动取消发送
+		scroller_view = (FrameLayout) findViewById(R.id.voice_note_slide_to_cancel_scroller);  
+		
+		// 语音提示Layout
+		voice_note_layout = (ViewGroup) findViewById(R.id.voice_note_layout);
+				
+		// 语音取消提示
+		ivVoiceCancel = (View) findViewById(R.id.voice_note_slide_to_cancel_animation);
+				
+			// 录音时间
+		mRecordTime = (TextView) findViewById(R.id.voice_note_info);
+				
+		// 取消语音的垃圾桶
+		trashcan = (ViewGroup) findViewById(R.id.voice_cancel_trashcan);
+				
+		// 时间格式
+		mTimerFormat = getResources().getString(R.string.timer_format);
+				
+		// 代表当前的语音，丢进垃圾桶，在表情按钮之上
+		iv_voice = (ImageView) findViewById(R.id.voice_cancel_animation);
+				
+		// 垃圾桶盖
+		gai = (ImageView) findViewById(R.id.voice_cancel_trashcan_lid);
+		
 		// 最左边
 		btn_chat_add = (Button) findViewById(R.id.btn_chat_add);
 		btn_chat_emo = (Button) findViewById(R.id.btn_chat_emo);
@@ -473,10 +680,30 @@ public class ChatActivity extends ActivityBase implements OnClickListener,
 		initAddView();
 		// 初始化表情界面
 		initEmoView();
+		
+		
+		btn_chat_voice.setOnTouchListener(new View.OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				// TODO Auto-generated method stub
+				flagmv = true;
+				return ChatActivity.this.onTouchEvent(event);
+			}
+		});
+		
+		scroller_view.setOnTouchListener(new View.OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				// 按下语音录制按钮时返回false执行父类OnTouch
+				return ChatActivity.this.onTouchEvent(event);
+			}
+
+		}); 
 
 		// 最中间
 		// 语音框
-		btn_speak = (Button) findViewById(R.id.btn_speak);
+		// btn_speak = (Button) findViewById(R.id.btn_speak);
 		// 输入框
 		edit_user_comment = (EmoticonsEditText) findViewById(R.id.edit_user_comment);
 		edit_user_comment.setOnClickListener(this);
@@ -542,6 +769,142 @@ public class ChatActivity extends ActivityBase implements OnClickListener,
 		});
 
 	}
+	
+	// 初始化动画
+	private void initAnimation() {
+		cancle_animation = AnimationUtils.loadAnimation(ChatActivity.this, R.anim.voice_cancle);
+		slide_in_right = AnimationUtils.loadAnimation(ChatActivity.this, R.anim.slide_in_right);
+		slide_in_left = AnimationUtils.loadAnimation(ChatActivity.this, R.anim.slide_in_left);
+		slide_out_left = AnimationUtils.loadAnimation(ChatActivity.this, R.anim.slide_out_left);
+		slide_out_right = AnimationUtils.loadAnimation(ChatActivity.this, R.anim.slide_out_right);
+		mic_fling = AnimationUtils.loadAnimation(ChatActivity.this, R.anim.actin);
+		trash_lid_start = AnimationUtils.loadAnimation(ChatActivity.this, R.anim.lid_start);
+		push_up_in = AnimationUtils.loadAnimation(ChatActivity.this, R.anim.push_up_in);
+		push_up_out = AnimationUtils.loadAnimation(ChatActivity.this, R.anim.push_up_out);
+		grow_from_top = AnimationUtils.loadAnimation(ChatActivity.this, R.anim.grow_from_top);
+		mic_twinkle = AnimationUtils.loadAnimation(ChatActivity.this, R.anim.mic_twinkle);
+	}
+	
+	
+	/**
+	 * 正常布局切换到取消布局
+	 */
+	private void _layoutNormal2CancelAnimation() {
+		voice_note_layout.startAnimation(slide_in_right);//录音布局右滑进入
+		voice_note_layout.setVisibility(View.VISIBLE);
+//		text_entry.startAnimation(slide_out_left);// 文本布局左滑出去
+//		text_entry.setVisibility(View.GONE);
+		
+		// 表情，输入框和更多按钮左滑出去
+		btn_chat_add.startAnimation(slide_out_left);
+		btn_chat_emo.startAnimation(slide_out_left);
+		edit_user_comment.startAnimation(slide_out_left);
+		btn_chat_add.setVisibility(View.GONE);
+		btn_chat_emo.setVisibility(View.GONE);
+		edit_user_comment.setVisibility(View.GONE);
+		
+		ivVoiceCancel.startAnimation(cancle_animation);// 波纹动画
+		iv_voice.setVisibility(View.VISIBLE);
+		iv_voice.startAnimation(mic_twinkle);//mic闪烁动画
+	}
+	
+	/**
+	 * 垃圾桶和话筒动画
+	 */
+	private void _trashcanAndMicAnimation(){
+		iv_voice.startAnimation(mic_fling); // mic抛掷动画
+		btn_chat_emo.setVisibility(View.INVISIBLE);
+		mHandler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				gai.startAnimation(trash_lid_start);// 桶盖动画
+			}
+		}, 600);
+		trashcan.startAnimation(push_up_in);//垃圾桶上滑进入
+		trashcan.setVisibility(View.VISIBLE);
+		mHandler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				trashcan.startAnimation(push_up_out);//垃圾桶下滑出去
+				trashcan.setVisibility(View.GONE);
+			}
+		}, 1500);
+		mHandler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				btn_chat_emo.startAnimation(grow_from_top);
+				btn_chat_emo.setVisibility(View.VISIBLE);
+			}
+		}, 1600);
+	}
+	
+	/**
+	 * 取消布局切换到正常布局
+	 */
+	private void _layoutCancel2NormalAnimation() {
+		voice_note_layout.setVisibility(View.GONE);
+		voice_note_layout.startAnimation(slide_out_right);//录音布局右滑出去
+//		text_entry.setVisibility(View.VISIBLE);
+//		text_entry.startAnimation(slide_in_left);// 文本布局左滑进入
+		
+		btn_chat_emo.setVisibility(View.VISIBLE);
+		btn_chat_add.setVisibility(View.VISIBLE);
+		edit_user_comment.setVisibility(View.VISIBLE);
+		
+		btn_chat_emo.startAnimation(slide_in_left);
+		btn_chat_add.startAnimation(slide_in_left);
+		edit_user_comment.startAnimation(slide_in_left);
+		
+		ivVoiceCancel.clearAnimation();//取消波纹动画
+		iv_voice.clearAnimation();
+		iv_voice.setVisibility(View.GONE);
+	}
+
+	/**
+	 * 弹出popup提示
+	 */
+	private void showpopup() {
+		pop_flag = 1;
+		LinearLayout layout = new LinearLayout(this);
+		TextView tv = new TextView(this);
+		tv.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT));
+		tv.setText("按住录音，松开发送");
+		tv.setTextColor(Color.WHITE);
+		layout.addView(tv);
+		final PopupWindow popupWindow = new PopupWindow(layout,LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		popupWindow.setFocusable(false);
+		popupWindow.setOutsideTouchable(false);// 使popup点击窗口外侧不消失
+		popupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.popup_inline_error_above_holo_light));
+		popupWindow.setTouchable(false);
+		int[] location = new int[2];
+		btn_chat_voice.getLocationOnScreen(location);
+		popupWindow.setAnimationStyle(R.style.mypopwindow_anim_style);
+		popupWindow.showAtLocation(btn_chat_voice, Gravity.TOP, location[0],location[1] - btn_chat_voice.getWidth());
+		mHandler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				popupWindow.dismiss();
+				pop_flag = 0;
+			}
+		}, 2000);
+	}
+	private void updateTimerView() {// 时间更新
+		endVoiceT = System.currentTimeMillis();
+		int time = (int) ((endVoiceT - startVoiceT) / 1000);
+		String timeStr = String.format(mTimerFormat, time / 60, time % 60);
+		mRecordTime.setText(timeStr);
+		if (time < 60) {
+			mHandler.postDelayed(mUpdateTimer, 500);
+		} else {
+
+		}
+	}
+	private Runnable mUpdateTimer = new Runnable() {
+		@Override
+		public void run() {
+			updateTimerView();
+		}
+	};
 
 	List<FaceText> emos;
 
@@ -826,12 +1189,19 @@ public class ChatActivity extends ActivityBase implements OnClickListener,
 
 			break;
 		case R.id.btn_chat_voice:// 语音按钮
-			edit_user_comment.setVisibility(View.GONE);
-			layout_more.setVisibility(View.GONE);
-			btn_chat_voice.setVisibility(View.GONE);
-			btn_chat_keyboard.setVisibility(View.VISIBLE);
-			btn_speak.setVisibility(View.VISIBLE);
+//			edit_user_comment.setVisibility(View.GONE);
+//			layout_more.setVisibility(View.VISIBLE);
+//			btn_chat_voice.setVisibility(View.GONE);
+//			btn_chat_keyboard.setVisibility(View.VISIBLE);
+//			btn_speak.setVisibility(View.VISIBLE);
+			btn_chat_voice.setVisibility(View.VISIBLE);
+			layout_more.setVisibility(View.INVISIBLE);
 			hideSoftInputView();
+			audioUtils.playSound(1);
+			audioUtils.playSound(2);
+			if (pop_flag == 0) {// 防止popup被多次点击重复出现
+				showpopup();
+			}
 			break;
 		case R.id.btn_chat_keyboard:// 键盘按钮，点击就弹出键盘并隐藏掉声音按钮
 			showEditState(false);
@@ -1059,7 +1429,7 @@ public class ChatActivity extends ActivityBase implements OnClickListener,
 		edit_user_comment.setVisibility(View.VISIBLE);
 		btn_chat_keyboard.setVisibility(View.GONE);
 		btn_chat_voice.setVisibility(View.VISIBLE);
-		btn_speak.setVisibility(View.GONE);
+		//btn_speak.setVisibility(View.GONE);
 		edit_user_comment.requestFocus();
 		if (isEmo) {
 			layout_more.setVisibility(View.VISIBLE);
@@ -1291,6 +1661,10 @@ public class ChatActivity extends ActivityBase implements OnClickListener,
 		} catch (Exception e) {
 		}
 		
+	}
+	
+	public void back(View view) {
+		finish();
 	}
 
 }

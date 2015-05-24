@@ -217,7 +217,13 @@ public class MainActivity2 extends BaseSlidingFragmentActivity implements OnClic
 			@Override
 			public void run(){
 				
-				downLoadChatBgToSD(CustomApplcation.getInstance().getCurrentUser().getChatBg());
+				if (CustomApplcation.getInstance().getCurrentUser().getChatBg().getBelongTo() != 0) {
+					downLoadChatBgToSD(CustomApplcation.getInstance().getCurrentUser().getChatBg());
+				}else {
+					CustomApplcation.chatBgAddress = "default";
+					editor.putString("chat_bg_address", "default");
+				}
+				
 			}
 			
 		}.start();
