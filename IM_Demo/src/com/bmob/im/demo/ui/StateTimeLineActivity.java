@@ -127,10 +127,11 @@ public class StateTimeLineActivity extends BaseActivity {
 		mInflater = LayoutInflater.from(StateTimeLineActivity.this);
 				
 		headerView = (LinearLayout) mInflater.inflate(R.layout.state_time_line_header, null);
-				
+		
+		iv_header_avatar = (ImageView) headerView.findViewById(R.id.state_time_line_avartar);
+		
 		tv_header_name = (TextView) headerView.findViewById(R.id.state_time_line_nick);
 		tv_header_personalized_signature = (TextView) headerView.findViewById(R.id.state_time_line_personalized_signature);
-		iv_header_avatar = (ImageView) headerView.findViewById(R.id.state_time_line_avartar);
 				
 		tv_header_name.setText(user.getNick());
 		tv_header_personalized_signature.setText(user.getPersonalizedSignature());

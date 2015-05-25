@@ -38,6 +38,7 @@ import com.bmob.im.demo.util.ShakeListener;
 import com.bmob.im.demo.util.ShakeListener.OnShakeListener;
 import com.daimajia.androidanimations.library.YoYo;
 import com.daimajia.androidanimations.library.attention.ShakeAnimator;
+import com.deep.ui.update.MainActivity2;
 
 public class NearsUpdateFragment extends FragmentBase {
 	
@@ -149,6 +150,10 @@ public class NearsUpdateFragment extends FragmentBase {
 	}
 	
 	public void initView() {
+		
+		MainActivity2.setSexSelecteStatus(true);
+		MainActivity2.setSexShowStatus(true);
+		
 		mVibrator = (Vibrator) getActivity().getApplication().getSystemService(Context.VIBRATOR_SERVICE);
 		
 		shakeAnimation = new YoYo.AnimationComposer(new ShakeAnimator())
@@ -317,6 +322,20 @@ public class NearsUpdateFragment extends FragmentBase {
 		User current = (User) userManager.getCurrentUser(User.class);
 		user.setObjectId(current.getObjectId());
 		user.update(getActivity(), listener);
+	}
+	
+	@Override
+	public void onHiddenChanged(boolean hidden) {
+		// TODO Auto-generated method stub
+		super.onHiddenChanged(hidden);
+		
+		if (hidden) {
+			MainActivity2.setSexSelecteStatus(false);
+			MainActivity2.setSexShowStatus(false);
+		}else {
+			MainActivity2.setSexSelecteStatus(true);
+			MainActivity2.setSexShowStatus(true);
+		}
 	}
 
 }

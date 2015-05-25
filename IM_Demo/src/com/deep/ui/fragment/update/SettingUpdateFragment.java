@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +14,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import cn.bmob.v3.BmobUser;
 
+import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.ui.AboutActivity;
+import com.bmob.im.demo.ui.AccountSafeActivity;
 import com.bmob.im.demo.ui.FragmentBase;
 import com.bmob.im.demo.ui.HidingModeActivity;
 import com.bmob.im.demo.ui.LoginActivity;
@@ -30,7 +31,7 @@ public class SettingUpdateFragment extends FragmentBase implements OnClickListen
 	
 	private Context mContext;
 	
-	RelativeLayout hidingModeLayout, 
+	RelativeLayout hidingModeLayout, accountSafeLayout,
 	messageNitifyLayout, personDress, clearCacheLayout, about_find_layout,
 	logOutLayout;
 	TextView tv_cache_capacity;
@@ -59,8 +60,19 @@ public class SettingUpdateFragment extends FragmentBase implements OnClickListen
 	
 	private void initView() {
 		
-		cachePath = Environment.getExternalStorageDirectory().getPath() + "/Bmob_IM_test/GameAPK/";
+		MainActivity2.setSexSelecteStatus(false);
+		MainActivity2.setSexShowStatus(false);
 		
+		String apkDir = "";
+		if (FileSizeUtil.isHasSdcard()) {
+			apkDir = CustomApplcation.SDCARD_DIR;
+		} else {
+			apkDir = CustomApplcation.NOSDCARD_DIR;
+		}
+		
+		cachePath = apkDir;
+		
+		accountSafeLayout = (RelativeLayout) findViewById(R.id.slide_layout_account_safe);
 		hidingModeLayout = (RelativeLayout) findViewById(R.id.slide_layout_hiding_mode);
 		messageNitifyLayout = (RelativeLayout) findViewById(R.id.slide_layout_message_notify);
 		personDress = (RelativeLayout) findViewById(R.id.slide_layout_person_dress);
@@ -71,6 +83,7 @@ public class SettingUpdateFragment extends FragmentBase implements OnClickListen
 		tv_cache_capacity = (TextView) findViewById(R.id.slide_tv_set_cache_capacity);
 		tv_cache_capacity.setText(FileSizeUtil.getAutoFileOrFilesSize(cachePath));
 		
+		accountSafeLayout.setOnClickListener(this);
 		hidingModeLayout.setOnClickListener(this);
 		messageNitifyLayout.setOnClickListener(this);
 		personDress.setOnClickListener(this);
@@ -88,6 +101,14 @@ public class SettingUpdateFragment extends FragmentBase implements OnClickListen
 		
 		Intent intent = new Intent();
 		switch (v.getId()) {
+		
+		// 账号安全
+		case R.id.slide_layout_account_safe:
+			Intent accountSafeIntent = new Intent();
+			accountSafeIntent.setClass(mContext, AccountSafeActivity.class);
+			startActivity(accountSafeIntent);
+			break;
+			
 		// 隐身模式
 		case R.id.slide_layout_hiding_mode:
 			intent.setClass(mContext, HidingModeActivity.class);
@@ -161,10 +182,10 @@ public class SettingUpdateFragment extends FragmentBase implements OnClickListen
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				// TODO Auto-generated method stub
-				FileSizeUtil.DeleteFile(new File(cachePath));
+				FileSizeUtil.delete(new File(cachePath));
 				
 				// 刷新缓存大小
-				tv_cache_capacity.setText(FileSizeUtil.getAutoFileOrFilesSize(cachePath));
+				tv_cache_capacity.setText("0B");
 			}
 		});
 		

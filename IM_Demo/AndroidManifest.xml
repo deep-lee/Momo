@@ -447,9 +447,24 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
         <activity
-            android:name="com.bmob.im.demo.ui.ShowChatBgActivity"
+            android:name=".ui.ShowChatBgActivity"
+            android:label="@string/title_activity_show_chat_bg"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
+        <activity
+            android:name=".ui.LoadAndShowUrlIamgeActivity"
+            android:label="@string/title_activity_load_and_show_url_iamge"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
+        <activity
+            android:name=".ui.AccountSafeActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:label="@string/title_activity_show_chat_bg" >
+            android:label="@string/title_activity_account_safe" >
+        </activity>
+        <activity
+            android:name="com.bmob.im.demo.ui.ChangePasswordActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:label="@string/title_activity_change_password" >
         </activity>
     </application>
 

@@ -118,10 +118,16 @@ public class DownloadService extends Service{
 					InputStream is = entity.getContent();
 					if (is != null) {
 						
-						String apkDir = Environment.getExternalStorageDirectory().getPath() + "/Bmob_IM_test/GameAPK/";
+						String apkDir = "";
+						
+						if (FileSizeUtil.isHasSdcard()) {
+							apkDir = CustomApplcation.SDCARD_DIR;
+						} else {
+							apkDir = CustomApplcation.NOSDCARD_DIR;
+						}
 						
 						File rootFile = new File(apkDir);
-						if (!rootFile.exists() && !rootFile.isDirectory())
+						if (!rootFile.exists())
 							rootFile.mkdir();
 						
 						tempFile = new File(apkDir + CustomApplcation.gameList.get(notificationId) + "_" 

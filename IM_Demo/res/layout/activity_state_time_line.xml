@@ -25,15 +25,6 @@
             android:scaleType="centerInside"
             android:src="@drawable/base_action_bar_back_bg_selector" />
 
-        <!-- <View
-            android:id="@+id/view_temp"
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_toRightOf="@id/iv_back"
-            android:background="@color/common_topbar_divider" /> -->
-
         <TextView
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"

@@ -89,6 +89,9 @@ public class RecentUpdateFragment extends FragmentBase implements OnItemClickLis
 	
 	private void initView(){
 		
+		MainActivity2.setSexSelecteStatus(false);
+		MainActivity2.setSexShowStatus(false);
+		
 		headerView = inflater.inflate(R.layout.fragment_search_header, null);
 		
 		search = (ImageView) headerView.findViewById(R.id.common_fragment_search_iv);

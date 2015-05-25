@@ -34,16 +34,21 @@
 	                android:id="@+id/state_time_line_nick"
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
+	                android:layout_marginRight="5dp"
 	                android:layout_marginTop="40dp"
 	                android:textColor="#ffffff"
 	                android:text="Nick"/>
-					
+				
 				<ImageView
 					android:id="@+id/state_time_line_avartar"
 					android:layout_width="80dp"
 					android:layout_height="80dp"
+					android:layout_marginLeft="10dp"
+					android:layout_toRightOf="@+id/state_time_line_nick"
 					android:layout_centerInParent="true"
 					android:src="@drawable/default_avatar" />
+				
+				
 				
 				<TextView 
 				    android:id="@+id/state_time_line_personalized_signature"

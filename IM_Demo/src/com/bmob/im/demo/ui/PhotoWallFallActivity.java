@@ -33,7 +33,6 @@ public class PhotoWallFallActivity extends ActivityBase {
 	private static final String TAG = "uploadImage";
 	
 	TextView tv_add;
-	View line_1;
 	
 	/**
 	 * Ñ¡ÔñÎÄ¼þ
@@ -55,16 +54,13 @@ public class PhotoWallFallActivity extends ActivityBase {
 		from = getIntent().getStringExtra("from");
 		
 		tv_add = (TextView) findViewById(R.id.tv_add);
-		line_1 = findViewById(R.id.view_temp2);
 		
 		if (from.equals("me")) {
 			
 		}
 		else if(from.equals("other")){
-//			initTopBarForLeft("ÕÕÆ¬Ç½");
 			
 			tv_add.setVisibility(View.INVISIBLE);
-			line_1.setVisibility(View.INVISIBLE);
 			otherPhotoWall = getIntent().getStringArrayListExtra("photo");
 		}
 		

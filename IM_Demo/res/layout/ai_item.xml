@@ -60,7 +60,7 @@
 	    android:scaleType="centerInside"
 	    android:src="@drawable/bg_pic_loading"
 	    android:layout_below="@id/content_text"
-	    android:layout_centerHorizontal="true"
+	    android:layout_alignParentLeft="true"
 	    android:layout_marginLeft="4dip"
 	    android:layout_marginRight="4dip"
 	    android:visibility="visible"

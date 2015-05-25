@@ -145,6 +145,9 @@ public class PersonInfoUpdateFragment extends FragmentBase implements OnClickLis
 
 	private void initView() {
 		
+		MainActivity2.setSexSelecteStatus(false);
+		MainActivity2.setSexShowStatus(false);
+		
 		MainActivity2.showEditMyInfo();
 		
 		updateThread = new Thread[3];
@@ -1096,9 +1099,5 @@ public class PersonInfoUpdateFragment extends FragmentBase implements OnClickLis
 			MainActivity2.showEditMyInfo();
 		}
 	}
-	
-	
-    
-    
 }
 

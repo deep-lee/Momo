@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.bmob.im.BmobChat;
@@ -32,16 +33,22 @@ import com.bmob.im.demo.bean.User;
 import com.bmob.im.demo.ui.EditMyInfoActivity;
 import com.bmob.im.demo.ui.NewFriendActivity;
 import com.bmob.im.demo.util.CollectionUtils;
+import com.bmob.im.demo.view.dialog.DialogTips;
 import com.deep.ui.fragment.update.NaviFragment;
 import com.deep.ui.fragment.update.PersonInfoUpdateFragment;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnClosedListener;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
+import com.yalantis.contextmenu.lib.ContextMenuDialogFragment;
+import com.yalantis.contextmenu.lib.MenuObject;
+import com.yalantis.contextmenu.lib.interfaces.OnMenuItemClickListener;
+import com.yalantis.contextmenu.lib.interfaces.OnMenuItemLongClickListener;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -49,6 +56,8 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -58,9 +67,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity2 extends BaseSlidingFragmentActivity implements OnClickListener, EventListener{
+public class MainActivity2 extends BaseSlidingFragmentActivity implements OnClickListener, EventListener,
+	OnMenuItemClickListener, OnMenuItemLongClickListener{
 	
 	public static String AUTOMATICADDFRIEND = "automatic_add_friends";
+	
+	private FragmentManager fragmentManager;
+	private DialogFragment mMenuDialogFragment;
+	
+	Boolean status = false;
 	
 	public static int ETIT_MY_INFO = 100;
 	
@@ -71,7 +86,11 @@ public class MainActivity2 extends BaseSlidingFragmentActivity implements OnClic
 	
 	public static View layout_all;
 	public static TextView tv_edit_my_info;
-
+	public static ImageView iv_select_nears_sex;
+	public static ImageView iv_nears_sex_icon;
+	
+	public int nearsSex = 2;
+	
 	public static float y;
 	
 	public static int currentTabIndex = 0;
@@ -126,6 +145,8 @@ public class MainActivity2 extends BaseSlidingFragmentActivity implements OnClic
 				Activity.MODE_PRIVATE); 
 		editor = mySharedPreferences.edit(); 
 		
+		nearsSex = mySharedPreferences.getInt("nearsSex", 2);
+		
 		// 获取用户设置的聊天背景
 		getUserChatBg();
 		
@@ -136,6 +157,8 @@ public class MainActivity2 extends BaseSlidingFragmentActivity implements OnClic
 		leftMenu = (ImageView) findViewById(R.id.topbar_menu_left);
 		leftMenu.setOnClickListener(this);
 		tv_edit_my_info.setOnClickListener(this);
+		iv_select_nears_sex = (ImageView) findViewById(R.id.iv_nears_selector_show);
+		
 		
 		// 启动获取照片墙的线程
 		initWallPhoto();
@@ -145,7 +168,81 @@ public class MainActivity2 extends BaseSlidingFragmentActivity implements OnClic
 		
 		initFragment();
 		
+		iv_nears_sex_icon = (ImageView) findViewById(R.id.iv_nears_sex_icon);
+		
+		switch (nearsSex) {
+		// 女
+		case 0:
+			iv_nears_sex_icon.setVisibility(View.VISIBLE);
+			iv_nears_sex_icon.setImageResource(R.drawable.icon_nears_sex_female);
+			break;
+		
+		// 男
+		case 1:
+			iv_nears_sex_icon.setVisibility(View.VISIBLE);
+			iv_nears_sex_icon.setImageResource(R.drawable.icon_nears_sex_male);
+			break;
+		
+		// 男女
+		case 2:
+			iv_nears_sex_icon.setVisibility(View.INVISIBLE);
+			break;
+		}
+		
+		status = CustomApplcation.getInstance().getCurrentUser().getStatus();
+		if (status == null) {
+			status = true;
+		}
+		
+		fragmentManager = getSupportFragmentManager();
+        mMenuDialogFragment = ContextMenuDialogFragment.newInstance((int) getResources().getDimension(R.dimen.tool_bar_height), 
+        		getMenuObjects());
+        
+        iv_select_nears_sex.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				if (fragmentManager.findFragmentByTag(ContextMenuDialogFragment.TAG) == null) {
+                    mMenuDialogFragment.show(fragmentManager, ContextMenuDialogFragment.TAG);
+                }
+			}
+		});
+		
 	}
+	
+	private List<MenuObject> getMenuObjects() {
+
+        List<MenuObject> menuObjects = new ArrayList<MenuObject>();
+
+        MenuObject close = new MenuObject();
+        close.setResource(R.drawable.icn_close);
+        close.setBgResource(R.color.common_action_bar_bg_color);
+
+        MenuObject send = new MenuObject("只看女生");
+        send.setResource(R.drawable.icon_info_female);
+        send.setBgResource(R.color.common_action_bar_bg_color);
+
+        MenuObject like = new MenuObject("只看男生");
+        like.setResource(R.drawable.icon_info_male);
+        like.setBgResource(R.color.common_action_bar_bg_color);
+
+        MenuObject addFr = new MenuObject("查看全部");
+        addFr.setResource(R.drawable.ic_nears_all_people);
+        addFr.setBgResource(R.color.common_action_bar_bg_color);
+  
+        MenuObject addFav = new MenuObject("清除地理位置信息并退出");
+        addFav.setResource(R.drawable.ic_nears_clean_position_info);
+        addFav.setBgResource(R.color.common_action_bar_bg_color);
+
+        menuObjects.add(close);
+        menuObjects.add(send);
+        menuObjects.add(like);
+        menuObjects.add(addFr);
+        menuObjects.add(addFav);
+        
+        return menuObjects;
+    }
 	
 	private void initFragment() {
 		mSlidingMenu = getSlidingMenu();
@@ -627,5 +724,122 @@ public class MainActivity2 extends BaseSlidingFragmentActivity implements OnClic
 				});
 			}
 		});
+	}
+
+	@Override
+	public void onMenuItemLongClick(View clickedView, int position) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onMenuItemClick(View clickedView, int position) {
+		// TODO Auto-generated method stub
+		position--;
+		// ShowToast("" + position);
+		// TODO Auto-generated method stub
+		if (position >= 0 && position <= 2) {
+			if (nearsSex == position) {
+				
+			}else {
+				editor.putInt("nearsSex", position);
+				nearsSex = position;
+				editor.commit();
+				
+				// 改变图标
+//				nearByFragment.nearBySexChanged(position);
+				
+				switch (position) {
+				// 女
+				case 0:
+					iv_nears_sex_icon.setVisibility(View.VISIBLE);
+					iv_nears_sex_icon.setImageResource(R.drawable.icon_nears_sex_female);
+					break;
+				
+				// 男
+				case 1:
+					iv_nears_sex_icon.setVisibility(View.VISIBLE);
+					iv_nears_sex_icon.setImageResource(R.drawable.icon_nears_sex_male);
+					break;
+				
+				// 男女
+				case 2:
+					iv_nears_sex_icon.setVisibility(View.INVISIBLE);
+					break;
+
+				default:
+					break;
+				}
+
+			}
+		}
+		
+		// 清除地理位置信息
+		if (position == 3) {
+			User user = new User();
+			user.setStatus(false);
+			updateUserData(user, new UpdateListener() {
+				
+				@Override
+				public void onSuccess() {
+					// TODO Auto-generated method stub
+					// ShowToast("清楚地理位置信息成功，附近的人将搜索不到你");
+					showClearTips(true);
+				}
+				
+				@Override
+				public void onFailure(int arg0, String arg1) {
+					// TODO Auto-generated method stub
+					// ShowToast("清楚地理位置信息失败！请重试！");
+					showClearTips(false);
+				}
+			});
+		}
+	}
+	
+	public void showClearTips(final Boolean flag) {
+		
+		String message;
+		if (flag) {
+			message = "地理位置信息已清除";
+		}else {
+			message = "清除地理位置信息失败";
+		}
+		
+		DialogTips dialogTips = new DialogTips(MainActivity2.this, "提示", message, 
+				"确定", false, true);
+		
+		dialogTips.SetOnSuccessListener(new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+			}
+		});
+		
+		dialogTips.show();
+	}
+	
+	private void updateUserData(User user,UpdateListener listener){
+		User current = (User) userManager.getCurrentUser(User.class);
+		user.setObjectId(current.getObjectId());
+		user.update(this, listener);
+	}
+	
+	public static void setSexShowStatus(Boolean flag) {
+		if (flag) {
+			iv_nears_sex_icon.setVisibility(View.VISIBLE);
+		}else {
+			iv_nears_sex_icon.setVisibility(View.INVISIBLE);
+		}
+	}
+	
+	public static void setSexSelecteStatus(Boolean flag) {
+		if (flag) {
+			iv_select_nears_sex.setVisibility(View.VISIBLE);
+		}
+		else {
+			iv_select_nears_sex.setVisibility(View.INVISIBLE);
+		}
 	}
 }

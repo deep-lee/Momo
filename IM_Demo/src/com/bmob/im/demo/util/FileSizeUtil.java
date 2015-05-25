@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.text.DecimalFormat;
 
+import android.os.Environment;
 import android.util.Log;
 
 public class FileSizeUtil {
@@ -45,6 +46,11 @@ public class FileSizeUtil {
 	*/
 	public static String getAutoFileOrFilesSize(String filePath){
 		File file=new File(filePath);
+		
+		if (!file.exists()) {
+			return "0B";
+		}
+		
 		long blockSize=0;
 		try {
 			
@@ -194,5 +200,35 @@ public class FileSizeUtil {
         
         file.delete(); 
     } 
+    
+
+    public static void delete(File file) {  
+        if (file.isFile()) {  
+            file.delete();  
+            return;  
+        }  
+  
+        if(file.isDirectory()){  
+            File[] childFiles = file.listFiles();  
+            if (childFiles == null || childFiles.length == 0) {  
+                file.delete();  
+                return;  
+            }  
+      
+            for (int i = 0; i < childFiles.length; i++) {  
+                delete(childFiles[i]);  
+            }  
+            file.delete();  
+        }  
+    } 
+    
+    public static Boolean isHasSdcard() {
+    	String status = Environment.getExternalStorageState();
+    	if (status.equals(Environment.MEDIA_MOUNTED)) {
+    		return true;
+    	} else {
+    		return false;
+    	}
+	}
 	
 }

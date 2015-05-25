@@ -428,15 +428,15 @@ public class NearPeopleMapActivity extends BaseMainActivity implements OnGetGeoC
 
         MenuObject close = new MenuObject();
         close.setResource(R.drawable.icn_close);
-        close.setBgResource(R.drawable.menu_object_bg);
+        close.setBgResource(R.color.common_action_bar_bg_color);
 
         MenuObject send = new MenuObject("Ë¢ÐÂ");
         send.setResource(R.drawable.icon_nears_refresh);
-        send.setBgResource(R.drawable.menu_object_bg);
+        send.setBgResource(R.color.common_action_bar_bg_color);
 
         MenuObject like = new MenuObject("ÇÐ»»ÊÓÍ¼");
         like.setResource(R.drawable.icon_nears_change_show);
-        like.setBgResource(R.drawable.menu_object_bg);
+        like.setBgResource(R.color.common_action_bar_bg_color);
 
 
         menuObjects.add(close);

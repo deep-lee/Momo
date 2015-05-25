@@ -2,9 +2,13 @@ package com.bmob.im.demo.ui;
 
 import java.util.List;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import cn.bmob.v3.AsyncCustomEndpoints;
 import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.listener.CloudCodeListener;
 import cn.bmob.v3.listener.FindListener;
-import cn.bmob.v3.listener.UpdateListener;
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
 
@@ -143,7 +147,6 @@ public class ForgetPasswordActivity extends BaseActivity implements OnClickListe
 	             {
 	            	 //提交验证码成功，进入到下一个页面
 	            	 progress.dismiss();
-	            	 progress = null;
 	            	 
 	            	 Message message = new Message();
 	            	 message.what = 3;
@@ -393,92 +396,71 @@ public class ForgetPasswordActivity extends BaseActivity implements OnClickListe
 			return;
 		}
 		
-		btn_sure_change.setProgress(50);
+		btn_sure_change.setProgress(0);
 		
 		username = et_user_name.getText().toString();
 		new_password = et_new_password.getText().toString();
 		
-		// User user = new User();
-
-		// 根据用户名查询到用户
 		BmobQuery<User> query = new BmobQuery<User>();
 		query.addWhereEqualTo("username", username);
-		query.findObjects(this, new FindListener<User>() {
-
-			@Override
-			public void onError(int arg0, String arg1) {
-				// TODO Auto-generated method stub
-				ShowToast("重置密码失败1");
-				btn_sure_change.setProgress(-1);
-			}
-
+		query.findObjects(ForgetPasswordActivity.this, new FindListener<User>() {
+			
 			@Override
 			public void onSuccess(List<User> arg0) {
 				// TODO Auto-generated method stub
-				if (arg0 != null && arg0.size() > 0) {
-					// 用户存在
-					objectId = arg0.get(0).getObjectId();
-					sessionToken = arg0.get(0).getSessionToken();
-					ShowToast("查询用户成功：" + objectId);
-					updateUser = arg0.get(0);
-					updatePassword();
-				}
-				else {
-					// 用户不存在
-					ShowToast("重置密码失败2");
-					btn_sure_change.setProgress(-1);
+				
+				if (arg0.size() < 1) {
 					return;
 				}
+				
+				String cloudCodeName = "resetPassword";
+				JSONObject params = new JSONObject();
+				try {
+					// name是上传到云端的参数名称，值是bmob，云端代码可以通过调用request.body.name获取这个值
+					params.put("objectId", arg0.get(0).getObjectId());
+					params.put("newpassword", new_password);
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				// 创建云端代码对象
+				AsyncCustomEndpoints cloudCode = new AsyncCustomEndpoints();
+				// 异步调用云端代码
+				cloudCode.callEndpoint(ForgetPasswordActivity.this, cloudCodeName, params,
+						new CloudCodeListener() {
+
+							@Override
+							public void onSuccess(Object arg0) {
+								// TODO Auto-generated method stub
+								// ShowToast("云端代码执行成功：" + arg0.toString());
+								if (arg0.toString().equals("success")) {
+									ShowToast("密码重置成功！");
+									finish();
+								}else {
+									ShowToast("密码重置失败！");
+								}
+							}
+
+							@Override
+							public void onFailure(int arg0, String arg1) {
+								// TODO Auto-generated method stub
+								ShowToast("密码重置失败！");
+							}
+						});
 			}
-		});
-		
-	}
-	
-	public void updatePassword() {
-		
-		User user = new User();
-		user.setPassword(new_password);
-		
-		updateUserData(user, new UpdateListener() {
 			
-			public void onSuccess() {
-				// TODO Auto-generated method stub
-				ShowLog("更新成功");
-				btn_sure_change.setProgress(0);
-		    	finish();
-			}
 			@Override
-			public void onFailure(int code, String msg) {
+			public void onError(int arg0, String arg1) {
 				// TODO Auto-generated method stub
-		    	ShowToast("更新失败："+msg);
-		    	btn_sure_change.setProgress(-1);
+				
 			}
 		});
 		
-//		user.update(this, objectId, new UpdateListener() {
-//			@Override
-//			public void onSuccess() {
-//				// TODO Auto-generated method stub
-//				ShowLog("更新成功");
-//				btn_sure_change.setProgress(0);
-//		    	finish();
-//			}
-//			@Override
-//			public void onFailure(int code, String msg) {
-//				// TODO Auto-generated method stub
-//		    	ShowToast("更新失败："+msg);
-//		    	btn_sure_change.setProgress(-1);
-//			}
-//		});
+		
 		
 	}
 	
-	private void updateUserData(User user,UpdateListener listener){
-
-		user.setObjectId(objectId);
-		user.update(this, listener);
-	}
-
+	@SuppressLint("ClickableViewAccessibility")
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
 		// TODO Auto-generated method stub

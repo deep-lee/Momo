@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import B.in;
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -30,6 +31,7 @@ import android.text.Spannable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -40,8 +42,11 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.TranslateAnimation;
+import android.view.animation.Animation.AnimationListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -69,6 +74,7 @@ import cn.bmob.im.inteface.OnRecordChangeListener;
 import cn.bmob.im.inteface.UploadListener;
 import cn.bmob.im.util.BmobLog;
 import cn.bmob.v3.listener.PushListener;
+import cn.bmob.v3.listener.UpdateListener;
 
 import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.MyMessageReceiver;
@@ -80,6 +86,7 @@ import com.bmob.im.demo.adapter.NewRecordPlayClickListener;
 import com.bmob.im.demo.bean.FaceText;
 import com.bmob.im.demo.config.BmobConstants;
 import com.bmob.im.demo.util.AudioUtils;
+import com.bmob.im.demo.util.CollectionUtils;
 import com.bmob.im.demo.util.CommonUtils;
 import com.bmob.im.demo.util.FaceTextUtils;
 import com.bmob.im.demo.util.ScrollUtils;
@@ -106,6 +113,12 @@ import com.bmob.im.demo.view.xlist.XListView.IXListViewListener;
 @SuppressLint({ "ClickableViewAccessibility", "InflateParams" })
 public class ChatActivity extends BaseMainActivity implements OnClickListener,
 		IXListViewListener, EventListener {
+	
+	private LinearLayout mCanvers;
+	private View mPopupWindowView;
+	private boolean isVisible = false; // 用来记录mPopupWindow是否显示
+	public final static int TRANSLATE_DURATION = 200;
+	public final static int ALPHA_DURATION = 200;
 
 	// 表情 发送 添加 键盘 语音 
 	private Button btn_chat_emo, btn_chat_send, btn_chat_add,btn_chat_keyboard, btn_chat_voice;
@@ -113,6 +126,9 @@ public class ChatActivity extends BaseMainActivity implements OnClickListener,
 	XListView mListView;
 	
 	private Handler mHandler = new Handler();
+	
+	ImageView iv_check_info, iv_invite_game, iv_set_black, iv_delete_recent;
+	
 	
 	ImageView iv_voice;
 	private ViewGroup trashcan;
@@ -300,6 +316,22 @@ public class ChatActivity extends BaseMainActivity implements OnClickListener,
 		if (targetUser != null) {
 			tv_title.setText(targetUser.getNick());
 		}
+		
+		mPopupWindowView = findViewById(R.id.ll_popup_window);
+		
+		iv_check_info = (ImageView) findViewById(R.id.pop_check_info);
+		iv_invite_game = (ImageView) findViewById(R.id.pop_invite_game);
+		iv_set_black = (ImageView) findViewById(R.id.pop_set_black);
+		iv_delete_recent = (ImageView) findViewById(R.id.pop_delete_recent);
+		
+		iv_check_info.setOnClickListener(this);
+		iv_invite_game.setOnClickListener(this);
+		iv_set_black.setOnClickListener(this);
+		iv_delete_recent.setOnClickListener(this);
+
+		mCanvers = (LinearLayout) findViewById(R.id.pop_canvers);
+		
+		mCanvers.setOnClickListener(this);
 		
 		
 		// 初始化界面下方的控件
@@ -1236,9 +1268,102 @@ public class ChatActivity extends BaseMainActivity implements OnClickListener,
 		case R.id.tv_location:// 位置
 			selectLocationFromMap();
 			break;
+			
+		case R.id.pop_canvers:
+			if(isVisible){
+				// 隐藏mPopupWindow和mCanvers
+				mCanvers.startAnimation(createAlphaOutAnim());
+				mCanvers.setVisibility(View.GONE);
+				
+				mPopupWindowView.startAnimation(createTranslateOutAnim());
+				mPopupWindowView.setVisibility(View.GONE);
+				isVisible = false;
+				Log.i("zhimeng", "canvers:"+isVisible);
+			}
+			break;
+			
+		// 查看资料
+		case R.id.pop_check_info:
+			Intent intent = new Intent();
+			intent.setClass(ChatActivity.this, SetMyInfoActivity2.class);
+			intent.putExtra("from", "other");
+			intent.putExtra("username", targetUser.getUsername());
+			startActivity(intent);
+			break;
+		// 邀请进行游戏PK
+		case R.id.pop_invite_game:
+			
+			break;
+		// 设置为黑名单
+		case R.id.pop_set_black:
+			showBlackDialog(targetUser.getUsername());
+			break;
+		// 删除会话纪录
+		case R.id.pop_delete_recent:
+			showDeleteRecentDialog(targetId);
+			break;
 		default:
 			break;
 		}
+	}
+	
+	public void showDeleteRecentDialog(final String targetUid) {
+		DialogTips dialog = new DialogTips(this, "提示",
+				"删除聊天纪录后将不可恢复，是否确定？", "确定", true, true);
+		dialog.SetOnSuccessListener(new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialogInterface, int userId) {
+				// 删除聊天纪录
+				BmobDB.create(ChatActivity.this).deleteMessages(targetId);
+				BmobDB.create(ChatActivity.this).deleteRecent(targetId);
+				
+				ShowToast("删除成功！");
+				
+				// 刷新界面
+				onRefresh();
+				
+			}
+		});
+		// 显示确认对话框
+		dialog.show();
+		dialog = null;
+	}
+	
+	/**
+	 * 显示黑名单提示框
+	 * 
+	 * @Title: showBlackDialog
+	 * @Description: TODO
+	 * @param
+	 * @return void
+	 * @throws
+	 */
+	private void showBlackDialog(final String username) {
+		DialogTips dialog = new DialogTips(this, "提示",
+				"加入黑名单，你将不再收到对方的消息，确定要继续吗？", "确定", true, true);
+		dialog.SetOnSuccessListener(new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialogInterface, int userId) {
+				// 添加到黑名单列表
+				userManager.addBlack(username, new UpdateListener() {
+
+					@Override
+					public void onSuccess() {
+						// TODO Auto-generated method stub
+						ShowToast("黑名单添加成功!");
+						// 重新设置下内存中保存的好友列表
+						CustomApplcation.getInstance().setContactList(CollectionUtils.list2map(BmobDB.create(ChatActivity.this).getContactList()));
+					}
+
+					@Override
+					public void onFailure(int arg0, String arg1) {
+						// TODO Auto-generated method stub
+						ShowToast("黑名单添加失败:" + arg1);
+					}
+				});
+			}
+		});
+		// 显示确认对话框
+		dialog.show();
+		dialog = null;
 	}
 
 	/**
@@ -1665,6 +1790,94 @@ public class ChatActivity extends BaseMainActivity implements OnClickListener,
 	
 	public void back(View view) {
 		finish();
+	}
+	
+	public void chatShowMore(View view) {
+		if (isVisible) {// 如果mPopupWindow处于显示状态
+			// 隐藏mPopupWindow和mCanvers
+			mCanvers.startAnimation(createAlphaOutAnim());
+			mCanvers.setVisibility(View.GONE);
+			
+			mPopupWindowView.startAnimation(createTranslateOutAnim());
+			mPopupWindowView.setVisibility(View.GONE);
+			Log.i("zhimeng", "popbtn:if:"+isVisible);
+			isVisible = false;
+		}else{
+			// 隐藏mPopupWindow和mCanvers
+			mCanvers.startAnimation(createAlphaInAnim());
+			mCanvers.setVisibility(View.VISIBLE);
+			
+			mPopupWindowView.startAnimation(createTranslateInAnim());
+			mPopupWindowView.setVisibility(View.VISIBLE);
+			isVisible = true;
+			Log.i("zhimeng", "popbtn:else"+isVisible);
+		}
+	}
+	
+	private Animation createTranslateInAnim() {
+		int type = TranslateAnimation.RELATIVE_TO_SELF;
+		TranslateAnimation an = new TranslateAnimation(type, 0, type, 0, type,
+				-1, type, 0);
+		an.setDuration(TRANSLATE_DURATION);
+		an.setAnimationListener(new AnimationListener() {
+			
+			@Override
+			public void onAnimationStart(Animation animation) {
+				
+			}
+			
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+				
+			}
+			
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				mPopupWindowView.setVisibility(View.VISIBLE);
+			}
+		});
+//		an.setFillAfter(true);
+		return an;
+	}
+
+	private Animation createTranslateOutAnim() {
+		int type = TranslateAnimation.RELATIVE_TO_SELF;
+		TranslateAnimation an = new TranslateAnimation(type, 0, type, 0, type,
+				0, type, -1);
+		an.setDuration(TRANSLATE_DURATION);
+//		an.setFillAfter(true);
+		an.setAnimationListener(new AnimationListener() {
+			
+			@Override
+			public void onAnimationStart(Animation animation) {
+				
+			}
+			
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+				
+			}
+			
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				mPopupWindowView.setVisibility(View.GONE);
+			}
+		});
+		return an;
+	}
+
+	private Animation createAlphaInAnim() {
+		AlphaAnimation an = new AlphaAnimation(0, 1);
+		an.setDuration(ALPHA_DURATION);
+//		an.setFillAfter(true);
+		return an;
+	}
+
+	private Animation createAlphaOutAnim() {
+		AlphaAnimation an = new AlphaAnimation(1, 0);
+		an.setDuration(ALPHA_DURATION);
+//		an.setFillAfter(true);
+		return an;
 	}
 
 }

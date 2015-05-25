@@ -108,6 +108,10 @@ public class ContactUpdateFragment extends FragmentBase implements OnItemClickLi
 	}
 
 	private void init() {
+		
+		MainActivity2.setSexSelecteStatus(false);
+		MainActivity2.setSexShowStatus(false);
+		
 		characterParser = CharacterParser.getInstance();
 		pinyinComparator = new PinyinComparator();
 		

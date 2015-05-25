@@ -16,6 +16,7 @@ import com.bmob.im.demo.ui.GameCenterActivity;
 import com.bmob.im.demo.ui.GameCommunityActivity;
 import com.bmob.im.demo.ui.LifeCircleActivity;
 import com.bmob.im.demo.ui.ShakeForNearPeopleActivity;
+import com.deep.ui.update.MainActivity2;
 
 public class FindUpdateFragment extends FragmentBase implements OnClickListener{
 	
@@ -58,6 +59,9 @@ public class FindUpdateFragment extends FragmentBase implements OnClickListener{
 	
 	private void initView(){
 		// TODO Auto-generated method stub
+		
+		MainActivity2.setSexSelecteStatus(false);
+		MainActivity2.setSexShowStatus(false);
 		
 		rl_life_circle = (RelativeLayout) findViewById(R.id.fragment_find_life_circle);
 		rl_game_center = (RelativeLayout) findViewById(R.id.fragment_find_game_center);

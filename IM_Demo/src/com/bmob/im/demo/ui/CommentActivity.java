@@ -65,6 +65,8 @@ public class CommentActivity extends BaseActivity implements OnClickListener{
 //	private TextView share;
 	private TextView love;
 	private TextView hate;
+	
+	private TextView tv_create_time;
 
 	private QiangYu qiangYu;
 	private String commentEdit = "";
@@ -100,6 +102,7 @@ public class CommentActivity extends BaseActivity implements OnClickListener{
 //		share = (TextView) findViewById(R.id.item_action_share);
 		love = (TextView) findViewById(R.id.item_action_love);
 		hate = (TextView) findViewById(R.id.item_action_hate);
+		tv_create_time = (TextView) findViewById(R.id.state_create_time);
 		
 		setListener();
 		
@@ -138,6 +141,7 @@ public class CommentActivity extends BaseActivity implements OnClickListener{
 			return;
 		}
 		userName.setText(qiangYu.getAuthor().getNick());
+		tv_create_time.setText(qiangYu.getCreatedAt());
 		commentItemContent.setText(qiangYu.getContent());
 		if (null == qiangYu.getContentfigureurl()) {
 			commentItemImage.setVisibility(View.GONE);

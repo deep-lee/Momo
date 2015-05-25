@@ -235,7 +235,14 @@
     <string name="title_activity_chat_bg_group_details">ChatBgGroupDetailsActivity</string>
     <string name="title_activity_show_chat_bg">ShowChatBgActivity</string>
     <string name="chat_bg_set_default_bg">设为默认背景</string>
-    
     <string name="timer_format"><xliff:g id="format">%01d</xliff:g>:<xliff:g id="format">%02d</xliff:g></string>
+    <string name="chat_more_check_info">查看资料</string>
+    <string name="chat_more_invite_game">邀请游戏</string>
+    <string name="chat_more_set_black">拉黑</string>
+    <string name="chat_more_delete_recent">清空会话</string>
+    <string name="title_activity_load_and_show_url_iamge">LoadAndShowUrlIamgeActivity</string>
+    <string name="title_activity_account_safe">AccountSafeActivity</string>
+    <string name="change_password">修改密码</string>
+    <string name="title_activity_change_password">ChangePasswordActivity</string>
 
 </resources>

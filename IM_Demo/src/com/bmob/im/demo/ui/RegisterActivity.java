@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -63,6 +64,7 @@ import cn.smssdk.SMSSDK;
 
 import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
+import com.bmob.im.demo.bean.ChatBg;
 import com.bmob.im.demo.bean.User;
 import com.bmob.im.demo.config.BmobConstants;
 import com.bmob.im.demo.util.CacheUtils;
@@ -160,13 +162,13 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
 	};
 	
 	Handler handlerGetVerfyCode = new Handler(){
+		@SuppressLint("HandlerLeak")
 		public void handleMessage(Message msg) { 
             switch (msg.what) {   
             
             	case 1:
             		getConfimCode.setClickable(false);
             		getConfimCode.setText("剩余" + time + "秒");
-            		// getConfimCode.setIdleText("剩余" + time + "秒");
             		time--;
             		if (time != 0) {
 						Message message1 = new Message();
@@ -710,6 +712,12 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
 		bu.setStatus(true);
 		bu.setQiangYuStatus(true);
 		
+		ChatBg chatBg = new ChatBg();
+        chatBg.setBelongTo(0);
+        chatBg.setObjectId("5vEm777e");
+        chatBg.setPhotoName("默认背景");
+		bu.setChatBg(chatBg);
+		
 		//将user和设备id进行绑定
 		bu.setDeviceType("android");
 		bu.setInstallId(BmobInstallation.getInstallationId(this));
@@ -875,13 +883,6 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
 			return;
 		}
 		
-		
-//		if (!CommonUtils.isNetworkAvailable(RegisterActivity.this)) {
-//			ShowToast(R.string.network_tips);
-//			// shakeAnimation.playOn(et_username);
-//			return;
-//		}
-		
 		// 检查用户名是否已经存在
 		BmobQuery<User> query = new BmobQuery<User>();
 		query.addWhereEqualTo("username", et_username.getText().toString());
@@ -890,7 +891,7 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
 			@Override
 			public void onError(int arg0, String arg1) {
 				// TODO Auto-generated method stub
-				
+				ShowToast(R.string.network_tips);
 			}
 
 			@Override
@@ -1034,14 +1035,14 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
 				return;
 			}
 
-//			if (TextUtils.isEmpty(et_confim_code.getText().toString())) {
-//				ShowToast(R.string.toast_error_confim_code_null);
-//				
-//				shakeAnimation.playOn(et_confim_code);
-//				
-//				return;
-//			}
-//			
+			if (TextUtils.isEmpty(et_confim_code.getText().toString())) {
+				ShowToast(R.string.toast_error_confim_code_null);
+				
+				shakeAnimation.playOn(et_confim_code);
+				
+				return;
+			}
+			
 //			SMSSDK.submitVerificationCode("86", et_username.getText().toString(), et_confim_code.getText().toString());
 //			
 //			progress = new CustomProgressDialog(RegisterActivity.this, "正在验证...");

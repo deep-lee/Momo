@@ -18,7 +18,6 @@ import android.graphics.Bitmap;
 import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
 import cn.bmob.im.BmobChat;
@@ -39,6 +38,7 @@ import com.bmob.im.demo.bean.QiangYu;
 import com.bmob.im.demo.bean.User;
 import com.bmob.im.demo.util.ActivityManagerUtils;
 import com.bmob.im.demo.util.CollectionUtils;
+import com.bmob.im.demo.util.FileSizeUtil;
 import com.bmob.im.demo.util.SharePreferenceUtil;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
@@ -58,6 +58,9 @@ import com.nostra13.universalimageloader.utils.StorageUtils;
  * @date 2014-5-19 ÏÂÎç3:25:00
  */
 public class CustomApplcation extends Application {
+	
+	public static String SDCARD_DIR = "/sdcard/Find/GameApk/";
+	public static String NOSDCARD_DIR = "/data/data/com.bmob.im.demo/GameApk";
 
 	public static CustomApplcation mInstance;
 	public LocationClient mLocationClient;
@@ -588,7 +591,12 @@ public class CustomApplcation extends Application {
     
 	public static Boolean isApkDownloaded(String fileName) {
 		
-		String apkDir = Environment.getExternalStorageDirectory().getPath() + "/Bmob_IM_test/GameAPK/";
+		String apkDir = "";
+		if (FileSizeUtil.isHasSdcard()) {
+			apkDir = CustomApplcation.SDCARD_DIR;
+		} else {
+			apkDir = CustomApplcation.NOSDCARD_DIR;
+		}
 		File rootFile = new File(apkDir);
 		
 		if (!rootFile.exists()) {

@@ -12,8 +12,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:background="@color/theme_color"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp" >
+        android:paddingLeft="8dp">
 
         <ImageView
             android:id="@+id/topbar_menu_left"
@@ -43,6 +42,15 @@
             android:textStyle="bold"
             android:typeface="monospace" />
         
+        <ImageView 
+            android:id="@+id/iv_nears_sex_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/topbar_title"
+            android:visibility="invisible"
+            android:src="@drawable/icon_nears_sex_female"/>
+        
         <TextView
             android:id="@+id/topbar_edit_my_info"
             android:layout_width="wrap_content"
@@ -53,8 +61,20 @@
             android:layout_centerVertical="true"
             android:textColor="#FFFFFF"
             android:textSize="20sp"
+            android:paddingRight="8dp" 
             android:textStyle="bold"
             android:typeface="monospace" />
+        
+        <ImageView 
+            android:id="@+id/iv_nears_selector_show"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_alignParentRight="true"
+            android:visibility="invisible"
+            android:layout_centerVertical="true"
+            android:background="@drawable/base_action_bar_nears_sex_selector"
+            android:gravity="center"/>
+        
     </RelativeLayout>
 
     <RelativeLayout 

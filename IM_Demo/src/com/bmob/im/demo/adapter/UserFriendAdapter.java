@@ -1,11 +1,9 @@
 package com.bmob.im.demo.adapter;
 
-import java.util.Calendar;
 import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,9 +12,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
-import cn.bmob.v3.datatype.BmobGeoPoint;
-
-import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.bean.User;
 import com.bmob.im.demo.util.ImageLoadOptions;

@@ -1,18 +1,14 @@
 package com.bmob.im.demo.ui;
 
 import cn.bmob.v3.datatype.BmobGeoPoint;
-import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.config.Attractions;
-import com.bmob.im.demo.config.BmobConstants;
 import com.daimajia.androidanimations.library.YoYo;
 import com.daimajia.androidanimations.library.YoYo.AnimationComposer;
 import com.daimajia.androidanimations.library.sliders.SlideInRightAnimator;
 import com.daimajia.androidanimations.library.sliders.SlideInUpAnimator;
 import com.daimajia.androidanimations.library.sliders.SlideOutLeftAnimator;
 import com.daimajia.androidanimations.library.sliders.SlideOutUpAnimator;
-import com.nineoldandroids.animation.Animator;
-import android.R.integer;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -43,7 +39,7 @@ public class AttractionsRomaActivity2 extends ActivityBase {
 	
 	int finalRandom;
 	
-	int times = 15;
+	int times = 10;
 	
 	YoYo.AnimationComposer animationSlideInUp, animationSlideOutUp, animationSlideOutLeft, animationSlideInRight;
 	
@@ -201,8 +197,6 @@ public class AttractionsRomaActivity2 extends ActivityBase {
 	
 	private void initView() {
 		
-//		initTopBarForLeft("景点漫游");
-		
 		attractions = new Attractions();
 		
 		plant = (ImageView) findViewById(R.id.roma_sky_bg_plante);
@@ -216,120 +210,16 @@ public class AttractionsRomaActivity2 extends ActivityBase {
 		currentGeoPoint = new BmobGeoPoint(Double.parseDouble(mApplication.getLongtitude()), Double.parseDouble(mApplication.getLatitude()));
 		
 		animationSlideInUp = new AnimationComposer(new SlideInUpAnimator())
-		.duration(100).interpolate(new AccelerateDecelerateInterpolator())
-		.withListener(new Animator.AnimatorListener() {
-			
-			@Override
-			public void onAnimationStart(Animator arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onAnimationRepeat(Animator arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onAnimationEnd(Animator arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onAnimationCancel(Animator arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
+		.duration(100).interpolate(new AccelerateDecelerateInterpolator());
 		
 		animationSlideOutUp = new AnimationComposer(new SlideOutUpAnimator())
-		.duration(100).interpolate(new AccelerateDecelerateInterpolator())
-		.withListener(new Animator.AnimatorListener() {
-			
-			@Override
-			public void onAnimationStart(Animator arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onAnimationRepeat(Animator arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onAnimationEnd(Animator arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onAnimationCancel(Animator arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
+		.duration(100).interpolate(new AccelerateDecelerateInterpolator());
 		
 		animationSlideOutLeft = new AnimationComposer(new SlideOutLeftAnimator())
-		.duration(2000).interpolate(new AccelerateDecelerateInterpolator())
-		.withListener(new Animator.AnimatorListener() {
-			
-			@Override
-			public void onAnimationStart(Animator arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onAnimationRepeat(Animator arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onAnimationEnd(Animator arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onAnimationCancel(Animator arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
+		.duration(2000).interpolate(new AccelerateDecelerateInterpolator());
 		
 		animationSlideInRight = new AnimationComposer(new SlideInRightAnimator())
-		.duration(2000).interpolate(new AccelerateDecelerateInterpolator())
-		.withListener(new Animator.AnimatorListener() {
-			
-			@Override
-			public void onAnimationStart(Animator arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onAnimationRepeat(Animator arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onAnimationEnd(Animator arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onAnimationCancel(Animator arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
+		.duration(2000).interpolate(new AccelerateDecelerateInterpolator());
 		
 		btn_begin_roma.setOnClickListener(new View.OnClickListener() {
 			
@@ -341,7 +231,7 @@ public class AttractionsRomaActivity2 extends ActivityBase {
 				
 				// 已经点了开始漫游，现在是又一次点击
 				if (flag) {
-					times = 15;
+					times = 10;
 					duration = 200;
 				}
 				else {
@@ -370,7 +260,7 @@ public class AttractionsRomaActivity2 extends ActivityBase {
 		super.onResume();
 		
 		flag = false;
-		times = 15;
+		times = 10;
 		duration = 200;
 		tv_tip1.setText(R.string.roma_tips_1);
 		tv_tips2.setText(R.string.roma_tips_2);
@@ -390,8 +280,4 @@ public class AttractionsRomaActivity2 extends ActivityBase {
 		super.onDestroy();
 		isOver = true;
 	}
-
-	
-	
-	
 }

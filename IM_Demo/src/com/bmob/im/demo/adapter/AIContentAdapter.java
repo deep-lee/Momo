@@ -3,6 +3,7 @@ package com.bmob.im.demo.adapter;
 import java.util.Iterator;
 import java.util.List;
 
+import B.in;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -32,6 +33,7 @@ import com.bmob.im.demo.bean.User;
 import com.bmob.im.demo.config.Config;
 import com.bmob.im.demo.ui.CommentActivity;
 import com.bmob.im.demo.ui.LifeCircleActivity;
+import com.bmob.im.demo.ui.LoadAndShowUrlIamgeActivity;
 import com.bmob.im.demo.ui.NearPeopleMapActivity;
 import com.bmob.im.demo.ui.SetMyInfoActivity2;
 import com.bmob.im.demo.util.ActivityUtil;
@@ -164,37 +166,40 @@ public class AIContentAdapter extends BaseContentAdapter<QiangYu> {
 			viewHolder.contentImage.setVisibility(View.GONE);
 		} else {
 			viewHolder.contentImage.setVisibility(View.VISIBLE);
-			ImageLoader
-					.getInstance()
-					.displayImage(
-							entity.getContentfigureurl().getFileUrl(mContext) == null ? ""
-									: entity.getContentfigureurl().getFileUrl(
-											mContext),
-							viewHolder.contentImage,
-							CustomApplcation.getInstance().getOptions(
-									R.drawable.bg_pic_loading),
-							new SimpleImageLoadingListener() {
-
-								@Override
-								public void onLoadingComplete(String imageUri,
-										View view, Bitmap loadedImage) {
-									// TODO Auto-generated method stub
-									super.onLoadingComplete(imageUri, view,
-											loadedImage);
-									float[] cons = ActivityUtil
-											.getBitmapConfiguration(
-													loadedImage,
-													viewHolder.contentImage,
-													1.0f);
-									RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
-											(int) cons[0], (int) cons[1]);
-									layoutParams.addRule(RelativeLayout.BELOW,
-											R.id.content_text);
-									viewHolder.contentImage
-											.setLayoutParams(layoutParams);
-								}
-
-							});
+			
+			entity.getContentfigureurl().loadImageThumbnail(mContext, viewHolder.contentImage, 200, 200);
+			
+//			ImageLoader
+//					.getInstance()
+//					.displayImage(
+//							entity.getContentfigureurl().getFileUrl(mContext) == null ? ""
+//									: entity.getContentfigureurl().getFileUrl(
+//											mContext),
+//							viewHolder.contentImage,
+//							CustomApplcation.getInstance().getOptions(
+//									R.drawable.bg_pic_loading),
+//							new SimpleImageLoadingListener() {
+//
+//								@Override
+//								public void onLoadingComplete(String imageUri,
+//										View view, Bitmap loadedImage) {
+//									// TODO Auto-generated method stub
+//									super.onLoadingComplete(imageUri, view,
+//											loadedImage);
+//									float[] cons = ActivityUtil
+//											.getBitmapConfiguration(
+//													loadedImage,
+//													viewHolder.contentImage,
+//													1.0f);
+//									RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+//											(int) cons[0], (int) cons[1]);
+//									layoutParams.addRule(RelativeLayout.BELOW,
+//											R.id.content_text);
+//									viewHolder.contentImage
+//											.setLayoutParams(layoutParams);
+//								}
+//
+//							});
 		}
 		viewHolder.love.setText(entity.getLove() + "");
 		Log.i("love", entity.getMyLove() + "..");
@@ -303,25 +308,19 @@ public class AIContentAdapter extends BaseContentAdapter<QiangYu> {
 				mContext.startActivity(intent);
 			}
 		});
-
-//		if (entity.getMyFav()) {
-//			viewHolder.favMark
-//					.setImageResource(R.drawable.ic_action_fav_choose);
-//		} else {
-//			viewHolder.favMark
-//					.setImageResource(R.drawable.ic_action_fav_normal);
-//		}
-//		viewHolder.favMark.setOnClickListener(new OnClickListener() {
-//
-//			@Override
-//			public void onClick(View v) {
-//				// TODO Auto-generated method stub
-//				// 收藏
-//				ActivityUtil.show(mContext, "收藏");
-//				onClickFav(v, entity);
-//
-//			}
-//		});
+		
+		viewHolder.contentImage.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent();
+				intent.setClass(mContext, LoadAndShowUrlIamgeActivity.class);
+				intent.putExtra("image_url", entity.getContentfigureurl().getFileUrl(mContext));
+				mContext.startActivity(intent);
+			}
+		});
+		
 		return convertView;
 	}
 
