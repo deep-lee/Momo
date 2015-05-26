@@ -280,9 +280,11 @@ public class GameFruitActivity extends Activity implements OnClickListener, OnTi
 					public void onSuccess(List<DefaultGameFile> arg0) {
 						// TODO Auto-generated method stub
 						if (arg0.size() != 0) {
-							DefaultGameFile gameFile = arg0.get(0);
+							DefaultGameFile gameFile = new DefaultGameFile();
 							gameFile.setBestScore(spendTime);
-							gameFile.setBestUser(CustomApplcation.getInstance().getCurrentUser());
+							gameFile.setBestUsername(CustomApplcation.getInstance().getCurrentUser().getUsername());
+							gameFile.setBestUserNick(CustomApplcation.getInstance().getCurrentUser().getNick());
+							gameFile.setObjectId(arg0.get(0).getObjectId());
 							
 							gameFile.update(GameFruitActivity.this, new UpdateListener() {
 								
@@ -295,7 +297,7 @@ public class GameFruitActivity extends Activity implements OnClickListener, OnTi
 								@Override
 								public void onFailure(int arg0, String arg1) {
 									// TODO Auto-generated method stub
-									ActivityUtil.show(GameFruitActivity.this, "更新游戏排名失败！");
+									//ActivityUtil.show(GameFruitActivity.this, "更新游戏排名失败！");
 								}
 							});
 							
@@ -305,7 +307,7 @@ public class GameFruitActivity extends Activity implements OnClickListener, OnTi
 					@Override
 					public void onError(int arg0, String arg1) {
 						// TODO Auto-generated method stub
-						ActivityUtil.show(GameFruitActivity.this, "更新游戏排名失败！");
+						//ActivityUtil.show(GameFruitActivity.this, "更新游戏排名失败！");
 					}
 				});
 			}

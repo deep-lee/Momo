@@ -595,10 +595,11 @@ public class MixedColorView extends SurfaceView implements
 					public void onSuccess(List<DefaultGameFile> arg0) {
 						// TODO Auto-generated method stub
 						if (arg0.size() != 0) {
-							DefaultGameFile gameFile = arg0.get(0);
+							DefaultGameFile gameFile = new DefaultGameFile();
 							gameFile.setBestScore(correctNum);
-							gameFile.setBestUser(CustomApplcation.getInstance().getCurrentUser());
-							
+							gameFile.setBestUsername(CustomApplcation.getInstance().getCurrentUser().getUsername());
+							gameFile.setBestUserNick(CustomApplcation.getInstance().getCurrentUser().getNick());
+							gameFile.setObjectId(arg0.get(0).getObjectId());
 							gameFile.update(mContext, new UpdateListener() {
 								
 								@Override
@@ -610,7 +611,7 @@ public class MixedColorView extends SurfaceView implements
 								@Override
 								public void onFailure(int arg0, String arg1) {
 									// TODO Auto-generated method stub
-									ActivityUtil.show(mContext, "更新游戏排名失败！");
+									// ActivityUtil.show(mContext, "更新游戏排名失败！");
 								}
 							});
 							
@@ -620,7 +621,7 @@ public class MixedColorView extends SurfaceView implements
 					@Override
 					public void onError(int arg0, String arg1) {
 						// TODO Auto-generated method stub
-						ActivityUtil.show(mContext, "更新游戏排名失败！");
+						// ActivityUtil.show(mContext, "更新游戏排名失败！");
 					}
 				});
 			}

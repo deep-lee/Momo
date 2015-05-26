@@ -36,7 +36,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 /**
  * GridView的适配器，负责异步从网络上下载图片展示在照片墙上。

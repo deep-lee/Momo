@@ -458,13 +458,17 @@
         </activity>
         <activity
             android:name=".ui.AccountSafeActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:label="@string/title_activity_account_safe" >
+            android:label="@string/title_activity_account_safe"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
         <activity
-            android:name="com.bmob.im.demo.ui.ChangePasswordActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:label="@string/title_activity_change_password" >
+            android:name=".ui.ChangePasswordActivity"
+            android:label="@string/title_activity_change_password"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="com.bmob.im.demo.ui.GameRankActiivty"
+            android:label="@string/title_activity_game_rank_actiivty" >
         </activity>
     </application>
 

@@ -41,6 +41,7 @@ import com.bmob.im.demo.adapter.GTContentAdapter;
 import com.bmob.im.demo.bean.GameTopic;
 import com.bmob.im.demo.config.Config;
 import com.bmob.im.demo.ui.FragmentBase;
+import com.bmob.im.demo.ui.GameRankActiivty;
 import com.bmob.im.demo.ui.GameTopicDetailsActivity;
 import com.bmob.im.demo.view.dialog.CustomProgressDialog;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
@@ -66,7 +67,7 @@ public static String TAG = "QiangContentFragment";
 	private List<ImageView> advPics;
 	
 	private View contentView ;
-	private int currentIndex ;
+	private int currentIndex = 0;
 	private int pageNum;
 	private String lastItemTime; //当前列表结尾的条目的创建时间，
 	
@@ -360,22 +361,52 @@ public static String TAG = "QiangContentFragment";
 			advPager.setOnPageChangeListener(new GuidePageChangeListener());
 			advPager.setOnTouchListener(new OnTouchListener() {
 				
+				private boolean moved;
+				
 				@SuppressLint("ClickableViewAccessibility")
 				@Override
 				public boolean onTouch(View v, MotionEvent event) {
 					switch (event.getAction()) {
 					case MotionEvent.ACTION_DOWN:
+						moved = false;
+						break;
 					case MotionEvent.ACTION_MOVE:
 						isContinue = false;
+						moved = true;
 						break;
 					case MotionEvent.ACTION_UP:
 						isContinue = true;
+						if (!moved) {
+		                    v.performClick();
+		                }
 						break;
 					default:
 						isContinue = true;
+						
 						break;
 					}
 					return false;
+				}
+			});
+			
+			advPager.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					
+					ShowToast("clicked");
+					
+					switch (currentIndex) {
+					case 0:
+						Intent intent = new Intent();
+						intent.setClass(mContext, GameRankActiivty.class);
+						startActivity(intent);
+						break;
+
+					default:
+						break;
+					}
 				}
 			});
 			
@@ -445,6 +476,9 @@ public static String TAG = "QiangContentFragment";
 
 			@Override
 			public void onPageSelected(int arg0) {
+				
+				currentIndex = arg0;
+				
 				what.getAndSet(arg0);
 				for (int i = 0; i < imageViews.length; i++) {
 					imageViews[arg0]
@@ -492,6 +526,7 @@ public static String TAG = "QiangContentFragment";
 				views.get(arg1).setScaleType(ScaleType.FIT_XY);
 				
 				((ViewPager) arg0).addView(views.get(arg1), 0);
+				
 				return views.get(arg1);
 			}
 

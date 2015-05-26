@@ -244,5 +244,6 @@
     <string name="title_activity_account_safe">AccountSafeActivity</string>
     <string name="change_password">修改密码</string>
     <string name="title_activity_change_password">ChangePasswordActivity</string>
+    <string name="title_activity_game_rank_actiivty">GameRankActiivty</string>
 
 </resources>

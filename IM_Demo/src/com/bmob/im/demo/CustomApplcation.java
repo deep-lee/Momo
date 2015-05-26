@@ -19,7 +19,6 @@ import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
-import android.widget.Toast;
 import cn.bmob.im.BmobChat;
 import cn.bmob.im.BmobUserManager;
 import cn.bmob.im.bean.BmobChatUser;
@@ -199,8 +198,6 @@ public class CustomApplcation extends Application {
 				// TODO Auto-generated method stub
 				// 插入游戏
 				
-				Toast.makeText(getApplicationContext(), "" + arg0.size(), Toast.LENGTH_LONG).show();
-				
 				for (Iterator<GameFile> iterator = arg0.iterator(); iterator.hasNext();) {
 					
 					GameFile gameFile = (GameFile) iterator.next();
@@ -229,111 +226,6 @@ public class CustomApplcation extends Application {
 		});
 		
 	}
-	
-//	// 查询游戏数据库
-//	// 更新本地游戏信息
-//	public void updateLocalGameDB() {
-//		// 先判断本地数据库是否为空
-//		
-//		// 如果本地数据库是空的，就从网络读取数据，并写入本地数据库
-//		if (databaseUtil.isDBNull()) {
-//			
-//			Log.i("NNNNNNNNNNNNNNNNNNNNNNNNN", "本地数据库为空");
-//			
-//			// 先插入三个基本的游戏信息
-//			insertThreeBasicGame();
-//			
-//			// 插入扩展的游戏信息
-//			insertExtendGame();
-//			
-//		}else {  // 如果本地游戏数据库不为空
-//			// 判断是否需要更新，需要就更新，如果数据库没有某条信息就从插入
-//			Log.i("FFFFFFFFFFFFFFFFFFFFFFFF", "本地数据库不为空");
-//			insertExtendGame();
-//		}
-//	}
-//	
-//	public void insertThreeBasicGame() {
-//		
-//		GameInfo gameInfo1 = new GameInfo();
-//		gameInfo1.setGame_icon("game_icon.png");
-//		gameInfo1.setGame_name("水果连连看");
-//		gameInfo1.setGame_rule(getString(R.string.game_lianliankan_rule_details));
-//		gameInfo1.setGame_status(2);
-//		gameInfo1.setGame_win_method(getString(R.string.game_lianliankan_win_method));
-//		gameInfo1.setObject_id("lianliankan");
-//		gameInfo1.setPackage_name("gamelianliankan");
-//		gameInfo1.setGame_version("1.0");
-//		gameInfo1.setNotificationId(0);
-//		
-//		GameInfo gameInfo2 = new GameInfo();
-//		gameInfo2.setGame_icon("game_icon.png");
-//		gameInfo2.setGame_name("猜数字");
-//		gameInfo2.setGame_rule(getString(R.string.game_guess_number_rule_details));
-//		gameInfo2.setGame_status(2);
-//		gameInfo2.setGame_win_method(getString(R.string.game_guess_number_win_method));
-//		gameInfo2.setObject_id("guessnumber");
-//		gameInfo2.setPackage_name("gameguessnumber");
-//		gameInfo2.setGame_version("1.0");
-//		gameInfo2.setNotificationId(1);
-//		
-//		GameInfo gameInfo3 = new GameInfo();
-//		gameInfo3.setGame_icon("icon_mixed_color.png");
-//		gameInfo3.setGame_name("Mixed color");
-//		gameInfo3.setGame_rule(getString(R.string.game_mixed_color_rule_details));
-//		gameInfo3.setGame_status(2);
-//		gameInfo3.setGame_win_method(getString(R.string.game_mixed_color_win_method));
-//		gameInfo3.setObject_id("mixedcolor");
-//		gameInfo3.setPackage_name("gamemixedcolor");
-//		gameInfo3.setGame_version("1.0");
-//		gameInfo3.setNotificationId(2);
-//		
-//		databaseUtil.insertGame(gameInfo1);
-//		databaseUtil.insertGame(gameInfo2);
-//		databaseUtil.insertGame(gameInfo3);
-//		
-//	}
-//	
-//	public void insertExtendGame() {
-//		
-//		BmobQuery<GameFile> query = new BmobQuery<GameFile>();
-//		query.setLimit(100);
-//		query.findObjects(getApplicationContext(), new FindListener<GameFile>() {
-//			
-//			@Override
-//			public void onSuccess(List<GameFile> arg0) {
-//				// TODO Auto-generated method stub
-//				// 插入游戏
-//				
-//				Toast.makeText(getApplicationContext(), "" + arg0.size(), Toast.LENGTH_LONG).show();
-//				
-//				for (Iterator<GameFile> iterator = arg0.iterator(); iterator.hasNext();) {
-//					
-//					GameFile gameFile = (GameFile) iterator.next();
-//					GameInfo gameInfo = new GameInfo();
-//					gameInfo.setGame_icon(gameFile.getGameIcon());
-//					gameInfo.setGame_name(gameFile.getGameName());
-//					gameInfo.setGame_rule(gameFile.getGameRule());
-//					gameInfo.setGame_status(getGameStatus(gameFile.getPackageName(), gameFile.getGameName(), gameFile.getNotificationId()));
-//					gameInfo.setGame_win_method(gameFile.getGameWinMethod());
-//					gameInfo.setObject_id(gameFile.getObjectId());
-//					gameInfo.setPackage_name(gameFile.getPackageName());
-//					gameInfo.setGame_version(gameFile.getGameVersion());
-//					gameInfo.setNotificationId(gameFile.getNotificationId());
-//					
-//					databaseUtil.insertGame(gameInfo);
-//					
-//				}
-//			}
-//			
-//			@Override
-//			public void onError(int arg0, String arg1) {
-//				// TODO Auto-generated method stub
-//				
-//			}
-//		});
-//		
-//	}
 	
 	public int getGameStatus(String packageName, String gameName, int notificationId) {
 		

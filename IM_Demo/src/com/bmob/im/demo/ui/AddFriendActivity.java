@@ -25,6 +25,7 @@ import cn.bmob.v3.listener.UpdateListener;
 import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.adapter.AddFriendAdapter;
+import com.bmob.im.demo.bean.DefaultGameFile;
 import com.bmob.im.demo.bean.GameFile;
 import com.bmob.im.demo.bean.User;
 import com.bmob.im.demo.util.ActivityUtil;
@@ -434,10 +435,11 @@ public class AddFriendActivity extends ActivityBase implements OnClickListener, 
 					public void onSuccess(List<GameFile> arg0) {
 						// TODO Auto-generated method stub
 						if (arg0.size() != 0) {
-							GameFile gameFile = arg0.get(0);
+							DefaultGameFile gameFile = new DefaultGameFile();
 							gameFile.setBestScore((int)time);
-							gameFile.setBestUser(CustomApplcation.getInstance().getCurrentUser());
-							
+							gameFile.setBestUsername(CustomApplcation.getInstance().getCurrentUser().getUsername());
+							gameFile.setBestUserNick(CustomApplcation.getInstance().getCurrentUser().getNick());
+							gameFile.setObjectId(arg0.get(0).getObjectId());
 							gameFile.update(AddFriendActivity.this, new UpdateListener() {
 								
 								@Override
@@ -449,7 +451,7 @@ public class AddFriendActivity extends ActivityBase implements OnClickListener, 
 								@Override
 								public void onFailure(int arg0, String arg1) {
 									// TODO Auto-generated method stub
-									ActivityUtil.show(AddFriendActivity.this, "更新游戏排名失败！");
+									// ActivityUtil.show(NearPeopleMapActivity.this, "更新游戏排名失败！");
 								}
 							});
 							
@@ -459,7 +461,7 @@ public class AddFriendActivity extends ActivityBase implements OnClickListener, 
 					@Override
 					public void onError(int arg0, String arg1) {
 						// TODO Auto-generated method stub
-						ActivityUtil.show(AddFriendActivity.this, "更新游戏排名失败！");
+						// ActivityUtil.show(NearPeopleMapActivity.this, "更新游戏排名失败！");
 					}
 				});
 			}
@@ -482,9 +484,11 @@ public class AddFriendActivity extends ActivityBase implements OnClickListener, 
 				public void onSuccess(List<GameFile> arg0) {
 					// TODO Auto-generated method stub
 					if (arg0.size() != 0) {
-						GameFile gameFile = arg0.get(0);
+						DefaultGameFile gameFile = new DefaultGameFile();
 						gameFile.setBestScore(mark);
-						gameFile.setBestUser(CustomApplcation.getInstance().getCurrentUser());
+						gameFile.setBestUsername(CustomApplcation.getInstance().getCurrentUser().getUsername());
+						gameFile.setBestUserNick(CustomApplcation.getInstance().getCurrentUser().getNick());
+						gameFile.setObjectId(arg0.get(0).getObjectId());
 						
 						gameFile.update(AddFriendActivity.this, new UpdateListener() {
 							
@@ -497,7 +501,7 @@ public class AddFriendActivity extends ActivityBase implements OnClickListener, 
 							@Override
 							public void onFailure(int arg0, String arg1) {
 								// TODO Auto-generated method stub
-								ActivityUtil.show(AddFriendActivity.this, "更新游戏排名失败！");
+								// ActivityUtil.show(NearPeopleMapActivity.this, "更新游戏排名失败！");
 							}
 						});
 						
@@ -507,13 +511,13 @@ public class AddFriendActivity extends ActivityBase implements OnClickListener, 
 				@Override
 				public void onError(int arg0, String arg1) {
 					// TODO Auto-generated method stub
-					ActivityUtil.show(AddFriendActivity.this, "更新游戏排名失败！");
+					// ActivityUtil.show(NearPeopleMapActivity.this, "更新游戏排名失败！");
 				}
 			});
 		}
 		
-		}.start();
-	}
+	}.start();
+}
 	
 	String searchName ="";
 	@Override
@@ -562,51 +566,6 @@ public class AddFriendActivity extends ActivityBase implements OnClickListener, 
 		intent.setClass(AddFriendActivity.this, AddFriendsFromAddressBookActivity.class);
 		startAnimActivity(intent);
 	}
-
-//	@Override
-//	public void onRefresh() {
-//		// TODO Auto-generated method stub
-//		
-//	}
-//
-//	@Override
-//	public void onLoadMore() {
-//		// TODO Auto-generated method stub
-//		userManager.querySearchTotalCount(searchName, new CountListener() {
-//			
-//			@Override
-//			public void onSuccess(int arg0) {
-//				// TODO Auto-generated method stub
-//				if(arg0 >users.size()){
-//					curPage++;
-//					queryMoreSearchList(curPage);
-//				}else{
-//					ShowToast("数据加载完成");
-//					mListView.setPullLoadEnable(false);
-//					refreshLoad();
-//				}
-//			}
-//			
-//			@Override
-//			public void onFailure(int arg0, String arg1) {
-//				// TODO Auto-generated method stub
-//				ShowLog("查询附近的人总数失败"+arg1);
-//				refreshLoad();
-//			}
-//		});
-//	}
-//	
-//	private void refreshLoad(){
-//		if (mListView.getPullLoading()) {
-//			mListView.stopLoadMore();
-//		}
-//	}
-//	
-//	private void refreshPull(){
-//		if (mListView.getPullRefreshing()) {
-//			mListView.stopRefresh();
-//		}
-//	}
 	
 
 }

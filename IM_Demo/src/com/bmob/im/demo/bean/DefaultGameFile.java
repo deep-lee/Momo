@@ -23,7 +23,9 @@ public class DefaultGameFile extends BmobObject {
 	private BmobFile gameDisplay3;
 	private BmobFile gameDisplay4;
 	
-	private User bestUser;
+	private String bestUsername;
+	private String bestUserNick;
+	private String bestUserAvatar;
 	
 	private int bestScore;
 	
@@ -32,14 +34,28 @@ public class DefaultGameFile extends BmobObject {
 	
 	private int notificationId;
 	
-	
-
-	public User getBestUser() {
-		return bestUser;
+	public String getBestUserAvatar() {
+		return bestUserAvatar;
 	}
 
-	public void setBestUser(User bestUser) {
-		this.bestUser = bestUser;
+	public void setBestUserAvatar(String bestUserAvatar) {
+		this.bestUserAvatar = bestUserAvatar;
+	}
+
+	public String getBestUsername() {
+		return bestUsername;
+	}
+
+	public void setBestUsername(String bestUsername) {
+		this.bestUsername = bestUsername;
+	}
+
+	public String getBestUserNick() {
+		return bestUserNick;
+	}
+
+	public void setBestUserNick(String bestUserNick) {
+		this.bestUserNick = bestUserNick;
 	}
 
 	public int getBestScore() {

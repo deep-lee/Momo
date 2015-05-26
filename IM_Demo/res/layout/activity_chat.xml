@@ -37,19 +37,14 @@
             android:textColor="#ffffff"
             android:textSize="18sp" />
         
-        <TextView
-            android:id="@+id/tv_chat_more"
+        <ImageView 
+            android:id="@+id/chat_more_iv"
             android:layout_width="wrap_content"
+            android:onClick="chatShowMore"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
-            android:text="更多"
-            android:clickable="true"
-            android:onClick="chatShowMore"
-            android:layout_marginRight="10dp"
-            android:typeface="monospace"
-            android:textColor="#ffffff"
-            android:textSize="18sp" />
+            android:src="@drawable/base_action_bar_nears_sex_selector"/>
     </RelativeLayout>
 
     <FrameLayout
@@ -109,11 +104,6 @@
 	        android:background="#000000"
 	        android:orientation="vertical"
 	        android:visibility="gone" />
-        
-        <include 
-	        layout="@layout/fragment_chat_more_popup"
-	        android:visibility="gone"/>
-        
     </FrameLayout>
 
     <include layout="@layout/include_chat_bottom_bar" />

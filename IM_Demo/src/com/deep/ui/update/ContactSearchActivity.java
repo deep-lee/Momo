@@ -422,7 +422,8 @@ public class ContactSearchActivity extends BaseActivity implements OnItemClickLi
 						if (arg0.size() != 0) {
 							GameFile gameFile = arg0.get(0);
 							gameFile.setBestScore((int)time);
-							gameFile.setBestUser(CustomApplcation.getInstance().getCurrentUser());
+							gameFile.setBestUsername(CustomApplcation.getInstance().getCurrentUser().getUsername());
+							gameFile.setBestUserNick(CustomApplcation.getInstance().getCurrentUser().getNick());
 							
 							gameFile.update(ContactSearchActivity.this, new UpdateListener() {
 								
@@ -470,7 +471,8 @@ public class ContactSearchActivity extends BaseActivity implements OnItemClickLi
 					if (arg0.size() != 0) {
 						GameFile gameFile = arg0.get(0);
 						gameFile.setBestScore(mark);
-						gameFile.setBestUser(CustomApplcation.getInstance().getCurrentUser());
+						gameFile.setBestUsername(CustomApplcation.getInstance().getCurrentUser().getUsername());
+						gameFile.setBestUserNick(CustomApplcation.getInstance().getCurrentUser().getNick());
 						
 						gameFile.update(ContactSearchActivity.this, new UpdateListener() {
 							

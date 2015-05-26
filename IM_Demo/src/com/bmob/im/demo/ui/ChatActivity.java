@@ -24,6 +24,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.text.Editable;
 import android.text.Selection;
@@ -95,6 +97,10 @@ import com.bmob.im.demo.view.HeaderLayout;
 import com.bmob.im.demo.view.dialog.DialogTips;
 import com.bmob.im.demo.view.xlist.XListView;
 import com.bmob.im.demo.view.xlist.XListView.IXListViewListener;
+import com.yalantis.contextmenu.lib.ContextMenuDialogFragment;
+import com.yalantis.contextmenu.lib.MenuObject;
+import com.yalantis.contextmenu.lib.interfaces.OnMenuItemClickListener;
+import com.yalantis.contextmenu.lib.interfaces.OnMenuItemLongClickListener;
 
 /**
  * 聊天界面
@@ -112,13 +118,16 @@ import com.bmob.im.demo.view.xlist.XListView.IXListViewListener;
  */
 @SuppressLint({ "ClickableViewAccessibility", "InflateParams" })
 public class ChatActivity extends BaseMainActivity implements OnClickListener,
-		IXListViewListener, EventListener {
+		IXListViewListener, EventListener, OnMenuItemClickListener, OnMenuItemLongClickListener{
 	
 	private LinearLayout mCanvers;
 	private View mPopupWindowView;
 	private boolean isVisible = false; // 用来记录mPopupWindow是否显示
 	public final static int TRANSLATE_DURATION = 200;
 	public final static int ALPHA_DURATION = 200;
+	
+	private FragmentManager fragmentManager;
+	private DialogFragment mMenuDialogFragment;
 
 	// 表情 发送 添加 键盘 语音 
 	private Button btn_chat_emo, btn_chat_send, btn_chat_add,btn_chat_keyboard, btn_chat_voice;
@@ -126,9 +135,6 @@ public class ChatActivity extends BaseMainActivity implements OnClickListener,
 	XListView mListView;
 	
 	private Handler mHandler = new Handler();
-	
-	ImageView iv_check_info, iv_invite_game, iv_set_black, iv_delete_recent;
-	
 	
 	ImageView iv_voice;
 	private ViewGroup trashcan;
@@ -217,6 +223,10 @@ public class ChatActivity extends BaseMainActivity implements OnClickListener,
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_chat);
 		
+		fragmentManager = getSupportFragmentManager();
+        mMenuDialogFragment = ContextMenuDialogFragment.newInstance((int) getResources().getDimension(R.dimen.tool_bar_height), 
+        		getMenuObjects());
+		
 		getWindow().setSoftInputMode(
 				WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN|WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);// 默认不弹出软键盘
 		
@@ -288,6 +298,39 @@ public class ChatActivity extends BaseMainActivity implements OnClickListener,
 			}
 		});
 	}
+	
+	private List<MenuObject> getMenuObjects() {
+
+        List<MenuObject> menuObjects = new ArrayList<MenuObject>();
+
+        MenuObject close = new MenuObject();
+        close.setResource(R.drawable.icn_close);
+        close.setBgResource(R.color.common_action_bar_bg_color);
+
+        MenuObject send = new MenuObject("查看资料");
+        send.setResource(R.drawable.icon_user_info);
+        send.setBgResource(R.color.common_action_bar_bg_color);
+
+        MenuObject like = new MenuObject("邀请游戏");
+        like.setResource(R.drawable.icon_invite_game);
+        like.setBgResource(R.color.common_action_bar_bg_color);
+
+        MenuObject addFr = new MenuObject("拉黑");
+        addFr.setResource(R.drawable.icon_chat_set_black);
+        addFr.setBgResource(R.color.common_action_bar_bg_color);
+  
+        MenuObject addFav = new MenuObject("清除聊天纪录");
+        addFav.setResource(R.drawable.icon_chat_delete_recent);
+        addFav.setBgResource(R.color.common_action_bar_bg_color);
+
+        menuObjects.add(close);
+        menuObjects.add(send);
+        menuObjects.add(like);
+        menuObjects.add(addFr);
+        menuObjects.add(addFav);
+        
+        return menuObjects;
+    }
 
 	@SuppressWarnings("deprecation")
 	private void initView() {
@@ -316,18 +359,6 @@ public class ChatActivity extends BaseMainActivity implements OnClickListener,
 		if (targetUser != null) {
 			tv_title.setText(targetUser.getNick());
 		}
-		
-		mPopupWindowView = findViewById(R.id.ll_popup_window);
-		
-		iv_check_info = (ImageView) findViewById(R.id.pop_check_info);
-		iv_invite_game = (ImageView) findViewById(R.id.pop_invite_game);
-		iv_set_black = (ImageView) findViewById(R.id.pop_set_black);
-		iv_delete_recent = (ImageView) findViewById(R.id.pop_delete_recent);
-		
-		iv_check_info.setOnClickListener(this);
-		iv_invite_game.setOnClickListener(this);
-		iv_set_black.setOnClickListener(this);
-		iv_delete_recent.setOnClickListener(this);
 
 		mCanvers = (LinearLayout) findViewById(R.id.pop_canvers);
 		
@@ -1268,40 +1299,6 @@ public class ChatActivity extends BaseMainActivity implements OnClickListener,
 		case R.id.tv_location:// 位置
 			selectLocationFromMap();
 			break;
-			
-		case R.id.pop_canvers:
-			if(isVisible){
-				// 隐藏mPopupWindow和mCanvers
-				mCanvers.startAnimation(createAlphaOutAnim());
-				mCanvers.setVisibility(View.GONE);
-				
-				mPopupWindowView.startAnimation(createTranslateOutAnim());
-				mPopupWindowView.setVisibility(View.GONE);
-				isVisible = false;
-				Log.i("zhimeng", "canvers:"+isVisible);
-			}
-			break;
-			
-		// 查看资料
-		case R.id.pop_check_info:
-			Intent intent = new Intent();
-			intent.setClass(ChatActivity.this, SetMyInfoActivity2.class);
-			intent.putExtra("from", "other");
-			intent.putExtra("username", targetUser.getUsername());
-			startActivity(intent);
-			break;
-		// 邀请进行游戏PK
-		case R.id.pop_invite_game:
-			
-			break;
-		// 设置为黑名单
-		case R.id.pop_set_black:
-			showBlackDialog(targetUser.getUsername());
-			break;
-		// 删除会话纪录
-		case R.id.pop_delete_recent:
-			showDeleteRecentDialog(targetId);
-			break;
 		default:
 			break;
 		}
@@ -1793,51 +1790,9 @@ public class ChatActivity extends BaseMainActivity implements OnClickListener,
 	}
 	
 	public void chatShowMore(View view) {
-		if (isVisible) {// 如果mPopupWindow处于显示状态
-			// 隐藏mPopupWindow和mCanvers
-			mCanvers.startAnimation(createAlphaOutAnim());
-			mCanvers.setVisibility(View.GONE);
-			
-			mPopupWindowView.startAnimation(createTranslateOutAnim());
-			mPopupWindowView.setVisibility(View.GONE);
-			Log.i("zhimeng", "popbtn:if:"+isVisible);
-			isVisible = false;
-		}else{
-			// 隐藏mPopupWindow和mCanvers
-			mCanvers.startAnimation(createAlphaInAnim());
-			mCanvers.setVisibility(View.VISIBLE);
-			
-			mPopupWindowView.startAnimation(createTranslateInAnim());
-			mPopupWindowView.setVisibility(View.VISIBLE);
-			isVisible = true;
-			Log.i("zhimeng", "popbtn:else"+isVisible);
-		}
-	}
-	
-	private Animation createTranslateInAnim() {
-		int type = TranslateAnimation.RELATIVE_TO_SELF;
-		TranslateAnimation an = new TranslateAnimation(type, 0, type, 0, type,
-				-1, type, 0);
-		an.setDuration(TRANSLATE_DURATION);
-		an.setAnimationListener(new AnimationListener() {
-			
-			@Override
-			public void onAnimationStart(Animation animation) {
-				
-			}
-			
-			@Override
-			public void onAnimationRepeat(Animation animation) {
-				
-			}
-			
-			@Override
-			public void onAnimationEnd(Animation animation) {
-				mPopupWindowView.setVisibility(View.VISIBLE);
-			}
-		});
-//		an.setFillAfter(true);
-		return an;
+		if (fragmentManager.findFragmentByTag(ContextMenuDialogFragment.TAG) == null) {
+            mMenuDialogFragment.show(fragmentManager, ContextMenuDialogFragment.TAG);
+        }
 	}
 
 	private Animation createTranslateOutAnim() {
@@ -1866,18 +1821,36 @@ public class ChatActivity extends BaseMainActivity implements OnClickListener,
 		return an;
 	}
 
-	private Animation createAlphaInAnim() {
-		AlphaAnimation an = new AlphaAnimation(0, 1);
-		an.setDuration(ALPHA_DURATION);
-//		an.setFillAfter(true);
-		return an;
+	@Override
+	public void onMenuItemLongClick(View clickedView, int position) {
+		// TODO Auto-generated method stub
+		
 	}
 
-	private Animation createAlphaOutAnim() {
-		AlphaAnimation an = new AlphaAnimation(1, 0);
-		an.setDuration(ALPHA_DURATION);
-//		an.setFillAfter(true);
-		return an;
+	@Override
+	public void onMenuItemClick(View clickedView, int position) {
+		// TODO Auto-generated method stub
+		position--;
+		switch (position) {
+		case 0:
+			Intent intent = new Intent();
+			intent.setClass(ChatActivity.this, SetMyInfoActivity2.class);
+			intent.putExtra("from", "other");
+			intent.putExtra("username", targetUser.getUsername());
+			startActivity(intent);
+			break;
+		case 1:
+			
+			break;
+		case 2:
+			showBlackDialog(targetUser.getUsername());
+			break;
+		case 3:
+			showDeleteRecentDialog(targetId);
+			break;
+		default:
+			break;
+		}
 	}
 
 }

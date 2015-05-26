@@ -9,7 +9,6 @@ import cn.bmob.v3.listener.UpdateListener;
 import com.bmob.im.demo.CustomApplcation;
 import com.bmob.im.demo.R;
 import com.bmob.im.demo.bean.DefaultGameFile;
-import com.bmob.im.demo.ui.ActivityBase;
 import com.bmob.im.demo.ui.SetMyInfoActivity2;
 import com.bmob.im.demo.util.ActivityUtil;
 import com.bmob.im.demo.util.SoundPlay;
@@ -640,10 +639,10 @@ public class GuessNumberActivity extends Activity implements OnClickListener{
 	}
 	
 	public void updateGameRankInfo(){
-		new Thread(){
+//		new Thread(){
 			
-			@Override
-			public void run(){
+//			@Override
+//			public void run(){
 				final int guessNum = getGuessTime();
 				
 				BmobQuery<DefaultGameFile> query = new BmobQuery<DefaultGameFile>();
@@ -655,9 +654,12 @@ public class GuessNumberActivity extends Activity implements OnClickListener{
 					public void onSuccess(List<DefaultGameFile> arg0) {
 						// TODO Auto-generated method stub
 						if (arg0.size() != 0) {
-							DefaultGameFile gameFile = arg0.get(0);
+							
+							DefaultGameFile gameFile = new DefaultGameFile();
 							gameFile.setBestScore(guessNum);
-							gameFile.setBestUser(CustomApplcation.getInstance().getCurrentUser());
+							gameFile.setBestUsername(CustomApplcation.getInstance().getCurrentUser().getUsername());
+							gameFile.setBestUserNick(CustomApplcation.getInstance().getCurrentUser().getNick());
+							gameFile.setObjectId(arg0.get(0).getObjectId());
 							
 							gameFile.update(GuessNumberActivity.this, new UpdateListener() {
 								
@@ -670,7 +672,7 @@ public class GuessNumberActivity extends Activity implements OnClickListener{
 								@Override
 								public void onFailure(int arg0, String arg1) {
 									// TODO Auto-generated method stub
-									ActivityUtil.show(GuessNumberActivity.this, "更新游戏排名失败！");
+									ActivityUtil.show(GuessNumberActivity.this, "更新游戏排名失败2！" + arg1);
 								}
 							});
 							
@@ -680,12 +682,12 @@ public class GuessNumberActivity extends Activity implements OnClickListener{
 					@Override
 					public void onError(int arg0, String arg1) {
 						// TODO Auto-generated method stub
-						ActivityUtil.show(GuessNumberActivity.this, "更新游戏排名失败！");
+						ActivityUtil.show(GuessNumberActivity.this, "更新游戏排名失败1！");
 					}
 				});
-			}
+//			}
 			
-		}.start();
+//		}.start();
 	}
 	
 }

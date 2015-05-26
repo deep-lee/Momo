@@ -258,15 +258,11 @@ public class GameCardAdapter extends BaseAdapter
 				// 未下载
 				case 0:
 					
-//					Toast.makeText(mContext, "点击了下载按钮！", Toast.LENGTH_LONG).show();
-					
 					Log.i("LLLLLLLLLLLLLLLL", "点击了下载按钮！");
 					
 					// 下载apk
 					// 判断当前是WI-FI还是移动网络
 					int netType = CustomApplcation.getInstance().getCurrentNetType();
-					
-					Toast.makeText(mContext, "网络类型：" + netType, Toast.LENGTH_LONG).show();
 					
 					switch (netType) {
 					case 0:
@@ -361,7 +357,6 @@ public class GameCardAdapter extends BaseAdapter
 				BmobFile file = arg0.get(0).getFile();
 				
 				// 开启线程，下载文件		
-				Toast.makeText(mContext, "sousuodaole", Toast.LENGTH_LONG).show();
 				DownloadService.downNewFile(file.getFileUrl(mContext), mData.get(index).getNotificationId(), mData.get(index).getGame_name());
 				
 			}
