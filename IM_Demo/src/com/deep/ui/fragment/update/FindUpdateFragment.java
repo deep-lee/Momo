@@ -22,8 +22,8 @@ public class FindUpdateFragment extends FragmentBase implements OnClickListener{
 	
 	Context mContext;
 	
-	RelativeLayout rl_life_circle, rl_attractions_roma, rl_sign_in,
-	rl_game_community, rl_eat_drink_play_happy, rl_game_center;
+	RelativeLayout rl_life_circle, rl_attractions_roma,
+	rl_game_community, rl_game_center;
 
 	public FindUpdateFragment() {
 		super();
@@ -66,16 +66,12 @@ public class FindUpdateFragment extends FragmentBase implements OnClickListener{
 		rl_life_circle = (RelativeLayout) findViewById(R.id.fragment_find_life_circle);
 		rl_game_center = (RelativeLayout) findViewById(R.id.fragment_find_game_center);
 		rl_attractions_roma = (RelativeLayout) findViewById(R.id.fragment_find_attractions_roma);
-		rl_sign_in = (RelativeLayout) findViewById(R.id.fragment_find_sign_in);
 		rl_game_community = (RelativeLayout) findViewById(R.id.fragment_find_game_community);
-		rl_eat_drink_play_happy = (RelativeLayout) findViewById(R.id.fragment_find_eat_drink_play_happy);
 		
 		rl_life_circle.setOnClickListener(this);
 		rl_game_center.setOnClickListener(this);
 		rl_attractions_roma.setOnClickListener(this);
-		rl_sign_in.setOnClickListener(this);
 		rl_game_community.setOnClickListener(this);
-		rl_eat_drink_play_happy.setOnClickListener(this);
 		
 	}
 

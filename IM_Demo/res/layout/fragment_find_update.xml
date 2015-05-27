@@ -96,7 +96,7 @@
 	            android:background="@drawable/register_bottom_arrow" />
 	    </RelativeLayout>
 	    
-	    <RelativeLayout
+	    <!-- <RelativeLayout
 	        android:id="@+id/fragment_find_sign_in"
 	        android:layout_width="match_parent"
 	        android:layout_height="48dp"
@@ -129,7 +129,7 @@
 	            android:layout_marginRight="10dp"
 	            android:drawablePadding="10dp"
 	            android:background="@drawable/register_bottom_arrow" />
-	    </RelativeLayout>
+	    </RelativeLayout> -->
 	    
 	    <RelativeLayout
 	        android:id="@+id/fragment_find_game_center"
@@ -208,7 +208,7 @@
 	    </RelativeLayout>
 	    
 	    
-	    <RelativeLayout
+	    <!-- <RelativeLayout
 	        android:id="@+id/fragment_find_eat_drink_play_happy"
 	        android:layout_width="match_parent"
 	        android:layout_height="48dp"
@@ -241,7 +241,7 @@
 	            android:layout_marginRight="10dp"
 	            android:drawablePadding="10dp"
 	            android:background="@drawable/register_bottom_arrow" />
-	    </RelativeLayout>
+	    </RelativeLayout> -->
         
     </LinearLayout>
     

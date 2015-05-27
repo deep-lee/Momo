@@ -139,7 +139,7 @@ public class FirstGuildActivity extends Activity implements OnClickListener, OnP
 
         options.inJustDecodeBounds =  false;
         //文件大小缩小8倍
-        options.inSampleSize =2;    
+         options.inSampleSize = 4;    
         
        /**
         * decodeStream最大的秘密在于其直接调用JNI>>nativeDecodeAsset()来完成decode，
