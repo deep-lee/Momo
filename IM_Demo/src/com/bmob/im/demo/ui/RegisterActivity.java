@@ -1043,14 +1043,14 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
 				return;
 			}
 			
-//			SMSSDK.submitVerificationCode("86", et_username.getText().toString(), et_confim_code.getText().toString());
-//			
-//			progress = new CustomProgressDialog(RegisterActivity.this, "正在验证...");
-//			progress.setCanceledOnTouchOutside(false);
-//			progress.setCancelable(false);
-//			progress.show();
+			SMSSDK.submitVerificationCode("86", et_username.getText().toString(), et_confim_code.getText().toString());
 			
-			gotoNextPage();
+			progress = new CustomProgressDialog(RegisterActivity.this, "正在验证...");
+			progress.setCanceledOnTouchOutside(false);
+			progress.setCancelable(false);
+			progress.show();
+			
+			// gotoNextPage();
 			
 //			viewFlipper.showNext();
 //			currentPage++;
